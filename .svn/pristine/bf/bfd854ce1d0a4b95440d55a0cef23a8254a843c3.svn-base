@@ -1,0 +1,1216 @@
+@import "../../component/tabNav/tabNav.wxss";
+@import "../common/loading/loading.wxss";
+image{width: 100%;}
+
+page{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f6f6f6;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+::-webkit-scrollbar{width:0px;height: 0}
+/*公用*/
+.mar-bot{
+  margin-bottom: 10rpx!important;
+}
+/**/
+.vr-icon{
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  z-index: 500;
+}
+.pic-seven{
+  width: 60rpx;
+  height: 60rpx;
+}
+.pic-cur{
+  width: 60rpx;
+  height: 80rpx;
+}
+.container_pic_video{
+  background: #fff;
+}
+.container-box{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 200rpx;
+  box-sizing: border-box;
+}
+.f14{
+  font-size: 28rpx;
+}
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+  padding-bottom:12rpx;
+}
+
+.banner-box{
+    position: relative;
+    width: 100%;
+    height: 479.25rpx;
+    background: url(https://uuweb.haofang.net/Public/wxApp/images/default/detail_deafault.png) no-repeat center center;
+    background-size: 60%;
+    background-color: #fafafa;
+}
+.banner{
+    width: 100%;
+    height: 100%;
+}
+container_video{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.video-box{
+  width: 100%;
+  height: 100%;
+}
+.video-box image{
+  width: 100%;
+}
+.ic-box{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background: rgba(0,0,0,0.2) */
+}
+.bico-viedo{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100rpx;
+  height: 100rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/btnbg.png) no-repeat;
+  background-size: 100%;
+}
+.v-wraper{
+  position: relative;
+  width:100%;
+  height: 100%;
+  background: #000;
+}
+#myVideo{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width:100%;
+  display:block;
+  line-height:0;
+}
+.close-video{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  bottom: 120rpx;
+  width: 70rpx;
+  height: 70rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/close-viedo.png) no-repeat; 
+  background-size:100% 
+}
+.slide-image{
+    width: 100%;
+    height: 100%;
+}
+.numDesc{
+    position: absolute;
+    bottom: 20rpx;
+    right: 20rpx;
+    display: flex;
+    padding: 0 20rpx;
+    height: 40rpx;
+    color: #fff;
+    line-height: 40rpx;
+    text-align: center;
+    font-size: 30rpx;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+.cont-box{
+  position: relative;
+  width: 100%;
+  padding: 20rpx;
+  padding-bottom: 10rpx;
+  box-sizing: border-box;
+  background: #fff;
+  border-bottom: 1px solid #dfdfdf;
+  margin-bottom: 16rpx;
+}
+.container_pic_video{
+  position: relative;
+}
+.rental-box{
+  position: absolute;
+  width: 160rpx; 
+  height: 40rpx;
+  font-size: 28rpx;
+  color: #fff;
+  text-align: center;
+  background: rgb(255,90,31);
+  z-index: 100;
+  bottom:0; 
+}
+/*信息部分*/
+.cont-w{
+  width: 100%;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  background: #fff;
+}
+/*房间信息*/
+.zoom-box{
+  display: -webkit-box;
+  width: 100%;
+  padding: 20rpx 0;
+}
+.zoom-tx{
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 14rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/apartmentDetail/moren.png) no-repeat center;
+  background-size: 100% 100%;
+}
+.zoom-cont{
+  -webkit-box-flex: 1;
+}
+.list-detail{
+  position: relative;
+  border-bottom: 1px solid #EFEFEF;
+  padding-bottom: 30rpx;
+}
+.list-room{
+    color: black;
+    font-size: 32rpx;
+}
+.list-room-index{
+    position: relative;
+    left: 5rpx;
+    background-color: #edf7ff;
+    color: #4daaf0;
+    font-size: 24rpx;
+    padding: 4rpx 8rpx 4rpx 24rpx;
+}
+.list-room-index::before {
+    position: absolute;
+    content: '';
+    width: 16rpx;
+    height: 22rpx;
+    top: 4rpx;
+    left: 4rpx;
+    background: url(https://uuweb.haofang.net/Public/wxApp/images/new_images/room_index_icon.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.list-price,.list-price-a{
+  position: absolute;
+  right: 60rpx;
+  color: rgb(255,90,31);
+  font-size: 40rpx;
+}
+.list-price::after{
+  content: "";
+  display: inline-block;
+  width: 48rpx;
+  height: 48rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/apartmentDetail/ap-xiala.png) no-repeat center;
+  background-size: 100% auto;
+  position: absolute;
+  top: 10rpx;
+  margin-left: 10rpx;
+}
+.list-price-a::after{
+  content: "";
+  display: inline-block;
+  width: 48rpx;
+  height: 48rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/apartmentDetail/ap-xiala.png) no-repeat center;
+  background-size: 100% auto;
+  position: absolute;
+  top: 5rpx;
+  margin-left: 10rpx;
+  transform: rotate(180deg);
+}
+.room-detail{
+  padding-top:20rpx; 
+  border-bottom: 1px solid #efefef;
+}
+.detail-time{
+  font-size:28rpx;
+  margin-bottom: 20rpx; 
+}
+.dt-t{
+  margin-right: 20rpx;
+}
+.detail-ico-box{
+  display: -webkit-box;
+  margin-bottom: 20rpx;
+}
+.dt-ico{
+    border-radius: 1px;
+    font-size: 20rpx;
+    padding: 2rpx 4rpx;
+    margin-right: 3px;
+}
+.dt-ico:nth-child(1){
+    color: #1bc964;
+    border: 1px solid #1bc964;
+}
+.dt-ico:nth-child(2){
+    color: #36ABE2;
+    border: 1px solid #36ABE2;
+}
+.dt-ico:nth-child(3){
+    color: #FFB56F;
+    border: 1px solid #FFB56F;
+}
+.dt-ico:nth-child(4){
+    color: #1bc964;
+    border: 1px solid #1bc964;
+}
+.detail-img-box{
+  width: 100%;
+  height: 140rpx;
+  margin-bottom: 20rpx;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.img-wr{
+  height: 100%;
+}
+.detail-img{
+  float: left;
+  width: 100px;
+  height: 100%;
+  margin-right: 10rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/default/list_deafault.png) no-repeat center center;
+  background-size: cover;
+}
+.dt-image{
+  height: 100%;
+}
+/*配套设施*/
+.pt-box{
+  width: 100%;
+  padding: 20rpx 0;
+}
+.pt-b{
+  position: relative;
+  width: 25%;
+  height: 40rpx;
+  margin-bottom: 20rpx;
+  font-size:24rpx; 
+  line-height:40rpx;
+  padding-left: 40rpx;
+  box-sizing: border-box;
+  float: left;
+}
+.pt-b image{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  display: inline-block;
+  width: 34rpx;
+  height: 34rpx;
+}
+/*房源标题*/
+.title-box{
+  padding: 20rpx 0 20rpx 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+}
+.tit-box{
+  position: relative;
+  top: -5rpx;
+  display: inline-block;
+  padding: 7rpx 10rpx;
+  background: #1bc964;
+  color: white;
+  font-size: 24rpx;
+  border-radius: 2px;
+  margin-right: 15rpx;
+}
+.t-name{
+  display: -webkit-flex;
+  align-items: center;
+  margin-bottom: 22rpx;
+}
+.title-txt{
+  width: 100%;
+  color: #394043;
+  font-size: 36rpx;
+  font-weight: bold;
+  word-wrap: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.collect-box{
+  position: relative;
+  width: 50rpx;
+  height: 80rpx;
+  font-size: 28rpx;
+  color: #808080;
+  text-align: center;
+  border-left: 1px solid #eee;
+  margin-left: 30rpx;
+  padding: 10rpx 20rpx;
+}
+
+/*标签*/
+.house-tag{
+  width: 100%;
+  margin-top: 1rpx;
+  display: flex;
+}
+.dec-con{
+    display: inline-block;
+    width: auto;
+    line-height:24rpx;
+    font-size: 24rpx;
+    margin-right: 20rpx;
+    padding: 3px;
+    text-align: center;
+    box-sizing: content-box;
+    border-radius: 4rpx;
+    margin-top: 2rpx;
+}
+.dec-con:nth-child(4n+1){
+  border: 1rpx solid #ddf7e8;
+  color: #1bc964;
+  background: #ddf7e8;
+}
+.dec-con:nth-child(4n+2){
+  border: 1rpx solid #d6f4ff;
+  color: #18b4ed;
+  background: #d6f4ff;
+    
+}
+.dec-con:nth-child(4n+3){
+    border: 1rpx solid #ffedd4;
+    color: #ffae3b;
+    background: #ffedd4
+}
+.dec-con:nth-child(4n+4){
+  border: 1rpx solid #fde8e7;
+  color: #f3685f;
+  background: #fde8e7;
+}
+/*价格信息*/
+.price-top{
+  width: 100%;
+  background: #fff;
+  height: 100rpx;
+  padding: 20rpx 0;
+  border-top:2rpx solid #eee;
+  border-bottom:2rpx solid #eee;  
+  margin-bottom: 20rpx;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around;
+}
+.price-top view{
+  width: 100%;
+  text-align: center;
+}
+.p-top{
+  color: #999;
+  font-size: 30rpx;
+  margin-bottom: 10rpx;
+}
+.p-a{
+  border-right: 1px solid #eee;
+}
+.p-a:last-child{
+  border: 0;
+}
+.p-down{
+  color: #ff5400;
+  font-size: 30rpx;
+}
+/*地址信息*/
+.hou-addresss,.hou-time{
+  color: #999;
+  font-size: 28rpx;
+  padding: 10rpx 0;
+}
+.t-mm{
+  color: #000;
+}
+.hou-time{
+  margin-bottom: 10rpx;
+}
+/*房源详情*/
+.house-msg{
+  background: #fff;
+}
+.h-pos{
+  position: relative;
+}
+.hp-assess{
+  position: absolute;
+  right: 0;
+  width: 198rpx;
+  height: 63rpx;
+  display: inline-block;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/fjpg_pic.png)no-repeat center;
+  background-size: 80%;
+}
+.unit-price{
+  display: -webkit-flex;
+  justify-content: space-between;
+  height: 50rpx;
+  padding-top: 30rpx;
+}
+.unit-price .p-box{
+    -webkit-box-flex: 1;
+    color: #aaa;
+    font-size: 32rpx;
+}
+.p-box text{
+  color: #000;
+}
+.h-detail{
+  display: -webkit-flex;
+  color: #999;
+  font-size: 32rpx;
+  margin-bottom: 20rpx;
+  padding-top:20rpx; 
+}
+.l-msg{
+  width: 55%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  
+}
+.tx-a{
+  display: inline-block;
+}
+.r-msg{
+  width: 45%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.h-detail .tx-b{
+  color: #000;
+}
+.c-detail{
+  padding-top: 0;
+}
+.b-detail{
+  padding-top: 0;
+  padding-bottom: 20rpx;
+}
+/*房源描述*/
+.house-ms{
+  background: #fff;
+  width: 100%;
+  padding-left:30rpx;
+  box-sizing: border-box;
+}
+.ms-title{
+  width: 100%;
+  height: 112rpx;
+  line-height: 112rpx;
+  color: #394043;
+  font-weight: bolder;
+  font-size: 32rpx;
+  border-bottom: 1px solid #eee;
+}
+.feature{
+  line-height: 50rpx;
+  color: #394043;
+  font-size: 30rpx;
+  box-sizing: border-box;
+}
+.feature_c {
+    padding: 20rpx 20rpx 20rpx 0;
+    line-height: 50rpx;
+    box-sizing: border-box;
+    max-height: 220rpx; 
+  	min-height: 50px;
+    overflow: hidden;
+}
+.feature_b {
+    padding: 20rpx 20rpx;
+    line-height: 50rpx;
+    box-sizing: border-box;
+  	min-height: 50px;
+    overflow: hidden;
+}
+.more-box{
+  position: relative;
+  width: 100%;
+  height: 76rpx;
+  background: red;
+}
+.morepic{
+  display: block;
+  /* position: absolute; */
+  width: 26rpx;
+  height: 16rpx;
+  top: 20rpx;
+  margin-left: 12rpx;
+}
+.closepic{
+  transform: rotate(180deg);
+}
+.checkAll-up{
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
+    color:#8ea2b4;
+    font-size:30rpx;
+    background-color: #fff;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+}
+.checkAll-up-box{
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  color: #8ea2b4;
+}
+.checkAll-down:after{-webkit-transform: rotate(180deg);}
+.mask{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: white
+}
+.msa-t{
+  display: -webkit-flex;
+  justify-content: space-between;
+  padding-right: 30rpx;
+  box-sizing: border-box;
+}
+.look-more{
+  position: relative;
+  height: 100%;
+  padding-right:26rpx; 
+  font-size: 32rpx;
+  color: #8ea2b4;
+  line-height:112rpx; 
+  font-weight: normal;
+}
+.look-more::after {
+    position: absolute;
+    content: '';
+    width: 15rpx;
+    height: 24rpx;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    right: 0;
+    background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/l-jtt.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.ms-cont{
+  padding-top: 40rpx;
+  height: 275rpx;
+  overflow: hidden;
+}
+.ms-cont-big{
+  padding-top: 40rpx;
+}
+.ms-cont-lineg{
+  height: 800rpx;
+}
+.msl-width{
+  width: 45%!important;
+}
+.msr-width{
+  width: 55%!important;
+}
+.sj-width{
+  width: 100%!important;
+}
+.ms-box{
+    display: -webkit-flex;
+    float: left;
+    width: 100%;
+    overflow: auto!important;
+    white-space: normal!important;
+}
+.box-t{
+  width: 160rpx;
+}
+.ms-box .box-cont{
+  -webkit-flex:1; 
+  flex: 1;
+  font-size: 30rpx;
+  color: #000;
+  padding-right: 20rpx;
+}
+
+
+/*信息地图*/
+.map-wrap{
+  padding-left: 0;
+}
+.map-box{
+  position: relative;
+  width: 100%;
+  height: 320rpx;
+  overflow: hidden;
+}
+.map-img{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100%;
+}
+.map-ti{
+  padding-left: 30rpx;
+  box-sizing: border-box;
+}
+#map{
+  width: 100%;
+  height: 380rpx;
+}
+.map-nav{
+  width: 100%;
+  height: 130rpx;
+  font-size: 24rpx;
+  color: rgb(128,128,128);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.nav-wraper{
+  width: 140%;
+}
+.map-icon-box{
+  padding-top: 20rpx;
+  box-sizing: border-box;
+  width: 150rpx;
+  height: 100%;
+  display: inline-block;
+  text-align: center;
+}
+.map-icon-box image{
+  display: block;
+  position: relative;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 50rpx;
+  height:50rpx;
+  margin-bottom: 12rpx;
+}
+.icon-common{
+  width: 50rpx;
+  height:50rpx;
+  margin: 0 auto;
+  margin-bottom: 12rpx;
+}
+
+.footer-nav{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100rpx;
+    z-index: 2;
+    background: #fff;
+ 
+}
+.ft-nav-a{
+  display: -webkit-box;
+  -webkit-box-align: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  -webkit-box-pack: center;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+.qf-txt{
+  font-size: 24rpx;
+  color: #999;
+}
+.qf-txt text{
+  color: #ff9000;
+  margin-left: 5rpx;
+  margin-right: 5rpx;
+  font-size: 30rpx;
+}
+.rent-agent {
+  display: -webkit-flex;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+}
+.foot-collct,.foot-look{
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-size: 28rpx;
+  color: rgba(153,153,153,1);
+}
+.star-icon{
+    position: relative;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    right: 0;
+    width: 46rpx;
+    height: 46rpx;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100%;
+    background-image: url(https://uuweb.haofang.net/Public/wxApp/images/apartmentDetail/build_collect.png?t=111);
+}
+.stard-icon{
+  position: relative;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    right: 0;
+    width: 46rpx;
+    height: 46rpx;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100%;
+    background-image: url(https://uuweb.haofang.net/Public/wxApp/images/new_images/collect2.png);
+}
+.collect-txt{
+  color: rgba(153,153,153,1);
+}
+.collected-txt{
+  color: #4daaf0;
+}
+.f-look-icon{
+  position: relative;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  right: 0;
+  width: 46rpx;
+  height: 46rpx;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/apartmentDetail/yuyue.png);
+}
+
+
+
+
+.r-a-tx{
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 100%;
+  margin-right: 20rpx;
+}
+.r-a-name{
+  height: 100%;
+}
+.yz-name{
+  height: 100%;
+  line-height: 70rpx;
+}
+.r-na-box{
+  text-align: left;
+  padding-top: 15rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+}
+.staer-ic{
+  width: 165rpx;
+  height: 30rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/score_yellow.png) no-repeat;
+  background-size: 100% auto;
+  vertical-align: middle;
+  background-position:0 -30rpx;
+}
+.con-box{
+  -webkit-box-flex: 1;
+  background: -webkit-linear-gradient(left, rgb(255,203,0) , rgb(255,148,2));
+  color:#fff;
+  width:85%;
+  font-size:32rpx;
+  text-align:center;
+  line-height:73rpx;
+  border-radius:50rpx;
+  margin-right:23rpx;
+}
+.zx-icon{
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/new_images/call.png) no-repeat center;
+  background-size: 40rpx;
+  vertical-align: middle;
+  margin-right: 10rpx;
+}
+/*房源下架弹框*/
+.tost-mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1100;
+}
+.s-toast{
+  position: relative;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 350rpx;
+  width: 500rpx;
+  height: 300rpx;
+  border-radius:10rpx; 
+  background: #fff;
+  padding-top: 60rpx;
+  box-sizing: border-box;
+  z-index: 1200;
+}
+.tos-txt{
+  text-align: center;
+  font-size:34rpx; 
+  margin-bottom: 40rpx;
+}
+.s-btn{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 80%;
+  height: 80rpx;
+  background: #00ca85;
+  color: #fff;
+  text-align: center;
+  line-height: 80rpx;
+  border-radius: 10rpx;
+}
+/*引导下载*/
+.lead-download{
+  position: relative;
+  display: -webkit-flex;
+  width: 100%;
+  height: 210rpx;
+  border-top:1px solid #eee; 
+  margin-bottom: 10rpx;
+  align-items: center;
+  background: #fff;
+}
+.d-logo{
+  position: relative;
+  width: 100rpx;
+  height: 100rpx;
+  border: 1px solid #eee;
+  border-radius: 10rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+.dw-msg-box{
+  padding-top: 20rpx;
+  box-sizing: border-box;
+  width: 400rpx;
+  height: 100%;
+}
+.dw-msg{
+  font-size: 30rpx;
+  color: #000;
+}
+.dw-ts{
+  font-size: 24rpx;
+  color: #999;
+}
+.star-dw{
+  font-size: 24rpx;
+  color: #999;
+}
+.st-dw{
+  display: inline-block;
+  width: 150rpx;
+  height: 30rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/score_yellow.png) no-repeat;
+  background-size: 90% auto;
+  vertical-align: middle;
+  background-position:0 0rpx;
+}
+.dw-btn{
+  position: absolute;
+  top:0;
+  bottom: 0;
+  margin: auto; 
+  right: 20rpx;
+  width: 80rpx;
+  height: 50rpx;
+  border: 1px solid #0d48ab;
+  color: #0d48ab;
+  font-size: 30rpx;
+  line-height: 50rpx;
+  border-radius: 5rpx;
+  text-align: center;
+}
+/*预约看房弹框*/
+.order-toast{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 150rpx;
+  width: 600rpx;
+  border-radius:8rpx; 
+  padding-top: 40rpx;
+  box-sizing: border-box;
+  z-index: 1200;
+}
+.order-txt{
+  width: 100%;
+  text-align: center;
+  font-size:32rpx; 
+  margin-bottom: 40rpx;
+}
+.sub-btn{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius:0 0 8rpx 8rpx;  
+  width: 100%;
+  height: 80rpx;
+  background: #00ca85;
+  color: #fff;
+  font-size: 32rpx;
+  line-height: 80rpx;
+  text-align: center;
+}
+.info-box{
+  width: 100%;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+}
+.input-box{
+  width: 100%;
+  height: 60rpx;
+  background: red;
+  border-bottom: 1px solid #eee;
+}
+.contract-box{
+  display: -webkit-flex;
+  width: 100%;
+  height: 150rpx;
+  font-size: 20rpx;
+  text-align: center;
+  justify-content: space-around;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+}
+.chat-b,.call-b{
+  position: relative;
+  width: 30%;
+}
+.chat-ic,.call-ic{
+  position: relative;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 70rpx;
+  height: 70rpx;
+  margin-bottom: 30rpx;
+}
+.chat-ic{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/chat_pic.png) no-repeat;
+  background-size: 100%;
+}
+.call-ic{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/tel_pic.png) no-repeat;
+  background-size: 100%;
+}
+
+/*引导下载*/
+.lead-toast{
+  position: absolute;
+  right: 0;
+  bottom: 160rpx;
+  width: 300rpx;
+  height: 200rpx;
+
+}
+.log-pic{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 64rpx;
+  height: 39rpx;
+}
+.lt-txt{
+  width: 100%;
+  font-size: 26rpx;
+  text-align: center;
+  color: #fff;
+}
+.lead-pic{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 94rpx;
+  height: 82rpx;
+}
+.order-icon{
+  width: 490rpx;
+  height: 645rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/apartmentDetail/detail-down-img.png)no-repeat center;
+  background-size: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.order-close{
+  width: 90rpx;
+  height: 90rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/apartmentDetail/list-bomp-close.png)no-repeat center;
+  background-size: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 740rpx;
+}
+.nav{
+    background-color:#fff;
+    font-size:24rpx;
+    width:100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-top:20rpx;
+    padding-bottom:20rpx;
+    box-sizing: border-box;
+}
+.nav-but{
+  border: cadetblue 1px solid;
+  border-radius: 0px;
+  width: 25%;
+  text-align: center;
+  line-height: 30px;
+  display: inline-flex;
+}
+#scroll-map{
+    width: 180%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-align: center;
+}
+::-webkit-scrollbar{width:0px;height: 0}
+.scroll-view {
+	width: 150rpx;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.common{
+	width: 50rpx;
+	height: 50rpx;
+	background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.map-type{
+	width:120rpx;
+    height:50rpx;
+    line-height:50rpx;
+    font-size:24rpx;
+    text-align:center;
+}
+.bus-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/transport.png);  }
+.subway-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/subway.png);  }
+.school-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/school.png);  }
+.hospital-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/hospital.png);  }
+.bank-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/bank.png);  }
+.leisure-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/leisure.png);  }
+.shopping-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/shopping.png);  }
+.food-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/food.png);  }
+.sports-icon{  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/map/sports.png);  }
+.down-con{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:640rpx;
+  transform:translate(-50%,5%);
+  transform:translate(-50%,5%);
+  z-index:20;
+  box-sizing:border-box;
+  border-radius:5px;
+  background:#fff;
+}
+.down-txt{
+  font-size: 30rpx;
+  text-align: center;
+  font-weight: bold
+}
+.down-txt-top{
+  padding-top:55rpx;
+  font-weight: normal
+}
+.down-txt-bottom{
+   padding-bottom:40rpx
+}
+.down-img{
+  width: 427rpx;
+  height: 321rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/mine/down-bg.png) center center no-repeat;
+  background-size: 100% 100%;
+  margin: 0 auto
+}
+.down-btn-txt{
+  background: #17b980;
+  color: #fff;
+  font-size: 34rpx;
+  width: 523rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  margin: 40rpx auto;
+  border-radius: 4rpx;
+}
+#homeBtn{
+  width:88rpx;
+  height: 88rpx;
+  position: fixed;
+  right:21rpx;
+  bottom:160rpx;
+  border-radius: 50%;
+  background: url('https://uuweb.haofang.net/Public/wxApp/images/personalCenter/index-btn.png') center center no-repeat;
+  background-size: 100% 100%;
+  z-index: 9;
+}

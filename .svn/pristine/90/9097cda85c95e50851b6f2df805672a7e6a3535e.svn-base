@@ -1,0 +1,144 @@
+<view id="app">
+
+  <!-- 我关注的经纪人 -->
+  <block wx:if="{{attentionList.length > 0}}">
+    <view class="common-tt">我关注的经纪人</view>
+
+    <view class="follow-one" wx:if="{{attentionList.length == 1}}">
+      <navigator class="head" url="/pages/personalStore/personalStore?scene={{attentionList[0]['archiveId']}}"
+        hover-class="none">
+        <image class="" src="{{attentionList[0]['userPhoto']}}" mode="aspectFill"></image>
+      </navigator>
+      <view class="info">
+        <view class="name-box">
+          <view class="name">{{attentionList[0]['userName']}}</view>
+          <!-- <view class="icon">小区专家</view> -->
+        </view>
+        <view class="dept">{{attentionList[0]['deptName']}}</view>
+        <view class="server-reg" wx:if="{{!!attentionList[0]['serviceRegName']}}">服务区域：{{attentionList[0]['serviceRegName']}}</view>
+      </view>
+      <view class="line-bord"></view>
+      <view class="score">
+        <view class="num">{{attentionList[0]['countScore']}}</view>
+        <view class="desc">综合评分</view>
+      </view>
+    </view>
+
+    <view class="follow-list-box" wx:else="">
+      <view class="follow-list">
+        <navigator wx:for="{{attentionList}}" wx:key="{{item.archiveId}}" class="section" url="/pages/personalStore/personalStore?scene={{item.archiveId}}"
+          hover-class="none">
+          <view class="head">
+            <image class="" src="{{item.userPhoto}}" mode="aspectFill"></image>
+            <!-- <view class="icon"></view> -->
+          </view>
+          <view class="name">{{item.userName}}</view>
+          <view class="join-btn">进入微店</view>
+        </navigator>
+      </view>
+    </view>
+
+  </block>
+
+  <!-- 我收藏的房源 -->
+  <block wx:if="{{collectList.length >0}}">
+    <view class="common-tt">我收藏的房源</view>
+    <view class="collet-list-box">
+      <view class="collet-list">
+
+        <navigator wx:for="{{collectList}}" wx:key="{{index}}" class="section" url="{{item.collectPageUrl}}"
+          hover-class="none">
+          <view class="pic-box">
+            <image src="{{item.collectThumbUrl}}" mode="aspectFill" lazy-load="true"></image>
+            <block wx:if="{{item.caseType < 4}}">
+              <view class="vr-icon icon" wx:if="{{item.hasPanorama > 0}}"></view>
+              <view class="vd-icon icon" wx:elif="{{!!item.hasVideo}}"></view>
+            </block>
+          </view>
+          <view class="title">{{item.collectTitle}}</view>
+          <view class="tags">
+            <!-- 假一赔百标签 -->
+            <view wx:if="{{item.trueFlag == 1}}" class="true_flag"></view>
+            <!-- 公寓的品牌标签 -->
+            <view wx:if="{{item.caseType == 7}}" class="tag-icon-gy">{{item.gyAppIdCn}}</view>
+            <block wx:for="{{item.collectTagsArr}}" wx:key="{{index}}" wx:for-item="tagItem">
+              <view wx:if="{{tagItem == '房租月付'}}" class="month_flag">{{tagItem}}</view>
+              <view wx:elif="{{tagItem == '业主房源'}}" class="owner_flag">{{tagItem}}</view>
+              <!-- 通用icon -->
+              <text class="tag-icon" wx:elif="{{!!tagItem}}">{{tagItem}}</text>
+            </block>
+          </view>
+          <view class="desc">{{item.collectDesc}}</view>
+          <view class="price-box">
+            <view class="pirce-text">{{item.collectPirce}}</view>
+            <view class="average-price" wx:if="{{!!item.collectUnitPrice}}">{{item.collectUnitPrice}}</view>
+          </view>
+        </navigator>
+      </view>
+    </view>
+  </block>
+
+  <!-- 我浏览的房源 -->
+  <block wx:if="{{!!historyListFlag}}">
+    <view class="common-tt">我浏览的房源</view>
+    <view class="history-list">
+      <block wx:for="{{historyList}}" wx:key="{{index}}" wx:for-item="dateListItem">
+        <view class="date-tt">{{index}}</view>
+        <!-- 新盘以外其他模板 -->
+        <navigator wx:for="{{dateListItem}}" wx:key="{{index}}" class='{{item.caseType == 6?"newhouseItem":"houseItem"}}'
+          url="{{item.historyPageUrl}}" hover-class="none">
+          <view class='picbox'>
+            <image wx:if="{{item.hasPanorama>0}}" src='http://cdn.haofang.net/static/uuminiapp/index/720_icon.png'
+              class='vri' />
+            <image wx:elif="{{!!item.hasVideo}}" src='http://cdn.haofang.net/static/uuminiapp/index/video_icon.png'
+              class='vri' />
+            <image src='{{item.historyThumbUrl}}' class='bgImg' lazy-load="{{true}}" mode='aspectFill' />
+          </view>
+          <view class='infobox'>
+            <view class="housetitle">
+              <block wx:if="{{item.caseType != 6}}">{{item.historyTitle}}</block>
+              <block wx:else>
+                <text class='buildNamebox'>{{item.historyTitle}}</text>
+                <text wx:if="{{item.xfBuildStatus == 1}}" class='wait text'>待售</text>
+                <text wx:if="{{item.xfBuildStatus == 2}}" class='selling text'>在售</text>
+                <text wx:if="{{item.xfBuildStatus == 3}}" class='soldOut text'>售罄</text>
+              </block>
+            </view>
+            
+            <!-- 房源样式调整 -->
+            <view class="text">{{item.historyDesc}}</view>
+            <!-- 新房有额外字段 -->
+            <block wx:if="{{item.caseType == 6}}">
+              <view class="text" wx:if="{{!!item.xfRoomTextCn && !!item.areaLow}}">{{item.xfRoomTextCn}}室 | {{item.xfAreaLow}}-{{item.xfAreaHigh}}㎡</view>
+              <view class="text" wx:elif="{{!!item.xfRoomTextCn}}">{{item.xfRoomTextCn}}室</view>
+              <view class="text" wx:elif="{{!!item.xfAreaLow}}">{{item.xfAreaLow}}-{{item.xfAreaHigh}}㎡</view>
+            </block>
+            <view class='tag' wx:if="{{item.historyTagsArr.length>0 || item.trueFlag == 1}}">
+              <view wx:if="{{item.trueFlag == 1}}" class="true_flag"></view>
+              <!-- 公寓的品牌标签 -->
+              <view wx:if="{{item.caseType == 7}}" class="tag-icon-gy">{{item.gyAppIdCn}}</view>
+              <block wx:for="{{item.historyTagsArr}}" wx:key="{{index}}" wx:for-item="tagItem">
+                <view wx:if="{{tagItem == '房租月付'}}" class="month_flag">{{tagItem}}</view>
+                <view wx:if="{{tagItem == '业主房源'}}" class="owner_flag">{{tagItem}}</view>
+                <text wx:elif="{{!!tagItem}}">{{tagItem}}</text>
+              </block>
+            </view>
+            <view class='price'>{{item.historyPirce}}<text wx:if="{{!!item.historyUnitPrice}}">{{item.historyUnitPrice}}</text></view>
+          </view>
+        </navigator>
+      </block>
+
+    </view>
+  </block>
+
+
+
+  <!-- 无数据情况 -->
+  <view class="nodata" wx:if="{{attentionList.length == 0 && collectList.length == 0 && !historyListFlag && ajaxListFlag == 0}}">
+    <view class="content">
+      <image src="http://cdn.haofang.net/static/uuminiapp/new_images/nodata_list_new.png" mode="aspectFill"></image>
+      <view class="text">暂无数据记录</view>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,32 @@
+<template name="tabNav">
+    <!--固定nav-->
+<view class="toast-bg" catchtap='offToast' wx:if="{{offFlag}}"></view>
+<view class="toast-wrap" animation="{{animationData}}">
+    <view class="nav-b">
+        <view class="left-nav">
+            <view class="unfold-box" catchtap='tabBtnCheck' data-shows="s" wx:if="{{showFlas}}">
+                <image src='http://youjia.haofang.net/Public/images/img_jt_left.png'></image>
+                <view class="nav-txtb">快速导航</view>
+            </view>
+            <view class="packup-box" catchtap='tabBtnCheck' data-shows="o" wx:if="{{offFlag}}">
+                <image src='http://youjia.haofang.net/Public/images/img_jt_rft.png'></image>
+                <view class="nav-txt">收起</view>
+            </view>
+        </view>
+        <view class='ul'>
+                    <navigator open-type="switchTab" url="/pages/real_index/index">
+                        <view class="li index-btn"><text class='in-icon'></text>首页</view>
+                    </navigator>
+                    <navigator url="/pages/newHouseList/newHouseList">
+                        <view class="li newHuse-btn"><text class='ne-icon'></text>新房</view>
+                    </navigator>
+                    <navigator url="/pages/list/list">
+                        <view class="li saleHouse-btn"><text class='sa-icon'></text>二手房</view>
+                    </navigator>
+                    <navigator url="/pages/leaseList/leaseList">
+                        <view class="li leaseHouse-btn"><text class='le-icon'></text>租房</view>
+                    </navigator>
+            </view>
+    </view>
+</view>
+</template>

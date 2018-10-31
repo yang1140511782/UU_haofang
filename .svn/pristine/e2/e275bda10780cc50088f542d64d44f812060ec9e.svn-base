@@ -1,0 +1,16 @@
+.for-box{background-color:#fff;padding:0rpx 30rpx;overflow: hidden;border-top: solid 2rpx #e6e6e6;}
+.for-box>.form-list:last-child{border: 0;}
+.form-list{
+  height: 114rpx;width:100%;border-bottom: solid 2rpx #e6e6e6;background-color: #fff;
+}
+.form-list>input,.region{font-size: 28rpx;text-align: right;width:570rpx;float: right;margin-top: 32rpx;}
+.form-list>text{font-size: 28rpx;width: 180rpx;line-height: 114rpx;}
+.verification-code>input{width: 280rpx;border-right: solid 2rpx #ccc;padding-right:20rpx;}
+.verification-code>.get-verification-code{float: right;color:#ff5400;width:160rpx;text-align: right;}
+.region-text{position: relative;padding-right: 30rpx;}
+.region-text>text{color: #777;}
+.region-text>image{width:13rpx;height:24rpx;position: absolute;top:8rpx;right:0rpx;}
+.btn-area{margin: 50rpx 30rpx;}
+.my-button{background: linear-gradient(to right, #ff8400 , #ff5400,#d76204);color: #fff }
+.explain{margin: 0rpx 30rpx;height: 432rpx;}
+.explain>text{font-size: 24rpx;line-height: 34rpx;color: #999;}

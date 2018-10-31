@@ -1,0 +1,104 @@
+<view class="t-wraper">
+    <view class='top-b' wx:if="{{dataShow}}">
+        <!--header-->
+      <view class='header'>
+          <view class='h-title'>{{buildName}} {{roomNum||'-'}}室{{houseArea||'-'}}㎡ {{floor}}/{{totalFloor}}层</view>
+          <view class='h-price'>{{resultData.totalprice}}<text>万　{{resultData.offset}}万 较上月{{resultData.ratioByLastMonthForPrice>0?'上升':'下降'}}{{resultData.ratioByLastMonthForPriceText}}%</text></view>
+
+          <!--我要贷款-->
+          <navigator wx:if="{{DAIKUAN_FLAG}}" class="loan-entry" url="/packageWeb/pages/uuLoanApply/uuLoanApply?checkFlag=1" hover-class="none">我要贷款 ></navigator>
+    </view>
+    <!--/header-->
+    <!--cont-->
+    <view class='cont-box' wx:if="{{dataShow}}">
+        <view class='cont-b'>
+            <view class="cb-title">
+                价格走势
+            </view>
+            <view class="chartBox">
+                  <canvas canvas-id="lineCanvas" style="width:100%;height:100%;transform:scale(1)"></canvas>
+            </view>
+        </view>
+        <!--小区专家-->
+        <view class='house-ms mar-bot' wx:if="{{!!housePer && housePer.length>0}}">
+          <view class='brokerBox'>
+            <view class="brokerBox_left">
+              <image mode="aspectFill" src="{{housePer.brokerUserPicUrl}}" />
+              <view class="left_text">
+                <view class="left_text_name">{{housePer.brokerName}}</view>
+                <view class="left_text_centence">本人专注服务于 <text wx:for='{{housePer.serviceRegNames}}' wx:key="{{index}}">{{item}}</text>生活圈,欢迎来电!</view>
+              </view>
+            </view>
+            <view class="brokerBox_right">
+              <view class="brokerBox_right_item" bindtap='zjAgentChat'>
+                <view class="onlineDelegate picItembox"></view>
+                <view>在线委托</view>
+              </view>
+              <view class="brokerBox_right_item" bindtap='xiaoquCallEvent'>
+                <view class="callRightNow picItembox"></view>
+                <view>立即联系</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!--/小区专家-->
+
+    
+
+        <!--附件房源-->
+        <view class='cont-house' wx:if='{{!!priceTrendValue.houseList && priceTrendValue.houseList.length>0}}'>
+            <view class='ho-title'>
+                <view class='ti-co'>
+                <block wx:if="{{priceTrendValue.isNearHouse==1}}">小区在售房源</block>
+                <block wx:else="">周边在售房源</block>
+                <text catchtap='goToList' wx:if="{{priceTrendValue.houseList.length>3}}">查看更多</text> 
+                </view>
+            </view>
+
+            <import src="../../../template/listTmp.wxml" />
+            <block wx:for="{{priceTrendValue.houseList}}" wx:key="houseId" wx:for-item="List">
+                <template is="list" data="{{...List}}"></template>
+            </block>
+        </view>
+        <!--/附件房源-->
+
+    </view>
+    <!--/cont-->
+    </view>
+
+    <view class='discount-toast' wx:if="{{discountStatus}}">
+    <view class='dis-marsk' bindtap='diCloseBtn'></view>
+    <view class='dis-box'>
+          <view class='dis-li' bindtap='goToBuyHouseBtn' 
+          data-hs='{{housePer}}'
+          data-buildownerarchiveid="{{housePer.brokerArchiveId}}"
+          data-buildownermobile='{{housePer.brokerMobile}}'
+          data-buildownername='{{housePer.brokerName}}'
+          data-serviceregs='{{housePer.serviceReg}}'
+          data-buildownerpicurl='{{buildOwnerPicUrl}}'>{{caseType==1?"我要买房":"我要租房"}}</view>
+          <view class='dis-li mar-bot' data-buildownerarchiveid="{{buildOwnerArchiveId}}" bindtap='goToEntrustLiBtn'>{{caseType==1?"我是房东，我要卖房":"我是房东，我要出租"}}</view>
+          <view class='dis-li' bindtap='diCloseBtn'>取消</view>
+    </view>
+</view>
+   <view class='soldout-box' wx:if="{{toastMask}}">
+        <view class='tost-mask' bindtap='maskHideBtn'></view>
+        <view class="refer-toast">
+            <view class='refer-txt'>
+              <view class='tos-line'></view>
+               <view class='ref-t'>选择联系方式</view>
+              <view class='tos-line'></view>
+            </view>
+            <view class='contract-box'>
+                <view class='chat-b' bindtap='onlineChat4C' data-imid="{{imId}}"><view class='chat-ic'></view><text>在线聊天</text></view>
+                <view class='yinhao-b' bindtap='yinhao' data-mobile='{{housePer.brokerMobile}}'><view class='yinhao-ic'></view><text>隐号拨打</text></view>
+            </view>
+            <view class='close-btn'></view>
+        </view>
+    </view>
+    <!--无数据页面-->
+    <view class='no-data-box' wx:if="{{noDataShow}}">
+        <view class='no-img'></view>
+        <view class='goback-btn' catchtap='gobackBtn'>换个条件试试</view>
+    </view>
+    <!--/无数据页面-->
+</view>

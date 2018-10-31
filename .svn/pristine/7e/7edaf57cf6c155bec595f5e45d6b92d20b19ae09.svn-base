@@ -1,0 +1,351 @@
+<import src="../common/loading/loading.wxml" />
+<view class="container-box">
+  <view class="wrapper">
+    <!--banner-->
+    <view class="container_pic_video">
+      <block>
+        <view class="banner-box">
+          <swiper indicator-dots="{{indicatorDots}}" interval="{{interval}}" duration="{{duration}}" bindchange="changePic" circular="{{true}}" class="banner">
+            <!--轮播图-->
+            <block wx:key="{{item}}" wx:for="{{picUrl}}" wx:for-index="id">
+              <swiper-item data-image="{{item}}" catchtap='getImageInfo'>
+                 <view class="banner-img" style="background-image:url('{{item}}');"></view>
+              </swiper-item>
+            </block>
+            <!--/轮播图-->
+          </swiper>
+          <view class="numDesc">
+            <text class="num" id="currindex">{{currentPic}}/{{totalImg}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+    <!--/banner-->
+    <!--信息部分-->
+    <view class='cont-w mar-bot'>
+      <!--房源标题-->
+      <view class='title-box'>
+        <view class='t-name'>
+          <view class='title-txt'>{{houseSubject}}</view>
+        </view>
+        <!--标签-->
+        <view class="house-tag">
+          <view class="dec-con" wx:for="{{tagArr}}" wx:key="index">{{tagArr[index]}}</view>
+        </view>
+        <!--/标签-->
+      </view>
+      <!--/房源标题-->
+      <!--价格信息-->
+      <view class='price-top'>
+        <view class='p-a'>
+          <view class='p-top'>售价</view>
+          <view class='p-down'>{{houseTotalPrice}}{{priceUnitCn}}</view>
+        </view>
+        <view class='p-a' wx:if="{{houseUseageCn=='住宅'||houseUseageCn=='别墅'}}">
+          <view class='p-top'>户型</view>
+          <view class='p-down'>{{houseRoom}}室{{houseHall}}厅</view>
+        </view>
+        <view class='p-a'>
+          <view class='p-top'>面积</view>
+          <view class='p-down' wx:if="is_number(houseArea)">{{houseArea}}㎡</view>
+          <view class='p-down' wx:else>--</view>
+        </view>
+      </view>
+      <!--/价格信息-->
+      <!--房源详情信息-->
+      <view class='house-msg h-pos'>
+        <view class='unit-price' wx:if="{{caseType == 1}}">
+          <view class='p-box'>单价:
+            <text wx:if="{{unitPrice>0}}">{{unitPrice}}元/㎡</text>
+            <text wx:else>--</text>
+          </view>
+          <view class='hp-assess' wx:if="{{false}}" data-url='/packageTool/pages/calc/calc?price={{houseTotalPrice}}' bindtap='calculator'></view>
+        </view>
+      </view>
+      <view class='h-detail'>
+        <view class='l-msg'>装修：
+          <text class='tx-b'>{{houseFitmentCn}}</text>
+        </view>
+        <view class='r-msg'>楼层：
+          <text class='tx-b'>{{houseFloor}}/{{houseFloors}}层</text>
+        </view>
+      </view>
+      <view class='h-detail c-detail'>
+        <view class='l-msg'>年代：
+          <text class='tx-b'>{{houseYear}}</text>
+        </view>
+        <view class='r-msg'>朝向：
+          <text class='tx-b'>{{houseDirectCn}}</text>
+        </view>
+      </view>
+      <view class='h-detail b-detail' wx:if="{{typeStatus == false}}">
+        <view class='l-msg'>付款：
+          <text class='tx-b'>--</text>
+        </view>
+        <view class='r-msg'>押金：
+          <text class='tx-b'>--</text>
+        </view>
+      </view>
+      <!--/房源详情信息-->
+    </view>
+    <!--/信息部分-->
+    <!--房源描述-->
+    <view class='house-ms mar-bot' wx:if="{{!!houseDesc || houseDesc.length>0}}">
+      <view class='ms-title'>房源描述</view>
+      <view class="{{showmor ? 'feature_c' : 'feature_b'}} f14 c-666 feature">{{houseDesc}}</view>
+      <view class="checkAll-up descMore" bindtap="moreBtn" wx:if="{{lookMoreHide}}">
+        <view class='checkAll-up-box'>
+          <view>{{showtitle ? '查看全部' : '收起'}}</view>
+          <image lazy-load="{{lazyLoad}}" src="{{morejt}}" class="morepic {{closepic ? 'closepic' :''}}"></image>
+        </view>
+      </view>
+    </view>
+    <!--/房源描述-->
+    <!--配套信息-->
+    <view class='house-ms mar-bot' wx:if="{{setting.length>0}}">
+      <view class='ms-title'>配套设施</view>
+      <view class='pt-box'>
+        <view class='pt-b' wx:for="{{setting}}" wx:key="{{index}}">
+          <image lazy-load="{{lazyLoad}}" mode="widthFix" src="{{item.icon}}" />
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+    <!--/配套信息-->
+
+    <!-- 房屋小区详情和小区概况 -->
+    <view class='house-ms mar-bot'>
+      <view class='ms-title msa-t'>
+        <view>{{buildName}}</view>
+        <!-- <view class='look-more'>查看小区房源</view> -->
+      </view>
+      <view class="{{closeCont ? 'ms-cont-big' :'ms-cont'}}">
+        <view class='h-detail'>
+          <view class='l-msg msl-width'>
+            <text class='tx-a'>物业类别：</text>
+            <text class='tx-b'>{{houseUseageCn}}</text>
+          </view>
+          <view class='r-msg msr-width'>
+            <text class='tx-a'>建筑类型：</text>
+            <text class='tx-b'>{{buildType}}</text>
+          </view>
+        </view>
+        <view class='h-detail'>
+          <view class='l-msg msl-width'>
+            <text class='tx-a'>产权年限：</text>
+            <text class='tx-b'>{{rightYears}}</text>
+          </view>
+          <view class='r-msg msr-width'>
+            <text class='tx-a'>物业费：</text>
+            <text class='tx-b'>{{costStandard}}</text>
+          </view>
+        </view>
+        <view class='h-detail'>
+          <view class='l-msg msl-width'>
+            <text class='tx-a'>绿化率：</text>
+            <text class='tx-b'>{{projectGreen}}</text>
+          </view>
+          <view class='r-msg msr-width'>
+            <text class='tx-a'>容积率：</text>
+            <text class='tx-b'>{{projectSpace}}</text>
+          </view>
+        </view>
+        <view class='h-detail'>
+          <view class='l-msg sj-width'>竣工时间：
+            <text class='tx-b'>{{submitDate}}</text>
+          </view>
+        </view>
+        <view class='h-detail'>
+          <view class='l-msg sj-width'>开发商：
+            <text class='tx-b'>{{builder}}</text>
+          </view>
+        </view>
+        <view class='h-detail'>
+          <view class='l-msg sj-width'>物业公司：
+            <text class='tx-b'>{{propertyComp}}</text>
+          </view>
+        </view>
+        <view class='h-detail'>
+          <view class='l-msg sj-width ms-box'>
+            <view class='box-t'>小区概况：</view>
+            <view class='box-cont'>{{buildDescript}}</view>
+          </view>
+        </view>
+      </view>
+      <!--查看-->
+      <view class="checkAll-up descMore" bindtap="moreBtna" wx:if="{{btnHiden}}">
+        <view class='checkAll-up-box'>
+          <view bindtap='houseMoreBtn'>{{houseShowTitle ? '查看全部' : '收起'}}</view>
+          <image src="{{morejt}}" class="morepic {{closeCont ? 'closepic' :''}}"></image>
+        </view>
+      </view>
+      <!--/查看-->
+    </view>
+    <!--/房屋小区详情和小区概况 -->
+    <!--房价评估-->
+    <view class="evaluate-box" wx:if="{{evaluateValue.houseList.length>0}}">
+      <view class="evaluate-title-con">
+        <view class="evaluate-title">小区房价走势</view>
+        <view class="look-evaluate-btn" catchtap='goEvaluateEvent'>查看房价走势</view>
+      </view>
+      <view class="evaluate-con">
+        <view class="evaluate-com">
+          <view class="txt-col">{{evaluateValue.unitPrice}}</view>
+          <view class="eva-txt">本月均价(元/平米)</view>
+        </view>
+        <view class="evaluate-com">
+          <view class="txt-col up" wx:if="{{evaluateValue.ratioByLastMonthForPrice>0}}">{{ratioByLastMonthForPrice}}%</view>
+          <view class="txt-col down" wx:else>{{evaluateValue.ratioByLastMonthForPrice*100}}%</view>
+          <view class="eva-txt">环比上月</view>
+        </view>
+        <view class="evaluate-com">
+          <view class="txt-col up" wx:if="{{evaluateValue.ratioByLastYearForPrice>0}}">{{ratioByLastYearForPrice}}%</view>
+          <view class="txt-col down" wx:else>{{evaluateValue.ratioByLastYearForPrice*100}}%</view>
+          <view class="eva-txt">同比去年</view>
+        </view>
+      </view>
+    </view>
+    <!--房价评估-->
+    <!--小区专家-->
+    <view class='house-ms ag-box mar-bot' wx:if="{{buildOwnerArchiveId>0}}">
+      <view class='agent-title'></view>
+      <view class='ag-cont'>
+        <view class='agent-msg'>
+          <image mode="aspectFill" src="{{buildOwnerPicUrl}}" class="agent-image" />
+          <view class='zjag-box'>
+            <view class='a-name'>{{buildOwnerName}}
+              <text wx:if="{{buildIntegrity>0}}"></text>
+            </view>
+            <view class='a-msg'>本人专注服务于{{buildName}}，24h欢迎来电！</view>
+          </view>
+          <view class='btn-zj'>
+            <view class='discount-icon' bindtap='zjAgentChat'>在线委托</view>
+            <view class='zjcont-icon' bindtap="dial" data-mobile='{{buildOwnerMobile}}'>立即联系</view>
+          </view>
+          <!-- <view class='conact-btn' bindtap="dial" data-mobile='{{buildOwnerMobile}}'>立即联系</view> -->
+        </view>
+        <!--其他房源-->
+        <view class='other-house' wx:if="{{buildOwnerHouseList&&buildOwnerHouseList.length>0}}">
+          <view></view>
+          <text>该小区TA的房源</text>
+          <view></view>
+        </view>
+        <!--/其他房源-->
+        <!--其他房源列表-->
+        <view class='other-list' wx:if="{{buildOwnerHouseList&&buildOwnerHouseList.length>0}}">
+          <view class="ot-box" wx:for="{{buildOwnerHouseList}}" wx:key="{{item}}" bindtap="houseDetail" data-url="/pages/houseDetail/houseDetail?caseId={{item.houseId}}&caseType={{caseType}}&cityId={{item.cityId}}&reSource={{item.reSource}}&fromDetail=1">
+            <view class='ot-img'>
+              <image mode="widthFix" src="{{item.thumbUrl}}" class="ot-image" />
+            </view>
+            <view class='ot-msg'>
+              <view class='ot-msg-title'>{{item.houseSubject}}</view>
+              <view class='ot-msg-ad'>{{item.houseRoom}}室{{item.houseHall}}厅 {{item.houseArea}}㎡ {{item.buildName}}</view>
+              <view class='ot-tag'>
+                <view class="dec-con" wx:for="{{item.houseTagDesc}}" wx:key="{{i}}" wx:for-item="tag">{{tag}}</view>
+              </view>
+              <view class='ot-prince'>
+                <text class='text-bold'>{{item.houseTotalPrice}}</text>{{item.priceUnitCn}}
+                <text wx:if="{{item.houseUnitPrice>0}}">{{item.houseUnitPrice}}元/㎡</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!--/其他房源列表-->
+      </view>
+    </view>
+    <!--/小区专家-->
+    <!-- 交通状况 -->
+    <view class='house-ms mar-bot'>
+      <view class='ms-title'>交通状况</view>
+      <view class='transportation-cont'>
+        {{busLine}}
+      </view>
+    </view>
+    <!-- /交通状况 -->
+    <!--周边配套信息-->
+    <view class='house-ms mar-bot'>
+      <view class='ms-title'>周边配套</view>
+      <view class="{{showmorZb ? 'feature_c' : 'feature_b'}} f14 c-666 feature">{{addCase}}</view>
+      <view class="checkAll-up descMore" bindtap="moreZbBtn" wx:if="{{lookMoreZbHide}}">
+        <view class='checkAll-up-box'>
+          <view>{{showtitleZb ? '查看全部' : '收起'}}</view>
+          <image src="{{morejt}}" class="morepic {{zbClosepic ? 'closepic' :''}}"></image>
+        </view>
+      </view>
+    </view>
+    <!--/周边配套信息-->
+    <!-- 信息地图 -->
+    <view class='house-ms mar-bot map-wrap' wx:if="{{buildPositionx>0&&buildPositiony>0}}">
+      <view class='ms-title msa-t map-ti'>
+        <view>位置及周边</view>
+        <view class='look-more' bindtap='goToMap' data-status="查看全部">查看全部</view>
+      </view>
+      <view class='map-box'>
+        <image lazy-load="{{lazyLoad}}" mode="widthFix" src="https://apis.map.qq.com/ws/staticmap/v2/?center={{buildPositionx}},{{buildPositiony}}&zoom=16&scale=2&markers=size:large|icon:https://cd.haofang.net/Public/images/wap/icon_mylocation.png|{{buildPositionx}},{{buildPositiony}}&key=DGFBZ-3IFW2-PDEUL-CBLCE-XOSYK-K5B5I&size=375*320"
+          class='map-img'></image>
+      </view>
+      <view class='map-nav'>
+        <view class='nav-wraper'>
+          <view class='map-icon-box' wx:for="{{mapIcon}}" wx:key="{{index}}" bindtap='goToMap' data-type='{{item.txt}}'>
+            <image mode="widthFix" src="{{item.iconUrl}}" />
+            <text>{{item.txt}}</text>
+          </view>
+        </view>
+
+      </view>
+    </view>
+    <!-- /信息地图 -->
+  </view>
+  <!-- 真房源底部-->
+</view>
+
+<!--弹框-->
+<view class='soldout-box' wx:if="{{toastMask}}">
+  <view class='tost-mask' bindtap='maskHideBtn'></view>
+  <!--房源已下架弹框-->
+  <view class="s-toast" wx:if="{{sealedHouse}}">
+    <view class='tos-txt'>该房源已下架！</view>
+    <view class='s-btn' bindtap='outedHouseBtn'>确定</view>
+  </view>
+  <!--/房源已下架弹框-->
+  <!--联系选择弹框-->
+  <view class="refer-toast" wx:if="{{guideToast}}">
+    <view class='refer-txt'>
+      <view class='tos-line'></view>
+      <view class='ref-t'>选择联系方式</view>
+      <view class='tos-line'></view>
+    </view>
+    <view class='contract-box'>
+      <view class='chat-b' bindtap='onlineChat' data-archive="{{archiveId}}">
+        <view class='chat-ic'></view>
+        <text>在线聊天</text>
+      </view>
+      <view class='call-b' bindtap="dial" data-mobile='{{currUserMobile}}'>
+        <view class='call-ic'></view>
+        <text>拨打电话</text>
+      </view>
+    </view>
+    <view class='close-btn'></view>
+  </view>
+  <!--/联系选择弹框-->
+  <!--引导弹框-->
+  <view class='lead-toast' wx:if="{{leadToast}}">
+    <view class='lt-txt'>免费隐号通话最佳体验</view>
+    <view class='lt-txt'>请下载优优好房客户端</view>
+    <image mode="aspectFill" src="https://uuweb.haofang.net/Public/wxApp/images/detail/detail_arrow.png" class='lead-pic' />
+  </view>
+  <!--/引导弹框-->
+</view>
+<!--/弹框-->
+<!--折扣弹框-->
+<view class='discount-toast' wx:if="{{discountStatus}}">
+  <view class='dis-marsk' bindtap='diCloseBtn'></view>
+  <view class='dis-box'>
+    <view class='dis-li' bindtap='goToBuyHouseBtn' data-buildownerarchiveid="{{buildOwnerArchiveId}}" data-buildownermobile='{{buildOwnerMobile}}' data-buildownername='{{buildOwnerName}}' data-rentmoney='{{rentMoney}}' data-buymoney='{{buyMoney}}' data-serviceregs='{{serviceRegs}}'
+      data-buildownerpicurl='{{buildOwnerPicUrl}}'>{{caseType==1?"我要买房":"我要租房"}}</view>
+    <view class='dis-li mar-bot' bindtap='goToEntrustLiBtn'>{{caseType==1?"我是房东，我要卖房":"我是房东，我要出租"}}</view>
+    <view class='dis-li' bindtap='diCloseBtn'>取消</view>
+  </view>
+</view>
+<!--/折扣弹框-->
+<template is="loading" data="{{...__loading__}}" wx:if="{{loadingFlag}}" />

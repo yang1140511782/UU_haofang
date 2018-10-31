@@ -1,0 +1,92 @@
+{
+"pages": [
+  "pages/real_index/index",
+  "pages/vocalHelpList/vocalHelpList",
+  "pages/scanCode/scanCode",
+    "pages/vocalHtml/vocalHtml",
+    "pages/houseRegisterIndex/index",
+    "pages/evaluationEntry/evaluationEntry",
+    "pages/promoteActivity/promoteActivity",
+    "pages/chooseCity/chooseCity",
+    "pages/appointAgent/appointAgent",
+    "pages/calc/calc",
+    "pages/entrustDetail/entrustDetail",
+    "pages/list/list",
+    "pages/findHouse/findHouse",
+    "pages/findHouseByMap/findHouseByMap",
+    "pages/collect/collect",
+    "pages/newHouseList/newHouseList",
+    "pages/entrust/entrust",
+    "pages/houseRegisterDetail/detail",
+    "pages/search/search",
+    "pages/myAccount/myAccount",
+    "pages/mine/mine",
+    "pages/download/download",
+    "pages/trustList/trustList",
+    "pages/commissionpay/commissionpay",
+    "pages/apartmentList/list",
+    "pages/guide/index",
+    "pages/im/im",
+    "pages/houseDetail/houseDetail",
+    "pages/registration/registration",
+    "pages/rewardInstruction/rewardInstruction",
+    "pages/apartmentDetail/apartmentDetail",
+    "pages/posterDetail/posterDetail",
+    "pages/entrustAgent/entrustAgent",
+    "pages/entrustEdit/entrustEdit",
+    "pages/common/houseVideo/houseVideo",
+    "pages/map/map",
+    "pages/leaseList/leaseList",
+    "pages/history/history",
+    "pages/allHouseType/allHouseType",
+    "pages/houseGallery/houseGallery",
+    "pages/news/news",
+    "pages/newsRecent/newsRecent",
+    "pages/newHouseDetail/newHouseDetail",
+    "pages/prizeTrustDetail/prizeTrustDetail",
+    "pages/vr/vr",
+    "pages/track/track",
+    "pages/delegateHouseDetail/delegateHouseDetail",
+    "pages/fenqi/fenqi",
+    "pages/im/imc",
+    "pages/realHouseRule/index",
+    "pages/fakeHouse/fakeHouse",
+    "pages/trendOne/trendOne",
+    "pages/trendTwo/trendTwo",
+    "pages/personalStore/personalStore",
+    "pages/login/login",
+    "pages/entrustBrokerCoupon/entrustBrokerCoupon"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#424242",
+    "selectedColor": "#424242",
+    "backgroundColor": "#ffffff",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/real_index/index",
+        "text": "首 页",
+        "iconPath": "images/tab/home_new.png",
+        "selectedIconPath": "images/tab/home_active_new_a.png"
+      },
+      {
+        "pagePath": "pages/news/news",
+        "text": "消 息",
+        "iconPath": "images/tab/news_new.png",
+        "selectedIconPath": "images/tab/news_active_new_a.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我 的",
+        "iconPath": "images/tab/mine_new.png",
+        "selectedIconPath": "images/tab/mine_active_new_a.png"
+      }
+    ]
+  }
+}

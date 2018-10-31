@@ -1,0 +1,20 @@
+<view class="main">
+  <scroll-view scroll-y style="height: {{winHeight}}px" scroll-into-view="{{toView}}">
+    <view class="tagName">当前定位城市</view>
+    <view class="locatedCity {{locatCityAnimateFlag?'local-animate':''}}" wx:if="{{locateCityName!=''}}" catchtap='changeCity'>{{locateCityName}}</view>
+    <view class="locatCity {{locatCityAnimateFlag?'local-animate':''}}" wx:else catchtap='locate'>无法获取当前城市</view>
+    <view class="tagName">热门城市</view>
+    <view class="hotBox">
+      <view class="hotItem" data-item="{{item}}" catchtap='changeCity' wx:key="{{item.CITY_ID}}" wx:for="{{hotList}}">{{item.C_CITY_NAME}}</view>
+    </view>
+    <view class="cityList">
+      <block wx:for="{{dataList}}" wx:key="{{index}}">
+        <view class="tagName" id="{{index}}">{{index}}</view>
+        <view class="cityItem" data-item="{{city}}" catchtap='changeCity' wx:for="{{item}}" wx:for-index="i" wx:for-item="city" wx:key="{{i}}">{{city.CITY_NAME}}</view>
+      </block>
+    </view>
+  </scroll-view>
+</view>
+<view class="letterBox">
+  <view class="letter" wx:key="{{index}}" wx:for="{{varterList}}" data-id="{{item}}" catchtap="jumpToView">{{item}}</view>
+</view>

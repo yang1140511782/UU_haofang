@@ -1,0 +1,724 @@
+// app.js
+const ald = require('./utils/ald-stat.js');//引入阿拉丁统计代码
+import { Tools } from './utils/tools';
+import { BehaviorTools } from './utils/behaviorTools';
+const tool = new Tools();
+const behaviorTool = new BehaviorTools();
+
+let _globalData = {
+  userInfo:null,
+  toname:'',
+  wishes:'',
+  // in case
+  // 在更多页面中选则某条祝福话后，直接覆盖上面的wishes字段,而用户却在自定义页面选择了取消或返回
+  tempwishes:'',
+  temptoname: '',
+  tempnickname:''
+}
+//app.js
+App({
+    onLaunch: function () {
+      //判断生产环境和灰度环境
+      if (this.globalData.appId == 'wx6b5fd6b9a5bc3044'){//生产环境
+        this.globalData.javaOnlineHost = 'https://uuhf.haofang.net';
+        // this.globalData.javaOnlineHost = 'http://test.haofang.net:11013';
+        this.globalData.onlineHost = 'uuweb.haofang.net';
+        // this.globalData.onlineHost = 'uuweb.hftsoft.com';
+      } else{//灰度或者测试环境
+        // this.globalData.javaOnlineHost = 'http://appverify.51vfang.cn';//java灰度测试地址
+        this.globalData.javaOnlineHost = 'http://hft.51vfang.cn';
+        this.globalData.onlineHost = 'gray.haofang.net';//灰度环境
+        // this.globalData.onlineHost = 'uuweb.51vfang.cn';//灰度环境
+        // this.globalData.javaOnlineHost = 'http://test.haofang.net:11013';
+        // this.globalData.onlineHost = 'lbuuweb.hftsoft.com';
+      }
+
+        // 展示本地存储能力
+        var locateCityId = wx.getStorageSync('locateCityId') ;
+        var userId = wx.getStorageSync('userId') ;
+        var that = this;
+        if (!locateCityId){//没有取得城市ID,定位获取
+            wx.getLocation({
+                type: 'wgs84',
+                success: function (res) {
+                    var latitude = res.latitude
+                    var longitude = res.longitude
+                    var latitude = res.latitude
+                    var longitude = res.longitude
+                    that.initCityInfo(latitude, longitude);
+                },fail:function(){
+                	wx.setStorageSync('cityId', 1);
+                    wx.setStorageSync('cityName', '成都');
+                }
+            })
+        }else{
+        	this.globalData.locateCityId = locateCityId;
+        	var cityId = wx.getStorageSync('cityId') ;
+        	this.globalData.cityId = cityId;
+            that.saveFilterData(cityId);
+        }
+        that.saveUserData(function(){
+            that.loadImData(0);
+        });
+       
+    },
+    /**
+     * 判断当前用户是否登录,如果未登录,调整登录页面
+     * @return boole
+     */
+    checkLogin:function(){
+        let userId = wx.getStorageSync('userId');
+        if(!userId){
+          let skipUrl = '';
+          let currentPages = getCurrentPages();
+          let indexPage = currentPages.pop();
+          if(!indexPage){return;}
+          skipUrl = '/'+ indexPage.route + '?';
+          for(var x in indexPage.options){
+            skipUrl += x+'='+indexPage.options[x] + '&';
+          }
+          skipUrl=skipUrl.substring(0,skipUrl.length-1);  //去除 最后的 "?" 或 "&"
+          skipUrl = encodeURIComponent(skipUrl);
+          console.log(skipUrl);
+          //未登录 , 则跳转登录页面;
+          wx.redirectTo({url:'/pages/login/login?skipUrl='+skipUrl});
+          return false;
+        }else{
+            this.globalData.userId = userId;
+            return true;
+        }
+    },
+    /**
+     * 判断当前用户是否登录,如果未登录,调整登录页面
+     * 检测到您没打开小程序的定位权限，是否去设置打开
+     * @return boole
+     */
+    getLocationAgain:function(){
+        var _that = this;
+        wx.showModal({
+          title: '',
+          content: '检测到您没打开小程序的定位权限，是否去设置打开',
+          success: function (res) {
+            if (res.confirm) {
+              wx.getSetting({
+                success: (res) => {
+                  if (!res.authSetting['scope.userLocation'] || 1) {//如果没有定位权限或已拒绝
+                    wx.openSetting({
+                      complete: function (res) {
+                        wx.getLocation({
+                          type: 'wgs84',
+                          success: function (res) {
+                            var lat = res.latitude;
+                            var lng = res.longitude;
+                            wx.request({
+                              url: _that.buildRequestUrl('getCityIdByLocation'),
+                              data: {
+                                lat: lat,
+                                lng: lng
+                              },
+                              success: function (res) {
+                                console.log(res);
+                                wx.setStorageSync('cityId', res.data.DATA.cityId);
+                                wx.setStorageSync('cityName', res.data.DATA.cityName);
+                                wx.setStorageSync('locateCityId', res.data.DATA.cityId);
+                                wx.setStorageSync('locateCityName', res.data.DATA.cityName);
+                                  wx.setStorageSync('locateRegId', res.data.DATA.regId);
+                                  wx.setStorageSync('locateRegName', res.data.DATA.regName);
+                              },
+                              fail: function () {
+                                console.log('获取城市信息失败');
+                              }
+                            });
+                          }, complete: function (e) {
+                            console.log(e);
+                          }
+                        })
+                      }
+                    })
+                  }
+                }
+              })
+            } else if (res.cancel) {
+
+            }
+          }
+        })
+    },
+    onShow:function(){
+        //返回小程序前台
+        wx.setStorageSync('backWxappFlag',1);
+        let that = this;
+        wx.getSystemInfo({
+          success: res => {
+             //console.log('手机信息res'+res.model)
+            let modelmes = res.model;
+            if (modelmes.search('iPhone X') != -1) {
+              that.globalData.isIphoneX = true
+            }
+          }
+        })
+        //用户行为配置
+        setTimeout(function(){
+            behaviorTool.getBehaviorConfig();
+        },500)
+    },
+    onHide:function(){
+        //小程序切换到后台
+        wx.setStorageSync('backWxappFlag',0);
+
+        //跳出小程序，如果有微店记录就记录用户行为，没有就终结
+        behaviorTool.logoutWxAppRecord();
+    },
+    saveUserData:function(cb){
+    	var that = this;
+    	wx.login({
+	    	success: function (loginRes) {
+    			if (loginRes.code) {
+    				wx.request({
+						url:  that.buildRequestUrl('getSecretInfoNew')+"?code="+loginRes.code,
+						success: function (res) {
+							var json = res.data;
+							if (json.STATUS==1){
+								try {
+    									wx.setStorageSync('userId', json.DATA.userId);
+    									wx.setStorageSync('openId', json.DATA.openId);
+    									that.globalData.userId = json.DATA.userId;
+                      that.globalData.openId = json.DATA.openId;
+                      if (!!json.DATA.userInfo && !!json.DATA.userInfo.wxMobile) {
+                        wx.setStorageSync('userMobile', json.DATA.userInfo.wxMobile);
+                      }
+									} catch (e) {
+										console.log(e);
+									}
+								}
+
+                            typeof cb == 'function' && cb(that.globalData.userId);
+							},
+							fail: function (res) {
+								console.log('刷新session失败！');
+								console.log(res)
+							},
+							complete:function(){
+								let userId = wx.getStorageSync('userId');
+								let cityId = wx.getStorageSync('locateCityId');
+								that.bindCity(userId,cityId);
+							}
+						});
+    			} else {
+    				console.log('获取用户登录态失败！' + res.errMsg)
+    			}
+    		}
+	    })
+    },
+    bindCity:function(userId,cityId){
+    	if(userId&&cityId){
+    		wx.request({
+    			url: this.buildRequestUrl('bindCity'),
+    			data: {
+    				userId:userId,
+    				cityId:cityId
+    			},
+    			success: function (res) {
+    				console.log(res);
+    			}
+    		})
+    	}
+    },
+    /**
+     * 缓存列表筛选数据
+     */
+    saveFilterData(cityId){
+      var _this = this;
+      var savedData = wx.getStorageSync('filterData'+cityId); 
+      if (!!savedData) {
+        return;
+      }; 
+      var url = _this.buildRequestUrl('initLocalStorage');
+      var params = {cityId: cityId};
+      wx.request({
+        url: url,
+        data: params,
+        success: function (res) {
+          if (res.statusCode != 200)return;
+          if (res.data.STATUS != 1)return;
+          var storageData = JSON.stringify(res.data);
+          wx.setStorageSync('filterData'+cityId, storageData);
+        }
+      });
+    },
+    loadImData:function(isRefresh){
+        var _this = this;
+
+        if(!_this.globalData.userId){return false;}
+        wx.request({
+          url: _this.buildRequestUrl('initIm'),
+          data: {
+            accid: 'uu_' + _this.globalData.userId,
+            toUserId: _this.globalData.imService,
+            cityId: _this.globalData.cityId,
+            isRefresh: _this.globalData.isRefresh
+          },
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          success: function (res) {
+            if (res.statusCode == 200) {
+                _this.globalData.imUserInfo = res.data.data.userInfo;
+                _this.globalData.accid = _this.globalData.imUserInfo.accid;
+                _this.globalData.accidToken = _this.globalData.imUserInfo.token;
+
+               // _this.initRedBot();
+            } else {
+                console.log('初始化失败');
+            }
+          }
+        })
+    },
+    initRedBot: function(){
+        var unreadNum = wx.getStorageSync('unreadNum');
+        if(unreadNum > 0){
+            this.setTabBarBadge(unreadNum);
+        }
+    },
+    globalData: {
+        isIphoneX: false,
+        userInfo: null,
+        javaOnlineHost: 'https://uuhf.haofang.net',  //java接口地址
+        onlineHost: 'uuweb.haofang.net',//后端接口地址
+        //出售出租房源详情
+        houseDetailUrl: "/Mini/App/houseDetail",
+        //收藏房源
+        addOrDeleteCollectUrl: "/Mini/App/addOrDeleteCollect",
+        //发送验证码
+        sendMobileCaptchaUrl: "/Mini/App/sendMobileCaptcha",
+        //公寓详情
+        apartmentDetailUrl: "/Mini/App/getApartmentInfo",
+        //旅居详情
+        getTourismBuildInfo: "/Mini/App/getTourismBuildInfo",
+
+        dealUserInfo: "/Mini/AppUser/dealUserInfo",
+        getSecretInfoNew: "/Mini/AppUser/getSecretInfoNew",
+        getSecretInfo: "/Mini/AppUser/getSecretInfo",
+        updateUserInfo: "/Mini/AppUser/updateUserInfo",
+        //定位获取城市信息
+        getCityIdByLocation: "/Mini/App/getCityIdByLocation",
+        //上传房源图片
+        uploadFile:'/Mini/App/uploadFile',
+        prepayTest: "/Mini/App/prepayTest",
+        collect: "/Mini/App/getCollectListData",
+        //添加,删除收藏(公寓)
+        collectApartment: "/Mini/App/collectApartment",
+        //新盘详情
+        newHouseDetail: '/Mini/App/getNewhouseInfo',
+        //新盘详情置业顾问
+        getSaleUserList: '/Mini/App/getSaleUserList',
+        //全部户型(新盘)
+        allHouseType: '/Mini/App/getLayoutPhotoList',
+        //楼盘图库(新盘)
+        houseGallery: '/Mini/App/getBuildPhotoList',
+        getBuildByKeyWord: '/Mini/App/getBuildByKeyWord',
+        getBuildingByKeyWord: '/Mini/App/getBuildingByKeyWord',
+        //检索楼盘信息
+        getBuildListAction: '/Mini/App/getBuildListAction',
+        //发布房源委托
+        createHouseEntrust:'/Mini/App/createHouseEntrust',
+        //地图数据
+        mapFindHouseAction:'/Mini/App/mapFindHouseAction',
+        //查询用户信息
+        getUserInfo:'/Mini/AppUser/getUserInfo',
+        //查询用户信息
+        sessionId2UserInfo:'/Mini/AppUser/sessionId2UserInfo',
+        //查询列表
+        getListData:'/Mini/App/getListData',
+        //请求行政区
+        initLocalStorage:'/Mini/App/initLocalStorage',
+        //获取发布委托基础信息
+        getBaseInfo4Entrust:'/Mini/App/getBaseInfo4Entrust',
+        //检查能不能发布委托信息
+        requestRepeatAction:'/Mini/App/requestRepeatAction',
+        //发布求租求购委托
+        createCustEntrust:'/Mini/App/createCustEntrust',
+        //委托意向金支付
+        prepayEntrust:'/Mini/App/prepayEntrust',
+        //获取推送经纪人情况
+        getBrokerAction:'/Mini/App/getBrokerAction',
+        //砸蛋
+        lotteryAction:'/Mini/App/lotteryAction',
+        //获取优惠券列表
+        getRedPacketList: '/Mini/App/getRedPacketList',
+        //打车押金
+        getAcountList: '/Mini/App/getAcountList',
+        getPayPaid: '/Mini/App/getPayPaid',
+        //奖励金提现接口
+        getReWardMoney: '/Mini/App/getReWardMoney',
+        //获取首页数据
+        getIndexData: '/Mini/App/getIndexData',
+
+        getHistoryList: "/Mini/App/getHistoryList",
+        //带看评价
+        createWfRecomHouseEvaAction: "/Mini/Trade/createWfRecomHouseEvaAction",
+        //意向金支付
+        weiKuanPrePay: "/Mini/Trade/weiKuanPrePay",
+        //C端用户查询实际需要支付的金额
+        brokeragePay4Deal: "/Mini/Trade/brokeragePay4Deal",
+        //委托列表
+        entrustList:"/Mini/my/entrustList",
+        //委托详细信息查询
+        getEntrustHouseInfo:'/Mini/App/getEntrustHouseInfo',
+        //查询委托跟进信息
+        getUUHouseTrackInfos:'/Mini/App/getUUHouseTrackInfos',
+        //同意带看
+        agreen4Daikan:'/Mini/Trade/agreen4Daikan',
+        //不看该房
+        disagreen4Daikan:'/Mini/Trade/disagreen4Daikan',
+        //查询C端实际支付金额接口和查询成交评价内容共用接口
+        getServiceEvaAction: "/Mini/Trade/getServiceEvaAction",
+        //提交成交评价接口
+        createServiceEvaAction: "/Mini/Trade/createServiceEvaAction",
+        reFuseBrokerAction: "/Mini/Trade/reFuseBrokerAction",
+        //获取委托信息
+        getCaseDetailInfo: "/Mini/App/getCaseDetailInfo",
+        //删除委托图片
+        deleteVipPhoto: "/Mini/App/deleteVipPhoto",
+        //再次编辑出售委托信息
+        updateVipSaleInfo: "/Mini/App/updateVipSaleInfo",
+        //再次编辑出租委托信息
+        updateVipLeaseInfo: "/Mini/App/updateVipLeaseInfo",
+        //删除委托
+        deleteQueue:"/Mini/my/deleteQueue",
+        //取消委托
+        cancelVipQueue:"/Mini/my/cancelVipQueue",
+        //再次推送
+        sendMore:"/Mini/my/sendMore",
+        //验证验证码
+        checkMobileCaptcha:"/Mini/App/checkMobileCaptcha",
+        //直接绑定手机
+        bindUserMobile:"/Mini/App/bindUserMobile",
+        //微信授权获取手机号码
+        decodePhoneNumber:"/Mini/AppUser/decodePhoneNumber",
+        //拒绝房勘
+        disagreen4FangKan:"/Mini/App/disagreen4FangKan",
+        //同意看房
+        agreen4FangKan:"/Mini/App/agreen4FangKan",
+        //手机号码查询用户信息
+        getUserInfoByMobile:"/Mini/App/getUserInfoByMobile",
+        //绑定用户城市
+        bindCity:"/Mini/AppUser/bindCity",
+        //im拉取初始化信息
+        initIm:"/Mini/im",
+        isInBlackList:"/Mini/Im/isInBlackList",
+        initImc:"/Mini/imc/index",
+        //im聊天历史
+        chatHistory:"/Mini/im/history",
+        chatHistoryC:"/Mini/imc/history",
+        //im屏蔽对方消息
+        saveShield:"/Mini/im/saveShield",
+        //删除联系人
+        delLinkMan: "/Mini/im/delLinkMan",
+        //房价评估
+        getPriceTrendNew:'/Mini/App/getPriceTrendNew',
+        //房价评估(新)
+        getAssessData: '/Mini/App/getAssessData',
+        //房价评估结果-小区专家
+        expertInfo: '/Mini/App/expertInfo',
+        //更新红点
+        updateHouseRedFlag:"/mini/my/updateHouseRedFlag",
+        //小区房源
+        getSameBuildHouseList:"/Mini/App/getSameBuildHouseList",
+        //C端发布委托的房源详情页
+        getVipCaseInfo:"/Mini/App/getVipCaseInfo",
+        //申诉接口
+        appealUrl:"/Mini/App/appealApi",
+        //写formId记录
+        writeFormId:"/Mini/App/writeFormId",
+        //房价评估结果
+        inquiryResultsNew:'/Mini/App/inquiryResultsNew',
+        //委托跟进
+        entrustTrack:'/Mini/My/getUUHouseTrackInfos',
+        //获取指定经纪人信息
+        getAppointAgentInfo:"/Mini/App/getAppointAgentInfo",
+        //获取编辑贺卡的祝福语
+        getWishSentence: '/Mini/App/getHappyNewYearWords',
+        //获取首页是否展示拜年贺卡
+        getshowNewYearCardFlag:'/Mini/App/isShowNewYearCard',
+        //灯谜题目接口
+        getTopic:'/Mini/App/getLanternRiddlesList',
+		    //查询经纪人信息
+        getBrokerInfo:"/Mini/App/getBrokerInfo",
+        //获取400
+        getHouse400Phone:"/Mini/App/getHouse400Phone",
+        //发送请求接口时间
+        recordRequestInfo:"/Mini/App/recordRequestInfo",
+        //邀请客户
+        invite:"/Mini/Active/invite",
+        //来自B端的邀请客户(新版真房源分享)
+        stimulerBroker: "/Mini/Active/stimulerBroker",
+        //来自B端的邀请客户
+        addShare:"/Mini/Active/addShare",
+        //根据城市Id获取城市中心坐标
+        getLocationByCityIdUrl:"/Mini/App/getLocationByCityId",
+
+        //查询当前场景对应的URL
+        getPageUrl:"/Api/Api/getPageUrl",
+        //查询咨询列表
+        getConsultationList:"/Mini/App/getConsultationList",
+        //创建拨打记录
+        createCallHistory:"/Mini/App/createCallHistory",
+        //价格走势
+        cityTrendPrice: "/Mini/App/cityTrendPrice",
+        //2018-03-37添加 活动弹框接口
+        actShowUrl: "/Mini/Active/isShow",
+        //点击假一赔百发送模板消息
+        sendMsgRealHouseUrl:'/Mini/MiniApp/sendMsgRealHouse',
+        //查询VR首图
+        getVRFirstPhotoUrl:'/Mini/App/getVRFirstPhoto',
+        //投诉虚假房源
+        compalaintUrl:'/Mini/App/compalaint',
+        getArchiveInfoUrl:'/Mini/App/getArchiveInfo',
+        //收集formId
+        collectFormIdUrl:'/Mini/App/collectFormId',
+        compalaintFormUrl: '/Mini/App/compalaintForm',
+        //2018-04-21 添加演唱会门票
+        getAttendMember: '/Mini/Active/getAttendMember',
+        ticket: '/Mini/Active/ticket',
+        //是否助力
+        isHelp: '/Mini/Active/isHelp',
+        isHelpInfo: '/Mini/Active/isHelpInfo',
+
+        // 专属委托优惠券 :C端用户获取红包信息
+        getCouponInfo: '/Mini/App/getCouponInfo',
+        // 专属委托优惠券 : 专属委托页面初始化接口
+        getVipEntrustInit: '/Mini/App/getVipEntrustInit',
+        // 专属委托优惠券 :C端用户领取优惠券
+        customerGetCoupon: '/Mini/App/customerGetCoupon',
+        
+        //分享成功的模板消息
+        sendShareMsg:'/Mini/MiniApp/sendShareMsg',
+        contactListUrl:"/Mini/Im/getContactList",
+        //是否有formId判断
+        hasFormIdUrl: "/Mini/App/hasFormId",
+        initMenuUrl:'/Mini/App/initMenu',
+        //详情页推送消息
+        pushViewMsgDetailUrl:'/Mini/App/pushViewMsgDetail',
+        //微店推送消息
+        pushViewMsgStoreUrl:'/Mini/App/pushViewMsgStore',
+        //客服智能回复
+        smartService:'/Mini/Im/smartServiceNew',
+        sendServiceMsgUrl:'/Mini/Im/sendServiceMsg',
+        //查询优惠券
+        getCouponReceiveInfo:'/Mini/Active/getCouponReceiveInfo',
+        //领取优惠券
+        receiveCouponAction:'/Mini/Active/receiveCouponAction',
+        crashPrize:'/App/Index/crashPrize',
+        queryImEntrustHouseList:'/Mini/Im/queryImEntrustHouseList',
+
+        //金九银十活动相关:
+
+        //获取首页banner列表
+        getBannerList: '/Mini/Active/getBannerList',
+        //新用户点击分享出去的活动页
+        clickShareActivity: '/Mini/Active/clickShareActivity',
+        //获取 金九银十活动 分享信息
+        getShareMinProgram: '/Mini/Active/getShareMinProgram',
+        // 获取 金九银十首页 基础信息
+        getUserActInfo:'/Mini/Active/getUserActInfo',
+        //金九银十首页获奖用户列表
+        getWinningPrizeList:'/Mini/Active/getWinningPrizeList',
+        // 金九银十首页，抽奖接口
+        clickLotteryAction: '/Mini/Active/clickLotteryAction',
+        //金九银十现金红包
+        initLoadPage:'/Mini/Active/initLoadPage',
+        //获取验证码
+        sendMsg:'/Mini/Active/sendMsg',
+        //提交收货地址
+        createLogistcsInfo:'/Mini/Active/createLogistcsInfo',
+        //获取收货初始信息
+        getUserLogistcsInfo:'/Mini/Active/getUserLogistcsInfo',
+        //用户奖品列表
+        getWinningPrize: '/Mini/Active/getWinningPrize',
+        //提现申请
+        applyGeActivityMoney:'/Mini/Active/applyGeActivityMoney',
+        //详情页是否展示图标
+        isShowActive:'/Mini/Active/isShowActive',
+
+        //微店数据收集：
+        //用户访问微店和房源的次数
+        getInStoreCount:'/Mini/App/getInStoreCount',
+        //行为配置
+        getBehaviorConfig:'/Mini/App/getBehaviorConfig',
+        //提交行为数据
+        saveCustBehavior: '/Mini/App/saveCustBehavior',
+        //带看确认书
+        takeLookInfoUrl:'/Mini/Html/takeLookInfo',
+        //房源委托书
+        standingOrderUrl: '/Mini/Html/standingOrder',
+        // 新盘楼书分享
+        miniBuildingBookForNewHouse: '/App/ZshftApp/miniBuildingBookForNewHouse',
+        // 新盘分享 预约看房信息提交
+        saveIntentionCustomerInfo: '/Mini/MiniApp/saveIntentionCustomerInfo',
+        //个人网店新房列表
+        newBuildListUrl:'/Mini/App/getNewBuildList',
+        newBuildListConditionUrl:'/Mini/App/getNewBuildListCondition',
+        //专属客服快捷回复数据
+        getCustomerConsultation:'/Mini/Im/getCustomerConsultation',
+
+        //关注/收藏 页相关接口
+        getAttentionList: '/Mini/App/getAttentionList', // 获取UU用户 关注的经纪人列表
+        addOrRemoveAttention: '/Mini/App/addOrRemoveAttention', //添加关注经纪人
+        isAttentionBroker: '/Mini/App/isAttentionBroker', //UU用户是否关注指定经纪人
+        getHouseCollectionList: '/Mini/App/getHouseCollectionList', //获取UU用户房源收藏列表
+        getHouseHistoryList: "/Mini/App/getHouseHistoryList", //获取UU用户浏览房源列表
+
+        userMobile: null,
+        nickName: null,
+        userId: null,
+        cityId: null,
+        locateCityId: null,
+        locateCityName: null,
+        cityName:'',
+        imService: 618239,
+        isRefresh: 0,
+        imUserInfo: [],
+        appKey: 'bbfa3e3f827bfb19d81b0197adb91758',
+        chatTo: '',//当前聊天对象
+        accid: '',//当前用户云信账号
+        accidToken:'',//当前用户云信token
+        unreadNum:0,
+        unreadMsg:[],
+        recentChatList: [],//最近会话列表
+        appId: 'wx6b5fd6b9a5bc3044',//优优好房生产环境
+        // appId: 'wx7afa0ae2cc5fbc74',//优优好房灰度环境
+        behaviorConfig:[]
+    },
+    buildRequestUrl(url) {
+      if (this.globalData['onlineHost'] != 'uuweb.haofang.net' && this.globalData['onlineHost'] != 'gray.haofang.net'){
+    		return 'http://' + this.globalData['onlineHost'] + this.globalData[url];
+    	}else{
+        return 'https://' + this.globalData['onlineHost'] + this.globalData[url];
+      }
+    
+    },log:function(e){
+        console.log(e);
+    }, initCityInfo: function (lat,lng){
+        var that = this;
+        wx.request({
+            url: this.buildRequestUrl('getCityIdByLocation'),
+            data: {
+                lat: lat,
+                lng: lng
+            },
+            success: function (res) {
+                wx.setStorageSync('cityId', res.data.DATA.cityId);
+                wx.setStorageSync('cityName', res.data.DATA.cityName);
+                wx.setStorageSync('locateCityId', res.data.DATA.cityId);
+                wx.setStorageSync('locateCityName', res.data.DATA.cityName);
+                wx.setStorageSync('locateRegId', res.data.DATA.regId);
+                wx.setStorageSync('locateRegName', res.data.DATA.regName);
+                that.globalData.cityId = res.data.DATA.cityId;
+                that.globalData.cityName = res.data.DATA.cityName;
+                that.globalData.locateCityId = res.data.DATA.cityId;
+                that.globalData.locateCityName = res.data.DATA.cityName;
+                that.saveFilterData(res.data.DATA.cityId);
+            },
+            fail: function () {
+                console.log('获取城市信息失败');
+            }
+        });
+    },showToast:function(title=''){
+    	wx.showToast({
+  		  title: title,
+  		  icon: 'loading',
+  		  duration: 50000
+  		});
+    },hideToast:function(){
+    	wx.hideToast();
+    },initImUser:function(cb){
+      let _this = this;
+      //实例化用户和房源数据
+      let imaccount = 'uu_'+this.globalData.userId;
+      wx.request({
+        url: this.buildRequestUrl('initIm'),
+        data: {
+          accid: imaccount,
+          toUserId: _this.globalData.imService
+        },
+        header: {
+          'content-type': 'application/json' // 默认值
+        },
+        success: function (res) {
+          if (res.statusCode == 200) {
+            _this.globalData.imUserInfo = res.data.data.userInfo;
+
+            typeof cb == "function" && cb( res.data.data.userInfo )
+          } else {
+            wx.showToast({
+              title: '初始化失败',
+              icon: 'success',
+              duration: 2000
+            })
+          }
+        }
+      });
+    },
+    /**
+     * 为 tabBar 某一项的右上角添加文本
+     */
+    setTabBarBadge:function(text){
+        text = text.toString();
+      if (wx.setTabBarBadge) {
+        wx.setTabBarBadge({
+          index: 1,
+          text: text
+        })
+      } else {
+        // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+        wx.showModal({
+          title: '提示',
+          content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+        })
+      }
+   
+    },
+    /**
+     * 移除 tabBar 某一项右上角的文本
+     */
+    removeTabBarBadge:function(){
+      if (wx.removeTabBarBadge) {
+        wx.removeTabBarBadge({ index: 1 })
+      } else {
+        // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+        wx.showModal({
+          title: '提示',
+          content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+        })
+      }
+    },
+    /**
+     * 显示 tabBar 某一项的右上角的红点
+     */
+    showTabBarRedDot:function(){
+      if (wx.showTabBarRedDot) {
+        wx.showTabBarRedDot({index:1})
+      } else {
+        // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+        wx.showModal({
+          title: '提示',
+          content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+        })
+      }
+    },
+    /**
+     * 隐藏 tabBar 某一项的右上角的红点
+     */
+    hideTabBarRedDot:function(){
+    if (wx.hideTabBarRedDot) {
+      wx.hideTabBarRedDot({ index: 1 })
+    } else {
+      // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      })
+    }
+  }
+})

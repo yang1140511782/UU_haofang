@@ -1,0 +1,521 @@
+var app = new getApp();
+Page({
+  data: {
+    huxingIndex:[],
+    floorIndex: [],
+    directionIndex:[],
+    searchLoupanBox:true,
+    chooseShow:false,
+    moreInfoShow:false,//更多信息
+    houseType:1,
+    houseRoom:'',   //室
+    _houseRoom: '', //室
+    floor:'',//层
+    totalFloor:'',//总的层数
+    houseArea:'',//面积
+    buildArr:[],
+    cityId:'',
+    buildId:'',
+    buildName:'',
+    searchInputValue:'',
+    houseFloorValue:'',
+    houseFloorsValue:'',
+    houseTypeChooseShow: false,     //户型选择器
+    typeArr:[
+      {text:'住宅',value:'1'},
+      {text:'别墅',value:'2' },
+    ],
+    roomNumArr: [
+      {text: '1室',value: '1'},
+      {text: '2室',value: '2'},
+      {text: '3室',value: '3'},
+      {text: '4室',value: '4'},
+      {text: '5室',value: '5'}
+    ],
+    typeChooseShow:false,
+    _types:'',
+    typeText:'请选择',
+    _typeText:'',
+    houseTypeText: '请选择',
+    _houseTypeText: '',
+    directionArr: [
+      {id: 1,name: '东'},
+      {id: 2,name: '南'},
+      {id: 3,name: '西'},
+      {id: 4,name: '北'},
+      {id: 5,name: '东南'},
+      {id: 6,name: '东北'},
+      {id: 7,name: '西南'},
+      {id: 8,name: '西北'}
+    ],
+    directionChooseShow: false,
+    directionText: '请选择',
+    _directionText: '',
+    houseDirection: '',
+    _houseDirection: '',
+    floorArr: [],
+    totalFloorArr: [],
+    floorChooseShow: false,
+    floorText: '请选择',
+    _floorText: '',
+    houseFloor: '',
+    _houseFloor: '',
+    totalHouseFloor: '',
+    _totalHouseFloor: '',
+    fitmentArr: [
+      {id: 1,name: '普通'},
+      {id: 2,name: '精装'},
+      {id: 3,name: '中档'},
+      {id: 4,name: '高档'},
+      {id: 5,name: '豪装'},
+      {id: 6,name: '毛坯'},
+      {id: 7,name: '装修不限'}
+    ],
+    fitmentChooseShow: false,
+    fitmentText: '',
+    _fitmentText:'',
+    houseFitment: '',
+    _houseFitment:''
+  },
+  
+  onLoad: function (options) {
+    var that = this;
+    var _from = options.whereFrom;
+    if(!!_from){
+      var _buildName = options.buildName,
+          _buildId = options.buildId,
+          _houseType = options.houseType,
+          _houseRoom = options.houseRoom,
+          _area = options.area,
+          _houseWhere = options.houseWhere,
+          _floor = options.floor,
+          _totalFloor = options.totalFloor,
+          _houseTypeText = _houseRoom + '室',
+          _directionText = _houseWhere == "--" ? '请选择' : _houseWhere,
+          _floorText = _floor + '层' + '共' + _totalFloor + '层';
+
+      // buildId = 2030973 & houseType=1 & floor=0 & totalFloor=0 & roomNum=1 & floorBuilding=undefined & renovation=&toward=东 & buildName=103厂职工宿舍& hallNum=0 & toiletNum=0 & houseArea=213
+      that.setData({
+        searchLoupanBox:false,
+        buildId: _buildId,
+        houseType: _houseType,
+        _types: _houseType,
+        typeText: _houseType==1?'住宅':'别墅',
+        floor: _floor,
+        totalFloor: _totalFloor,
+        roomNum: _houseRoom,
+        toward: _houseWhere,
+        buildName: _buildName,
+        houseArea: _area,
+        houseTypeText: _houseTypeText,
+        directionText: _directionText,
+        floorText: _floorText,
+        floorIndex: [_floor-1, _totalFloor-1],
+        huxingIndex: [_houseRoom-1],
+      })
+    }else{
+      var cityId = wx.getStorageSync('cityId');
+      wx.request({
+        url: app.buildRequestUrl('getBuildingByKeyWord'),
+        data: {
+          cityId: cityId,
+          caseType: 1,
+        },
+        success: function (res) {
+          console.log(res)
+          var dataArr = res.data;
+          if (res.statusCode == 200 && dataArr.length > 0) {
+            if (dataArr.length > 0) {
+              var buildArr = [];
+              for (var i = 0; i < dataArr.length; i++) {
+                var data = dataArr[i];
+                buildArr.push({ buildName: data['buildName'], buildId: data['buildId'], regName: data['regName'], saleNum: data['saleNum'] });
+              }
+              that.setData({
+                buildArr: buildArr,
+                chooseShow: true,
+              });
+            }
+          }
+        }
+      })
+    }
+    //生成楼层选择数组
+    var floorArr = [];
+    var totalFloorArr = [];
+    for (var i=1;i<51;i++) {
+      var obj = {};
+      var totalObj = {};
+      obj['value'] = i;
+      obj['text'] = i+'层';
+      floorArr.push(obj);
+      totalObj['value'] = i;
+      totalObj['text'] = '共' + i + '层';
+      totalFloorArr.push(totalObj);
+    };
+    that.setData({
+      floorArr,
+      totalFloorArr
+    });
+
+    
+    var value = wx.getStorageSync('cityId');
+    if(value){
+      that.setData({
+        cityId:value
+      });
+    };
+    
+    // var buildId=options.buildId,houseType=options.houseType?options.houseType:1,
+    //     floor=options.floor,totalFloor=options.totalFloor,
+    //     roomNum=options.roomNum,toiletNum=options.toiletNum,
+    //     floorBuilding=options.floorBuilding,renovation=options.renovation,
+    //     toward=options.toward,houseNumber=options.houseNumber,
+    //     hallNum=options.hallNum,buildName=options.buildName,
+    //     houseArea=options.houseArea;
+    //     _this.setData({
+    //         buildId:buildId,
+    //         buildName:buildName,
+    //         houseType:houseType,
+    //         houseArea:houseArea,
+    //         houseRoom:roomNum?roomNum+'室':roomNum,
+    //         houseHall:hallNum?hallNum+'厅':hallNum,
+    //         houseWei:toiletNum?toiletNum+'卫':toiletNum,
+    //         towardText:toward?toward:_this.data.towardText,
+    //         floorBuilding:floorBuilding?floorBuilding:'',
+    //         houseNumber:houseNumber?houseNumber:'',
+    //         houseFloor:floor?floor+'层':floor,
+    //         houseFloors:totalFloor?'共'+totalFloor+'层':totalFloor,
+    //         fitmentText:renovation?renovation:_this.data.fitmentText
+    //     })
+  },
+  /**
+   * 搜索楼盘框显示
+   */
+  searchBuildBox(e){
+    var _this=this;
+    _this.setData({
+      searchLoupanBox:true,
+    })
+  },
+  searchCancleEvent(e) {
+    var _this = this;
+    _this.setData({
+      searchLoupanBox: false,
+    })
+  },
+  /**
+   * 面积
+   */
+  houseAreaEvent:function(e){
+    var _this=this;
+    var value=e.detail.value;
+    _this.setData({
+      houseArea:value
+    })
+  },
+  /**
+   * 模糊查询
+   */
+  searchBuildData: function (e) {
+    var kwd = e.detail.value;
+    var that = this;
+    if (!!kwd) {
+        wx.request({
+          url: app.buildRequestUrl('getBuildingByKeyWord'),
+            data: {
+                cityId: this.data.cityId,
+                caseType: 1,
+                keyWord: kwd
+            },
+            success: function (res) {
+              console.log(res)
+                var dataArr = res.data;
+                if (res.statusCode == 200 && dataArr.length > 0) {
+                    if (dataArr.length > 0) {
+                        var buildArr = [];
+                        for (var i = 0; i < dataArr.length; i++) {
+                            var data = dataArr[i];
+                            buildArr.push({ buildName: data['buildName'], buildId: data['buildId'], regName: data['regName'], saleNum: data['saleNum'] });
+                        }
+                        that.setData({ 
+                          buildArr: buildArr,
+                          chooseShow:true, 
+                          });
+                    }
+                }
+            }
+        })
+    }
+  },
+    /**
+     * 选择楼盘
+     */
+    listTap: function (e) {
+      var buildName = e.currentTarget.dataset.text;
+      var buildId = e.currentTarget.dataset.id;
+      this.setData({
+          buildName: buildName,
+          buildId: buildId,
+          searchLoupanBox: false,
+          searchInputValue: '',
+          buildArr:[],
+      })
+    },
+   /**
+     * 删除搜索关键字
+     */
+    deleteKedEvent: function (e) {
+        var _this = this;
+        _this.setData({
+            searchInputValue: '',
+            buildArr:[],
+        })
+    },
+    chooseHouseType(){
+      this.setData({
+        houseTypeChooseShow: true
+      });
+    },
+    closeHouseType(){
+      this.setData({
+        houseTypeChooseShow: false
+      });
+    },
+    houseTypeComfirm() {
+      var that = this;
+      var houseTypeText = that.data._houseTypeText;
+      if (houseTypeText == '') {
+        that.setData({
+          houseTypeText: '1室',
+          "houseRoom": 1,
+          "roomNum":1,
+          houseTypeChooseShow: false
+        });
+      } else {
+        var houseRoom = that.data._houseRoom;
+        that.setData({
+          houseTypeText,
+          houseRoom,
+          houseTypeChooseShow: false
+        });
+      };
+    },
+    houseTypeChange(e) {
+      var that = this;
+      var val = e.detail.value;
+      var room = that.data.roomNumArr[val[0]].value;
+      var text = that.data.roomNumArr[val[0]].text;
+      console.log(text)
+      that.setData({
+        _houseTypeText: text,
+        roomNum: room, 
+        huxingIndex: val
+      });
+    },
+    chooseDirection() {
+      this.setData({
+        directionChooseShow: true
+      });
+    },
+    chooseType(){
+      this.setData({
+        typeChooseShow: true,
+        _typeText:''
+      });
+    },
+    closeType(){
+      this.setData({
+        typeChooseShow: false
+      });
+    },
+    typeComfirm(){
+      var that = this;
+      var typeText = that.data._typeText;
+      if (typeText == '') {
+        that.setData({
+          typeText: '住宅',
+          _types: 1,
+          typeChooseShow: false
+        });
+      } else {
+        var typeText = that.data._typeText;
+        that.setData({
+          typeText: typeText,
+          _types: that.data._types,
+          typeChooseShow: false
+        });
+      };
+    },
+    closeDirection() {
+      this.setData({
+        directionChooseShow: false
+      });
+    },
+    directionComfirm() {
+      var that = this;
+      var directionText = that.data._directionText;
+      if (directionText == '') {
+        that.setData({
+          directionText: '东',
+          houseDirection: 1,
+          directionChooseShow: false
+        });
+      } else {
+        var houseDirection = that.data._houseDirection;
+        that.setData({
+          directionText,
+          houseDirection,
+          directionChooseShow: false
+        });
+      };
+    },
+    //类型点击选择
+    typeChange(e) {
+      var that = this;
+      var val = e.detail.value;
+      var value = that.data.typeArr[val[0]].value;
+      var text = that.data.typeArr[val[0]].text;
+      console.log(text)
+      that.setData({
+        _typeText: text,
+        _types: value
+      });
+    },
+    directionChange (e) {
+      var that = this;
+      var val = e.detail.value;
+      var value = that.data.directionArr[val[0]].id;
+      var text = that.data.directionArr[val[0]].name;
+      that.setData({
+        _directionText: text,
+        _houseDirection: value,
+        directionIndex: val
+      });
+    },
+    chooseFloor() {
+      this.setData({
+        floorChooseShow: true
+      });
+    },
+    closeFloor() {
+      this.setData({
+        floorChooseShow: false
+      });
+    },
+    floorComfirm() {
+      var that = this;
+      var floorText = that.data._floorText;
+      if (floorText == '') {
+        that.setData({
+          floorText: '1层 共1层',
+          houseFloor: 0,
+          totalHouseFloor: 0,
+          floorChooseShow: false
+        });
+      } else {
+        var houseFloor = that.data._houseFloor;
+        var totalHouseFloor = that.data._totalHouseFloor;
+        that.setData({
+          floorText,
+          houseFloor,
+          totalHouseFloor,
+          floorChooseShow: false
+        });
+      };
+    },
+    floorChange(e) {
+      var that = this;
+      var val = e.detail.value;
+      var floor = that.data.floorArr[val[0]].value;
+      var totalFloor = that.data.totalFloorArr[val[1]].value;
+      var text = that.data.floorArr[val[0]].text + ' ' + that.data.totalFloorArr[val[1]].text;
+      that.setData({
+        _floorText: text,
+        floor: floor,
+        totalFloor: totalFloor,
+        floorIndex: [val[0],val[1]]
+      });
+    },
+    chooseFitment() {
+      this.setData({
+        fitmentChooseShow: true
+      });
+    },
+    closeFitment() {
+      this.setData({
+        fitmentChooseShow: false
+      });
+    },
+    fitmentComfirm() {
+      var that = this;
+      var fitmentText = that.data._fitmentText;
+      if (fitmentText == '') {
+        that.setData({
+          fitmentText: '普通',
+          houseFitment: 1,
+          fitmentChooseShow: false
+        });
+      } else {
+        var houseFitment = that.data._houseFitment;
+        that.setData({
+          fitmentText,
+          houseFitment,
+          fitmentChooseShow: false
+        });
+      };
+    },
+    fitmentChange(e) {
+      var that = this;
+      var val = e.detail.value;
+      var value = that.data.fitmentArr[val[0]].id;
+      var text = that.data.fitmentArr[val[0]].name;
+      that.setData({
+        _fitmentText: text,
+        _houseFitment: value
+      });
+    },
+    cancelBubble() {
+      return false;
+    },
+    evaluateEvent(e){
+      var _this = this;
+      var data = _this.data;
+
+      if(!data.buildId){
+        wx.showToast({ title: '请选择小区', icon: 'none', duration: 1000 });
+        return;
+      };
+      if (!data.typeText || (!!data.typeText && data.typeText == '请选择')) {
+        wx.showToast({ title: '请选择类型', icon: 'none', duration: 1000 });
+        return;
+      };
+      if(!data.houseArea){
+        wx.showToast({ title: '请输入面积', icon: 'none', duration: 1000 });
+        return;
+      };
+      if (!data.houseTypeText || (!!data.houseTypeText && data.houseTypeText == '请选择')) {
+        wx.showToast({ title: '请选择户型', icon: 'none', duration: 1000 });
+        return;
+      };
+      if (!data.directionText || (!!data.directionText && data.directionText == '请选择')) {
+        wx.showToast({ title: '请选择朝向', icon: 'none', duration: 1000 });
+        return;
+      };
+      if (!data.floorText || (!!data.floorText && data.floorText == '请选择')) {
+        wx.showToast({ title: '请选择楼层', icon: 'none', duration: 1000 });
+        return;
+      };
+
+      if (parseInt(data.floor) > parseInt(data.totalFloor)){
+        wx.showToast({ title: '当前楼层不能高于总楼层', icon: 'none', duration: 1000 });
+        return;
+      };
+
+      var url = '/packageTool/pages/trendTwo/trendTwo?buildId=' + data.buildId + '&houseType=1&floor=' + data.floor + '&houseArea=' + data.houseArea + '&totalFloor=' + data.totalFloor + '&roomNum=' + data.roomNum + '&buildName=' + data.buildName + "&houseType=" + data._types + '&toward=' + data.directionText;
+      console.log(url);
+      wx.navigateTo({
+        url:url
+      });
+    }
+})

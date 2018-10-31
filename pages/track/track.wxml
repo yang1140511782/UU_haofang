@@ -1,0 +1,35 @@
+<view class='page'>
+  <view class='header'>
+    <view class='header-top'>
+      <text class='case-type'>[{{trackInfo.CASE_TYPE==1 ? '出售' : '出租'}}]</text>
+      <text class='publish-time'>{{trackInfo.createDate}}</text>
+      <text class='kefu' bindtap='customerSercive'>客服</text>
+    </view>
+    <view class='house-box'>
+      <view class='house-img'>
+        <image src='{{trackInfo.PHOTO}}' mode='aspectFill'></image>
+      </view>
+      <view class='house-info'>
+        <view class='title'>{{trackInfo.buildName}} {{trackInfo.houseRoom ? trackInfo.houseRoom+'室' : ''}}{{trackInfo.houseHall ? trackInfo.houseHall+'厅' : ''}}</view>
+        <view class='detail'>面积:{{trackInfo.houseArea}}㎡   楼层:{{trackInfo.houseFloor}}/{{trackInfo.houseFloors}}</view>
+        <view class='house-price'>
+          <text class='total-price'>{{trackInfo.PRICE_INFO}}{{trackInfo.PRICE_UNIT_INFO}}</text>
+          <view class='track-num'>
+            <text class='push'>推送 {{trackInfo.tuisongNumAll}}</text>
+            <text class='take-view'>带看 {{trackInfo.daikanNumAll}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+    <view class='track-list'>
+    <block wx:for="{{trackInfo.tracks}}" wx:for-index="idx" wx:for-item="tracks">
+      <view class="listItem {{idx==0?'listItem-first highlight':''}}" wx:for-index="index" data-index="{{index}}" wx:for="{{tracks.trackInfos}}" wx:for-item="item">
+        <view class="listItemContent">
+          <view class="listItemContent-date">{{tracks.date}} {{item.hour}}</view>
+          <view class="listItemContent-content">[{{item.trackTitle}}] {{item.item}}</view>
+        </view>
+      </view>
+    </block>
+    </view>
+</view>

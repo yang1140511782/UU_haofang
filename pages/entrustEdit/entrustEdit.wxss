@@ -1,0 +1,47 @@
+@import "../entrust/entrustCommon.wxss";
+
+
+.sex-top-tt {
+  width: 305rpx;
+  height: 59rpx;
+  color: #333;
+  font-size: 34rpx;
+  text-align: center;
+  margin-top: 20rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/entrustImg/zs_bg.png)no-repeat center;
+  background-size: 100%;
+  margin-left: 6rpx;
+
+}
+
+.vip-broker-box {
+  margin-top: 10rpx;
+}
+
+.vip-broker-box .sex-choose {
+  padding: 0;
+}
+
+.vip-broker-box .sex-img image {
+  width: 130rpx;
+  height: 130rpx;
+}
+
+.vip-broker-box .sex-text {
+  color: #000;
+  font-size: 33rpx;
+}
+
+.vip-broker-box .broker-bottom-m {
+  margin: 0 10rpx;
+}
+
+/*提交数据进行中*/
+.load {
+  display: none;
+}
+
+.new-ti {
+  color: #333;
+  font-size: 34rpx;
+}

@@ -1,0 +1,245 @@
+<import src="../../../utils/wetoast.wxml"  />
+<view class="containerr">
+  <view class="header">
+    <view class="nav">
+      <text bindtap='topChange' data-type='principal' class="{{principal==1?'select':''}}">等额本息</text>
+      <text bindtap='topChange' data-type='corpus' class="{{corpus==1?'select':''}}">等额本金</text>
+    </view>
+    <view class="type-one">
+      <view class="head-detail">
+        <view class="head-detail-left">
+          <view class="detail-title">首付</view>
+          <view class="detail-content">
+            <text>¥</text>
+            <text>{{sfNum}}万</text>
+          </view>
+        </view>
+        <view class="head-detail-right interest-payment">
+          <view class="detail-title">{{paymentsText}}</view>
+          <view class="detail-content">
+            <text>¥</text>
+            <text>{{ygNum}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="head-detail">
+        <view class="head-detail-left total-payment">
+          <view class="detail-title">还款总额</view>
+          <view class="detail-list">
+            <text>¥</text>
+            <text>{{hkzeNUm}}万</text>
+          </view>
+        </view>
+        <view class="head-detail-right interest-payment">
+          <view class="detail-title">利息总额</view>
+          <view class="detail-list">
+            <text>¥</text>
+            <text>{{lixiNum}}万</text>
+          </view>
+        </view>
+        <view class="head-detail-right interest-payment" wx:if="{{totalInterestShow}}">
+          <view class="detail-title">每月递减</view>
+          <view class="detail-list">
+            <text>¥</text>
+            <text>{{mydjNum}}元</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="body">
+    <view class="clickSee" bindtap='clickSee' wx:if="{{detailsShow}}">
+      <text>点击查看还款明细</text>
+    </view>
+    <view class="loan-type">
+      <view class="type-com type-com-before {{gjjdk==1?'type-chooseing-before':''}}" data-type="gjjdk" bindtap="changeBtn">
+      公积金贷款
+      </view>
+      <view class="type-com type-com-before  {{sydk==1?'type-chooseing-before':''}}" data-type="sydk" bindtap="changeBtn">商业贷款</view>
+      <view class="type-com type-com-before {{zhdk==1?'type-chooseing-before':''}}" data-type="zhdk" bindtap="changeBtn">组合贷款</view>
+    </view>
+    <view class="loan-detail-list-box">
+      <view class="loan-detail-list">
+        <view class="fwsj loan-detail {{inputShow==1?'input-hide':''}}">
+          <text>房屋售价</text>
+          <view class="fwsj-div input-div">
+            <input type="text" 
+                   placeholder="请输入金额" 
+                   maxlength="6" 
+                   data-type='houseTotal' 
+                   bindinput="houseTotalInput"
+                   bindblur='inputboxblur'
+                   value="{{houseTotal}}" 
+                   placeholder-class='input-placeholder' 
+                   bindfocus="inputboxfocus" />
+            <text class='fwsj-unit input-unit'>万</text>
+          </view>
+        </view>
+        <view class="sfbl loan-detail {{inputShow==1?'input-hide':''}}">
+          <text>{{rateFlag?'首付比例':'自定义首付金额'}}</text>
+          <text class="switchBox" catchtap='toggleRate'>
+            <text class="switch-logo"></text>
+            <text class="switch-money">{{!rateFlag?'首付比例':'自定义首付金额'}}</text>
+          </text>
+          <view class="switch-cont-bl" bindtap='downPayments' hidden='{{!rateFlag}}'>
+            <text>{{paymentText}}</text>
+            <text class="sfbl-num">成</text>
+          </view>
+          <view class="switch-cont-bl" hidden='{{rateFlag}}'>
+            <input type="text" 
+                   class="downInput"
+                   placeholder="请输入金额" 
+                   bindinput="downPaymentInputChange" 
+                   maxlength="6"
+                   data-type="downPayment"
+                   value="{{downPayment}}"
+                   bindfocus="inputboxfocus"
+                   placeholder-class='input-placeholder'/>
+            <text class="fwsj-unit input-unit">万</text>
+          </view>
+        </view>
+        <view style="background:#fcfcfc;" class="dkze loan-detail {{inputShow==1?'input-hide':''}}">
+          <text>贷款总额</text>
+          <view class="input-div">
+            <input type="text" placeholder="请输入金额" bindinput="loanTotalInputChange" value="{{loanTotal}}"
+                   placeholder-class='input-placeholder' disabled />
+            <text class='fwsj-unit input-unit'>万</text>
+          </view>
+        </view>
+        <view class="gjjdk loan-detail  {{inputShow==1?'input-hide':''}}" wx:if="{{cpfLoan}}">
+          <text>公积金贷款</text>
+          <text>(利率3.25%)</text>
+          <view class="switch-cont-bl input-div">
+            <input type="text" 
+                   placeholder="请输入金额" 
+                   maxlength="6" 
+                   bindinput="gjjInputChange"
+                   bindfocus="inputboxfocus"
+                   bindblur='inputboxblur'
+                   data-type="gjjLoan" 
+                   value="{{gjjLoan}}"
+                   placeholder-class='input-placeholder'  />
+            <text class='fwsj-unit input-unit'>万</text>
+          </view>
+        </view>
+        <view class="sydk loan-detail  {{inputShow==1?'input-hide':''}}" wx:if="{{commercialLoan}}">
+          <text>商业贷款</text>
+          <view class="switch-cont-bl input-div">
+            <input type="text" 
+                   placeholder="请输入金额" 
+                   maxlength="6" 
+                   bindinput="shangyeChange" 
+                   value="{{shangyeLoan}}"
+                   bindfocus="inputboxfocus"
+                   bindblur='inputboxblur'
+                   data-type="shangyeLoan"
+                   placeholder-class='input-placeholder'  />
+            <text class='fwsj-unit input-unit'>万</text>
+          </view>
+        </view>
+        <view class="dynx loan-detail" bindtap='loanTermEvent'>
+          <text>贷款年限</text>
+          <view class="switch-cont-bl">
+            <text>{{loanTermText}}</text>
+            <text class="sfbl-num">年</text>
+          </view>
+        </view>
+        <view class="dkll loan-detail" bindtap='businessEvent' wx:if="{{businessLoan}}">
+          <text>商贷利率</text>
+          <view class="switch-cont-bl">
+            <text class="dkll-font">{{businessText}}</text>
+            <text class="sec-unit">{{businessRate}}%</text>
+          </view>
+        </view>
+        <view class="gjjdkll loan-detail" wx:if="{{cpfrRate}}">
+          <text>公积金利率</text>
+          <view class="switch-cont-bl">
+            <text class="dkll-font">2015年10月24日基准利率</text>
+            <text class="ggj-unit">3.25%</text>
+          </view>
+        </view>
+      </view>
+      <button bindtap='calculationEvent'>计算</button>
+      <view class="remark-text" style="color:#dddddd;">此结果仅供参考，实际费用以当地缴费为准</view>
+    </view>
+  </view>
+  <!-- 商贷利率 -->
+  <view class="sdll_mask" wx:kef="{{item}}" wx:if="{{sdllShow}}">
+    <view class="sec_mask sdll_sec_mask" data-type='sdllsfblMask' catchtap='maskHideEvent'></view>
+    <view class="sdll_menu">
+      <view class="sdll_tt">
+        <view class="sdll_tt_text">商贷利率</view>
+        <view class="sdll_tt_sure" catchtap='okBtnEvent' wx:if="{{okBtnShow}}">确定</view>
+      </view>
+      <view class="sdll_con">
+        <view class="zdy_list">
+          <view class="zdy_text">自定义：</view>
+          <view class="zdy-input-con">
+            <input type="number" value="{{businessRate}}" bindfocus="zdyInputFocus" data-type='zdyInput'
+                   bindinput='zdyInputChange' id="zdyll_ipt_num" class="ipt_text zdyll_ipt_num"  />
+          </view>
+          <view class="zdy_per zdy_btn">%</view>
+        </view>
+        <view class="c_list">
+          <view class="c_list_tt">或选择商贷利率</view>
+          <view class="sdll_ul">
+            <scroll-view scroll-y style="height:368rpx" scroll-into-view="{{toView}}">
+              <view  id="loanbox{{index}}" class="sdll_sel {{index==zdyBorder?'border':''}}" wx:key="{{item}}" wx:for="{{businessLoanArr}}">
+                <view data-txt="{{item.txt}}" data-index="{{index}}" data-value="{{item.value}}" catchtap='sdllLiEvent'>{{item.txt}}</view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 首付比例弹框 -->
+  <view class="sfbl_mask" wx:kef="{{item}}" wx:if="{{sfblSHow}}">
+    <view class="sec_mask year_sec_mask" data-type='sfblMask' catchtap='maskHideEvent'></view>
+    <view class="sfbl_menu">
+      <view class="sfbl_tt">
+        <view class="sfbl_tt_text">首付比例</view>
+      </view>
+      <view class="sfbl_con">
+        <scroll-view scroll-y style="height:290px" scroll-into-view="{{toView_downPayment}}">
+          <view id="downPayment{{index}}" wx:key="*this" class="sfbl_con_sel {{index==sfBorder?'border':''}}" wx:for="{{paymentsArr}}">
+            <view data-value="{{index}}" catchtap='sfblliEvent' class="sfbl_li">{{item}}</view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+  <!-- 贷款年限弹框 -->
+  <view class="year_mask" wx:kef="{{item}}" wx:if="{{yearSHow}}">
+    <view class="sec_mask year_sec_mask" data-type='yearMask' catchtap='maskHideEvent'></view>
+    <view class="year_menu">
+      <view class="year_tt">
+        <view class="year_tt_text">贷款年限</view>
+      </view>
+      <view class="year_con">
+        <scroll-view scroll-y style="height:290px" scroll-into-view="{{toView_year}}">
+          <view id="year{{index}}" class="year_con_sel  {{index==yearBorder?'border':''}}" wx:for="{{loanTermArr}}" wx:key="*this">
+            <view data-value="{{index}}" catchtap='yearLiEvent' class="year_li">{{item}}</view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="result" wx:if="{{result}}">
+  <scroll-view scroll-y style="height:{{winHeight}}px" scroll-into-view="totalM0">
+    <view class="result-head">
+      <view class="back" bindtap='back'></view>
+      <view>还款明细</view>
+    </view>
+    <view class="hkmx-con">
+      <view class="montn">月份</view>
+      <view class="montn-money">每月还款(元)</view>
+    </view>
+    <view class="totalM" wx:for="{{totalM}}" wx:key="{{index}}" id="{{'totalM'+index}}">
+      <view class="monthNum">{{index+1}}月</view>
+      <view class="result-monthNum">{{item}}元</view>
+    </view>
+  </scroll-view>
+</view>
+<template is="wetoast" data="{{...__wetoast__}}"  />

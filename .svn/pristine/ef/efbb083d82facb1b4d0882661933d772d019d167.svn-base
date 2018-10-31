@@ -1,0 +1,430 @@
+@import "../../../utils/wetoast.wxss";
+page{
+  height: 100%
+}
+.containerr, .header{
+  width:100%;
+}
+.header{
+  background: #ff5400;
+  padding-top:20rpx;
+
+}
+.header .nav{
+  margin: 0 auto;
+  border: 2rpx solid #fff;
+  border-radius: 10rpx;
+  width: 50%;
+  display: flex;
+  text-align: center;
+}
+.header .nav text{
+  font-size: 28rpx;
+  line-height: 50rpx;
+  height: 50rpx;
+  flex: 1;
+  color: #fff;
+}
+.header .nav .select{
+  color: #ff5400;
+  background: #fff;
+}
+.head-detail{
+  padding: 30rpx;
+  display: flex;
+  color: #fff;
+}
+.header .head-detail-left, .head-detail-right{
+  width:50%;
+  flex: 1;
+  text-align: left;
+}
+.header  .detail-title{
+  font-size: 28rpx;
+}
+.header .detail-content text:first-child{
+  font-size: 40rpx;
+}
+.header .detail-content text:last-child{
+  letter-spacing: 2rpx;
+  font-size: 52rpx;
+}
+.header .detail-list:first-child{
+  font-size: 24rpx
+}
+.header .detail-list:last-child{
+  font-size: 32rpx;
+  letter-spacing: 2rpx;
+}
+.header .total-payment{
+  width:48%;
+}
+.header .interest-payment{
+  width:48%;
+  padding-left: 2%;
+  border-left: 2rpx solid #B23b00;
+}
+.body radio-group{
+  display: flex;
+  padding: 0 30rpx;
+  text-align: left;
+  line-height: 80rpx;
+}
+.body radio-group radio{
+  flex: 1;
+  font-size: 28rpx;
+  transform:scale(.7);
+}
+.loan-detail-list .loan-detail{
+  font-size: 28rpx;
+  color: #777;
+  line-height: 88rpx;
+  text-align: left;
+  border-bottom: 1px solid #efefef;
+  padding: 0 10px;
+  display: flex;
+}
+.loan-detail-list .loan-detail:first-child{
+  border-top: 1px solid #efefef;
+}
+.loan-detail>text:first-child{
+  color: #000;
+}
+.loan-detail .input-div{
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  color: #000;
+}
+.input-div input{
+  padding-right: 10rpx;
+  text-align: right;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 26rpx;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.input-placeholder{
+  font-size: 28rpx;
+  color:#cdcdcd;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.input-unit{
+  padding-right: 30rpx;
+}
+.switchBox{
+  display:inline-block;
+  height: 44rpx;
+  background: #eaf5ee;
+  border-radius: 3px;
+  display: -webkit-flex;
+  align-items: center;
+  padding: 0 6px;
+  position: relative;
+  top:23rpx;
+  left:10rpx;
+  opacity: .5;
+}
+.switch-money{
+  position: relative;
+}
+.switch-logo{
+  display:inline-block;
+  height:33rpx;
+  width:34rpx;
+  margin:0 10rpx 0 0;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/new_images/change_icon.png) center center no-repeat;
+  background-size:contain;
+  position:relative;
+  top:6rpx;
+}
+.switch-cont-bl{
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  color: #000;
+  font-size: 28rpx;
+  line-height: 88rpx;
+}
+.sec-unit, .ggj-unit{
+  padding-left: 10rpx;
+}
+.ggj-unit{
+  margin-right: 30rpx;
+}
+.sec-unit::after,.sfbl-num::after{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/changeImg/down_icon_a.png) center no-repeat;
+  content: '';
+  display: inline-block;
+  width: 20rpx;
+  height: 20rpx;
+  margin-left: 10rpx;
+  background-size: 20rpx 12rpx;
+  transform: rotate(-90deg);
+}
+.dkll-font{
+  color: #8f8f8f;
+}
+.loan-detail-list-box button{
+  width: 90%;
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  color: #424242;
+  background-color: #ffcd16;
+  outline: none;
+  border: none;
+  font-size: 36rpx;
+  margin: 30rpx 5% 30rpx 5%;
+  border-radius: 10rpx;
+  letter-spacing: 4rpx;
+}
+.remark-text{
+  color: #8f8f8f;
+  font-size: 28rpx;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+.clickSee{
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #4daaf0;
+  background: #efefef;
+}
+.clickSee text::after{
+  content: ">";
+  display: inline-block;
+  color: #1bc964;
+  font-family: SimSun;
+  margin-left: 10rpx;
+}
+/*贷款年限弹窗*/
+.year_mask,.sdll_mask,.sfbl_mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+ 
+}
+
+.sec_mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 999;
+}
+.year_menu,.sdll_menu,.sfbl_menu{
+  position: absolute;
+    z-index: 1000;
+    overflow-y: scroll;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 668rpx;
+    background-color: #ffffff;
+    line-height: 88rpx;
+}
+.year_tt,.sdll_tt,.sfbl_tt {
+    text-align: center;
+    height: 88rpx;
+    background-color: #f6f6f6;
+}
+.year_tt_text,.sdll_tt_text,.sfbl_tt_text {
+    position: relative;
+    margin: 0 auto;
+    font-size: 32rpx;
+    color: #8f8f8f;
+}
+.year_menu .year_li, .sfbl_menu .sfbl_li,.sdll_ul .sdll_sel{
+    line-height: 88rpx;
+    text-align: center;
+    color: #565c67;
+    font-size: 15px;
+    height: 90rpx;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.year_con, .sdll_con, .sfbl_con {
+    overflow-y: scroll;
+    height: 290px;
+    width: 100%;
+    background-color: #ffffff;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.zdy_list{
+  display: -webkit-box;
+}
+.zdy_list .zdy_text {
+    line-height: 88rpx;
+    padding: 0 20rpx 0 28rpx;
+    color: #83868f;
+    font-size: 28rpx;
+}
+.ipt_text {
+    width: 100%;
+    height: 88rpx;
+    background: 0 0;
+    overflow: hidden;
+    color: #8f8f8f;
+    border: none;
+    outline: 0;
+    font-size: 28rpx;
+    text-align: right;
+}
+.zdy_btn {
+   font-size: 28rpx;
+    color: #8f8f8f;
+    padding-right:50%;
+
+}
+.c_list_tt{
+  font-size: 24rpx;
+    color: #83868f;
+    line-height: 64rpx;
+    background: #f4f4f4;
+    padding: 0 28rpx;
+}
+.sdll_ul {
+    height: 368rpx;
+    overflow-y: scroll;
+}
+/*贷款类型*/
+.loan-type{
+  display: -webkit-box;
+  height: 70rpx;
+  line-height: 70rpx;
+}
+.type-com{
+  -webkit-box-flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  color: #777;
+  position: relative;
+}
+.type-com-before::before{
+    content: '';
+    position: absolute;
+    width: 30rpx;
+    height: 30rpx;
+    left: 20rpx;
+    top: 20rpx;
+    background: url(http://uuweb.haofang.net/PublicC/images/calculator/radio1.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.type-chooseing-before::before{
+    background: url(http://uuweb.haofang.net/Public/wxApp/images/new_images/radio1.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+/*.type-one{*/
+  /*display: none
+}*/
+.type-two{
+  display: none
+}
+
+.input-hide{
+  opacity: 0;
+}
+.sdll_tt_sure{
+  position: absolute;
+  background-color: #ffcd16;
+  width: 100rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  top: 12rpx;
+  right: 20rpx;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  color: #424242;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.detail-content{
+  padding-top: 10rpx;
+}
+.result {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 900;
+  
+}
+.result-head {
+    width: 100%;
+    height: 70rpx;
+    background-color: #ff5400;
+    padding-top: 10rpx;
+    text-align: center;
+    color: #fff;
+    font-size: 32rpx;
+    position: fixed;
+}
+.hkmx-con{
+    width: 100%;
+    overflow: hidden;
+    height: 70rpx;
+    line-height: 70rpx;
+    border-bottom: 1px solid #efefef;
+    background-color: #fff;
+    position:fixed;
+    top:70rpx;
+}
+.montn,.montn-money{
+    float: left;
+    text-align: center;
+    width: 50%;
+    height: 70rpx;
+    line-height: 70rpx;
+    text-align: center;
+    font-size: 24rpx;
+    color: #4daaf0;
+}
+.back{
+    position: absolute;
+    left: -14rpx;
+    margin-top: -7rpx;
+    display: inline-block;
+    width: 90rpx;
+    height: 60rpx;
+    background: url(http://uuweb.haofang.net/PublicC/images/arrow-up.png) center no-repeat;
+    background-size: 24rpx 40rpx;
+}
+.totalM{
+  overflow: hidden;
+  width: 100%;
+}
+.monthNum,.result-monthNum{
+    width: 50%;
+    float: left;
+    height: 70rpx;
+    line-height: 70rpx;
+    text-align: center;
+    font-size: 24rpx;
+    color: #333333;
+}
+.border{
+  color: #ff5400!important;
+  border-bottom: 1px solid #ff5400!important;
+  border-top: 1px solid #ff5400!important;
+}
+.zdy-input-con{
+  -webkit-box-flex: 1
+}
+.downInput{
+  padding-right:10rpx;
+  text-align:right;
+  height:88rpx;
+  line-height:88rpx;
+  font-size:26rpx;
+  font-family:Arial, Helvetica, sans-serif;
+}
+.result .totalM:nth-child(3){
+  padding-top: 144rpx;
+}

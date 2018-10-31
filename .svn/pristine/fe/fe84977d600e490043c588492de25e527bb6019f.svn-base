@@ -1,0 +1,156 @@
+<view id="app">
+  <view class="newBuilding">
+    <view class="header-box">
+      <view class="title-box">
+        <view class="build-name">{{buildData.buildName}}</view>
+        <view class="houseType-text">
+          <view class="span-icon"></view>
+          <view class="strong-icon">{{buildData['houseArea']}}</view>
+          <view wx:if='{{!!buildData.useage_type}}' class="em-icon">【{{buildData['useage_type']}}】</view>
+        </view>
+      </view>
+    </view>
+    <view class="houseimg-box">
+      <view class="house-content" id="house-content">
+        <image wx:if="{{!!buildData['building_photo'][0]}}" src="{{buildData['building_photo'][0]}}" mode="aspectFill" lazy-load="false" binderror="" bindload=""></image>
+      </view>
+    </view>
+    <view class="house-info-box">
+      <view class="house-info-title">
+        <view class="i-icon"></view>
+        <view class="h3-text">
+          <view class="span-text">单价</view>
+          <text>{{buildData['price']}}元/㎡</text>
+        </view>
+        <view class="p-text">{{buildData['build_tag']}}</view>
+      </view>
+    </view>
+
+    <view class="house-content-box">
+      <view class="house-info-box">
+        <view class="h1-text"></view>
+        <view class="houseimg">
+          <view class="houseimg-list" id="houseimg-list">
+            <image wx:if="{{!!buildData['building_photo'][1]}}" src="{{buildData['building_photo'][1]}}" mode="aspectFill" lazy-load="false" binderror="" bindload=""></image>
+          </view>
+          <view class="i-text"></view>
+        </view>
+        <view class="house-about">
+          <view class="h2-text">楼盘介绍</view>
+          <view class="p-text">{{buildData['build_descript']}}</view>
+          <view class="i-text"></view>
+        </view>
+
+        <!-- 户型图 -->
+        <view wx:if="{{buildData['huxing_photo'].length > 0}}" class="houseType-box">
+          <view class="h2-text"></view>
+          <view class="houseimg-list-box">
+            <view wx:if="{{!!buildData['huxing_photo'][0]}}" class="li" id="houseTypeimg-one">
+              <image src="{{buildData['huxing_photo'][0]}}" mode="widthFix" lazy-load="false" binderror="" bindload=""></image>
+            </view>
+            <view wx:if="{{!!buildData['huxing_photo'][1]}}" class="li" id="houseTypeimg-two">
+              <image src="{{buildData['huxing_photo'][1]}}" mode="widthFix" lazy-load="false" binderror="" bindload=""></image>
+            </view>
+          </view>
+        </view>
+
+        <view wx:if="{{buildData['position_x'] > 0 && buildData['position_y'] > 0}}" class="area-info">
+          <view class="h2-text"></view>
+          <view class="map-box">
+            <view id="map">
+              <image lazy-load="{{lazyLoad}}" mode="widthFix"
+               src="https://apis.map.qq.com/ws/staticmap/v2/?center={{buildData.position_y}},{{buildData.position_x}}&zoom=16&scale=2&markers=size:large|icon:https://cd.haofang.net/Public/images/wap/icon_mylocation.png|{{buildData.position_y}},{{buildData.position_x}}&key=DGFBZ-3IFW2-PDEUL-CBLCE-XOSYK-K5B5I&size=375*320"
+                class='map-img'></image>
+            </view>
+          </view>
+        </view>
+
+        <view class="check-out">
+          <view class="i-text"></view>
+          <view wx:if="{{!!buildData['deliver_time']}}" class="p-text">预计交房时间: {{buildData['deliver_time']}}</view>
+          <view class="address-info">楼盘地址：{{buildData['building_addr']}}</view>
+        </view>
+
+        <view class="broker-information">
+          <view class="user-photo">
+            <view class="i-text" style="background-image: url({{buildData['brokerPhoto']}});"></view>
+          </view>
+          <view class="p-text">{{buildData['brokerName']}} {{buildData['brokerMobile']}}</view>
+          <view class="h4-text">{{buildData['service_zone']}}</view>
+          <view class="h5-text">我是该楼盘专属顾问，欢迎随时来电咨询</view>
+          <view class="i-text"></view>
+        </view>
+
+        <view class="ewm">
+          <image class="" src="{{buildData.codeUrl}}" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
+
+          </image>
+          <view class="p-text">长按识别查看楼盘详情</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='footer-nav'>
+    <!--免费咨询-->
+    <view>
+      <view class='ft-nav-a'>
+        <view class='rent-agent'>
+          <view class="head-box">
+            <image mode="aspectFill" src="{{buildData['brokerPhoto']}}" class='r-a-tx' binderror="errImg" data-err-img="currUserPhotoUrlPath" />
+          </view>
+          <view class='r-a-name'>
+            <view class='r-na-box'>{{buildData['brokerName']}}</view>
+            <view class='staer-ic star-value-5'></view>
+          </view>
+        </view>
+
+        <view class='querybox' bindtap="chooseContactType" data-archive="{{archiveId}}">
+          <text>咨询置业顾问</text>
+        </view>
+        <view class='aoebox'>
+          <form bindsubmit="goToEntrust" bindreset="formReset" report-submit="true">
+            <view><button formType="submit">预约专车看房</button></view>
+          </form>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<!-- 绑定号码弹层 -->
+<view wx:if="{{phoneModalFlag}}" class='phone-modal'>
+  <view class='pm-body'>
+    <view class='pm-close' bindtap='closePhoneModalFn'>
+      <image src='http://cdn.haofang.net/static/uuweb/activity/jinyin/list/phoneClose.png'></image>
+    </view>
+    <view class='pm-title'><text>预约专车看房</text></view>
+    <view class='pm-subtitle'><text>您正在约看{{buildData.buildName}}楼盘，请填写联系信息</text></view>
+    <view class='pm-input'>
+      <input type='text' maxlength="10" data-key='forData.userName' bindinput="bindKeyInput" 
+        placeholder-style='color:#aaa' placeholder='请输入姓名'></input>
+    </view>
+    <view class='pm-input'>
+      <input type='number' maxlength="11" data-key='forData.userPhone' bindinput="bindKeyInput" bindblur='testPhoneNum'
+        placeholder-style='color:#aaa' placeholder='请输入手机号'></input>
+    </view>
+    <view class='pm-input pm-getphone-code'>
+      <view style='width:337rpx'><input type='number' data-key='forData.phoneCode' bindinput="bindKeyInput"
+          placeholder-style='color:#aaa' placeholder='请输入短信验证码'></input></view>
+      <view wx:if="{{testCodeTime<1}}" bindtap='getTestCode' class='pm-getcode-text'><text>获取验证码</text></view>
+      <view wx:if="{{testCodeTime>0}}" style='color:#ccc;' class='pm-getcode-text'><text>已发送({{testCodeTime}})</text></view>
+    </view>
+    <view><button class='pm-submit' catchtap="submitBindPhone">提交</button></view>
+  </view>
+</view>
+
+<!--回到首页按钮-->
+<view class="index-btn" bindtap='indexBtnEvent'></view>
+
+
+<!-- 添加层级最高透明 蒙层 -->
+<view class="authorize-mask" wx:if="{{userId==''}}">
+  <button open-type='getUserInfo' bindgetuserinfo="getUser"></button>
+</view>
+<!-- 添加层级最高透明 蒙层/ -->

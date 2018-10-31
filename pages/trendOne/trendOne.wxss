@@ -1,0 +1,178 @@
+image{width: 100%;}
+page{
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+.t-wraper{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f6f6f6;
+}
+.top-b{
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+}
+.header{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 370rpx;
+  background: -webkit-linear-gradient(left, rgb(255,132,0) , rgb(255,84,0));
+  padding:70rpx 20rpx 0;
+  box-sizing: border-box;
+}
+.h-title{
+  width: 100%;
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 40rpx;
+}
+.h-title text{
+  color: #ffcdbd;
+  font-weight: normal;
+}
+.h-price{
+  color: #fff;
+  font-size: 94rpx;
+  font-family: "宋体";
+}
+.h-price text{
+  font-size: 30rpx;
+  font-family: "微软雅黑";
+}
+.cont-box{
+  position: relative;
+  top: -94rpx;
+  z-index: 200;
+  width: 100%;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
+.cont-a{
+  display: flex;
+  width: 100%;
+  height: 180rpx;
+  background: #fff;
+  border: 2rpx solid #ececec;
+  margin-bottom: 26rpx;
+  padding: 0 32rpx;
+  box-sizing: border-box;
+}
+.a-box{
+  width: 200rpx;
+  height: 100%;
+  padding: 38rpx 0;
+  box-sizing: border-box;
+  margin-right: 20rpx;
+}
+.a-box-a{
+  width: 100%;
+  overflow: hidden;
+  text-overflow:ellipsis; 
+  white-space:nowrap;
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 20rpx;
+}
+.a-box-num{
+  width: 100%;
+  overflow: hidden;
+  text-overflow:ellipsis; 
+  white-space:nowrap;
+  font-size: 40rpx;
+  color: #333;
+}
+.cont-b{
+  width: 100%;
+  background: #fff;
+  border: 2rpx solid #ececec;
+  margin-bottom: 25rpx;
+  padding-bottom: 25rpx;
+}
+.cb-title{
+  width: 100%;
+  height: 70rpx;
+  font-weight: bold;
+  color: #333;
+  font-size: 32rpx;
+  line-height: 110rpx;
+  padding-left: 20rpx;
+  box-sizing: border-box;
+}
+.chartBox{
+  height: 400rpx;
+  padding-top:27rpx;
+}
+.frombox{
+  width: 100%;
+  padding-left: 40rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  color: #afafaf;
+}
+.footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 300;
+  width: 100%;
+  height: 95rpx;
+  background: -webkit-linear-gradient(left, rgb(255,111,46) , rgb(254,142,13));
+  color: #fff;
+  text-align: center;
+  font-size: 34rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer text{
+  display: inline-block;
+  width: 35rpx;
+  height: 35rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/new_images/money.png)no-repeat center;
+  background-size: 100%;
+  margin-right: 10rpx;
+}
+.iphone_footer{
+  bottom:68rpx;
+}
+/**有新消息右侧按钮提醒**/
+#msgNotify {
+  width:100rpx;
+  height: 100rpx;
+  position: fixed;
+  background: url('http://cdn.haofang.net/static/uuminiapp/im/news_active_new_a.png') center center no-repeat;
+  right:21rpx;
+  bottom:300rpx;
+  border-radius: 50%;
+  z-index: 999;
+  background-size: 100% 100%;
+}
+.effect-tip {
+    background-color: red;
+    height: 12rpx;
+    width: 12rpx;
+    right:20rpx;
+    top:26rpx;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.heart {
+    animation: pound 1s infinite;
+    -webkit-animation: pound 1s infinite;
+    -moz-animation: pound 1s infinite
+}
+#msgNotify{
+  bottom: 120rpx;
+}
+.iphone_msg{
+  bottom: 188rpx !important;
+}

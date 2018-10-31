@@ -1,0 +1,17 @@
+<template name="loaddown">
+    <!--引导下载-->
+    <view class="down-app-box-load" wx:if="{{downAppBoxShow}}">
+        <view class="down-mask-load" catchtap='downCloseEvent'></view>
+        <view class="down-con-load">
+            <view class='close-icon' catchtap='downCloseEvent'></view>
+            <view class='d-top-img-load'>
+                <image src='{{imgSrc}}' style='width:{{imgWidth}};height:{{imgHeight}};' mode='aspectFill' />
+            </view>
+            <view class="down-txt-load down-txt-top-load">{{titleTxtLoad}}</view>
+            <view class="down-txt-load down-txt-bottom-load">{{nextTxtLoad}}</view>
+            <view class="down-btn-load" catchtap='downCloseEvents'>
+                <view class="down-btn-txt-load">我知道了</view>
+            </view>
+        </view>
+    </view>
+</template>

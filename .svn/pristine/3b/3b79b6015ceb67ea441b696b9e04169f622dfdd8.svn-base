@@ -1,0 +1,262 @@
+/* pages/appointAgent/appointAgent.wxss */
+.dd_wrap{
+	width:100%;
+	padding-top:70rpx;
+}
+.agent_title h2{
+	width:100%;
+	height:100%;
+	font-size:50rpx;
+	color:#000000;
+	text-align:center;
+}
+.fc-b-h{
+	color:#c9c9c9;
+}
+
+
+/*经纪人信息*/
+#content{
+    display: block;
+    transform-origin: 0px 0px 0px;
+    opacity: 1;
+    transform: scale(1, 1);
+}
+.dd_info {
+    width: 360rpx;
+    margin: auto;
+    margin-top: 40rpx;
+}
+.dd_img{
+	display: block;
+    width: 120rpx;
+    height: 120rpx;
+	margin:auto;
+    background-repeat: no-repeat;
+	-webkit-background-size: cover;
+    border-radius: 60px;
+    overflow: hidden;
+}
+.dd_img image{
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url(https://uuweb.haofang.net/PublicC/images/default_avatar_2.png) center no-repeat;
+    background-size: 100% 100%;
+}
+.jjr_info{
+	margin: 24rpx auto 20rpx;
+	text-align:center;
+}
+.jjr_name{
+    font-size: 32rpx;
+    color: #000000;
+    font-weight: bold;
+}
+.jjr_mobile{
+    font-size: 36rpx;
+    color: #000000;
+    font-weight: bold;
+}
+.jjr_dname{
+	font-size: 28rpx;
+    color: #808080;
+    padding-left: 16rpx;
+	/*padding-top:1px;*/
+}
+.start_score{
+	text-align:center;
+	display: -webkit-box;
+    -webkit-box-align: center;
+}
+
+.dd_score_num{
+    text-align: center;
+    font-size: 22rpx;
+    color: #ffffff;
+    background-color: #FFAE00;
+    display: inline-block;
+    height: 30rpx;
+    line-height: 30rpx;
+    border-radius: 16rpx;
+    width: 48rpx;
+    margin-left: 12rpx;
+}
+.start_score text {
+    display:block;
+}
+
+.dd_score_img {
+    width: 220rpx;
+    height: 40rpx;
+    background: url(https://uuweb.haofang.net/PublicC/images/score_yellow.png) no-repeat;
+    background-size: 100% auto;
+    margin-left: 36rpx;
+    margin-right: 16rpx;
+}
+.star-value-5,.star-value-5d0{background-position:0 0}
+.star-value-4d1,.star-value-4d2,.star-value-4d3,.star-value-4d4,.star-value-4d5,.star-value-4d6,.star-value-4d7,.star-value-4d8,.star-value-4d9{background-position:0 -42rpx}
+.star-value-4,.star-value-4d0{background-position:0 -88rpx;}
+.star-value-3d1,.star-value-3d2,.star-value-3d3,.star-value-3d4,.star-value-3d5,.star-value-3d6,.star-value-3d7,.star-value-3d8,.star-value-3d9{background-position:0 -130rpx}
+.star-value-3,.star-value-3d0{background-position:0 -178rpx;}
+.star-value-2d1,.star-value-2d2,.star-value-2d3,.star-value-2d4,.star-value-2d5,.star-value-2d6,.star-value-2d7,.star-value-2d8,.star-value-2d9{background-position:0 -174rpx}
+.star-value-2,.star-value-2d0{background-position:0 -264rpx;}
+.star-value-1d1,.star-value-1d2,.star-value-1d3,.star-value-1d4,.star-value-1d5,.star-value-1d6,.star-value-1d7,.star-value-1d8,.star-value-1d9{background-position:0 -310rpx}
+.star-value-1,.star-value-1d0{background-position:0 -350rpx;}
+.star-value-0d1,.star-value-0d2,.star-value-0d3,.star-value-0d4,.star-value-0d5,.star-value-0d6,.star-value-0d7,.star-value-0d8,.star-value-0d9{background-position:0 -394rpx}
+.star-value-0,.star-value-0d0{background-position:0 -438rpx;}
+.dd_info_r {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    margin-top: 30rpx;
+}
+.dd_info_r button {
+    display: inline-block;
+    width: 20rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    color: #ff9600;
+    font-size: 28rpx;
+    border: 1rpx solid #ff9600;
+    border-radius: 8rpx;
+    margin-top: 14rpx;
+}
+.dd_info_r p {
+    font-size: 30rpx;
+    color: #979797;
+}
+.dd_info_hd {
+    width: 104rpx;
+    height: 104rpx;
+    margin: 30rpx 30rpx 0 0;
+}
+.dd_info_ul>li { margin-left: 40rpx; }
+
+/*按钮*/
+.btn{
+	height:110rpx;
+    line-height: 110rpx;
+    margin: 42rpx 40rpx 0;
+}
+.btn_btn{
+	width:100%;
+	height:100%;
+	background:#cecfd3;
+	font-size: 36rpx;
+	color:rgb(255,255,255);
+	border-radius: 8rpx;
+    background-color: rgb(27, 201, 100);
+    text-align: center;
+}
+
+/**/
+.dd_prompt {
+	position: relative;
+    margin-right: 40rpx;
+    padding-right: 0;
+	padding-left: 24rpx;
+    padding-top: 60rpx;
+    margin-left: 40rpx;
+}
+.dd_prompt .dd_prompt_ul .dd_prompt_li {
+	position: relative;
+    line-height: 2;
+    font-size: 30rpx;
+    color: #808080;
+}
+.ui-txt-green{
+	color:#1bc964;
+}
+
+.dd_prompt .dd_prompt_ul .dd_prompt_li:before {
+    position: absolute;
+    top: 50%;
+    left: -26rpx;
+    content: '';
+    width: 8rpx;
+    height: 8rpx;
+    margin-top: -4rpx;
+    background-color: #1BC964;
+    border-radius: 100%;
+}
+
+/*发布委托弹窗*/
+.publish-entrust{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left:0;
+  right: 0;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.3);
+}
+.publish-content{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  text-align: center;
+}
+.publish-entrust-mask{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+.publish-li-after{
+  height: 10rpx;
+  background: #F1F1F1
+}
+.publish-li{
+  font-size: 30rpx;
+  color: #333;
+  padding: 30rpx 0;
+  border-bottom: 1px solid #efefef;
+}
+.publish-content .publish-li:last-child{
+  border-bottom:none;
+}
+.publish-li-icon-com{
+  position: relative;
+  padding-left: 60rpx;
+}
+.publish-li-icon-com::before{
+  content: '';
+  display:inline-block;
+  width: 38rpx;
+  height: 38rpx;
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat:no-repeat 
+}
+.cancle-class{
+  margin-top: 10rpx;
+}
+.trust-zufang-icon::before{
+  background-image: url('http://cdn.haofang.net/static/uuminiapp/personalCenter/trust-zufang-icon.png');
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.trust-maifang-icon::before{
+  background-image: url('http://cdn.haofang.net/static/uuminiapp/personalCenter/trust-maifang-icon.png');
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.trust-chuzu-icon::before{
+  background-image: url('http://cdn.haofang.net/static/uuminiapp/personalCenter/trust-chuzu-icon.png');
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.trust-chushou-icon::before{
+  background-image: url('http://cdn.haofang.net/static/uuminiapp/personalCenter/trust-chushou-icon.png');
+  position: absolute;
+  left: 0;
+  top: 0;
+}

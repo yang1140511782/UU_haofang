@@ -1,0 +1,443 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.2.0",
+	"appid": "wx6b5fd6b9a5bc3044",
+	"projectname": "uuhaofang",
+	"svr": "",
+	"client": "",
+	"qcloudRoot": "",
+	"miniprogramRoot": "",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 64,
+			"list": [
+				{
+					"id": 5,
+					"name": "出租",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=2&resource=1&cityid=1&caseid=3332132"
+				},
+				{
+					"id": -1,
+					"name": "个人中心",
+					"pathName": "pages/mine/mine",
+					"query": ""
+				},
+				{
+					"id": 13,
+					"name": "经纪人微店",
+					"pathName": "pages/personalStore/personalStore",
+					"query": "scene=933274"
+				},
+				{
+					"id": 14,
+					"name": "经纪人微店",
+					"pathName": "pages/personalStore/store/store",
+					"query": "archiveid=933274"
+				},
+				{
+					"id": -1,
+					"name": "发委托",
+					"pathName": "pages/entrust/entrust",
+					"query": "caseType=3"
+				},
+				{
+					"id": -1,
+					"name": "编辑委托",
+					"pathName": "pages/entrustEdit/entrustEdit",
+					"query": "caseType=3&editFlow=2"
+				},
+				{
+					"id": -1,
+					"name": "房价评估",
+					"pathName": "pages/evaluationEntry/evaluationEntry",
+					"query": ""
+				},
+				{
+					"id": 24,
+					"name": "评估结果",
+					"pathName": "pages/trendTwo/trendTwo",
+					"query": "buildId=2069&houseType=1&floor=4&totalFloor=28&roomNum=3&floorBuilding=undefined&renovation=普通&toward=东&buildName=英郡&hallNum=2&toiletNum=1&houseArea=132"
+				},
+				{
+					"id": 25,
+					"name": "价格走势",
+					"pathName": "pages/trendOne/trendOne",
+					"query": "cityId=1"
+				},
+				{
+					"id": -1,
+					"name": "详情页11",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=2&resource=1&cityid=1&caseid=3332132"
+				},
+				{
+					"id": -1,
+					"name": "详情页小区介绍-新增字段 与交互样式调整",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=11&caseid=6124206"
+				},
+				{
+					"id": -1,
+					"name": "掌通分享详情页",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=7506293&archive_id=1046079&source=zshft"
+				},
+				{
+					"id": 28,
+					"name": "委托详情",
+					"pathName": "pages/entrustDetail/entrustDetail",
+					"query": "pushLogId=5179566"
+				},
+				{
+					"id": -1,
+					"name": "房源详情页 , 描述及小区介绍概况展开调整",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=3&cityid=1&caseid=1526890594"
+				},
+				{
+					"id": -1,
+					"name": "待审核VR房源",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=7025870"
+				},
+				{
+					"id": -1,
+					"name": "VR房源",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=6772056"
+				},
+				{
+					"id": -1,
+					"name": "新房房源详情页",
+					"pathName": "pages/newHouseDetail/newHouseDetail",
+					"query": "buildid=2062597"
+				},
+				{
+					"id": -1,
+					"name": "演唱会页面调试",
+					"pathName": "pages/vocalHtml/vocalHtml",
+					"query": "shareUserId=363979&shareOpenId=oD5_z0EiCY1Evq8TuuWgQXNEReJs"
+				},
+				{
+					"id": -1,
+					"name": "地图找房",
+					"pathName": "pages/findHouseByMap/findHouseByMap",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我要买房-委托列表",
+					"pathName": "pages/trustList/trustList",
+					"query": "caseType=3"
+				},
+				{
+					"id": -1,
+					"name": "公寓列表",
+					"pathName": "pages/apartmentList/list",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "新房列表",
+					"pathName": "pages/newHouseList/newHouseList",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "演唱会页面-无参数情况",
+					"pathName": "pages/vocalHtml/vocalHtml",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "房源投诉",
+					"pathName": "pages/fakeHouse/fakeHouse",
+					"query": "archiveId=640425&caseType=1&caseId=6770433&houseInfo=御源大湖区 2室2厅1卫 89.01㎡ 135万"
+				},
+				{
+					"id": -1,
+					"name": "调试页面",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=7506806"
+				},
+				{
+					"id": -1,
+					"name": "详情页调试",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=7488392"
+				},
+				{
+					"id": -1,
+					"name": "客服IM",
+					"pathName": "pages/im/im",
+					"query": "from=uu_363979&to=618239"
+				},
+				{
+					"id": -1,
+					"name": "客服IM用户",
+					"pathName": "pages/im/im",
+					"query": "to=1096948&caseId=7534912&caseType=1"
+				},
+				{
+					"id": -1,
+					"name": "Im测试",
+					"pathName": "pages/im/im",
+					"query": "to=961247&caseId=7533326&caseType=1"
+				},
+				{
+					"id": 45,
+					"name": "扫码进入的页面(20180510)",
+					"pathName": "pages/scanCode/scanCode",
+					"query": "scene=ditui_11"
+				},
+				{
+					"id": -1,
+					"name": "个人钱包",
+					"pathName": "pages/myAccount/myAccount",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/mine/mine",
+					"query": ""
+				},
+				{
+					"id": 48,
+					"name": "委托列表",
+					"pathName": "pages/trustList/trustList",
+					"query": "caseType=23"
+				},
+				{
+					"id": -1,
+					"name": "公寓详情页",
+					"pathName": "pages/apartmentDetail/apartmentDetail",
+					"query": "apartmentUuid=6986&roomUuid=12480&rentType=2"
+				},
+				{
+					"id": -1,
+					"name": "普通详情页调整",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=7475890"
+				},
+				{
+					"id": -1,
+					"name": "登录-模式",
+					"pathName": "pages/login/login",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "收藏",
+					"pathName": "pages/collect/collect",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "list",
+					"pathName": "pages/list/list",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "新房详情",
+					"pathName": "pages/newHouseDetail/newHouseDetail",
+					"query": "buildid=2039797"
+				},
+				{
+					"id": -1,
+					"name": "发布委托",
+					"pathName": "pages/entrust/entrust",
+					"query": "caseType=3"
+				},
+				{
+					"id": -1,
+					"name": "测试11",
+					"pathName": "pages/apartmentDetail/apartmentDetail",
+					"query": "apartmentUuid=AF0EEB575FE948B2982495CBDC60DB51&roomUuid=83672B6EA941498DA5AACBA5DDB41E7A&rentType=2"
+				},
+				{
+					"id": -1,
+					"name": "测试",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=7561740"
+				},
+				{
+					"id": 58,
+					"name": "有奖委托",
+					"pathName": "pages/registration/registration",
+					"query": "caseType=2"
+				},
+				{
+					"id": -1,
+					"name": "出租委托列表",
+					"pathName": "pages/trustList/trustList",
+					"query": "caseType=2"
+				},
+				{
+					"id": -1,
+					"name": "出售委托列表",
+					"pathName": "pages/trustList/trustList",
+					"query": "caseType=1"
+				},
+				{
+					"id": -1,
+					"name": "出售委托编辑",
+					"pathName": "pages/registration/registration",
+					"query": "isEdit=1&caseType=1&vipCaseId=1108&brokerArchiveId=&pushLogId=&cityId="
+				},
+				{
+					"id": -1,
+					"name": "出租委托编辑",
+					"pathName": "pages/registration/registration",
+					"query": "isEdit=1&caseType=2&vipCaseId=602&brokerArchiveId=&pushLogId=&cityId=1"
+				},
+				{
+					"id": 47,
+					"name": "合租委托编辑",
+					"pathName": "pages/registration/registration",
+					"query": "isEdit=1&isHezu=1&caseType=2&vipCaseId=649&brokerArchiveId=&pushLogId=&cityId=1"
+				},
+				{
+					"id": -1,
+					"name": "我的账户",
+					"pathName": "pages/myAccount/myAccount",
+					"query": ""
+				},
+				{
+					"id": 67,
+					"name": "最近咨询列表",
+					"pathName": "pages/newsRecent/newsRecent",
+					"query": "caseId=52366&caseType=1&dataCityId=1"
+				},
+				{
+					"id": 68,
+					"name": "详情页调试",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=3&cityid=1&caseid=1545448814"
+				},
+				{
+					"id": -1,
+					"name": "详情页调试",
+					"pathName": "pages/newHouseDetail/newHouseDetail",
+					"query": "buildid=2062597"
+				},
+				{
+					"id": -1,
+					"name": "公寓详情页",
+					"pathName": "pages/apartmentDetail/apartmentDetail",
+					"query": "apartmentUuid=45932F6F1A7C45EE9E1F4AF980C0F00D&roomUuid=0C450BD431F549D2B16A3E128142543F&rentType=2"
+				},
+				{
+					"id": -1,
+					"name": "买房委托列表",
+					"pathName": "pages/trustList/trustList",
+					"query": "caseType=3"
+				},
+				{
+					"id": 54,
+					"name": "新房详情页(售楼部)",
+					"pathName": "pages/newHouseDetail/newHouseDetail",
+					"query": "buildid=2074975"
+				},
+				{
+					"id": -1,
+					"name": "新房详情页(置业顾问)",
+					"pathName": "pages/newHouseDetail/newHouseDetail",
+					"query": "buildid=2062597"
+				},
+				{
+					"id": -1,
+					"name": "公寓列表",
+					"pathName": "pages/apartmentList/list",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "公寓详情页",
+					"pathName": "pages/apartmentDetail/apartmentDetail",
+					"query": "apartmentUuid=ADF587DA86EA4EA4AAA4B0F615FE201D&roomUuid=D4A01B674FEA483795495532F66517E5&rentType=2"
+				},
+				{
+					"id": -1,
+					"name": "出租委托登记",
+					"pathName": "pages/registration/registration",
+					"query": "caseType=2"
+				},
+				{
+					"id": -1,
+					"name": "newHouseDetail",
+					"pathName": "pages/newHouseDetail/newHouseDetail",
+					"query": "buildid=2062597"
+				},
+				{
+					"id": -1,
+					"name": "详情页 (有VR) ",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=7046137"
+				},
+				{
+					"id": -1,
+					"name": "详情页 (有VR+VIDEO) ",
+					"pathName": "pages/houseDetail/houseDetail",
+					"query": "casetype=1&resource=1&cityid=1&caseid=6969801"
+				},
+				{
+					"id": 62,
+					"name": "saleEntrust",
+					"pathName": "pages/entrust/entrust",
+					"query": "caseType=3"
+				},
+				{
+					"id": 63,
+					"name": "loginNew",
+					"pathName": "pages/loginNew/loginNew",
+					"query": "a=22&b=44"
+				},
+				{
+					"id": 64,
+					"name": "专属委托(优惠券)",
+					"pathName": "pages/entrustBrokerCoupon/entrustBrokerCoupon",
+					"query": "shareId=1"
+				},
+				{
+					"id": 65,
+					"name": "列表",
+					"pathName": "pages/newHouseList/newHouseList",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "收藏",
+					"pathName": "pages/collect/collect",
+					"query": ""
+				}
+			]
+		}
+	}
+}

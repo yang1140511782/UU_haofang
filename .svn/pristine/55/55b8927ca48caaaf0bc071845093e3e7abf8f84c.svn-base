@@ -1,0 +1,321 @@
+<import src="../../component/loadDown/loadDown.wxml"/>
+<view class="page">
+    <view class="im-container" catchtap='showMessage'>
+        <!--经纪人推送房源-->
+        <view class="house-info-top" wx:if="{{recommendFlag}}">
+            <view class="house-list-con"   catchtap='goDetail' data-caseId='{{lastRecommendHouse.costomData.CASE_ID}}' data-caseType='{{lastRecommendHouse.costomData.CASE_TYPE}}' data-cityId="{{cityId}}" data-resource='1'>
+                <view class="house-left">
+                    <view class="house-img">
+                        <image mode="aspectFill" src="{{lastRecommendHouse.houseInfo.thumbUrl}}"  style="width:100%;height:100%"></image>
+                    </view>
+                </view>
+                <view class="house-right">
+                    <view class="house-type-{{caseType==1?'sale':'lease'}}">{{lastRecommendHouse.houseInfo.houseSubject}} </view>
+                    <view class="house-addr">{{lastRecommendHouse.houseInfo.houseRoom ? lastRecommendHouse.houseInfo.houseRoom+'室' : ""}}{{lastRecommendHouse.houseInfo.houseHall ? lastRecommendHouse.houseInfo.houseHall+'厅' : ""}}{{lastRecommendHouse.houseInfo.houseWei ? lastRecommendHouse.houseInfo.houseWei+'卫' : ""}} {{lastRecommendHouse.houseInfo.houseArea}}㎡ </view>
+                    <view class="house-price">{{lastRecommendHouse.houseInfo.houseTotalPrice}}{{lastRecommendHouse.houseInfo.priceUnitCn}} </view>
+                </view>
+                <view class='house-phone' catchtap='takePhone' data-mobile='{{toUserInfo.brokerMobile}}'>
+                  <image src='https://uuweb.haofang.net/Public/wxApp/images/im/house_phone.png'></image>
+                </view>
+                <view class="pull-down" catchtap='pullDown'>
+                    <image src='https://uuweb.haofang.net/Public/wxApp/images/im/pull_down.png' mode='aspectFill'></image>
+                </view>
+            </view>
+        </view>
+        <!--经纪人推送房源-->
+        <!--经纪人推送房源列表-->
+        <view class="house-info-top" wx:if="{{recommendListFlag}}">
+            <view class="house-list-con" wx:for="{{recommendHouse}}" wx:for-item="house" data-caseId='{{house.costomData.CASE_ID}}' data-caseType='{{house.costomData.CASE_TYPE}}' data-cityId="{{cityId}}" data-resource='1' catchtap='goDetail'>
+                <view class="house-left">
+                    <view class="house-img">
+                        <image mode="aspectFill" src="{{house.houseInfo.thumbUrl}}" style="width:100%;height:100%"></image>
+                    </view>
+                </view>
+                <view class="house-right">
+                    <view class="house-type-{{caseType==1?'sale':'lease'}}">{{house.houseInfo.houseSubject}} </view>
+                    <view class="house-addr">{{house.houseInfo.houseRoom ? house.houseInfo.houseRoom+'室' : ""}}{{house.houseInfo.houseHall ? houseInfo.houseHall+'厅' : ""}}{{houseInfo.houseWei ? houseInfo.houseWei+'卫' : ""}} {{houseInfo.houseArea}}㎡ </view>
+                    <view class="house-price">{{house.houseInfo.houseTotalPrice}}{{house.houseInfo.priceUnitCn}} </view>
+                </view>
+                <view class='house-phone' catchtap='takePhone' data-mobile='{{toUserInfo.brokerMobile}}'>
+                  <image src='https://uuweb.haofang.net/Public/wxApp/images/im/house_phone.png'></image>
+                </view>
+            </view>
+            <view class="pull-down" catchtap='pullUp'>
+                  <image src='https://uuweb.haofang.net/Public/wxApp/images/im/pull_down.png' mode='aspectFill'></image>
+            </view>
+        </view>
+        <!--经纪人推送房源列表-->
+        <!--用户正在浏览的房源-->
+        <view class="house-info-top" wx:if="{{houseFlag}}">
+            <view class="house-list-con"  catchtap='goDetail' data-caseId='{{houseInfo.vipCaseId}}' data-caseType='{{houseInfo.caseType}}' data-cityId="{{houseInfo.cityId}}" data-resource='{{houseInfo.resource}}'>
+                <view class="house-left">
+                    <view class="house-img">
+                        <image mode="aspectFill" src="{{houseInfo.thumbUrl}}" style="width:100%;height:100%"></image>
+                    </view>
+                </view>
+                <view class="house-right">
+                    <view class="house-type-{{caseType==1?'sale':'lease'}}">{{houseInfo.regionName}} {{houseInfo.sectionName}} {{houseInfo.buildName}}</view>
+                    <view class="house-addr">{{houseInfo.houseRoom ? houseInfo.houseRoom+'室' : ""}}{{houseInfo.houseHall ? houseInfo.houseHall+'厅' : ""}}{{houseInfo.houseWei ? houseInfo.houseWei+'卫' : ""}} {{houseInfo.houseArea}}㎡ </view>
+                    <view class="house-price">{{houseInfo.houseTotalPrice}}<view class='house-price-unit'>{{houseInfo.priceUnitCn}} </view></view>
+                </view>
+                <view class='house-phone' catchtap='takePhone' data-mobile='{{toUserInfo.brokerMobile}}'>
+                  <image src='https://uuweb.haofang.net/Public/wxApp/images/im/house_phone.png'></image>
+                </view>
+            </view>
+            <view class="house-info-btn" catchtap='sendHouse'>
+                <image src='https://uuweb.haofang.net/Public/wxApp/images/im/sendImUrl.png' mode='aspectFill'></image>
+            </view>
+        </view>
+        <!--经纪人正在浏览的房源-->
+      <scroll-view style="height: {{windowH}}px;"
+                   scroll-y
+                   scroll-into-view="{{toView}}"
+                   scroll-top="{{scrollTop}}"
+                   class="{{houseFlag||recommendFlag||recommendListFlag ? 'scroll-view-style' : 'scroll-view'}}">
+        <view class="scrollBox{{!emojiBoxHide?' paddingbottom533':''}}{{!photoBoxHide?' paddingbottom353':''}}"
+              style="padding-top:{{paddingTop}}px;">
+        <block wx:for="{{chatLists}}" wx:key='item' wx:for-index="idx">
+           
+                <view class="time-con" wx:if="{{item.hasTime == true}}">
+                    <view class="time">{{item.time}}</view>
+                </view>
+
+            <!--  群发找好房  -->
+            <view class="aoebox" wx:if="{{item.qunfa==true}}">
+              <view class="aoetext">前往App Store或各大应用商店，下载优优好房APP，无需注册电话即可与全国200万经纪人网络通话，免骚扰找房，佣金由你定，在线发布委托还可抽取4999元现金补贴。</view>
+              <view class="aoebtn" bindtap='findFun'>点击群发找好房</view>
+            </view> 
+
+
+            <!--自己发的消息-->
+            <view class="me" wx:elif="{{account==item.from}}">
+            <!--消息开始-->
+                <!--文本消息-->
+                <view class="me-content" wx:if="{{item.msgType == 'text'}}"><block wx:if="{{item.hasEmoji == true}}">
+                      <block wx:for="{{item.emoji[0]}}" wx:key="" wx:for-item='emojiItem'>
+                        <block wx:if="{{emojiItem.emoji == true}}"><image src="{{emojiItem.url}}" mode="aspectFit" data-url="{{emojiItem.url}}" class='emoji'></image></block>
+                        <block wx:elif="{{emojiItem != null}}">{{emojiItem}}</block>
+                      </block>
+                    </block><text wx:else>{{item.text}}</text>
+                </view>
+                 <view class="me-content padding0" wx:elif="{{item.msgType == 'image'}}">
+                     <image src="{{item.url}}" mode="widthFix" catchtap="clickImage" data-url="{{item.url}}"></image>
+                </view>
+                <view class="me-content {{currentId==idx ? 'chat_voice_r_gif' : 'chat_voice_r'}}" 
+                      wx:elif="{{item.msgType == 'audio'}}" 
+                      catchtap="audioPlay" 
+                      data-src="{{item.url}}" 
+                      data-dur="{{item.dur}}" 
+                      id="{{idx}}">
+                    {{item.dur}}
+                     <audio poster="{{poster}}" name="{{name}}" author="{{author}}" src="{{item.url}}" id="myAudio" controls loop="{{loop}}" hidden='true'></audio>
+                </view>
+                <!--富文本消息-->
+                <view class="house-box" wx:if="{{item.msgType == 'richmessage'}}">
+                <view class="house-chat-con" data-houseinfo='{{item.houseInfo}}' catchtap='goDetail'>
+                    <view class="house-chat-box">
+                        <view class="house-chat-left">
+                            <image src="{{item.houseInfo.thumbUrl}}" mode="aspectFill" style="width:100%;height:100%"></image>
+                        </view>
+                        <view class="house-chat-right">
+                            <view class="house-title">{{item.houseInfo.houseSubject}}</view>
+                            <view class="area">{{item.roomInfo}} {{item.houseInfo.houseArea ? item.houseInfo.houseArea+'㎡' : ""}}</view>
+                            <view class="desc">{{item.houseInfo.buildAddr}}</view>
+                            <view class="desc house-chat-price">{{item.houseInfo.houseTotalPrice}}{{item.houseInfo.priceUnitCn}}</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <!--消息结束-->
+                <view class="me-face">
+                    <image src="{{userInfo.icon ?  userInfo.icon : 'https://uuweb.haofang.net/Public/wxApp/images/mine/fang_default.png'}}" mode="aspectFill" binderror="defaultImg" data-err-img="userInfo.icon"></image>
+                </view>
+            </view>
+
+            <!--接收的消息-->
+            <view class="other" wx:else>
+                <view class="other-face">
+                    <image src="{{toUserInfo.icon}}" mode="aspectFill"></image>
+                </view>
+                <view class="other-content" wx:if="{{item.msgType == 'text'}}">
+                    <block wx:if="{{item.hasEmoji == true}}">
+                      <block wx:for="{{item.emoji[0]}}" wx:key="" wx:for-item='emojiItem'>
+                        <block wx:if="{{emojiItem.emoji == true}}">
+                            <image src="{{emojiItem.url}}" mode="widthFix" data-url="{{emojiItem.url}}" class='emoji'></image>
+                        </block>
+                        <block wx:elif="{{emojiItem != null}}">
+                          {{emojiItem}}
+                        </block>
+                      </block>
+                    </block>
+                    <block wx:else>
+                      {{item.text}}
+                    </block>
+                    <!-- 引导群发委托 -->
+                    <!-- <view class='qunfa-url' bindtap='findFun' wx:if="{{item.qunfa==true}}">点击群发找好房</view> -->
+                </view>
+                <view class="other-content padding0" wx:elif="{{item.msgType == 'image'}}">
+                     <image src="{{item.url}}" mode="widthFix" catchtap="clickImage" data-url="{{item.url}}"></image>
+                </view>
+                <view class="other-content {{currentId==idx ? 'chat_voice_l_gif' : 'chat_voice_l'}}" wx:elif="{{item.msgType == 'audio'}}" catchtap="audioPlay" data-src="{{item.url}}" data-dur="{{item.dur}}" id="{{idx}}">
+                    {{item.dur}}
+                     <audio poster="{{poster}}" name="{{name}}" author="{{author}}" src="{{item.url}}" id="myAudio" controls loop="{{loop}}" hidden='true'></audio>
+                </view>
+
+                  <!--富文本消息-->
+                <view class="other-content" wx:if="{{item.msgType == 'richmessage'}}">
+                <view class="house-chat-con" data-houseinfo='{{item.houseInfo}}' catchtap='goDetail'>
+                    <view class="house-chat-box">
+                        <view class="house-chat-left">
+                            <image src="{{item.houseInfo.thumbUrl}}" mode="aspectFill" style="width:100%;height:100%"></image>
+                        </view>
+                        <view class="house-chat-right">
+                            <view class="house-title">{{item.houseInfo.houseSubject}}</view>
+                            <view class="area">{{item.roomInfo}} {{item.houseInfo.houseArea ? item.houseInfo.houseArea+'㎡' : ""}}</view>
+                            <view class="desc">{{item.houseInfo.buildAddr}}</view>
+                            <view class="desc house-chat-price">{{item.houseInfo.houseTotalPrice}}{{item.houseInfo.priceUnitCn}}</view>
+                        </view>
+                    </view>
+                </view>
+                <view class="me-corner-left"></view>
+            </view>
+            </view>
+        </block>
+        <view id='red'></view>
+        <!--房源信息-->
+        </view>
+        </scroll-view>
+    </view>
+    <view  wx:if="{{isSpeaking}}"  class="speak-style">
+<image class="sound-style" src="https://uuweb.haofang.net/Public/wxApp/images/im/sound_1.png" ></image>
+<image wx:if="{{j==2}}" class="sound-style" src="https://uuweb.haofang.net/Public/wxApp/images/im/sound_2.png" ></image>
+<image wx:if="{{j==3}}" class="sound-style" src="https://uuweb.haofang.net/Public/wxApp/images/im/sound_3.png" ></image>
+<image wx:if="{{j==4}}" class="sound-style" src="https://uuweb.haofang.net/Public/wxApp/images/im/sound_4.png" ></image>
+<image wx:if="{{j==5}}"class="sound-style" src="https://uuweb.haofang.net/Public/wxApp/images/im/sound_5.png" ></image>
+ </view>
+    <view class="im-bottom{{!photoBoxHide?' toTop':''}}{{!emojiBoxHide?' bottom430':''}}">
+        <view class='audio-icon' catchtap='toogleChat'>
+          <image mode="aspectFit" src='https://uuweb.haofang.net/Public/wxApp/images/im/voice.png' wx:if="{{textOrVoice=='text'}}"></image>
+          <image mode="aspectFit" src='https://uuweb.haofang.net/Public/wxApp/images/im/keyboard.png' wx:else></image>
+        </view>
+        <view class="im-input{{inputValue?' greenborder':''}}" wx:if="{{textOrVoice=='text'}}">
+            <input placeholder-class="im-input-placeholder" 
+                   bindinput="inputContent" 
+                   value="{{inputValue}}" 
+                   focus="{{focusFlag}}" 
+                   bindfocus="inputFocus" 
+                   bindblur='inputblur'
+                   cursor="{{cursor}}"/>
+        </view>
+        <view wx:else class="im-voice" bindtouchstart="touchdown" bindtouchend="touchup" >
+        	{{isSpeaking?'松开 结束':'按住 说话'}}
+        </view>
+        
+        <view class="im-btn">
+            <image src="https://uuweb.haofang.net/Public/wxApp/images/im/smile.png" 
+                   mode='aspectFit' 
+                   catchtap="showEmojiBox" 
+                   style="width:70rpx;height:70rpx;" 
+                   hidden="{{!emojiBoxHide}}"/>
+            <image src="https://uuweb.haofang.net/Public/wxApp/images/im/keyboard.png" 
+                   mode='aspectFit' 
+                   catchtap="showEmojiBox" 
+                   style="width:66rpx;height:66rpx;" 
+                   hidden="{{emojiBoxHide}}"/>
+            <image src="https://uuweb.haofang.net/Public/wxApp/images/im/plus.png" 
+                   mode='aspectFit' 
+                   catchtap="showPhotoBox"
+                   hidden="{{inputValue != ''}}" 
+                   style="width:70rpx;height:70rpx;" />
+            <view class="sendBtn"
+                  catchtap='imSubmit'
+                  hidden="{{inputValue == ''}}">发送</view>
+            <!-- <button catchtap="fileSend">图片</button> -->
+            <!--
+            <button id="{{focusFlag}}" catchtap="imSubmit" disabled="{{disabledFlag}}">发送</button>
+            -->
+        </view>
+    </view>
+</view>
+
+<!--  发送图片,拍照弹框  -->
+<view class="photoBox" hidden='{{photoBoxHide}}'>
+  <view class="itembox" catchtap="fileSend" data-type="album">
+    <view class="picbox"></view>
+    <view class="text">相册</view>
+  </view>
+  <view class="itembox" catchtap="fileSend" data-type="camera">
+    <view class="picbox camerabox"></view>
+    <view class="text">拍摄</view>
+  </view>
+  <view class="itembox" catchtap="saveShield">
+    <view class="picbox shieldbox shieldbox-off"></view>
+    <view class="text">{{!isAddBlacklist?'屏蔽':'解除屏蔽'}}</view>
+  </view>
+</view>
+
+<!--  emoji表情弹框  -->
+<view class="emojiBox" hidden='{{emojiBoxHide}}'>
+  <swiper indicator-dots="{{true}}" 
+          style='height:100%;'
+          indicator-color="#e5e5e5"
+          indicator-active-color="#999999">
+    <block wx:for="{{emojiList}}" wx:key="{{pageIndex}}" wx:for-item="emojiPage" wx:for-index="pageIndex">
+      <swiper-item>
+        <view class="emojiPage">
+          <view class="emojiItem" data-name="{{emojiItem.fileName}}" catchtap="chooseEmoji"
+                wx:for="{{emojiPage}}"
+                wx:key="{{emojiIndex}}"
+                wx:for-index="emojiIndex"
+                wx:for-item="emojiItem">
+            <image mode='aspectFit' src="{{emojiItem.img}}" />
+          </view>
+          <view class="emojiItem deleteBtn" catchtap='deleteInput'>
+            <image mode='aspectFit' src="https://uuweb.haofang.net/Public/wxApp/images/im/delete.png" />
+          </view>
+        </view> 
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+
+<!--  录音中提示  -->
+<view class='recordbox' hidden='{{!isSpeaking}}'>
+  <view class="picbox"></view>
+  <view class="text">录音中</view>
+</view>
+
+<!--屏蔽提示框-->
+<view wx:if="{{addBlacklistToastShow}}" class="toast-tip">
+    <view class="toast-tip-tt">{{addBlacklistToastShowText}}</view>
+</view>
+<!--屏蔽提示框end-->
+
+<!--  悬浮按钮  -->
+<view class="iconBox" wx:if="{{callIconShow  && (photoBoxHide == true && emojiBoxHide == true)}}">
+  <view class='callIcon' catchtap='callBrokerTosat'></view>
+</view>
+
+<!--隐号拨打弹窗-->
+<view class='soldout-box' wx:if="{{toastMask}}" >
+    <view class='tost-mask' bindtap='maskHideBtn'></view>
+    <view class="refer-toast">
+            <view class='refer-txt'>
+              <view class='tos-line'></view>
+               <view class='ref-t'>选择联系方式</view>
+              <view class='tos-line'></view>
+            </view>
+            <view class='contract-box'>
+                <view class='yinhao-b' bindtap='hideCallBroker'><view class='yinhao-ic'></view><text>网络通话</text></view> 
+                <view class='call-b' catchtap="callBroker"><view class='call-ic'></view><text>拨打电话</text></view>
+            </view>
+            <view class='close-btn'></view>
+    </view>
+</view>
+<!--/首页按钮-->
+
+<form wx:if="{{isFirst && (photoBoxHide == true && emojiBoxHide == true)}}" class="collect-id-form" data-formtype="13"  report-submit="true" bindsubmit="collectFormId">
+    <view class="index-btn"  bindtap='indexBtnEvent'><button formType="submit"></button></view>
+</form>
+<!--引导下载-->
+<template is="loaddown" data="{{downAppBoxShow,imgSrc,imgWidth,imgHeight,titleTxtLoad,nextTxtLoad,newmapShow}}"/>

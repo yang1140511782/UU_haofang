@@ -1,0 +1,147 @@
+
+<!--  评估表单  -->
+<view id="evaBox">
+  <view class="e_box">
+    <view class="e_item right_arrow buildName" bindtap="searchBuildBox">小区<text>{{buildName}}</text></view>
+    <view class="e_item right_arrow houseType" catchtap="chooseType">类型<text class='{{typeText=="请选择" ? "font-color":""}}'>{{typeText}}</text></view>
+    <view class="e_item area">面积
+      <view class='inputBox'>
+        <input type="number" 
+               value="{{houseArea}}"
+               bindinput="houseAreaEvent"  
+               maxlength='6' 
+               placeholder-style="color:#999999;text-align:right;font-size:32rpx;" 
+               placeholder="请输入" />
+      </view>
+    </view>
+    <view class="e_item right_arrow houseType" catchtap="chooseHouseType">户型<text class='{{houseTypeText=="请选择" ? "font-color":""}}'>{{houseTypeText}}</text></view>
+    <view class="e_item right_arrow direction" catchtap="chooseDirection">朝向<text class='{{directionText=="请选择" ? "font-color":""}}'>{{directionText}}</text></view>
+    <view class="e_item right_arrow floor" catchtap="chooseFloor">楼层<text class='{{floorText=="请选择" ? "font-color":""}}'>{{floorText}}</text></view>
+    <!-- <view class="e_item right_arrow fitment" catchtap="chooseFitment">装修<text>{{fitmentText}}</text></view> -->
+  </view>
+  <view class='fot-box'>
+        <view class="e_btn" catchtap='evaluateEvent'>提交</view>
+  </view>
+  
+</view>
+
+
+
+
+
+
+<!--  搜索小区弹框  -->
+<view class="search-loupan-box" wx:if="{{searchLoupanBox}}">
+    <view class="search-box-head">
+        <view class="search-head-con">
+            <view class="search-input-box">
+                <input type="text" 
+                       bindconfirm='searchBuildData' 
+                       bindinput='searchBuildData'  
+                       value="{{searchInputValue}}" 
+                       style="width:100%;height:100%;"
+                       placeholder="请输入小区名称"
+                       placeholder-class="input-font"/>
+            </view>
+            <view class="kwd-delte" catchtap='deleteKedEvent'></view>
+        </view>
+        <!-- <view class="search-cancle-btn" catchtap='searchCancleEvent'>取消</view> -->
+    </view>
+    <!--  联想列表  -->
+    <view class="search-list-con">
+        <view class='l-ti' wx:if="{{chooseShow}}">您可以直接选择</view>
+        <view class="search-list-li" 
+              wx:for="{{buildArr}}" 
+              wx:key="{{index}}" 
+              data-id="{{item.buildId}}" 
+              data-text='{{item.buildName}}' 
+              catchtap="listTap">
+            <view class="search-build-name">
+              <view class='li-boxs'>
+                  {{item.buildName}}
+                  <text>{{item.regName}}</text>
+              </view>
+            </view>
+        </view>
+    </view>
+    <!--  历史记录  -->
+    <view class="historyBox">
+      
+    </view>
+</view>
+<!--  类型选择器  -->
+<view class="time-toast" wx:if="{{typeChooseShow}}" catchtap="chooseType">
+  <view style="position:absolute;bottom:0;left:0;width:100%;height:50%;" catchtap='cancelBubble'>
+    <view class="btnaa-box">
+        <view class="qx-btn" catchtap="closeType">取消</view>
+        <view class="qd-btn" catchtap="typeComfirm">确定</view>
+    </view>
+    <picker-view indicator-style="height: 45px;" class="time-box" bindchange="typeChange">
+      <picker-view-column>
+        <view wx:for="{{typeArr}}" wx:key style="line-height: 45px">{{item.text}}</view>
+      </picker-view-column>
+    </picker-view>
+  </view>
+</view>
+<!--  户型选择器  -->
+<view class="time-toast" wx:if="{{houseTypeChooseShow}}" catchtap="closeHouseType">
+  <view style="position:absolute;bottom:0;left:0;width:100%;height:50%;" catchtap='cancelBubble'>
+    <view class="btnaa-box">
+        <view class="qx-btn" catchtap="closeHouseType">取消</view>
+        <view class="qd-btn" catchtap="houseTypeComfirm">确定</view>
+    </view>
+    <picker-view indicator-style="height: 45px;" value="{{huxingIndex}}" class="time-box" bindchange="houseTypeChange">
+      <picker-view-column>
+        <view wx:for="{{roomNumArr}}" wx:key style="line-height: 45px">{{item.text}}</view>
+      </picker-view-column>
+    </picker-view>
+  </view>
+</view>
+
+<!--  朝向选择器  -->
+<view class="time-toast" wx:if="{{directionChooseShow}}" catchtap="closeDirection">
+  <view style="position:absolute;bottom:0;left:0;width:100%;height:50%;" catchtap='cancelBubble'>
+    <view class="btnaa-box">
+        <view class="qx-btn" catchtap="closeDirection">取消</view>
+        <view class="qd-btn" catchtap="directionComfirm">确定</view>
+    </view>
+    <picker-view indicator-style="height: 45px;" value="{{directionIndex}}" class="time-box" bindchange="directionChange">
+      <picker-view-column>
+        <view wx:for="{{directionArr}}" wx:key style="line-height: 45px">{{item.name}}</view>
+      </picker-view-column>
+    </picker-view>
+  </view>
+</view>
+
+<!--  楼层选择器  -->
+<view class="time-toast" wx:if="{{floorChooseShow}}" catchtap="closeFloor">
+  <view style="position:absolute;bottom:0;left:0;width:100%;height:50%;" catchtap='cancelBubble'>
+    <view class="btnaa-box">
+        <view class="qx-btn" catchtap="closeFloor">取消</view>
+        <view class="qd-btn" catchtap="floorComfirm">确定</view>
+    </view>
+    <picker-view indicator-style="height: 45px;" value="{{floorIndex}}" class="time-box" bindchange="floorChange">
+      <picker-view-column>
+        <view wx:for="{{floorArr}}" wx:key style="line-height: 45px">{{item.text}}</view>
+      </picker-view-column>
+      <picker-view-column>
+        <view wx:for="{{totalFloorArr}}" wx:key style="line-height: 45px">{{item.text}}</view>
+      </picker-view-column>
+    </picker-view>
+  </view>
+</view>
+
+<!--  装修选择器  -->
+<view class="time-toast" wx:if="{{fitmentChooseShow}}" catchtap="closeFitment">
+  <view style="position:absolute;bottom:0;left:0;width:100%;height:50%;" catchtap='cancelBubble'>
+    <view class="btnaa-box">
+        <view class="qx-btn" catchtap="closeFitment">取消</view>
+        <view class="qd-btn" catchtap="fitmentComfirm">确定</view>
+    </view>
+    <picker-view indicator-style="height: 45px;" class="time-box" bindchange="fitmentChange">
+      <picker-view-column>
+        <view wx:for="{{fitmentArr}}" wx:key style="line-height: 45px">{{item.name}}</view>
+      </picker-view-column>
+    </picker-view>
+  </view>
+</view>

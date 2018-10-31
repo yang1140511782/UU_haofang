@@ -1,0 +1,2 @@
+<!--扫码进入的页面-->
+<web-view wx:if="{{ pageType == 'webpage'}}" src="{{pageUrl}}?cityId={{cityId}}&openId={{openId}}&userId={{userId}}&archiveId={{archiveId}}"></web-view>

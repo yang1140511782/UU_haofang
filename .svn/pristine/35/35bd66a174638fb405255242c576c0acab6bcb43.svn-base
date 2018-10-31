@@ -1,0 +1,12 @@
+
+    <view class="title">
+        <text class="title-line"></text>
+        <view class="title-text">推荐登录方式</view>
+        <text class="title-line"></text>
+    </view>
+    <view class="login-btn">
+        <button type="default" open-type='getUserInfo' bindgetuserinfo='getUserInfo' hover-class="other-button-hover">
+            <text class="btn-icon"></text>
+            <text class="btn-text">账号登录</text>
+        </button>
+    </view>

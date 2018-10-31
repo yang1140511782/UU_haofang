@@ -1,0 +1,18 @@
+<view class='content-list'>
+    <view class='item' wx:for="{{contacts}}" data-to='{{item.imId}}' bindtap='goIm' wx:key="{{index}}">
+        <!-- 头像 -->
+        <view class="avatar">
+            <view class='user-face'>
+                <image src='{{item.headUrl}}' mode='aspectFill' style='border-radius:50%;'></image>
+            </view>
+        </view>
+        <!-- 姓名和最后一条消息 -->
+        <view class='item-right'>
+            <view class='username'>
+                {{item.nickName}}
+                <text>{{item.time}}</text>
+            </view>
+            <view class='last-msg'>{{item.msg}}</view>
+        </view>
+    </view>
+</view>

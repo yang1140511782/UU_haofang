@@ -1,0 +1,1000 @@
+//im相关
+let imSdk = require('../../utils/NIM_Web_NIM_v5.0.0.js');
+let common = require('../../utils/common.js');
+let nim = '';
+var app = getApp();
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    prizeTrustBompShow: false,//有奖委托红包提示
+    grievanceBomp: false,//投诉通知
+	  userId:'',
+    pushLogId:'',
+    toastShow:false,
+    toastMask:false,
+    guideToast:true,
+    currentManagerCondition: 1,      //当前流程
+    modalText: '',                   //是否同意看房弹框文字
+    showOrHideModal: false,          //是否同意看房弹框
+    serverStarVal: 4,                 //成交评价点击五角星的值
+    serviceEvaluateBox: false,       //服务评价弹框
+    realHouseOrNot: true,            //真房源还是假房源  (写错了)
+    seeEvaluateBox: false,             //带看评价弹框
+    seeStarVal: 0,                 //带看评价点击服务态度五角星的值
+    levStarVal: 0,                 //带看评价点击专业水平五角星的值
+    houseIntentionBox: false,         //房源意向弹窗
+    noSeeConfirmBox: false,          //不看该房的确认弹窗
+    refuseBrokerBox: false,           //拒绝经纪人弹窗
+    pushStatusClass: '1',//流程对应的进度条值(1-4):新增
+    trackInfos:[],
+    avatarUrl:'',//C端用户头像
+    isShield: 0, //是否已经屏蔽该经纪人（1是0否）
+    entrustUser: {
+      "integrity": 0, //"是否是诚信经纪人（1是0否）", 
+      "brokerArchiveId": "",
+      "brokerName": "",
+      "brokerUserPicUrl": "",
+      "brokerMobile": "",//接单经纪人的手机号
+      "entrustHouseNum": "0",
+      "receivingNum": "",//经纪人的成功接单次数-用于IM聊天界面、委托详情界面
+      "currVipQueueStatus": "",
+      //求租求购：2接单、3带看、4完成、5推荐，出租出售：2已接单 3已联系 4申请房勘 5同意房勘 6转入系统 7房勘完成
+      "pushStatus": "2",
+      "requireStatus": "",//委托状态：0已取消 1委托中 2已成交
+      "isEvaluate": 0,//成交以后是否对服务评价，1：已评价，非1未评价
+      "starLevel": "",//星级1-5
+      "starLevelShow": "",//星级1-5
+      "pushLogId": "",//经纪人接单信息ID
+      "recomInfoId": "",//经纪人的推荐信息ID，这个值只有在推荐信息成交后才会有值，非成交情况该值没有用
+      "vipCaseId": "",
+      "caseType": "",//委托类型：1出售 2整租 3求购 4求租 5合租
+      "daikanCount": "0",
+      "isUpdateRedFlag": "0",
+      "isVip": "0",
+      "isContact": "0",
+      "rewardType": "",//0普通委托1有奖委托
+      "rewardStatus": "",//有奖委托状态0默认 1已支付 2投诉中 3投诉成功 4成功失败
+      "isAppeal": "",//是否有申诉1是0否
+      "complaintId": ""//投诉ID
+    },
+    "custHouseList": [],
+    checkedEvaReasonArr:{
+    	0:0,
+    	1:0,
+    	2:0,
+    	3:0,
+    },
+    checkedCompleteReasonArr: {
+    	0:0,
+    	1:0,
+    	2:0,
+    	3:0,
+    }, //选中服务评价原因
+    checkedRefuseReasonArr: {
+    	0:0,
+    	1:0,
+    	2:0,
+    	3:0,
+    	4:0,
+    	5:0,
+    }, //拒绝经纪人原因
+    //服务评价原因
+    serverReasonArr: {
+      1: ["讲解很不清晰", "专业知识不强", "反馈不及时", "服务态度不好"],
+      2: ["讲解一般", "专业度不高", "反馈一般", "服务态度一般"],
+      3: ["讲解有待提升", "专业度有待提升", "反馈一般", "服务态度一般"],
+    },
+    //服务评价  假房源原因
+    serverFakeReasonArr: {
+      1: ["房源不存在", "房源已出租", "图片不真实", "价格不真实"],
+    },
+    //带看评价原因
+    seeReasonArr: {
+      1: ["讲解很不清晰", "专业知识不强", "与推荐房源不符", "服务态度不好"],
+      2: ["讲解一般", "专业度不高", "与推荐房源不符", "服务态度一般"],
+      3: ["讲解有待提升", "专业度有待提升", "与推荐房源不符", "服务态度一般"],
+    },
+    //拒绝经纪人原因
+    refuseBrokerReason: [
+      '推送房源不满意', '服务速度太慢', '暂无购/租房需求', '收费与约定不符', '经纪人态度恶劣', '感觉不够专业'
+    ],
+    archiveInfo: {
+      USER_NAME: "是否是",
+      EVA_AVG: 3,
+    },      // 经纪人信息
+    caseInfo: {},          // 委托信息
+    wholeBoxHidden: false, // 最外层盒子(数据加载完后再显示)
+    cancelReasonBox: false,  //取消委托弹框
+    cancelText: '',       // 记录填写的取消委托原因
+    tradeType: 1,   // 交易种类,控制取消委托原因的内容
+    //取消委托原因
+    cancelReasonData: {
+      '1': ["暂不出售/租", "房源信息登记错误", "经纪人态度恶劣", "长期未出售/租"],
+      '2': ["暂不出售/租", "房源信息登记错误", "无合适经纪人", "长期未出售/租"]
+
+    },
+    checkedArr: [false, false, false, false],
+    oldCheckedArr: [false, false, false, false],
+    isLike:1,//带看评价要提交的数据
+    realHouse:1,//带看评价要提交的数据,
+    evaContent:'',//带看评价手动填写内容
+    recomInfoId:'',//当前操作的房源推荐房源id,
+    showCompleteEvaDialog:false,
+    realPayMoney4C:'',//成交后显示的实际支付金额
+    completeEvaContent:'',//成交评价手动填写内容,
+    refuseContent:'',//拒绝经纪人手动填写内容
+    followDetailShow:false,//委托跟进详情显示
+    showTrackNum: 2,      //刚进页面显示条数
+    partTrackInfos: [],   //局部跟进数组
+    isFirst:false,//是否第一层级
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+	  wx.showLoading({
+			title: '加载中',
+		})
+    var that = this;
+    var pushLogId = options.pushLogId;
+    var userId = wx.getStorageSync('userId');
+    this.setData({ pushLogId: pushLogId,userId:userId });
+    if(typeof(app.globalData.imUserInfo.token) == 'undefined'){
+      app.initImUser(function(){
+        that.initIm();
+      })
+    }else{
+      that.initIm();
+    }
+
+    //判断是否是第一层级
+    var getCurrentPagesLength = getCurrentPages().length;
+    if (getCurrentPagesLength == 1) {
+      that.setData({
+        isFirst: true
+      });
+    }
+
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    this.initEntrustData(this.data.pushLogId, this.data.userId);
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+	  var that = this;
+      return {
+        title: '优优好房',
+        path: '/pages/real_index/index',
+        imageUrl:'http://uuweb.haofang.net/Public/wxApp/images/index/share.png'
+      }
+  },
+  /**
+   * 点击查看 委托跟进详情
+   */
+  followDetailTap:function(e){
+	  this.setData({
+      followDetailShow:!this.data.followDetailShow,
+    });
+  },
+
+  chooseTab: function (e) {
+    this.setData({
+      tabActive: e.currentTarget.dataset.i
+    })
+  },
+  cancelModal: function () {
+    this.setData({
+      showOrHideModal: false
+    })
+  },
+  showModal: function (e) {
+    if (e.currentTarget.dataset.type == 0) {
+      this.setData({
+        showOrHideModal: true,
+        modalText: '确定不看该房吗？'
+      })
+    } else {
+      this.setData({
+        showOrHideModal: true,
+        modalText: '确定要接受带看吗？'
+      })
+    }
+  },
+  dealData: function (info, item, setValue) {
+      var v = info[item];
+      if (setValue !== undefined) {
+          var json = {};
+          json[item] = setValue;
+          this.setData(json);
+      } else if (v !== undefined) {
+          var json = {};
+          json[item] = v;
+          this.setData(json);
+      }
+  },
+  initEntrustData:function(pushLogId,userId){
+	  var that = this;
+	    wx.request({
+	        url: app.buildRequestUrl('getEntrustHouseInfo'),
+	        data:{
+	        	pushLogId:pushLogId,
+	        	userId:userId
+	        },
+	        success: function (res) {
+						 wx.hideLoading();
+	            var status = res.data.STATUS;
+	            var info = res.data.DATA;
+	            if(status != 1){
+	            	
+	            }
+	            if(!!info.entrustUser){
+	            	if(info.entrustUser.starLevel){
+	            		info.entrustUser.starLevelShow = info.entrustUser.starLevel.replace('.','-');
+	            	}
+	            	that.setData({entrustUser:info.entrustUser});
+	            }
+	            that.dealData(info, 'custHouseList');
+	            if(info.custHouseList && info.custHouseList.length>0){
+	            	for(var i=0;i<info.custHouseList.length;i++){
+	            		if(!!info.custHouseList[i]['tagIds']){
+	            			info.custHouseList[i]['tagIds'] = info.custHouseList[i]['tagIds'].split("|");
+	            		}
+						//价格取整
+						if(!!info.custHouseList[i]['houseTotalPrice']){
+							 info.custHouseList[i]['houseTotalPrice'] = parseFloat(info.custHouseList[i]['houseTotalPrice']);
+						}
+						if(!!info.custHouseList[i]['houseArea']){
+							info.custHouseList[i]['houseArea'] = parseFloat(info.custHouseList[i]['houseArea']);
+						}
+	            	}
+	            	that.setData({custHouseList:info.custHouseList});
+	            }
+            	that.setData({userId:userId});	            
+	            var pushStatusClassJson = {0:1,2:1,5:2,3:3,4:4};
+	            that.dealData(info, 'pushStatusClass',pushStatusClassJson[info.entrustUser.pushStatus]);
+	            var u = info.entrustUser;
+	            if(u.isEvaluate==1){
+	            	that.getServiceEvaAction();
+	            }
+	            that.initTrackData(u.vipCaseId,u.caseType,u.cityId,userId,u.brokerArchiveId);
+              
+              wx.request({
+                url: app.buildRequestUrl('isInBlackList') + '?accid=' + 'uu_' + app.globalData.userId + "&archiveId=" + u.brokerArchiveId,
+                success: function (res) {
+                  if (res.data.status == 1) {
+                    if (res.data.info.flag == 1) {
+                      that.setData({ isShield: 1});
+                    }else{
+                      that.setData({ isShield: 0});
+                    }
+                  }
+                }
+              });
+	        },
+	         fail: function () {
+
+	         },complete:function(){
+	        	 app.hideToast();
+	         }
+	    })
+  },
+  initTrackData(vipCaseId,caseType,cityId,userId,archiveId){
+	  var that = this;
+	  wx.request({
+	        url: app.buildRequestUrl('getUUHouseTrackInfos'),
+	        data:{
+	        	vipCaseId:vipCaseId,
+	        	caseType:caseType,
+	        	cityId:cityId,
+	        	userId:userId,
+	        	archiveId:archiveId
+	        },
+	        success: function (res) {
+	        	var userInfo = wx.getStorageSync('userInfo');
+				userInfo = userInfo.userInfo;
+	        	if(userInfo && userInfo['avatarUrl']){
+              if (userInfo['avatarUrl'] && userInfo['avatarUrl'].indexOf("/132") == -1) {
+                userInfo['avatarUrl'] = userInfo['avatarUrl'].substr(0, userInfo['avatarUrl'].length - 1) + "/132";
+              }
+	        		that.setData({avatarUrl:userInfo['avatarUrl']});
+	        	}
+	            var status = res.data.STATUS;
+	            var trackInfosArr = new Array();
+            	var trackList = res.data.DATA.trackList;
+	          
+	            if(!!trackList && trackList.length > 0){
+	            	for(var i=0;i<trackList.length;i++){
+	            		var date = trackList[i].date;
+	            		var trackInfos = trackList[i].trackInfos;
+	            		for(var j=0;j<trackInfos.length;j++){
+	            			var x = {photoUrl:(trackInfos[j]['fromSource']==1?that.data.entrustUser['brokerUserPicUrl']:that.data.avatarUrl),trackTitle:"【"+trackInfos[j].trackTitle+"】 "+date+" "+trackInfos[j].hour,trackContent:trackInfos[j].item}
+	            			trackInfosArr.push(x);
+	            		}
+	            	}
+                //如果跟进数组长度大于刚进页面限制显示条数
+                var showTrackNum = that.data.showTrackNum;
+                var partArr = trackInfosArr.slice(0, showTrackNum);
+                that.setData({
+                  trackInfos: trackInfosArr,
+                  partTrackInfos: partArr
+                });
+	            };
+	        },
+	         fail: function () {
+
+	         }
+	    })
+  },
+  agreen4Daikan:function(e){
+	  var that = this;
+    var isShield = this.isShield();
+    if (isShield == 1) {
+      return false;
+    }
+	    wx.request({
+	        url: app.buildRequestUrl('agreen4Daikan'),
+	        data:{
+	        	recomInfoId:e.target.dataset.recominfoid,
+	        	userId:that.data.userId,
+	        	isVip:e.target.dataset.isvip
+	        },
+	        success: function (res) {
+	        	var status = res.data.STATUS;
+	        	if(status==1){
+	        		wx.showToast({
+        			  title: '操作成功',
+        			  icon: 'success',
+        			  duration: 1500
+        			});
+	        		that.initEntrustData(that.data.entrustUser.pushLogId,that.data.userId);
+	        	}
+	        }
+	    })
+  },
+  disagreen4DaikanDialog:function(e){
+    var isShield = this.isShield();
+    if (isShield == 1) {
+      return false;
+    }
+	  this.setData({noSeeConfirmBox:!this.data.noSeeConfirmBox,disagreeRecomInfoId:e.target.dataset.recominfoid,disagreeVip:e.target.dataset.isvip});
+  },
+  disagreen4Daikan:function(e){
+	  var that = this;
+	  wx.request({
+		  url: app.buildRequestUrl('disagreen4Daikan'),
+		  data:{
+	        	recomInfoId:e.target.dataset.recominfoid,
+	        	isVip:e.target.dataset.isvip
+		  },
+		  success: function (res) {
+			  var status = res.data.STATUS;
+			  if(status==1){
+				  that.setData({noSeeConfirmBox:false});
+		        	wx.showToast({
+	      			  title: '操作成功',
+	      			  icon: 'success',
+	      			  duration: 1500
+	      			});
+	        		that.initEntrustData(that.data.entrustUser.pushLogId,that.data.userId);
+	        	}
+		  }
+	  })
+  },
+  /**
+   * 关闭 点击拨打电话蒙层
+   */
+  maskHideBtn:function(){
+	    this.setData({
+	      toastMask: false
+	    })
+  },
+  /**
+   * 点击拨打电话
+   */
+  showPhoneMask:function(e){
+    var isShield = this.isShield();
+    if (isShield == 1){
+      return false;
+    }
+	  //直接拨打电话
+	   var brokerMobile = e.currentTarget.dataset.tel;
+	  if(!!brokerMobile){
+		  wx.makePhoneCall({
+  				phoneNumber: brokerMobile //仅为示例，并非真实的电话号码
+		})
+	  }
+	//   this.setData({toastMask: true})
+  },
+  /**
+   * 点击拨打电话
+   */
+  makeCall:function(e){
+	  var brokerMobile = e.currentTarget.dataset.mobile;
+	  if(!!brokerMobile){
+		  wx.makePhoneCall({
+  				phoneNumber: brokerMobile //仅为示例，并非真实的电话号码
+		})
+	  }
+  },
+  /**
+   * 咨询经纪人
+   */
+  imContact:function(e){
+    var isShield = this.isShield();
+    if (isShield == 1) {
+      return false;
+    }
+	  var archiveId = e.currentTarget.dataset.archive;
+	  if(!!archiveId){
+		  //如果有房源(1条),带上房源信息
+		  var custHouseList = this.data.custHouseList;
+     
+		  if(custHouseList.length == 1){
+			  var custHouseData = custHouseList[0];
+        var houseCaseType = (custHouseData.caseType == 1 || custHouseData.caseType == 3) ? 1 : 2;
+        console.log(houseCaseType);
+        var url = "/pages/im/im?to=" + archiveId + "&caseId=" + custHouseData.houseId + "&caseType=" + houseCaseType+"&cityId="+custHouseData.cityId;
+		  }else{
+			  var url =  "/pages/im/im?to="+archiveId;
+		  }
+		  wx.navigateTo({
+  			url: url
+		})
+	  }
+  },
+  daikanEva:function(e){//显示带看评价弹框
+    var isShield = this.isShield();
+    if (isShield == 1){
+      return false;
+    }
+	  this.setData({
+		  seeEvaluateBox: true,
+		  recomInfoId:e.target.dataset.recominfoid
+      })
+  },
+  /**
+   * 关闭带看评价弹框
+   */
+  daikanEvaClose:function(e){
+	  this.setData({
+		  seeEvaluateBox: false,
+      })
+  },
+  chooseServeStar:function(e){//改变带看评价服务态度星级
+	  this.setData({
+		  seeStarVal: e.target.dataset.val,
+		  checkedEvaReasonArr:{0:0,1:0,2:0,3:0}
+      })
+  },
+  chooseLevelStar: function (e) {//改变带看评价专业水平星级
+    this.setData({
+      levStarVal: e.target.dataset.val,
+      checkedEvaReasonArr: { 0: 0, 1: 0, 2: 0, 3: 0 }
+    })
+  },
+  toggleRealHouse:function(e){//切换选择真房源/假房源
+	  this.setData({
+		  realHouse: e.target.dataset.val,
+      evaContent:'',
+      seeStarVal: 0,                 //带看评价点击服务态度五角星的值
+      levStarVal: 0
+	  })
+  },
+  chooseHouseIntentDialog:function(e){
+	  var that = this;
+	  //带看评价四星以下必选原因或者必填文字,否则按钮颜色为灰色不可点
+	  var evaContent = that.data.evaContent;  //带看评价
+    that.setData({
+      isLike: e.target.dataset.val
+    }) 
+	  var indexArr = new Array();
+	  for(var i in that.data.checkedEvaReasonArr){
+		  if(that.data.checkedEvaReasonArr[i]==1){
+			  indexArr.push(i);
+		  }
+	  }
+	  if(that.data.realHouse == "0"){//选择假房源
+      if (evaContent.length == 0){
+        wx.showToast({
+          title: '请填写评论指出经纪人的不足吧',
+          icon: 'none',
+          duration: 1500,
+          success: function () {
+          }
+        });
+        return false;
+      }
+
+      if (evaContent.length < 15){
+        wx.showToast({
+          title: '请至少输入15个字',
+          icon: 'none',
+          duration: 1500,
+          success: function () {
+          }
+        });
+        return false;
+      }
+      that.submitEvaData();
+	  }else{ //真房源
+		  if(that.data.realHouse == "1"){
+        if (that.data.seeStarVal <1 ){
+          wx.showToast({
+            title: '请给经纪人服务态度评分',
+            icon: 'none',
+            duration: 1500,
+            success: function () {
+            }
+          });
+          return false;
+        }
+        if (that.data.levStarVal < 1) {
+          wx.showToast({
+            title: '请给经纪人专业水平评分',
+            icon: 'none',
+            duration: 1500,
+            success: function () {
+            }
+          });
+          return false;
+        } 
+      that.submitEvaData();
+		  }
+	  }
+  },
+  chooseHouseIntent:function(e){
+	  this.setData({
+		  houseIntentionBox: true
+	  })
+  },
+  toogleEvaReason:function(e){
+	  var checkedEvaReasonArr = this.data.checkedEvaReasonArr;
+	  var nowIndex = e.currentTarget.dataset.index;
+	  if(checkedEvaReasonArr[nowIndex]==0){
+		  checkedEvaReasonArr[nowIndex]=1;
+	  }else{
+		  checkedEvaReasonArr[nowIndex]=0;
+	  }
+	  this.setData({checkedEvaReasonArr:checkedEvaReasonArr});
+  },
+  toggleIsLike:function(e){//切换是否喜欢房源
+	  this.setData({
+		  isLike: e.target.dataset.val
+	  })
+  },
+  submitEvaData:function(e){//提交带看评价数据
+	  var that = this;
+	  var indexArr = new Array();
+	  for(var i in that.data.checkedEvaReasonArr){
+		  if(that.data.checkedEvaReasonArr[i]==1){
+			  indexArr.push(i);
+		  }
+	  }
+    console.log(that.data.pushLogId, that.data.realHouse, that.data.evaContent, indexArr.join(','), that.data.recomInfoId, that.data.seeStarVal, that.data.levStarVal, that.data.isLike);
+	  wx.request({
+		  url: app.buildRequestUrl('createWfRecomHouseEvaAction'),
+		  data:{
+			  pushLogId:that.data.pushLogId,
+			  realHouse:that.data.realHouse,
+			  evaContent:that.data.evaContent,
+			  evaTagIndex:indexArr.join(','),
+			  recomInfoId:that.data.recomInfoId,
+        seeStar:that.data.seeStarVal,
+        levStar: that.data.levStarVal,
+			  isLike:that.data.isLike
+		  },
+		  success: function (res) {
+        console.log(res);
+			  var status = res.data.STATUS;
+			  if(status==1){
+	        		wx.showToast({
+	      			  title: '操作成功',
+	      			  icon: 'success',
+	      			  duration: 2000
+	      			});
+	        		that.initEntrustData(that.data.entrustUser.pushLogId,that.data.userId);
+	        		that.setData({houseIntentionBox:false,seeEvaluateBox: false});
+	      }else{
+          wx.showToast({
+            title: res.data.INFO,
+            icon: 'none',
+            duration: 2000
+          });
+          return false;
+        }
+		  }
+	  })
+  },
+  evaContentBlur:function(e){//填写评价内容
+	  this.setData({
+		  evaContent: e.detail.value
+	  })
+  },
+  completeEvaContentBlur:function(e){//成交评价内容
+	  this.setData({
+		  completeEvaContent: e.detail.value
+	  })
+  },
+  weikuanPrePay:function(e){
+    var isShield = this.isShield();
+    if (isShield == 1) {
+      return false;
+    } 
+	  wx.navigateTo({
+		  url: '/pages/commissionpay/commissionpay?pushLogId='+this.data.pushLogId+"&recomInfoId="+e.target.dataset.recominfoid
+		  +"&money="+e.target.dataset.money+"&caseId="+this.data.entrustUser.vipCaseId+"&caseType="+this.data.entrustUser.caseType
+		  +"&cityId="+this.data.entrustUser.cityId+"&userId="+this.data.userId
+		});
+  },
+  showCompleteEvaDialog:function(e){
+    var isShield = this.isShield();
+    if (isShield == 1) {
+      return false;
+    } 
+	  this.setData({
+		  showCompleteEvaDialog: true
+	  })
+	  app.showToast();
+	  this.getServiceEvaAction();
+  },
+  chooseCompleteEvaStar:function(e){//改变成交评价星级
+	  this.setData({
+		  serverStarVal: e.target.dataset.val
+      })
+  },
+  chooseCompleteReason:function(e){//选择成交评价四星以下原因
+	  var checkedCompleteReasonArr = this.data.checkedCompleteReasonArr;
+	  var nowIndex = e.currentTarget.dataset.index;
+	  if(checkedCompleteReasonArr[nowIndex]==0){
+		  checkedCompleteReasonArr[nowIndex]=1;
+	  }else{
+		  checkedCompleteReasonArr[nowIndex]=0;
+	  }
+	  this.setData({checkedCompleteReasonArr:checkedCompleteReasonArr});
+  },
+  submitCompleteEvaData:function(){//提交成交评价
+	  app.showToast();
+	  var that = this;
+	  var indexArr = new Array();
+	  for(var i in that.data.checkedCompleteReasonArr){
+		  if(that.data.checkedCompleteReasonArr[i]==1){
+			  indexArr.push(i);
+		  }
+	  }
+	  if(that.data.serverStarVal < 4 && indexArr.length == 0 && that.data.completeEvaContent.length==0){//四星以下必须选择标签或填写评论
+		  wx.showToast({
+			title: '请选择标签或填写评论指出经纪人的不足吧',
+			  image:'../../images/warning.png',
+			  duration: 1500,
+			  success:function(){
+			  }
+			});
+		  return;
+	  }
+	  wx.request({
+		  url: app.buildRequestUrl('createServiceEvaAction'),
+		  data:{
+			  pushLogId:that.data.pushLogId,
+			  userId:app.globalData.userId,
+			  archiveId:that.data.entrustUser.brokerArchiveId,
+			  cityId:that.data.entrustUser.cityId,
+			  evaContent:that.data.completeEvaContent,
+			  evaTagIndex:indexArr.join(","),
+			  evaStar:that.data.serverStarVal
+		  },
+		  success: function (res) {
+			  app.hideToast();
+			  var status = res.data.STATUS;
+			  if(status==1){
+				  wx.redirectTo({
+					  url: '/pages/entrustDetail/entrustDetail?pushLogId='+that.data.pushLogId
+					});
+	          }
+		  }
+	  })
+  },
+  getServiceEvaAction:function(){
+	  var that = this;
+	  wx.request({
+		  url: app.buildRequestUrl('getServiceEvaAction'),
+		  data:{
+			  pushLogId:that.data.pushLogId,
+		  },
+		  success: function (res) {
+			  app.hideToast();
+			  var status = res.data.STATUS;
+			  var data = res.data.DATA;
+			  if(status==1){
+				  that.dealData(data, 'brokerMoney');
+				  that.dealData(data, 'houseMoney');
+				  that.dealData(data, 'priceUnit');
+				  that.dealData(data, 'onlinePayMoney');
+				  that.dealData(data, 'prizeRedMoney');
+				  that.dealData(data, 'brokerBuTieMoneyDesc');
+				  that.dealData(data, 'realPayMoney4C');
+				  that.dealData(data, 'offlinePayMoney');
+				  that.dealData(data, 'shareMoney');
+				  that.dealData(data, 'shareId');
+				  //这种情况表示已经评价了
+				  if(data.evaStar>0){
+					  that.setData({serverStarVal:data.evaStar});
+					  if(data.evaTag){
+						  that.setData({evaTag:data.evaTag.split("|")});
+					  }
+				  }
+			  }
+		  }
+	  })
+  },
+  showRefuseBrokerDialog:function(e){//拒绝经纪人
+	  this.setData({refuseBrokerBox: true})
+  },
+//屏蔽经纪人
+  shieldNo:function(e){
+    this.setData({ toastShow: true})
+  },
+  //点击不屏蔽了
+  entrustQuit: function (e) {
+    this.setData({ toastShow: false })
+  },
+  //点击确定屏蔽
+  entrustBtn: function (e) {
+    var _that = this;
+    _that.setData({ toastShow: false });
+    if(!app.globalData.userId || !_that.data.entrustUser.brokerArchiveId){
+      wx.showToast({
+        title: '参数错误，刷新后重试',
+        icon: 'none',
+        duration: 3000
+      });
+      return false;
+    };
+    wx.request({
+      url: app.buildRequestUrl('saveShield'),
+      data: {
+        userId: app.globalData.userId,
+        shieldUserId: _that.data.entrustUser.brokerArchiveId,
+        status: '1'
+      },
+      success: function (res) {
+        console.log(res);
+        if (res.data.STATUS == 1){
+          wx.showToast({
+            title: '屏蔽成功',
+            icon: 'none',
+            duration: 2000
+          });
+          _that.setData({ isShield: 1 });
+        }else{
+          wx.showToast({
+            title: res.data.INFO,
+            icon: 'none',
+            duration: 3000
+          });
+          _that.setData({ isShield: 0 });
+        }
+      }
+    });
+  },
+  //解除屏蔽
+  shieldYes: function (e) {
+    var _that = this;
+    if (!app.globalData.userId || !_that.data.entrustUser.brokerArchiveId) {
+      wx.showToast({
+        title: '参数错误，刷新后重试',
+        icon: 'none',
+        duration: 3000
+      });
+      return false;
+    };
+    wx.request({
+      url: app.buildRequestUrl('saveShield'),
+      data: {
+        userId: app.globalData.userId,
+        shieldUserId: _that.data.entrustUser.brokerArchiveId,
+        status: '0'
+      },
+      success: function (res) {
+        if (res.data.STATUS == 1) {
+          wx.showToast({
+            title: '已解除屏蔽，去联系吧',
+            icon: 'none',
+            duration: 2000
+          });
+          _that.setData({ isShield:0 });
+        } else {
+          wx.showToast({
+            title: res.data.INFO,
+            icon: 'none',
+            duration: 3000
+          });
+          _that.setData({ isShield:1});
+        }
+      }
+    });
+  },
+ 
+  /**
+   * 关闭拒绝经纪人弹窗
+   */
+  closeRefuseBrokerDialog:function(e){
+	  this.setData({refuseBrokerBox: false})
+  },
+  refuseContentBlur:function(e){//拒绝经纪人
+	  this.setData({
+		  refuseContent: e.detail.value
+	  })
+  },
+  toogleRefuseReason:function(e){//切换选中原因
+	  var checkedRefuseReasonArr = this.data.checkedRefuseReasonArr;
+	  var nowIndex = e.currentTarget.dataset.index;
+	  if(checkedRefuseReasonArr[nowIndex]==0){
+		  checkedRefuseReasonArr[nowIndex]=1;
+	  }else{
+		  checkedRefuseReasonArr[nowIndex]=0;
+	  }
+	  this.setData({checkedRefuseReasonArr:checkedRefuseReasonArr});
+  },
+  submitRefuseData:function(e){
+	  var that = this;
+	  var indexArr = new Array();
+	  for(var i in that.data.checkedRefuseReasonArr){
+		  if(that.data.checkedRefuseReasonArr[i]==1){
+			  indexArr.push(i);
+		  }
+	  }
+	  app.showToast();
+	  wx.request({
+		  url: app.buildRequestUrl('reFuseBrokerAction'),
+		  data:{
+			  pushLogId:that.data.pushLogId,
+			  refuseReason:that.data.refuseContent,
+			  refuseTag:indexArr.join(","),
+		  },
+		  success: function (res) {
+			  app.hideToast();
+			  var status = res.data.STATUS;
+			  that.setData({
+				  refuseBrokerBox: false
+			  });
+			  if(status==1){
+				  that.initEntrustData(that.data.entrustUser.pushLogId,that.data.userId);
+	          }
+		  }
+	  })
+  },
+  initIm: function(){
+	    let _this = this;
+	    nim = imSdk.getInstance({
+	      debug: false,
+	      appKey: app.globalData.appKey,
+	      account: 'uu_'+app.globalData.userId,
+	      token: app.globalData.imUserInfo.token,
+	      onconnect: _this.onConnect,
+	      ondisconnect: _this.onDisconnect,
+	      onmsg: _this.onMsg,
+	      onerror: _this.onError,
+        oncustomsysmsg: _this.onCustomSysMsg
+	    })
+
+	    console.log(nim);
+	  },
+  defaultImg: function (ev) {
+    console.log(ev);
+    //需要访问当前页面的数据对象传递到其它页面上
+    var _that = this;
+    common.errImgFun(ev, _that, 'avatar');
+  },
+	  //收到消息，所有推送消息在这里处理
+	  onMsg: function(msg){
+	    console.log(msg.content);
+	    var json = JSON.parse(msg.content);
+	    this.initEntrustData(this.data.pushLogId, app.globalData.userId);
+	    if(json.msg == 'refresh'){
+	    }
+	  },
+    onCustomSysMsg: function(){
+      var json = JSON.parse(msg.content);
+      this.initEntrustData(this.data.pushLogId, app.globalData.userId);
+      if (json.msg == 'refresh') {
+      }
+    },
+	  onConnect: function () {
+	    let _this = this;
+	    console.log('连接成功');
+	    //_this.getChatHistory();
+	  },
+	  onDisconnect: function (error) {
+	    // 此时说明 SDK 处于断开状态, 开发者此时应该根据错误码提示相应的错误信息, 并且跳转到登录页面
+	    console.log('丢失连接');
+	    console.log(error);
+	    if (error) {
+	      switch (error.code) {
+	        // 账号或者密码错误, 请跳转到登录页面并提示错误
+	        case 302:
+	          break;
+	        // 被踢, 请提示错误后跳转到登录页面
+	        case 'kicked':
+	          break;
+	        default:
+	          break;
+	      }
+	    }
+	  },
+	  onError: function (error) {
+	    console.log(error);
+	  },
+	  houseDetail:function(e){
+		  //casetype=1&resource=1&cityid=1&caseid=7386632
+		  //"?caseId=" + info.caseId + "&caseType=" + info.caseType + "&cityId=" + info.cityId + "&reSource=" + info.reSource+'&youyouUserId='+info.userId
+      var url = "/pages/houseDetail/houseDetail?caseid=" + e.currentTarget.dataset.caseid + "&caseType=" + (e.currentTarget.dataset.casetype - 2) + "&cityId=" + e.currentTarget.dataset.cityid + '&reSource=1&seeStatus=' + e.currentTarget.dataset.seestatus + '&recomInfoId=' + e.currentTarget.dataset.recominfoid + '&pushLogId=' + this.data.pushLogId + '&isShield=' + this.data.isShield + '&brokerMoney=' + e.currentTarget.dataset.moeny + '&recomhousestatus=' + e.currentTarget.dataset.recomhousestatus + '&isEvaluate=' + e.currentTarget.dataset.isevaluate + '&brokerarchiveId=' + e.currentTarget.dataset.brokerarchiveid;
+		  wx.navigateTo({
+				url: url
+		})
+	  },
+    isShield:function(){
+      if (this.data.isShield == 1) {
+        console.log(1111);
+        wx.showToast({
+          title: '您已把对方屏蔽，暂时不能发起此服务',
+          icon: 'none',
+          duration: 2000
+        });
+        return 1;
+      }
+      return 0;
+    },
+    /**
+  * 首页
+  */
+    indexBtnEvent: function () {
+      wx.reLaunch({
+        url: '/pages/real_index/index'
+      })
+    },
+})

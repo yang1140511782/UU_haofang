@@ -1,0 +1,763 @@
+@import "../../template/listTmp.wxss";
+@import "../../template/authorizeMaskTmp.wxss";
+page{
+  height: 100%;
+  background: #f6f6f6;
+}
+.topbox{
+  position: relative;
+  width: 100%;
+  height: 283rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/index/banner_new.png?t=20180524)no-repeat top center;
+  background-size: 100%;
+}
+.searchbox{
+  height: 77rpx;
+  padding-left:41rpx;
+  padding-bottom:18rpx;
+  padding-top:38rpx;
+  position: relative;
+}
+.searchbox .inputbox{
+  width:661rpx;
+  height: 80rpx;
+  background: #fff;
+  border-radius: 40rpx;
+  position: relative;
+  color:#666666;
+}
+.topbox .city{
+  width: 134rpx;
+  height: 68rpx;
+  background: rgba(255, 255, 255, .7);
+  font-size: 26rpx;
+  position: relative;
+  top: 20rpx;
+  left:24rpx;
+  color:#333;
+  border-radius: 40rpx;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center 
+}
+.img-t{
+  position: absolute;
+  top: 30rpx;
+  right: 120rpx;
+  width: 229rpx;
+  height: 50rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/index/t-msg.png)no-repeat top center;
+  background-size: 100%;
+  display: none;
+}
+.city-icons{
+  width: 13rpx;
+  height: 8rpx;
+  position: relative;
+  top: 5rpx;
+  margin-left: 10rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/index/jt_i.png) no-repeat center;
+  background-size: 13rpx 8rpx;
+} 
+.seachbox{
+  position: absolute;
+  top: 20rpx;
+  right: 22rpx;
+  width: 70rpx;
+  height: 70rpx;
+  background: rgba(255, 255, 255, .7);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.s-icon{
+  width: 33rpx;
+  height: 32rpx;
+  background-image: url(http://cdn.haofang.net/static/uuminiapp/index/serch_icon.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.lookHouse{
+  width: 100%;
+  height: 230rpx;
+  padding-top: 20rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+.lookHouse image{
+  width:100%;
+  height: 230rpx;
+}
+.menu{
+  height: 194rpx;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+.menu .menuItem{
+  width: 19%;
+  text-align: center;
+}
+.menu .menuItem .picbox{
+  margin: 0 auto;
+  width: 90rpx;
+  height: 90rpx;
+  padding-top:22rpx;
+  margin-bottom: 10rpx;
+}
+.menu .menuItem  image{
+  width:100%;
+  height: 100%;
+}
+.menu .menuItem .textbox{
+  font-size: 26rpx;
+  letter-spacing: 1px;
+  padding-top:16rpx;
+}
+.title{
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  font-size: 34rpx;
+  letter-spacing: 2rpx;
+  color:#333333;
+  text-indent: 30rpx;
+  font-weight: bold;
+  position: relative;
+  border-bottom: 2rpx solid #ebebeb;
+}
+.title::after{
+  content:'';
+  width:5rpx;
+  height: 40rpx;
+  background: #ff5400;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left:0;
+  
+}
+.seemore{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: 120rpx;
+  height: 100rpx;
+  /* line-height: 100rpx; */
+  top: 0;
+  right: 0;
+  font-size:26rpx;
+  font-weight: normal;
+  color: #999999;
+}
+.seemore::after{
+  content: '';
+  width: 12rpx;
+  height: 22rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/index/l-jtt.png)no-repeat center;
+  background-size: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  right: 15rpx;
+}
+.housebox{
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+.housebox .boxFooter{
+  height: 122rpx;
+  position: relative;
+}
+.housebox .boxFooter .lookMore{
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  margin: auto;
+  width:154rpx;
+  height: 53rpx;
+  line-height: 53rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color:#999999;
+  letter-spacing: 2rpx;
+  border:1px solid #cdcdcd;
+  border-radius: 8rpx;
+}
+
+
+
+#newhousebox .houseItem .picbox{
+  margin-top: 42rpx;
+  width:220rpx;
+  height: 164rpx;
+  overflow: hidden;
+  position: relative;
+  background: url(http://cdn.haofang.net/static/uuminiapp/default/list_deafault.png) no-repeat center center;
+  background-size: cover;
+}
+#newhousebox .houseItem .picbox image{
+  width:100%;
+  height: 100%;
+}
+#newhousebox .houseItem .infobox{
+  flex: 1;
+  padding-left: 33rpx;
+  padding-top:36rpx;
+  /* width:398rpx; */
+  position: relative;
+}
+#newhousebox .houseItem .infobox .housetitle{
+  padding-top: 4rpx;
+  font-size: 34rpx;
+  color:#333333;
+  font-weight: 400;
+  min-height: 40rpx;
+  line-height: 38rpx;
+  margin-bottom: 8rpx;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  height: auto;
+}
+#newhousebox .houseItem .infobox .housetitle text{
+  font-family: '微软雅黑';
+  line-height: 1;
+  border-radius: 2rpx;
+  font-size: 24rpx;
+  margin-left: 12rpx;
+  padding: 5rpx 7rpx;
+  padding-top:6rpx; 
+  display: inline-block;
+  position: relative;
+  font-weight: normal;
+  color:#fff;
+  top: -3rpx;
+}
+#newhousebox .houseItem .infobox .housetitle .wait{
+  background: #14c4f9;
+}
+#newhousebox .houseItem .infobox .housetitle .selling{
+  background: #1bc964;
+}
+#newhousebox .houseItem .infobox .housetitle .soldOut{
+  background: #cccccc;
+}
+#newhousebox .houseItem .infobox .text{
+  font-size: 26rpx;
+  line-height: 1;
+  color:#8c8c8c;
+  padding-top: 6rpx;
+  padding-bottom: 11rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#newhousebox .houseItem .infobox .price{
+  display: flex;
+  font-size: 30rpx;
+  color:#ff5400;
+  line-height: 61rpx;
+}
+#newhousebox .houseItem .infobox .price text{
+  font-weight: normal;
+  color:#ff5400;
+  font-size: 24rpx;
+  margin-left: 7rpx;
+}
+
+.ar-text{
+  display: inline-block;
+  max-width: 250rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  color:#6f6f6f!important;
+}
+#pullUp,.pullUp_noData {
+    height:40px;
+    line-height:40px;
+    font-size:12px;
+    text-align: center;
+}
+#pullUp .pullUpIcon  {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    border-radius: 100%;
+    margin: 6px;
+    border: 2px solid #666;
+    border-bottom-color: transparent;
+    vertical-align: middle;
+    -webkit-animation: loading 0.75s linear infinite;
+    animation: loading 0.75s linear infinite;
+}
+#pullUp.flip .pullUpIcon {
+    -webkit-transform:rotate(0deg) translateZ(0);
+}
+#pullUp.loading .pullUpIcon {
+    background-position:0 100%;
+    -webkit-transform:rotate(0deg) translateZ(0);
+    -webkit-transition-duration:0ms;
+    -webkit-animation-name:loading;
+    -webkit-animation-duration:2s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+}
+@-webkit-keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+page .housebox:last-child{
+  border:0;
+}
+.down-app-box{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.down-mask{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  height: 100%;
+}
+.down-con{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 640rpx;
+  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  -o-transform: translate(-50%,-50%);
+  z-index: 20;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background: #fff;
+}
+.down-txt{
+  font-size: 30rpx;
+  text-align: center;
+  font-weight: bold
+}
+.down-txt-top{
+  padding-top:55rpx;
+  font-weight: normal
+}
+.down-txt-bottom{
+   padding-bottom:40rpx
+}
+.down-img{
+  width: 427rpx;
+  height: 321rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/mine/down-bg.png) center center no-repeat;
+  background-size: 100% 100%;
+  margin: 0 auto
+}
+.down-btn-txt{
+  background: #17b980;
+  color: #fff;
+  font-size: 34rpx;
+  width: 523rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  margin: 40rpx auto;
+  border-radius: 4rpx;
+}
+.goToToast .toast_btn{
+  width: 116rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  color:#ffffff;
+  text-align: center;
+  letter-spacing: 1px;
+  background: #ff3938;
+  border-radius: 20rpx;
+  position: absolute;
+  left:0;
+  right:0;
+  bottom: 0;
+  margin: auto;
+  font-size: 20rpx;
+}
+.act-btn-box{
+  position: fixed;
+  bottom: 50rpx;
+  right: 0;
+  width: 144rpx;
+  height: 148rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/promoteActivity/act-icon.png)no-repeat center;
+  background-size: 100%;
+}
+.footer-msg{
+  position: relative;
+  width: 100%;
+  height: 100rpx;
+  color: #d7d7d7;
+}
+.footer-msg text{
+  display: inline-block;
+  font-size: 24rpx;
+  height: 100%;
+  line-height: 100rpx;
+  padding: 0 25rpx;
+  background: #f6f6f6;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: auto;
+  position: absolute;
+  z-index: 2;
+}
+.footer-msg .line-bg{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 90%;
+  height: 2rpx;
+  background: #eee;
+}
+/*演唱会弹框*/
+.vocal-box{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.vocal-box-mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+.v-cont-b{
+  position: relative;
+  width: 80%;
+  height: 760rpx;
+  background: #fff;
+  border-radius: 30rpx;
+  
+  z-index: 200;
+}
+.v-top{
+  overflow: hidden;
+  width: 100%;
+  height: 320rpx;
+  border-top-left-radius:30rpx;
+  border-top-right-radius:30rpx;
+  background: url(http://cdn.haofang.net/static/uuweb/activity/new20181019/toast_bg.png) #000 no-repeat center top;
+  background-size: 100%;
+}
+.v-cont-list{
+  margin:30rpx auto 30rpx auto;
+  width:65%;
+  min-height: 200rpx;
+}
+.v-cont-list .li{
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-family: PingFang-SC-Medium;
+  font-size: 28rpx;
+  color: #353535;
+  padding-left: 40rpx;
+  position: relative;
+}
+.v-cont-list .li::before{
+  display: block;
+  content: '';
+  width: 12rpx;
+  height: 12rpx;
+  position: absolute;
+  left:0rpx;
+  top:32rpx;
+  border: 1rpx solid #df0029;
+  border-radius: 100%;
+  background: #df0029;
+}
+.v-cont-list .line{
+  text-align: center;
+  height: 20%;
+}
+.v-cont-b .canyu{
+    margin:0 auto 20rpx;
+    width:460rpx;
+    height:80rpx;
+    line-height:80rpx;
+    background:#df0029;
+    border-radius:50rpx;
+    text-align:center;
+    font-family:PingFang-SC-Medium;
+    font-size:36rpx;
+    color:#FFFFFF;
+    letter-spacing:4rpx;
+}
+.vocal-box .close{
+  width: 80rpx;
+  height: 80rpx;
+  background: url(http://uuweb.haofang.net/Public/wxApp/images/index/close_btn.png) no-repeat center;
+  background-size: 60rpx;
+  margin:100rpx auto;
+  z-index: 1000;
+}
+.act-btn-box-vocal{
+  position: fixed;
+  bottom: 50rpx;
+  right: 0;
+  width: 206rpx;
+  height: 168rpx;
+  background: url(http://cdn.haofang.net/static/uuweb/activity/new20181019/act-icon.png)no-repeat center;
+  background-size: 80%;
+}
+.apartment-box{
+  width: 100%;
+  overflow-x:auto;
+}
+.apartment-list{
+  position:relative;
+  width:380%;
+  display: flex;
+}
+.apartmentHouse {
+  flex: 1;
+  padding:20rpx 26rpx;
+  background:#fff;
+  overflow:hidden;
+  position:relative;
+
+}
+.apartmentHouse .houseSubject{
+  overflow: hidden;
+  max-height:44rpx;
+}
+.apartmentHouse .picbox {
+  width: 100%;
+  height: 350rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/default/list_deafault.png?t=20180606) no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.apartmentHouse .picbox image {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+.apartmentHouse .infobox {
+  padding-top: 20rpx;
+}
+
+.apartmentHouse .infobox .text {
+  font-size: 30rpx;
+  color: #000;
+  padding: 10rpx 0;
+}
+
+.apartmentHouse .orderbtn{
+  width:126rpx;
+  height: 56rpx;
+  border: 1px solid #2bcd6f;
+  border-radius: 28rpx;
+  color:#2bcd6f;
+  text-align: center;
+  text-indent: 1.5em;
+  font-size: 25rpx;
+  line-height: 56rpx;
+  position: fixed;
+  right:30rpx;
+  bottom: 60rpx;
+  letter-spacing: 1px;
+  background-color: rgb(255,255,255);
+  background-image: url(https://uuweb.haofang.net/Public/images/apartment/list/paixu_03.png);
+  background-repeat: no-repeat;
+  background-size: 26rpx 29rpx;
+  background-position: 19rpx center;
+  opacity: 0.9;
+}
+.apartmentHouse .title1{
+  font-weight: 400;
+  font-size: 32rpx;
+}
+.houseSubject .band-name{
+  background: #ff8a00;
+  color: #fff;
+  border:  1px solid #ff8a00;
+}
+.houseSubject .house-price{
+  background: #fff;
+  color: #ff8a00;
+  border:  1px solid #ff8a00;
+}
+.apartment_tag_0{
+   background: #fff;
+  color: #1bd264;
+  border:  1px solid #1bd264;
+}
+.apartment_tag_1{
+   background: #fff;
+  color: #009ef4;
+  border:  1px solid #009ef4;
+}
+.apartment_tag_2{
+   background: #fff;
+  color: #ff8a17;
+  border:  1px solid #ff8a17;
+}
+.apartment_tag_3{
+   background: #fff;
+  color: #13d72a;
+  border:  1px solid #13d72a;
+}
+.apartment_tag_4{
+   background: #fff;
+  color: #ff7f7f;
+  border:  1px solid #ff7f7f;
+}
+.apartment_tag_5{
+   background: #fff;
+  color: #10befe;
+  border:  1px solid #10befe;
+}
+.apartment_tag_6{
+   background: #fff;
+  color: #febe10;
+  border:  1px solid #febe10;
+}
+.pay-method {
+  display: inline-block;
+  height: 30rpx;
+  line-height: 30rpx;
+  padding: 0 4rpx;
+  border: 1px solid rgb(27, 201, 100);
+  color: rgb(27, 201, 100);
+  font-size: 24rpx;
+  border-radius: 5rpx;
+  margin-right: 10rpx;
+}
+
+/* .pay-method:nth-of-type(1) {
+  border: 1px solid rgb(27, 201, 100);
+  color: rgb(27, 201, 100);
+} */
+
+.pay-method:nth-of-type(2) {
+  color: #ff8a00;
+  border: 1rpx solid #ff8a00;
+}
+
+.pay-method:nth-of-type(3) {
+  border: 1rpx solid rgb(0, 158, 224);
+  color: rgb(0, 158, 224);
+}
+
+.pay-method:nth-of-type(4) {
+  border: 1rpx solid rgb(27, 201, 100);
+  color: rgb(27, 201, 100);
+}
+
+.pay-method:nth-of-type(5) {
+  color: #ff8a00;
+  border: 1rpx solid #ff8a00;
+}
+
+.pay-method:nth-of-type(6) {
+  border: 1rpx solid rgb(0, 158, 224);
+  color: rgb(0, 158, 224);
+}
+
+.pay-method:nth-of-type(7) {
+  border: 1rpx solid rgb(27, 201, 100);
+  color: rgb(27, 201, 100);
+}
+
+.pay-method:nth-of-type(8) {
+  color: #ff8a00;
+  border: 1px solid #ff8a00;
+}
+
+.pay-method:nth-of-type(9) {
+  border: 1px solid rgb(0, 158, 224);
+  color: rgb(0, 158, 224);
+}
+
+/* 活动banner 列表 */
+.banner-list{width: 750rpx;height: 230rpx;background: #fff;}
+.banner-list swiper{width: 100%;height: 100%;}
+.banner-list swiper swiper-item {width: 100%;height: 100%;}
+.banner-list swiper swiper-item image {width: 100%;height: 100%;}
+.banner-list .wx-swiper-dot {
+  width: 8rpx;
+  display: inline-flex;
+  height: 8rpx;
+  margin-left: 0rpx;
+  justify-content: center;
+}
+.banner-list .wx-swiper-dot::before {
+  content: '';
+  flex-grow: 1;
+  background: rgba(255, 84, 0, 0.5);
+  border-radius: 8rpx
+}
+.banner-list .wx-swiper-dot-active{
+  width: 24rpx;
+}
+.banner-list .wx-swiper-dot-active::before {
+  background: #ff5400;
+}
+
+/* indexDialog */
+.index-dialog{
+  position: fixed;
+  width: 100%;height: 100%;
+  top: 0;left: 0;display: flex;justify-content: center;align-items: center;
+  z-index: 500;
+  background: rgba(0, 0, 0, 0.5);
+}
+.index-dialog .content{}
+.index-dialog .content .pic {
+  width: 652rpx;
+  height: auto;
+}
+.index-dialog .content .close {
+  width:80rpx;
+height:80rpx;
+background:url(http://uuweb.haofang.net/Public/wxApp/images/index/close_btn.png) no-repeat center;
+background-size: 67rpx 67rpx;
+margin: 0rpx auto 0;
+z-index:1000;
+}

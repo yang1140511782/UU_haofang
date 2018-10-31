@@ -1,0 +1,579 @@
+/* pages/collect/collect.wxss */
+
+.head {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  display: flex;
+  border-bottom: 1rpx solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  background: #fff;
+}
+
+.head-item {
+  width: 20%;
+  height: 76rpx;
+  font-size: 28rpx;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.head-item-current {
+  color: #ff5400;
+  border-bottom: 4rpx solid #ff5400;
+  width: auto;
+  height: 80rpx;
+  box-sizing: border-box;
+  display: inline-block;
+}
+
+/*新房*/
+
+.newhouse-houseItem {
+  display: flex;
+  position: relative;
+  margin-left: 21rpx;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 35rpx;
+  background: #fff;
+}
+
+.newhouse-houseItem .newhouse-picbox {
+  margin-top: 42rpx;
+  width: 220rpx;
+  height: 167rpx;
+  position: relative;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/default/list_deafault.png) no-repeat center center;
+  background-size: cover;
+}
+
+.newhouse-houseItem .newhouse-picbox image {
+  width: 100%;
+  height: 100%;
+}
+
+.newhouse-houseItem .newhouse-infobox {
+  padding-left: 20rpx;
+  padding-top: 36rpx;
+  width: 445rpx;
+  position: relative;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-housetitle {
+  font-size: 28rpx;
+  color: #000;
+  line-height: 38rpx;
+  margin-bottom: 8rpx;
+  letter-spacing: 1px;
+  font-family: '黑体';
+  overflow: hidden;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-housetitle text {
+  font-family: '微软雅黑';
+  line-height: 1;
+  font-size: 24rpx;
+  margin-left: 12rpx;
+  padding: 5rpx;
+  padding-bottom: 7rpx;
+  display: inline-block;
+  color: #fff;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-housetitle .newhouse-wait {
+  background: #14c4f9;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-housetitle .newhouse-selling {
+  background: #0ac95e;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-housetitle .newhouse-soldOut {
+  background: #ccc;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-text {
+  font-size: 24rpx;
+  line-height: 1;
+  color: #8c8c8c;
+  padding-top: 11rpx;
+  padding-bottom: 11rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-tag {
+  line-height: 1;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-tag text {
+  font-size:22rpx;
+  letter-spacing:1px;
+  display:inline-block;
+  color:#1bc964;
+  background:#e0f7ea;
+  padding:6rpx 8rpx;
+  padding-top:8rpx;
+  border-radius:3rpx;
+  margin-right:10rpx;
+  line-height:1;
+
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-tag text:nth-child(4n+2) {
+  color: #00a0e9;
+  background: #d9f1fc;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-tag text:nth-child(4n+3) {
+  color: #ff9600;
+  background: #ffeed8;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-tag text:nth-child(4n+4) {
+  color: #f46f66;
+  background: #fdeae9;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-price {
+  font-size: 27rpx;
+  color: #ff5a1f;
+  line-height: 61rpx;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-price text {
+  color: #999;
+  font-weight: normal;
+  font-size: 22rpx;
+  margin-left: 18rpx;
+}
+
+.newhouse-houseItem .newhouse-infobox .newhouse-top {
+  font-size: 16rpx;
+  letter-spacing: 1px;
+  color: #a5a5a5;
+  padding: 6rpx;
+  border: 1px solid #dcdcdc;
+  border-radius: 3rpx;
+  position: absolute;
+  line-height: 1;
+  right: 0;
+  bottom: 12rpx;
+}
+
+/*出租出售样式*/
+
+.content {
+  height: 100%;
+  box-sizing: border-box;
+  padding-top: 90rpx;
+}
+
+.sale-rent-houseItem {
+  display: flex;
+  margin-left: 30rpx;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 29rpx;
+  position: relative;
+}
+
+.sale-rent-houseItem .sale-rent-picbox {
+  margin-top: 42rpx;
+  width: 210rpx;
+  height: 157rpx;
+  position: relative;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/default/list_deafault.png) no-repeat center center;
+  background-size: cover;
+}
+
+.sale-rent-houseItem .sale-rent-picbox image {
+  width: 210rpx;
+  height: 157rpx;
+}
+
+.sale-rent-houseItem .sale-rent-infobox {
+  padding-left: 33rpx;
+  padding-top: 36rpx;
+  width: 445rpx;
+  position: relative;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-housetitle {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 38rpx;
+  max-height: 83rpx;
+  margin-bottom: 5rpx;
+  letter-spacing: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-text {
+  font-size: 24rpx;
+  line-height: 1;
+  color: #888;
+  padding-bottom: 15rpx;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag {
+  line-height: 1;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text {
+  font-size: 22rpx;
+  letter-spacing: 1px;
+  display: inline-block;
+  line-height: 1;
+  color:#1bc964;
+  background: #ddf7e8;
+  padding:4rpx 6rpx;
+  padding-top: 7rpx;
+  border-radius: 3rpx;
+  margin-right:10rpx;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text.true_flag{
+  position: relative;
+  top: 5rpx;
+  width:81rpx;
+padding-top:21rpx;
+background:url(http://uuweb.haofang.net/Public/wxApp/images/index/true_house_flag.png) center bottom no-repeat;
+background-size:81rpx 21rpx;
+height:38rpx;
+line-height:19rpx;
+padding:0;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text:nth-child(4n+2) {
+  color: #00a0e9;
+  background: #d9f1fc;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text:nth-child(4n+3) {
+  color: #ff9600;
+  background: #ffeed8;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text:nth-child(4n+4) {
+  color: #f46f66;
+  background: #fdeae9;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-price {
+  font-size: 27rpx;
+  color: #ff5a1f;
+  font-weight: bold;
+  line-height: 61rpx;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-price text {
+  color: #999;
+  font-weight: normal;
+  font-size: 22rpx;
+  margin-left: 18rpx;
+}
+
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-top {
+  font-size: 16rpx;
+  letter-spacing: 1px;
+  color: #a5a5a5;
+  padding: 6rpx;
+  border: 1px solid #dcdcdc;
+  border-radius: 3rpx;
+  position: absolute;
+  line-height: 1;
+  right: 0;
+  bottom: 12rpx;
+}
+
+.sale-rent-tbb {
+  position: absolute;
+  width: 100%;
+  height: 34rpx;
+  padding-left: 8rpx;
+  box-sizing: border-box;
+  line-height: 34rpx;
+  display: block;
+  bottom: 12rpx;
+}
+
+.sale-rent-icon-vr {
+  width: 40rpx;
+  height: 33rpx;
+  display: inline-block;
+  float: left;
+  margin-right: 10rpx;
+  background: url(https://youjia.haofang.net/Public/images/vr_x.png) no-repeat;
+  background-size: 100%;
+}
+
+.sale-rent-icon-video {
+  width: 40rpx;
+  height: 33rpx;
+  display: inline-block;
+  background: url(https://youjia.haofang.net/Public/images/video_x.png) no-repeat;
+  background-size: 100%;
+}
+
+/*公寓*/
+
+.apartment-houseItem {
+  padding: 20rpx 26rpx;
+  border-bottom: 1px solid #f6f6f6;
+  background: #fff;
+  position: relative;
+}
+
+.apartment-houseItem .apartment-picbox {
+  width: 100%;
+  height: 350rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/default/list_deafault.png) no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.apartment-houseItem .apartment-picbox image {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+.apartment-houseItem .apartment-infobox {
+  padding-top: 20rpx;
+}
+
+.apartment-houseItem .apartment-infobox .apartment-text {
+  font-size: 30rpx;
+  line-height: 1;
+  color: #000;
+  padding-bottom: 10rpx;
+}
+
+.apartment-pay-method {
+  height: 30rpx;
+  line-height: 30rpx;
+  padding: 0 8rpx;
+  border: 1px solid rgb(27, 201, 100);
+  color: rgb(27, 201, 100);
+  font-size: 24rpx;
+  border-radius: 2rpx;
+  margin-right: 10rpx;
+}
+
+.apartment-pay-method:nth-of-type(1) {
+  border: 1px solid rgb(27, 201, 100);
+  color: rgb(27, 201, 100);
+}
+
+.apartment-pay-method:nth-of-type(2) {
+  border: 1px solid rgb(0, 158, 224);
+  color: rgb(0, 158, 224);
+}
+
+.apartment-pay-method:nth-of-type(3) {
+  color: #ff8a00;
+  border: 1px solid #ff8a00;
+}
+
+.apartment-pay-method:nth-of-type(4) {
+  border: 1px solid rgb(27, 201, 100);
+  color: rgb(27, 201, 100);
+}
+
+.apartment-pay-method:nth-of-type(5) {
+  border: 1px solid rgb(0, 158, 224);
+  color: rgb(0, 158, 224);
+}
+
+.apartment-pay-method:nth-of-type(6) {
+  color: #ff8a00;
+  border: 1px solid #ff8a00;
+}
+
+.apartment-pay-method:nth-of-type(7) {
+  border: 1px solid rgb(27, 201, 100);
+  color: rgb(27, 201, 100);
+}
+
+.apartment-pay-method:nth-of-type(8) {
+  border: 1px solid rgb(0, 158, 224);
+  color: rgb(0, 158, 224);
+}
+
+.apartment-pay-method:nth-of-type(9) {
+  color: #ff8a00;
+  border: 1px solid #ff8a00;
+}
+
+.apartment-houseItem .apartment-infobox .apartment-tag text:nth-child(4n+2) {
+  color: #00a0e9;
+  background: #d9f1fc;
+}
+
+.apartment-houseItem .apartment-infobox .apartment-tag text:nth-child(4n+3) {
+  color: #ff9600;
+  background: #ffeed8;
+}
+
+.apartment-houseItem .apartment-infobox .apartment-tag text:nth-child(4n+4) {
+  color: #f46f66;
+  background: #fdeae9;
+}
+
+.apartment-price {
+  font-size: 24rpx;
+  color: #fff;
+  height: 45rpx;
+  line-height: 45rpx;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 5rpx 10rpx;
+  background: #ff5a1f;
+}
+
+.apartment-photo-count {
+  font-size: 22rpx;
+  color: #fff;
+  background: #a59c8b;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 5rpx;
+}
+
+.apartment-rentType {
+  color: #fff;
+  background: #1bc964;
+  padding: 4rpx 10rpx;
+  font-size: 24rpx;
+  box-sizing: border-box;
+}
+
+.apartment-title{
+  margin-left:15rpx;
+  font-weight:bold;
+}
+
+#pullUp, .pullUp_noData {
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+  text-align: center;
+}
+
+#pullUp .pullUpIcon {
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+  border-radius: 100%;
+  margin: 6px;
+  border: 2px solid #666;
+  border-bottom-color: transparent;
+  vertical-align: middle;
+  -webkit-animation: loading 0.75s linear infinite;
+  animation: loading 0.75s linear infinite;
+}
+
+#pullUp.flip .pullUpIcon {
+  -webkit-transform: rotate(0deg) translateZ(0);
+}
+
+#pullUp.loading .pullUpIcon {
+  background-position: 0 100%;
+  -webkit-transform: rotate(0deg) translateZ(0);
+  -webkit-transition-duration: 0ms;
+  -webkit-animation-name: loading;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.no-more-data {
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.goLeft {
+  right: 141rpx;
+}
+
+.deletebtn {
+  position: absolute;
+  height: 100%;
+  width: 140rpx;
+  line-height: 174rpx;
+  background: #ff4940;
+  color: #fff;
+  font-size: 30rpx;
+  letter-spacing: 1px;
+  text-align: center;
+  top: 0;
+  right: -141rpx;
+  z-index: 9;
+}
+
+.deleteword {
+  position: absolute;
+  width: 100%;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+}
+
+.no-data {
+  width: 100%;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.no-data .no-data-img {
+  width: 283rpx;
+  height: 287rpx;
+  margin: 0 auto;
+}
+
+.no-data .no-data-img image {
+  width: 100%;
+  height: 100%;
+}
+
+.no-data text {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  font-size: 28rpx;
+  color: #999;
+  margin: auto;
+}

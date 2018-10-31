@@ -1,0 +1,258 @@
+<import src="../../component/tabNav/tabNav.wxml"/>
+<import src="../common/loading/loading.wxml"/>
+<!--视频-->
+<view class="v-wraper" wx:if="{{videoShow}}">
+    <video id="myVideo" src="{{videoUrlPath}}" controls="true" objectFit="fill" wx:if="{{videoShowLater}}"></video>
+    <view class="close-video" bindtap="closeBtn"></view>
+</view>
+<!--/视频-->
+
+<view class="container-box">
+<scroll-view scroll-y style="height: {{wHeight}}px;" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">  
+    <view class="wrapper">
+        <!--banner-->
+        <view class="container_pic_video" wx:if="{{apartmentData.apartmentPhotoList.length > 0}}">
+            <view class='rental-box' wx:if="{{apartmentData.rentType==1}}">{{apartmentData.monthRent}}元/月</view>
+            <block>
+                <view class="banner-box">
+                    <!-- vr视频图标 -->
+                    <view wx:if='{{panoramaMap > 0}}' class='vr-icon' catchtap='vrBtnTo' data-url="{{vrUrl}}">
+                        <image lazy-load="{{lazyLoad}}" src="http://cdn.haofang.net/static/uuminiapp/detail/720deg.png" class='pic-seven'></image>
+                    </view>
+                    <swiper indicator-dots="{{indicatorDots}}" interval="{{interval}}" duration="{{duration}}" bindchange="changePic" circular="{{false}}" class="banner">
+                        <!--视频-->
+                        <block class="container_video" wx:if="{{videoUrlPath!=''}}">
+                            <swiper-item>
+                                <view class="video-box">
+                                    <view class="ic-box" catchtap="playVideo">
+                                        <view class="bico-viedo"></view>
+                                    </view>
+                                    <image src="{{videoTopPicUrlPath}}" mode="widthFix"></image>
+                                </view>
+
+                            </swiper-item>
+                        </block>
+                        <!--轮播图-->
+                        <block wx:key="{{item}}" wx:for="{{apartmentData.apartmentPhotoList}}" wx:for-index="id">
+                            <swiper-item data-image="{{item.photoAddr}}" catchtap='getImageInfo'>
+                                <image lazy-load="{{lazyLoad}}" mode="widthFix" src="{{item.photoAddr}}" class="slide-image" data-id="{{id}}" />
+                            </swiper-item>
+                        </block>
+                        <!--/轮播图-->
+                    </swiper>
+                    <view class="numDesc" wx:if="{{numShows}}">
+                        <view class="num" id="currindex-num">{{currentPic}}/{{totalImg}}</view>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <!--/banner-->
+        <!--信息部分-->
+        <view class='cont-w mar-bot'>
+            <!--房源标题-->
+            <view class='title-box'>
+                <view class='t-name'>
+                    <view class='title-txt'><view class='tit-box'>{{apartmentData.rentType == 1 ? "整租" : "合租"}}</view>{{apartmentData.hftSectionName}} {{apartmentData.hftBuildName}} {{apartmentData.bedRoomNum}}室{{apartmentData.livingRoomNum > 0? apartmentData.livingRoomNum+ '厅': ''}}{{apartmentData.toiletNum > 0? apartmentData.toiletNum + '卫': ''}}</view>
+                </view>
+                <!--标签-->
+                <view class="house-tag" wx:if="{{!!tagArr && tagArr.length>0}}">
+                    <view class="dec-con" wx:for="{{tagArr}}" wx:key="index" wx:if="{{tagArr[index].length>0}}">{{tagArr[index]}}</view>
+                </view>
+                <!--/标签-->
+            </view>
+            <!--/房源标题-->
+            <!--价格信息-->
+            <view class='price-top'>
+                <view class='p-a'>
+                    <view class='p-top'>户型</view>
+                    <view class='p-down'>{{apartmentData.bedRoomNum}}室{{apartmentData.livingRoomNum > 0? apartmentData.livingRoomNum+ '厅': ''}}{{apartmentData.toiletNum > 0? apartmentData.toiletNum + '卫': ''}}</view>
+                </view>
+                <view class='p-a'>
+                    <view class='p-top'>面积</view>
+                    <view class='p-down'>{{apartmentData.rentRoomArea}}㎡</view>
+                </view>
+                <view class='p-a'>
+                    <view class='p-top'>楼层</view>
+                    <view class='p-down'>{{apartmentData.houseFloor}}/{{apartmentData.totalFloor}}层</view>
+                </view>
+            </view>
+            <!--/价格信息-->
+            <!--房源地址信息-->
+            <view class='house-msg h-pos'>
+                <view class='hou-addresss'>小区地址：<text class='t-mm'>{{apartmentData.street}}</text></view>
+                <view class='hou-time' wx:if="{{apartmentData.rentStartDate > '2000-01-01'}}">可租日期：<text class='t-mm'>{{apartmentData.rentStartDate}}</text></view>
+            </view>
+            <!--/房源地址信息-->
+        </view>
+        <!--/信息部分-->
+        <!--房间信息-->
+        <view class='house-ms mar-bot' wx:if="{{roomData.length>0}}">
+            <!--房间a-->
+           <view class='zoom-box' wx:for="{{roomData}}"  wx:key="{{index}}" wx:for-index="itemindex" data-id='{{itemindex}}'>
+                <view class='zoom-tx'></view>
+                <view class='zoom-cont'>
+                    <view class='list-detail' catchtap='unfoldBoxBtn' data-isrent="{{item.isRent}}" data-idx='{{itemindex}}'>
+                         <text class="list-room">{{item.houseNum}}房间</text>
+                         <text class="list-room-index" wx:if="{{itemindex ==0 && rentType==1}}">当前房间</text>
+                         <text class="list-room-index" wx:if="{{item.uuid ==roomUuid && rentType==2}}">当前房间</text>
+
+                         <!-- 展示价格信息 或 已出租 -->
+                         <text wx:if="{{item.isRent == 1}}" class="list-price-gray">已出租</text>
+                         <text wx:else="" class="{{unfoldJtstatus==itemindex ? 'list-price-a' :'list-price'}}">￥{{item.monthRent}}元</text>
+                    </view>
+                    <view class='room-detail room-detail-add' wx:if="{{unfoldStatus == itemindex && item.isRent != 1}}">
+                        <view class='detail-time'>
+                            <text wx:if="{{item.checkInTime > '2000-01-01'}}" class='dt-t'>{{item.checkInTime}}入住</text>{{item.bedRoomType==1?"主卧":"次卧"}}
+                        </view>
+                        <view class='detail-ico-box' wx:if="{{item.tags.length>0}}">
+                            <view class='dt-ico' wx:for="{{item.tags}}" wx:for-item="i" wx:if="{{i.length>0}}">{{i}}</view>
+                        </view>
+                        <view class='detail-img-box' wx:if="{{item.roomPhotoList.length>0}}">
+                            <view class='img-wr' style='width:{{detailBoxWidth[0]}}px'>
+                                 <view class='detail-img' wx:for="{{item.roomPhotoList}}" data-img="{{j.photoAddr}}" catchtap='roomBigImg' data-index="{{itemindex}}" wx:for-item="j" wx:key="{{index}}">
+                                    <image src="{{j.photoAddr}}" mode='aspectFill' class="dt-image"/>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <!--/房间a-->
+        </view>
+        <!--/房间信息-->
+        <!--配套信息-->
+        <view class='house-ms mar-bot' wx:if="{{!!apartmentData.setting}}">
+            <view class='ms-title'>配套设施</view>
+            <view class='pt-box'>
+                <view class='pt-b' wx:for="{{apartmentData.setting}}" wx:key="{{index}}">
+                    <image mode="widthFix" src="{{item.icon}}"/>
+                    <text>{{item.name}}</text>
+                </view>
+            </view>
+        </view>
+        <!--/配套信息-->
+        <!--房源描述-->
+        <view class='house-ms mar-bot'>
+            <view class='ms-title'>房源描述</view>
+            <view class="{{showmor ? 'feature_c' : 'feature_b'}} f14 c-666 feature">{{apartmentData.houseDesc}}</view>
+            <view class="checkAll-up descMore" bindtap="moreBtn" wx:if="{{lookMoreHide}}">
+                <view class='checkAll-up-box'>
+                    <view>{{showtitle ? '查看全部' : '收起'}}</view>
+                    <image src="{{morejt}}" class="morepic {{closepic ? 'closepic' :''}}"></image>
+                </view>
+            </view>
+        </view>
+        <!--/房源描述-->
+        <!-- 信息地图 -->
+        <view class='house-ms mar-bot map-wrap' wx:if="{{buildPositionx>0&&buildPositiony>0}}">
+            <view class='ms-title msa-t map-ti'>
+                <view>位置及周边</view>
+                <view class='look-more' bindtap='goToMap'  data-lng="{{buildPositiony}}"
+                      data-lat="{{buildPositionx}}" data-buildname="{{apartmentData.hftBuildName}}" data-status="查看全部">查看全部</view>
+            </view>
+            <view class='map-box'>
+                <image lazy-load="{{lazyLoad}}" mode="widthFix" src="https://apis.map.qq.com/ws/staticmap/v2/?center={{buildPositionx}},{{buildPositiony}}&zoom=16&scale=2&markers=size:large|icon:https://cd.haofang.net/Public/images/wap/icon_mylocation.png|{{buildPositionx}},{{buildPositiony}}&key=DGFBZ-3IFW2-PDEUL-CBLCE-XOSYK-K5B5I&size=375*320"
+                    class='map-img'></image>
+            </view>
+            <view class="nav">
+            <view class="scroll-view_H" id="scroll-map">
+              <view  wx:for="{{typeList}}" 
+                      wx:key="item" 
+                      class="scroll-view" 
+                      data-lng="{{buildPositiony}}"
+                      data-lat="{{buildPositionx}}"
+                      data-buildname="{{buildName}}"
+                      catchtap="goToMap" 
+                      data-type='{{item.typeName}}'>
+                    <view class="common {{item.typeId}}-icon"></view>
+                    <text class="map-type">{{item.typeName}}</text>
+                </view>
+              </view>
+          </view>
+        </view>
+        <!-- /信息地图 -->
+    </view>
+    </scroll-view>
+            <!-- 真房源底部-->
+        <view class='footer-nav {{isIphoneX?"iphonex-nav":""}}'>
+            <!--咨询经纪人-->
+            <view class='ft-nav-a'>
+                <view class='rent-agent'>
+                    <view class='foot-collct' bindtap='aptStarBtn'>
+                        <view class="{{isCollected==1 ? 'stard-icon' :'star-icon'}}"></view>
+                        <text class="{{isCollected==1 ? 'collected-txt' :'collect-txt'}}">{{isCollected==1 ? '已收藏' : '收藏'}}</text>
+                    </view>
+                </view>
+
+                <block wx:if="{{!backToIndexBtn}}">
+                    <view class='con-box' bindtap="callBtn" data-mobile='{{apartmentData.agentPhone}}'>
+                        <text bindtap='calling'>免费电话</text>
+                    </view>
+                </block>
+                <block wx:else="">
+                    <view class="btn-half-left" catchtap="callBtn" data-mobile='{{apartmentData.agentPhone}}'>免费电话</view>
+                    <view class="btn-half-right" catchtap="backToIndex">返回首页</view>
+                </block>
+                
+            </view>
+            <!--/咨询经纪人--> 
+        </view>
+        <!-- /真房源底部-->
+        <!-- <view class="footer" wx:if="{{info.hasSaleUsers == 1}}">
+			<view class="collect" catchtap="collectEvent">
+				<image hidden="{{!hasCollect}}" src="http://cdn.haofang.net/static/uuminiapp/new_images/collect2.png?t=20180427"/>
+				<image hidden="{{hasCollect}}" id="allstar" src="http://cdn.haofang.net/static/uuminiapp/new_images/collect.png?t=20180427"/>
+				<view class="p" hidden="{{hasCollect}}">收藏</view>
+				<view class="p" style="color:#4daaf0;" hidden="{{!hasCollect}}">已收藏</view>
+			</view>
+			<view class="btn" catchtap="showQueryBox">咨询置业顾问</view>
+		</view>
+		<view class="footer" wx:else>
+			<view class="collect" catchtap="collectEvent">
+				<image hidden="{{!hasCollect}}" src="http://cdn.haofang.net/static/uuminiapp/new_images/collect2.png?t=20180427"/>
+				<image hidden="{{hasCollect}}" id="allstar" src="http://cdn.haofang.net/static/uuminiapp/new_images/collect.png?t=20180427"/>
+				<view class="p" hidden="{{hasCollect}}">收藏</view>
+				<view class="p" style="color:#4daaf0;" hidden="{{!hasCollect}}">已收藏</view>
+			</view>
+			<view class="btn" catchtap="makeacall">咨询售楼部</view>
+		</view>
+  </view> -->
+</view>
+
+<!--弹框-->
+    <view class='soldout-box' wx:if="{{toastMask}}" >
+        <view class='tost-mask' bindtap='maskHideBtn'></view>
+        <!--预约弹框-->
+        <view class="order-toast" >
+             <view class="down-con">
+                <view class="down-txt down-txt-top">该功能小程序暂不支持</view>
+                <view class="down-txt">请打开App Atore或应用市场</view>
+                <view class="down-txt down-txt-bottom">下载优优好房App</view>
+                <view class="down-img"></view>
+                <view class="down-btn" catchtap='orderClose'>
+                    <view class="down-btn-txt">我知道了</view>
+                </view>
+            </view>
+        </view>
+        <!--/联系选择弹框-->
+        <!--引导弹框-->
+        <view class='lead-toast' wx:if="{{leadToast}}">
+          <view class='lt-txt'>免费隐号通话最佳体验</view>
+          <view class='lt-txt'>请下载优优好房客户端</view>
+          <!-- <image mode="aspectFill" src="../../images/detail/detail_arrow.png" class='lead-pic' /> -->
+        </view>
+        <!--/引导弹框-->
+    </view>
+<!--/弹框-->
+<template is="loading" data="{{...__loading__}}" wx:if="{{loadingFlag}}"/>
+
+<!--  首页悬浮按钮  -->
+<view id="homeBtn" wx:if="{{homeBtnShow}}" catchtap='goToIndexPage'></view>
+<!--固定导航-->
+<!--<template is="tabNav" data="{{animationData,showFlas,offFlag}}"></template>-->
+
+<!--消息提醒按钮-->
+<navigator id="msgNotify" url="/pages/news/news" wx:if="{{unreadNum>0}}" open-type="switchTab">
+  <view class="effect-tip heart"></view>
+</navigator>
+<!--消息提醒按钮end-->

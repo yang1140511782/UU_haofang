@@ -1,0 +1,318 @@
+<view id="app">
+    <view class="top-box">
+    <!--头部经纪人信息-->
+      <view class="broker-info">
+            <view class="pictx">
+            <image mode="aspectFill" src="{{entrustUser.brokerUserPicUrl}}" binderror="defaultImg" data-err-img="entrustUser.brokerUserPicUrl"> 
+            </image>
+            </view>
+            <view class="grade">
+            <view class="broker-name">
+              {{entrustUser.brokerName}}
+              <view class='refuse-box' catchtap="showRefuseBrokerDialog" wx:if="{{entrustUser.requireStatus==1}}">
+              <view class='refuse-icon'></view>拒绝</view>
+              <view class="prize-icon" wx:if="{{entrustUser.rewardType==1 && entrustUser.rewardStatus==1}}"></view>
+            </view>
+            <view class="pf-box">
+                <view class="pinf star-value-{{entrustUser.starLevelShow}}"></view>
+                <view class="fens">{{entrustUser.starLevel}}分</view>
+                <view class="tradeNum" hidden="{{archiveInfo.RECEIVING_NUM==0}}">{{entrustUser.receivingNum}}单</view>
+            </view>
+            </view>
+            <view class="icon-wrap">
+            <view class="im_icon" data-to='{{entrustUser.brokerArchiveId}}' bindtap='goIm'>
+                <image mode="aspectFill" src="http://cdn.haofang.net/static/uuminiapp/entrustDetail/im_dialog_call.png"></image>
+            </view>
+            <view class="call_icon" catchtap='makeCall' data-mobile="{{entrustUser.brokerMobile}}">
+                <image mode="aspectFill" src="http://cdn.haofang.net/static/uuminiapp/entrustDetail/icon_call.png"></image>
+            </view>
+            </view>
+      </view>
+      <!--头部经纪人信息end-->
+      <!-- 委托进度流程 未投诉 -->
+      <view class="manager-progress progress-{{pushStatusClass}}" wx:if="{{entrustUser.isAppeal==0&&entrustUser.requireStatus!=0&&entrustUser.rewardStatus!=2 && entrustUser.rewardStatus!=3}}">
+        <view class='line-w'></view>
+        <!-- <view class="path-line"></view> -->
+        <view class="condition-box">
+          <view class="condition"><view class='order-icon'></view>接单</view>
+          <!--房勘按钮样式-->
+          <view class="condition">
+            <view class='{{entrustUser.pushStatus >= 4 ? "tj-icon" :"no-tj"}}'>
+              <image wx:if="{{entrustUser.pushStatus >= 4}}" mode="widthFix" src='http://cdn.haofang.net/static/uuminiapp/new_images/kanfang-ed-icon.png'></image>
+              <image wx:else mode="widthFix" src='https://uuweb.haofang.net/PublicC/source/images/publish/kanfang.png'></image>
+            </view>房勘
+          </view>
+          <!--委托按钮样式-->
+          <view class="condition">
+            <view class='{{entrustUser.pushStatus >= 6 ? "dk-icon" :"no-dk"}}'>
+              <image wx:if="{{entrustUser.pushStatus >= 6}}" mode="widthFix" src='http://cdn.haofang.net/static/uuminiapp/new_images/weituo-ed-icon.png'></image>
+              <image wx:else mode="widthFix" src='https://uuweb.haofang.net/PublicC/source/images/publish/weituo-icon.png'></image>
+            </view>委托
+            </view>
+
+          <view class="condition"><view class='{{entrustUser.pushStatus >= 10 ? "cj-icon" :"no-cj"}}'></view>成交</view>
+          <view class='line-w-a'></view>
+        </view>
+      </view>
+      <!-- 委托进度流程end -->
+      <!-- 委托进度流程 有投诉  -->
+      <view class="manager-progress progress-{{pushStatusClass}}{{entrustUser.rewardStatus>1?' allgreen':''}}" 
+            wx:if="{{entrustUser.rewardStatus==2||entrustUser.rewardStatus==3}}">
+        <view class='line-w'></view>
+        <!-- <view class="path-line"></view> -->
+        <view class="condition-box">
+          <view class="condition"><view class='order-icon'></view>接单</view>
+          <view class="condition"><view class='{{pushStatusClass >= 2 ? "tj-icon" :"no-tj"}}'><image wx:if="{{pushStatusClass>=2}}" mode="widthFix" src='https://uuweb.haofang.net/PublicC/source/images/publish/kanfang-ed-icon.png'></image><image wx:if="{{pushStatusClass<2}}" mode="widthFix" src='https://uuweb.haofang.net/PublicC/source/images/publish/kanfang.png'></image></view>房勘</view>
+          <view class="condition tousu-fail"><view class='{{entrustUser.rewardStatus == 4 ? "tousu-success" :"no-tousu-success"}}'></view>{{entrustUser.rewardStatus==2 ? '投诉中' : entrustUser.rewardStatus==3?'投诉结束': '投诉'}}</view>
+          <view class='line-w-a'></view>
+        </view>
+      </view>
+      <!-- 委托进度流程end -->
+    </view>
+    <view></view>
+     <!-- 推荐房源列表 -->
+        <view class="house-list">
+          <view class="house-section" wx:for="{{housingHouseList}}" wx:key="{{index}}" wx:for-item="List">
+            <view class="house-title">
+              <view class="house-title-txt">委托房源</view>
+              <view class="house-title-time">{{List.receiveTime}}</view>
+            </view>
+            <!--房源信息-->
+             <!--caseId: 7382681, caseType: 1, cityId: 1, reSource: 1-->
+            <view class='houseItem' data-caseid='{{List.vipCaseId}}' data-cityid="{{List.cityId}}" data-casetype='{{List.caseType}}' catchtap='goToDetail'>
+              <view class='picbox'>
+                <image src='{{List.thumbUrl}}' mode='aspectFill' />
+                <view class="tbb">
+                  <view class='icon-vr' wx:if="{{List.hasPanorama>0}}"></view>
+                  <view class='icon-video' wx:if="{{List.videoNum>0}}"></view>
+                </view>
+              </view>
+              <view class='infobox'>
+                <view class="housetitle">{{List.regionName}} {{List.buildName}}</view>
+                <view class="text">{{List.houseUseageCn}}<text wx:if="{{List.houseRoom>0}}">{{List.houseRoom}}室</text><text wx:if="{{List.houseHall>0}}">{{List.houseHall}}厅</text></view>
+                <view class="houser-area">
+                  <text wx:if="{{List.houseArea}}">面积:{{List.houseArea}}㎡</text>
+                  <text wx:if="{{List.houseFloors}}">楼层:{{List.houseFloor}}/{{List.houseFloors}}</text>
+                </view>
+              </view>
+              <view class='price'>{{List.houseTotalPrice}}{{List.priceUnitCn}}
+                  <text wx:if="{{List.houseUnitPrice>0}}">{{List.houseUnitPrice}}元/㎡</text>
+              </view>
+              <view class="house-status-tag tag-{{List.recomHouseStatus}}" wx:if="{{List.recomHouseStatus>0}}"></view>
+            </view>
+            <!--房源进度-->
+            <view class="house-progress">
+              <view wx:if="{{entrustUser.pushStatus==4 && entrustUser.rewardStatus!=2 && entrustUser.rewardStatus!=3}}" class="house-progress-btn">
+                <view class="house-btn-li disagree-see-house" bindtap="disagreen4FangKanDialog" data-pushLogId="{{entrustUser.pushLogId}}" data-isvip="{{List.isVip}}">拒绝看房</view>
+                <view class="house-btn-li agree-see-house" bindtap="agreen4FangKan" data-pushLogId="{{entrustUser.pushLogId}}" data-isvip="{{List.isVip}}">同意看房</view>
+              </view>
+              <view wx:elif="{{entrustUser.pushStatus==2&&entrustUser.rewardStatus<2}}" class="house-progress-text">正在火速赶来为您服务,请耐心等待</view>
+              <view wx:elif="{{entrustUser.pushStatus==7&&entrustUser.rewardStatus<2}}" class="house-progress-text">正在为您介绍客户,请耐心等待</view>
+              <view class="appeal-con" wx:elif="{{entrustUser.rewardStatus==2}}">
+                 <view class="house-progress-text appeal-note">正向您发起投诉，如有疑问可进行申诉</view>
+                 <view class="appeal-btn">
+                    <view class="appeal-txt" bindtap='sendAppeal' data-isAppeal="{{entrustUser.isAppeal}}">我要申诉</view>
+                 </view>
+              </view>
+              <view wx:elif="{{List.seeStatus==2}}" class="house-progress-btn">
+                <view class="house-btn-li see-evaluate" bindtap="daikanEva" data-recominfoid="{{List.recomInfoId}}">带看评价</view>
+              </view>
+              <view wx:elif="{{List.seeStatus==3&&List.brokerMoney==-1}}" class="house-progress-text">请对本次服务进行中评价</view>
+
+              <view wx:elif="{{entrustUser.isEvaluate==0&&entrustUser.requireStatus==2&&entrustUser.pushStatus==10}}" class="house-progress-btn">
+                <view class="house-btn-li server-evaluate" bindtap="showCompleteEvaDialog" data-recominfoid="{{List.recomInfoId}}">服务评价</view>
+              </view>
+
+              <view wx:elif="{{entrustUser.rewardStatus==3}}" class="house-progress-text">投诉处理完毕，奖励金已退还经纪人</view>
+            </view>
+          </view>
+        </view>
+        <!-- 推荐房源列表end -->
+     <!--  服务评价:未评价 -->
+        <view wx:if="{{(entrustUser.isEvaluate!=1&&showCompleteEvaDialog)||entrustUser.isEvaluate==1 && 0}}" class="evaluate_mask {{entrustUser.isEvaluate==1?'evaluate-mask':''}}" catchtap="closeServiceEvaluateBox">
+          <view class="evaluate_box">
+            <view class="title">本次服务评价：</view>
+            
+            <view class="server-result-star">
+              <view data-val="1" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=1?'activestar':''}}"></view>
+              <view data-val="2" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=2?'activestar':''}}"></view>
+              <view data-val="3" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=3?'activestar':''}}"></view>
+              <view data-val="4" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=4?'activestar':''}}"></view>
+              <view data-val="5" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=5?'activestar':''}}"></view>
+            </view>
+            <view class="reasonBoxWrap" wx:if="{{serverStarVal ==0 || serverStarVal<5}}">
+              <view class="reason_box">
+                <view class="reason {{checkedCompleteReasonArr[index]?'select':''}}" wx:for="{{serverReasonArr[serverStarVal]}}"
+                 wx:key="{{index}}" data-index="{{index}}" data-name="{{item}}" catchtap="chooseCompleteReason">{{item}}</view>
+              </view>
+              <view class="reason_box_remark">
+                <textarea placeholder="其他原因可在此对经纪人匿名反馈，帮助我们提高质量。" bindinput="completeEvaContentBlur" placeholder-class="reason-remark-text-placeholder" maxlength="100"></textarea>
+                <view>{{completeEvaContent.length}}/100字</view>
+              </view>
+            </view>
+            <view class="evaluate_btn active" wx:if="{{entrustUser.isEvaluate==1}}" catchtap='completeEvent'>完成</view>
+            <view class="evaluate_btn {{serverStarVal>0?'active':''}}" wx:else catchtap='submitCompleteEvaData'>提交匿名评价</view>
+          </view>
+        </view>
+        <!--服务评价end-->
+        <!--交易信息:已评价-->
+        <view wx:elif="{{entrustUser.isEvaluate==1}}" class="evaluate_mask server-evaluate-result-box">
+          <view class="evaluate_box" catchtap="stoppropagation">
+            <view class="server-evaluate-result"><text>服务评价</text><text>(经纪人不会看到您的评价)</text></view>
+            <view class="server-result-star">
+              <view data-val="1" class="{{serverStarVal>=1?'activestar':''}}"></view>
+              <view data-val="2" class="{{serverStarVal>=2?'activestar':''}}"></view>
+              <view data-val="3" class="{{serverStarVal>=3?'activestar':''}}"></view>
+              <view data-val="4" class="{{serverStarVal>=4?'activestar':''}}"></view>
+              <view data-val="5" class="{{serverStarVal>=5?'activestar':''}}"></view>
+            </view>
+
+            <view class="server-evaluate-ul" wx:if="{{evaTag && evaTag.length>0}}">
+              <view class="server-evaluate-li" wx:for="{{evaTag}}"
+                 wx:key="{{index}}" wx:for-item="item">{{item}}</view>
+            </view>
+            
+          </view>
+        </view>
+        <!--交易信息end-->
+
+        <!--委托跟进-->
+        <view class="entrust-follow {{followDetailShow?'show-follow-detail':''}}" hidden="{{isEvaluate}}">
+          <view class="follow-tt-box">
+            <view class="follow-tt">委托跟进</view>
+          </view>
+          <view class="follow-list">
+            <view class="follow-ul">
+              <view class="follow-li" wx:for="{{followDetailShow?trackInfos:partTrackInfos}}" wx:key="index" wx:for-item="item">
+                <view class="follow-li-left">
+                  <view class="follow-img">
+                    <image src="{{item.photoUrl}}" mode="aspectFill"></image>
+                  </view>
+                  <view class="follow-line"></view>
+                </view>
+                <view class="follow-li-right">
+                  <view class="follow-li-tt">{{item.trackTitle}}</view>
+                  <view class="follow-li-detail">{{item.trackContent}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+           <view wx:if="{{trackInfos.length>showTrackNum && !followDetailShow}}" class="lookMoreFollow follow-more-btn" bindtap="followDetailTap">{{!followDetailShow?'查看更多':'收起'}}</view>
+        </view>
+        <!--委托跟进end-->
+
+            <!--拒绝经纪人弹窗-->
+    <view wx:if="{{refuseBrokerBox}}" class="refuse-broker-box">
+      <view class="refuse-broker-content">
+        <view class="refuse-broker-header">
+          <view class="refuse-broker-tt">拒绝该经纪人的原因</view>
+          <view class="refuse-broker-close" catchtap="closeRefuseBrokerDialog"></view>
+        </view>
+        <view class="refuse-broker-main">
+          
+          <view class="reason_box">
+            <view class="reason {{checkedRefuseReasonArr[index]?'select':''}}" wx:for="{{refuseBrokerReason}}"
+                 wx:key="{{index}}" data-index="{{index}}" data-name="{{item}}" catchtap="toogleRefuseReason">{{item}}</view>
+          </view>
+          <view class="reason_box_remark">
+            <textarea placeholder="其他原因..." bindinput="refuseContentBlur" placeholder-class="reason-remark-text-placeholder" maxlength="100"></textarea>
+            <view>{{refuseContent.length}}/100字</view>
+          </view>
+        </view>
+        <view class="refuse-broker-footer-line"></view>
+        <view class="refuse-broker-footer refuse-broker-submit" catchtap="submitRefuseData">确认拒绝</view>
+      </view>
+    </view>
+    <!--拒绝经纪人弹窗end-->
+      <!--弹框-->
+    <view class='soldout-box' wx:if="{{toastMask}}">
+        <view class='tost-mask' bindtap='maskHideBtn'></view>
+        <!--联系选择弹框-->
+        <view class="refer-toast" wx:if="{{guideToast}}">
+            <view class='refer-txt'>
+              <view class='tos-line'></view>
+               <view class='ref-t'>选择联系方式</view>
+              <view class='tos-line'></view>
+            </view>
+            <view class='contract-box'>
+                <view class='chat-b' catchtap='onlineChat' data-archive="{{entrustUser.brokerArchiveId}}"><view class='chat-ic'></view><text class='choose-txt'>隐号通话</text></view>
+                <view class='call-b' catchtap="makeCall" data-mobile='{{entrustUser.brokerMobile}}'><view class='call-ic'></view><text class='choose-txt'>拨打电话</text></view>
+            </view>
+            <view class='close-btn'></view>
+        </view>
+        <!--/联系选择弹框-->
+    </view>
+<!--/弹框-->
+<!--有奖委托红包奖励显示-->
+<view class="youjiang-trust-bomp" wx:if="{{prizeTrustBompShow}}">
+    <view class="youjiang-trust-con">
+        <view class="youjiang-trust-head">
+            <view class="price-head-note">收到奖励金啦!</view>
+        </view>
+        <view class="youjiang-trust-middle">
+            <view class="youjiang-money">
+                <view class="money-unit">￥</view>
+                <view class="money-num">{{entrustUser.reWardMoney}}</view>
+            </view>
+            <view class="youjiang-money-note note-top">收到来自经纪人:{{entrustUser.brokerName}}的奖励金,</view>
+            <view class="youjiang-money-note note-bottom">奖励金已存入'我的账户'中,</view>
+            <view class="youjiang-money-note note-bottom">若未被投诉10天后可提现</view>
+        </view>
+        <view class="youjiang-trust-foot" catchtap='youjiangBompEvent'>我知道了</view>
+    </view>
+</view>
+<!--有奖委托红包奖励显示-->
+<!--投诉通知-->
+<view class="grievance-bomp" wx:if="{{grievanceBomp}}">
+    <view class="grievance-bomp-con">
+        <view class="grievance-title">投诉通知</view>
+        <view class="grievance-img"></view>
+        <view class="grievance-txt">您的有奖委托被经纪人{{entrustUser.brokerName}}投诉 具体原因请查看委托跟进,若有异议可发起申诉。如投诉属实奖励金将退还经纪人</view>
+        <view class="grievance-btn" catchtap='grievanceBompCancel'>我知道了</view>
+    </view>
+</view>
+<!--投诉通知-->
+<!--投诉处理结果-->
+<view class="grievance-result" wx:if="{{grievanceResultShow}}">
+    <view class="grievance-result-con">
+        <view class="grievance-result-title">投诉处理结果</view>
+        <view class="grievance-result-txt" wx:if="{{entrustUser.rewardStatus==4}}">经判定,经纪人{{entrustUser.brokerName}}对您的投诉不属实,请继续完成委托。</view>
+        <view class="grievance-result-txt" wx:if="{{entrustUser.rewardStatus==3}}">经判定,经纪人{{entrustUser.brokerName}}对您的投诉属实,奖励金已退还经纪人。</view>
+        <view class="grievance-result-btn" catchtap='grievanceResultCancel'>我知道了</view>
+    </view>
+</view>
+<!--投诉处理结果-->
+
+<!--隐私保护-->
+  <view class="privacy-box" wx:if="{{privacyBoxShow && (entrustUser.isEvaluate!=1 || entrustUser.pushStatus==10)}}">
+    <view class="privacy-title">
+       <view class="privacy-txt">隐私保护</view>
+       <view class="privacy-cancel" catchtap='privacyCancelEvent'>×</view>
+    </view>
+    <view class="privacy-txt-box">
+      为保护您的隐私，经纪人无法看到您的真实号码，只能通过优优好房转接电话联系您。若对房源无意向，请勿随意告知对方手机号或进行回拨。如不愿再次接听该经纪人的转接电话，可在委托详情页中拒绝该经纪人服务！
+    </view>
+  </view>
+<!--隐私保护-->
+<!--申诉理由-->
+ <view class="refuse-broker-box" wx:if="{{appealFlag}}">
+      <view class="refuse-broker-content">
+        <view class="appeal-broker-header">
+          <view class="refuse-broker-tt">申诉理由</view>
+          <view class="refuse-broker-close" catchtap="sendAppeal"></view>
+        </view>
+        <view class="refuse-broker-main">
+          <view class="reason_box_remark_appeal">
+            <textarea placeholder="请填写申诉理由" bindinput="appealContentBlur" placeholder-class="reason-remark-text-placeholder" maxlength="100"></textarea>
+            <view>{{appealContent.length}}/100字</view>
+          </view>
+        </view>
+        <view class="refuse-broker-footer-line"></view>
+        <view class="refuse-broker-footer appeal-broker-submit" catchtap="submitAppealData" data-complaintId="{{entrustUser.complaintId}}">提交申诉</view>
+      </view>
+    </view>
+<!--申诉理由-->
+</view>
+
+<!--回到首页按钮-->
+<view wx:if="{{isFirst}}" class="index-btn"  bindtap='indexBtnEvent'><button formType="submit"></button></view>

@@ -1,0 +1,2 @@
+<!--扫码进入的页面-->
+<web-view src="{{htmlUrl}}"></web-view>

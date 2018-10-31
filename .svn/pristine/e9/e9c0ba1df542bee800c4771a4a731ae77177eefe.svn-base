@@ -1,0 +1,709 @@
+@import "../../component/tabNav/tabNav.wxss";
+@import "../../template/listTmp.wxss";
+page{
+  height: 100%;
+  font-family: '微软雅黑';
+  background: #ffffff;
+}
+.cd-con-top{
+    position: absolute;
+    top: 80rpx;
+    width: 100%;
+    background: #fff;
+    left: 0;
+}
+.fixedBox{
+  position: fixed;
+  top:0;
+  left: 0;
+  width:100%;
+  z-index: 66;
+}
+.searchbox{
+  background: #fff;
+  height: 60rpx;
+  padding:8rpx 26rpx;
+  position: relative;
+}
+.searchbox .inputbox{
+  width:100%;
+  height: 60rpx;
+  background-color: #e8e8e8;
+  border-radius: 4rpx;
+  position: relative;
+  color:#666666;
+}
+.searchbox .searchicon{
+  background-image: url(http://uu.haofang.net/Public/images/wap/search-icon.png);
+  background-repeat: no-repeat;
+  background-size:30rpx 30rpx;
+  background-position: 640rpx center;
+}
+.searchbox .leftsearchicon{
+  background-position: 20rpx center;
+}
+.sale_xuans {
+    height: 500rpx;
+    width: 100%;
+    background: url(https://uuweb.haofang.net/PublicC/images/xuans.png) no-repeat center;
+    background-size: 336rpx 250rpx;
+
+}
+.sale_no_data_text {
+    line-height: 60rpx;
+    font-size: 28rpx;
+    color: #999999;
+    text-align: center;
+}
+.sale_no_data_publish {
+    width: 510rpx;
+    height: 76rpx;
+    text-align: center;
+    line-height: 76rpx;
+    border-radius: 5px;
+    color: #ffffff;
+    background: #2bb765;
+    letter-spacing: 2px;
+    font-size: 32rpx;
+    margin: 42rpx auto 0;
+}
+
+.searchbox .searchBtn{
+  position: absolute;
+  color:#fff;
+  font-size: 27rpx;
+  line-height: 60rpx;
+  text-align: center;
+  letter-spacing: 2px;
+  top:16rpx;
+  right:22rpx;
+  width:80rpx;
+  height: 60rpx;
+}
+.searchbox .inputbox .input{
+  width:100%;
+  height: 100%;
+  box-sizing: border-box;
+  line-height: 60rpx;
+  font-size: 28rpx;
+  color:#666666;
+  border:0;
+  outline: none;
+  padding-left:30rpx;
+}
+.searchbox .leftsearchicon .input{
+  padding-left:68rpx;
+}
+.filter{
+  height: 80rpx;
+  border-bottom: 1px solid #f6f6f6;
+  background: #ffffff;
+  display: flex;
+}
+.filter .itembtn{
+  flex:1;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #494949;
+  position: relative;
+}
+.filter .itembtn::after{
+    content: "";
+    width:15rpx;
+    height: 9rpx;
+    background: url(https://uuweb.haofang.net/Public/wxApp/images/new_images/down.png) no-repeat 0 0;
+    background-size: 100%;
+    display: inline-block;
+    margin-left: 15rpx;
+    vertical-align: middle;
+}
+.filter .itembtn:not(:last-child)::before{
+  content:'';
+  position: absolute;
+  width:1px;
+  height: 30rpx;
+  background: #d1d1d1;
+  right:0;
+  top:0;
+  bottom:0;
+  margin: auto;
+}
+.filter .choosing{
+  color: #ff5400;
+}
+.filter .choosing::after{
+  background-image: url(https://uuweb.haofang.net/Public/wxApp/images/new_images/down_ac_icon.png?t=20180427);
+}
+.filter .choosed{
+  color: #ff5400;
+}
+
+.orderbtn{
+  width:126rpx;
+  height: 56rpx;
+  border: 1px solid #2bcd6f;
+  border-radius: 28rpx;
+  color:#2bcd6f;
+  text-align: center;
+  text-indent: 1.5em;
+  font-size: 25rpx;
+  line-height: 56rpx;
+  position: fixed;
+  right:30rpx;
+  bottom: 60rpx;
+  letter-spacing: 1px;
+  background-color: rgb(255,255,255);
+  background-image: url(https://uuweb.haofang.net/Public/images/apartment/list/paixu_03.png);
+  background-repeat: no-repeat;
+  background-size: 26rpx 29rpx;
+  background-position: 19rpx center;
+  opacity: 0.9;
+}
+
+
+/*筛选条件的弹框*/
+.cd-model{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0, 0.3);
+    z-index: 50;
+}
+.cd-mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.cd-con{
+    position: absolute;
+    top: 150rpx;
+    width: 100%;
+    background: #fff;
+    left: 0;
+}
+/*区域*/
+.cd-reg{
+    height: 800rpx;
+    font-size: 30rpx;
+
+}
+.cd-reg .l{
+    float: left;
+    width: 28%;
+    background: #f4f4f4;
+    height: 100%;
+    overflow: auto;
+}
+.cd-reg .r{
+    float: left;
+    width: 72%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-left: 36rpx;
+    overflow: auto;
+}
+.cd-reg .l .li{
+    width: 100%;
+    box-sizing: border-box;
+    height: 90rpx;
+    line-height: 90rpx;
+    padding-left: 56rpx;
+    border-bottom: 1px solid #eee;
+}
+.cd-reg .l .f-cd-reg{           /*--当选中区域的时候--*/
+    background: #fff !important;
+    color:#ff5400 !important;
+}
+.cd-reg .r .li{
+    width: 100%;
+    height: 90rpx;
+    line-height: 90rpx;
+    padding-left: 20rpx;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eee;
+}
+.cd-reg .r .li.f-cg{
+    color:#ff5400 !important;
+    border-bottom: 1px solid #ff5400;
+}
+/*end*/
+/*价格*/
+.cd-p{
+    position: relative;
+    height: 640rpx;
+    box-sizing: border-box;
+    padding-bottom: 100rpx;
+    font-size: 30rpx;
+
+}
+.cd-pp{
+    padding-bottom: 0;
+    height:541rpx;
+
+}
+.cd-p .l{
+    float: left;
+    width: 28%;
+    background: #f4f4f4;
+    height: 100%;
+    overflow: auto;
+}
+.cd-p .l .f-cd-reg{           /*--当选中区域的时候--*/
+    background: #fff !important;
+    color:#ff5400 !important;
+}
+.cd-p .r{
+    float: left;
+    width: 72%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-left: 36rpx;
+    overflow: auto;
+}
+.cd-p .ul{
+    height: 100%;
+    overflow: auto;
+}
+.cd-p .ul .li{
+    height: 90rpx;
+    line-height: 90rpx;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eee;
+    padding-left: 56rpx;
+}
+.cd-p .ul .li:last-child{
+  border:0;
+}
+.cd-p .ul .f-cg{   /*--选中状态green--*/
+    color:#ff5400 !important;
+    border-bottom: 1px solid #ff5400;
+}
+.cd-p .btm{
+    position: relative;
+    height: 100rpx;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 40rpx 0;
+    display: flex;
+    align-items:center;
+}
+.cd-p .btm input{
+    display: inline-block;
+    width: 180rpx;
+    height: 50rpx;
+    text-align: center;
+    border: 1px solid #cccccc;
+    border-radius: 10rpx;
+    font-size:29rpx;
+
+}
+.cd-p .btm .dis{
+    border: 0;
+    width: 50rpx;
+}
+.cd-p .btm .search{
+    position: absolute;
+    top: 20rpx;
+    right: 40rpx;
+    width: 120rpx;
+    height: 50rpx;
+    background: -webkit-linear-gradient(left, rgb(255,203,0) , rgb(255,148,2));
+    text-align: center;
+    border: 1px solid #fff;
+    border-radius: 10rpx;
+    color: #424242;
+    line-height: 50rpx;
+}
+
+/*end*/
+/*更多筛选样式*/
+.cd-more{
+    position: relative;
+    background: #fff;
+    padding-top: 214rpx;
+    height: 100%;
+    z-index: 9;
+    box-sizing:border-box;
+    padding-bottom:135rpx;
+
+}
+.cd-more .more{
+    padding:0 0 0 20rpx;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    position: relative;
+}
+.cd-more .more .item{
+    padding-bottom: 9rpx;
+    padding-left: 20rpx;
+    border-bottom: 1px solid #f3f3f3;
+    margin-right: 20rpx;
+}
+.cd-more .more .item:nth-last-of-type(2){
+    border: 0;
+}
+.cd-more .more .item .ti{
+    height: 90rpx;
+    line-height: 90rpx;
+    font-size: 29rpx;
+    color: #2d2c2c;
+    letter-spacing: 1px;
+    font-family: '黑体';
+}
+.cd-more .more .item .choosebox{
+    display: flex;
+    flex-wrap: wrap;
+}
+.cd-more .more .item .choosebox .option{
+    width: 150rpx;
+    height: 68rpx;
+    background: #ffffff;
+    line-height: 64rpx;
+    text-align: center;
+    color:#6c6c6c;
+    border-radius: 6rpx;
+    font-size: 26rpx;
+    margin-right: 21rpx;
+    margin-bottom: 20rpx;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+    border:1px solid #d6d6d6;
+}
+.cd-more .more .item .choosebox .curr{
+    background: #1bc964;
+    color: #ffffff;
+    border-color: #1bc964;
+}
+.cd-more .morebtnbox{
+    display: flex;
+    justify-content: space-between;
+    width:674rpx;
+    height: 80rpx;
+    position: fixed;
+    bottom: 27rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    
+}
+.cd-more .morebtnbox view{
+    width:326rpx;
+    height: 85rpx;
+    border-radius: 6rpx;
+    background: #40505a;
+    text-align: center;
+    line-height: 85rpx;
+    font-size: 33rpx;
+    color: #ffffff;
+    letter-spacing: 10rpx;
+}
+.cd-more .morebtnbox .confirm{
+    background: #1bc964;
+}
+.cdd{
+  z-index: 49;
+}
+.tbb{
+    position: absolute;
+    width: 100%;
+    height: 34rpx;
+    padding-left: 8rpx;
+    box-sizing: border-box;
+    line-height: 34rpx;
+    display: block;
+    bottom: 12rpx;
+}
+.icon-vr{
+    width: 40rpx;
+    height: 33rpx;
+    display: inline-block;
+    float: left;
+    margin-right: 10rpx;
+    background: url(https://youjia.haofang.net/Public/images/vr_x.png) no-repeat;
+    background-size: 100%;
+}
+.icon-video {
+    width: 40rpx;
+    height: 33rpx;
+    display: inline-block;
+    background: url(https://youjia.haofang.net/Public/images/video_x.png) no-repeat;
+    background-size: 100%;
+}
+#pullUp,.pullUp_noData {
+    height:40px;
+    line-height:40px;
+    font-size:12px;
+    text-align: center;
+    background: #ffffff;
+}
+#pullUp .pullUpIcon  {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    border-radius: 100%;
+    margin: 6px;
+    border: 2px solid #666;
+    border-bottom-color: transparent;
+    vertical-align: middle;
+    -webkit-animation: loading 0.75s linear infinite;
+    animation: loading 0.75s linear infinite;
+}
+#pullUp.flip .pullUpIcon {
+    -webkit-transform:rotate(0deg) translateZ(0);
+}
+#pullUp.loading .pullUpIcon {
+    background-position:0 100%;
+    -webkit-transform:rotate(0deg) translateZ(0);
+    -webkit-transition-duration:0ms;
+    -webkit-animation-name:loading;
+    -webkit-animation-duration:2s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+}
+@-webkit-keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.no-more-data{
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    font-size:26rpx;
+    color:#666666;
+}
+/*没有房源的样式*/
+.no-house{
+    text-align: center;
+    padding-top: 280rpx;
+}
+.imgCon{
+    height: 220rpx;
+    background: url('https://weidian.haofang.net/Public/web/default/images/fy-no-data.png') no-repeat center;
+    background-size: 200rpx auto;
+}
+.no-txt{
+    font-size: 36rpx;
+    color: #333;
+}
+.no-txt1{
+    margin-top: 34rpx;
+    font-size: 32rpx;
+    color: #ccc;
+}
+
+/*  搜索页弹框  */
+.searchmask{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height: 100%;
+  background: #ffffff;
+  z-index: 123;
+}
+.searchmask .searchbox{
+  z-index: 124;
+}
+.moreword{
+  padding-left: 31rpx;
+  background: #fff;
+  width:100%;
+  position:absolute;
+  height: 100%;
+  top:0;
+  left: 0;
+  overflow-y: auto;
+}
+.moreword .wordItem{
+  font-size: 28rpx;
+  color: #000000;
+  border-bottom: 1px solid #e2e2e2;
+  height: 88rpx;
+  line-height: 88rpx;
+  position: relative;
+  letter-spacing: 1px;
+}
+.moreword .wordItem text{
+  position: absolute;
+  color:#c6c6c6;
+  width:150rpx;
+  text-align: right;
+  height: 88rpx;
+  line-height: 88rpx;
+  right:50rpx;
+  top:0;
+  font-weight: normal;
+}
+.history{
+  padding-left: 31rpx;
+  background: #fff;
+  width:100%;
+  height: 100%;
+  overflow-y: auto;
+}
+.history .wordItem{
+  font-size: 28rpx;
+  color: #000000;
+  border-bottom: 1px solid #e2e2e2;
+  height: 88rpx;
+  line-height: 88rpx;
+  position: relative;
+  letter-spacing: 1px;
+  text-indent: 50rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/changeImg/search_icon.png) no-repeat 0 30rpx;
+  background-size: 27rpx 27rpx;
+}
+.history .wordItem text{
+  position: absolute;
+  color:#585858;
+  width:150rpx;
+  text-align: right;
+  height: 88rpx;
+  line-height: 88rpx;
+  right:50rpx;
+  top:0;
+  font-weight: normal;
+}
+.clearbtn{
+  position: absolute;
+  width:60rpx;
+  height: 60rpx;
+  top:0;
+  right:10rpx;
+  z-index: 150;
+}
+.clearbtn::after{
+  content:'';
+  position: absolute;
+  width:26rpx;
+  height: 26rpx;
+  top:0;
+  bottom: 0;
+  margin: auto;
+  right: 0;
+  left: 0;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/search/clear.png) no-repeat center center;
+  background-size: contain;
+}
+.deleteHistory{
+  width:200rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 24rpx;
+  color:#606060;
+  letter-spacing: 1px;
+  position: relative;
+  left:-15rpx;
+}
+.orderMask{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height: 100%;
+  background: rgba(0,0,0,.7);
+  z-index: 200;
+}
+.orderMask .orderbox{
+  padding-left: 43rpx;
+  background: #ffffff;
+  position: absolute;
+  width:100%;
+  left: 0;
+  bottom: 0;
+}
+.orderMask .orderbox .orderitem{
+  height: 91rpx;
+  line-height: 91rpx;
+  text-align: center;
+  letter-spacing: 1px;
+  color:#151515;
+  border-bottom: 1px solid #858585;
+  font-size: 27rpx;
+  text-indent: -31rpx;
+}
+.orderMask .orderbox .current{
+  color:#18c161;
+  border-color: #18c161;
+}
+.newhouse-hot-icon {
+    display: inline-block;
+    width: 92rpx;
+    height: 34rpx;
+    background: url(https://static.haofang.net/Public/images/wap/newhouse-hot.png) center center no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: -8rpx;
+    left: 10rpx;
+}
+.content{
+  box-sizing: border-box;
+   padding-top: 150rpx; 
+  background: #ffffff;
+}
+.paddingtop80{
+  padding-top: 80rpx;
+}
+.filterItemBox{
+  z-index: 999;
+  position: relative;
+}
+
+
+.no-data {
+  width: 100%;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.no-data .no-data-img {
+  width: 283rpx;
+  height: 287rpx;
+  margin: 0 auto;
+}
+
+.no-data .no-data-img image {
+  width: 100%;
+  height: 100%;
+}
+
+.no-data text {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  font-size: 28rpx;
+  color: #999;
+  margin: auto;
+}
+#mapBtn{
+  width:120rpx;
+  height: 120rpx;
+  position: fixed;
+  right:21rpx;
+  bottom:115rpx;
+  border-radius: 50%;
+  background: url('http://uuweb.haofang.net/Public/wxApp/images/list/map.png') center center no-repeat;
+  background-size: 100% 100%;
+  z-index: 9;
+}

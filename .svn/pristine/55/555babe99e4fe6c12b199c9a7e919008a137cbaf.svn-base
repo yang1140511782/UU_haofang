@@ -1,0 +1,152 @@
+
+<import src="../common/loading/loading.wxml"/>
+<template is="loading" data="{{...__loading__}}" wx:if="{{loadingFlag}}"/>
+
+<view class="main">
+    <!-- <view class='pre-loading' wx:if="{{loadingFlag}}">
+        <view class='lod-box'>
+            <image src="http://cdn.haofang.net/static/uuminiapp/detail/loading-green-160px.gif"></image> 
+            <view class='load-txt'>Loading...</view>
+        </view>
+    </view> -->
+    <!-- 头部 -->
+    <view class="head-banner">
+        <image src="{{houseData.bannerPic}}" style="width:100%;height:100%"></image>
+        <view class="head-area">
+            <text>{{houseData.price}}</text>
+           {{houseData.priceUnit}}
+        </view>
+            <view class="type">
+                <text>{{houseData.metaInfo}}</text>
+                <text>{{houseData.openDate}}</text>
+            </view>
+            <view class="head-mask"></view>
+            <view class="transition-mask"></view>
+    </view>
+        <!-- 小区地址 -->
+    <view class="house-detail house-common">
+        <view class="house-name">{{houseData.buildName}}</view>
+        <view class="house-addr">{{houseData.buildAddr}}</view>
+    </view>
+    <!-- 小区介绍 -->
+    <view class="house-common house-introduce">
+        <view class="house-title">{{houseData.introduceTitle}}</view>
+        <view class="house-txt">{{houseData.introduceDesc}}</view>
+        <swiper class="house-introduce-swiper" bindchange='introduceSwiperEvent'>
+            <block wx:for="{{houseData.introducePicList}}" wx:key='item'>
+                <swiper-item>
+                    <image src="{{item}}" style="width:100%;height:100%" class="slide-image"/>
+                </swiper-item>
+            </block>
+            <view class="number">{{introduceCurrentPic}} / {{introduceSwiperTotal}}</view>
+        </swiper>
+    </view>
+    <!--热门户型-->
+    <view class="house-hot house-common">
+        <view class="house-icon-con">
+            <view class="house-icon-common house-icon-hot"></view>
+            <view class="house-icon-right">
+                <view class="house-icon-title">热门户型</view>
+                <view class="house-icon-note">Popular Family</view>
+            </view>
+        </view>
+        <view class="house-title">{{houseData.layoutTitle}}</view>
+        <view class="house-txt">{{houseData.layoutDesc}}</view>
+        <view class="swiper-pagination-custom">
+            <view class="swiper-custom-index {{layoutSwiperIndex==index+1?'active':''}}" bindtap='layoutSwiperTo' data-index="{{index+1}}"  wx:for="{{houseData.layoutList}}" wx:key='item'>{{index+1}}</view>
+        </view>
+        <!--户型swiper-->
+        <swiper class="house-hot-swiper" bindchange='layoutSwiperChange' current="{{layoutSwiperActiveIndex}}">
+            <block wx:for="{{houseData.layoutList}}" wx:key='item'>
+                 <swiper-item>
+                    <view class="hot-swiper-img">
+                        <image mode="aspectFill" style="width:100%;height:100%" src="{{item.layoutBigPic}}"></image>
+                    </view>
+                    <view class="swiper-slide-bottom">
+                        <view class="swiper-slide-bottom-left">
+                            <text class="huxing-intr-icon">{{item.houseType}}</text>
+                            <text class="huxing-intr-icon">建面</text>
+                            <text class="huxing-intr-icon">{{item.houseArea}}㎡</text>
+                            <view class="huxing-intr">{{item.houseIntro}}</view>
+                            <view class="huxing-icon">
+                                <text class="huxing-icon-text">{{item.houseFeature}}</text>
+                            </view>
+                        </view>
+                        <view class="swiper-slide-bottom-right">
+                            <image mode="aspectFill"  style="width:100%;display:inline;" src="{{item.layoutThumbPic}}"></image>
+                        </view>
+                    </view>
+                 </swiper-item>
+            </block>
+        </swiper>
+    </view>
+   <!--周边配套-->
+   <view class="house-around house-common">
+        <view class="house-icon-con">
+            <view class="house-icon-common house-icon-around"></view>
+            <view class="house-icon-right">
+                <view class="house-icon-title">周边配套</view>
+                <view class="house-icon-note">Peripheral Support</view>
+            </view>
+        </view>
+        <view class="house-title">{{houseData.addCaseTitle}}</view>
+        <view class="house-txt">
+           {{houseData.addCaseDesc}}
+        </view>
+        <swiper class="house-around-swiper">
+            <block wx:for="{{houseData.cirPicList}}" wx:key="item">
+                <swiper-item>
+                    <image src="{{item.picUrl}}" mode="aspectFill" style="width:100%;"></image>
+                    <view class="house-around-swiper-txt">{{item.picDesc}}</view>
+                </swiper-item>
+            </block>
+        </swiper>
+   </view>
+   <!--交通配套-->
+   <view class="house-traffic house-common">
+        <view class="house-icon-con">
+            <view class="house-icon-common house-traffic-hot"></view>
+            <view class="house-icon-right">
+                <view class="house-icon-title">交通优势</view>
+                <view class="house-icon-note">Traffic Advantage</view>
+            </view>
+        </view>
+         <view class="house-title">{{houseData.trafficTitle}}</view>
+        <view class="house-txt">{{houseData.trafficDescSimple}}</view>
+        <view class="house-traffic-img">
+            <image mode="aspectFit" style="width:100%" src="{{houseData.trafficPic}}" class="house-traffic-img"></image>
+        </view>
+        <view class="house-txt">{{houseData.trafficDescFull}}</view>
+   </view>
+   <view class="house-xiaoqu house-common">
+       <view class="house-icon-con">
+            <view class="house-icon-common house-xiaoqu-hot"></view>
+            <view class="house-icon-right">
+                <view class="house-icon-title">小区信息</view>
+                <view class="house-icon-note">Community Information</view>
+            </view>
+        </view>
+        <view class="house-title">{{houseData.buildTitle}}</view>
+        <view class="house-txt">{{houseData.buildDesc}}</view>
+        <view class="house-xiaoqu-img">
+            <image src="{{houseData.innerPic}}" mode="aspectFill" style="width:100%;height:100%"></image>
+            <view class="house-xiaoqu-img-mask"></view>
+            <view class="house-xiaoqu-img-txt">{{houseData.buildPicFont}}</view>
+        </view>
+        <view class="house-xiaoqu-detail">
+                <view><text>车位总数：</text><text>{{parkingPlace}}</text></view>
+                <view><text>车位配比：</text><text>{{houseData.parkingRate}}</text></view>
+                <view><text>供暖方式：</text><text>{{houseData.hotStyle}}</text></view>
+                <view><text>物 业 费：</text><text>{{houseData.propertyFee}}</text></view>
+                <view><text>内部配套：</text><text>{{houseData.innerCase}}</text></view>
+        </view>
+        <view class="map-box">
+            <image mode="widthFix" style="width:100%"  src="https://apis.map.qq.com/ws/staticmap/v2/?center={{buildPositionx}},{{buildPositiony}}&zoom=16&scale=2&markers=size:large|icon:https://static.haofang.net/Public/images/wap/detail-locate.png|{{buildPositionx}},{{buildPositiony}}&key=DGFBZ-3IFW2-PDEUL-CBLCE-XOSYK-K5B5I&size=375*320"></image>
+        </view>
+   </view>
+   <view class="foot">
+        <view class="house-collect {{collectFlag==true?'collected':'collect'}}" catchtap='collectEvent'>{{collectTxt}}</view>
+        <view class="house-contact" data-tel="{{houseData.salePhone}}" catchtap='callEvent'>咨询售楼部</view>
+    </view>
+</view>
+

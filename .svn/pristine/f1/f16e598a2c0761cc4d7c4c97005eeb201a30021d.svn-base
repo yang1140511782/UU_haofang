@@ -1,0 +1,836 @@
+//map 组件是由客户端创建的原生组件，它的层级是最高的
+// 调用应用实例的方法获取全局数据
+let app = getApp();
+let markersData = [];
+let oldMarkerData = [];
+let normalMarkerIcon = "../../../images/map/marker_new.png";
+let clickMarkerIcon = "../../../images/map/redmarker_new.png";
+let gridHeightArr = [[84,16],[50,50],[0,100]];
+let windowH = 0,windowW=0,btnBoxH=0;
+import { Tools } from '../../../utils/tools';
+const tool = new Tools();
+Page({
+  data: {
+    imgSrc:"http://cdn.haofang.net/static/uuminiapp/loadDownImg/new.jpg", 
+    imgWidth:'550rpx', 
+    imgHeight:'238rpx',
+    titleTxtLoad:"专车看房 方便有省心",
+    nextTxtLoad:'下载 优优好房APP，开启免费专车看房之旅',
+    latitude: '', //中心纬度
+    longitude: '',//中心经度
+    height: gridHeightArr[0][0],
+    btnBoxHeight: gridHeightArr[0][1],
+    scale: 16,//缩放级别，取值范围为5-18
+    showLocation: true,
+    currentBtn: 'saleBtn',
+    listBoxShow: 'none',
+    markers: [],
+    caseType: '1',//类型
+    beginLatitude: '',//最小经度
+    beginLongitude: '',//最小纬度
+    endLatitude: '',//最大经度
+    endLongitude: '',//最大纬度,
+    cityId: '',//城市ID 
+    toastHide: true,  //弹框隐藏
+    buildId:'',//楼盘id
+    buildName:'',//楼盘名
+    biddBuilder:'',//经纪人信息
+    houseList:'',//二手房租房信息
+    newhouseList:'',//新房数据
+    trustShow:false,//委托btn,
+    heightChange:true,//高度变化控制
+    roomArr:[
+      { text: '不限', value: '' },
+      { text: '1室', value: '1:1' },
+      { text: '2室', value: '2:2' },
+      { text: '3室', value: '3:3' },
+      { text: '4室', value: '4:4' },
+      { text: '5室以上', value: '5:100' }
+      ],//户型筛选
+    layoutChooseTxt:'户型筛选',//户型选择文字
+    layoutChooseShow:false,//户型弹框
+    room:'',//户型选择文字
+    nodataShow:false,//无数据加载
+    loadingdata:true,//loadingdata
+    delegateBtnTxt:'特权找好房，成交抽送4999元',
+    downAppBoxShow:false,//引导下载
+    controlsHeight:'',//中心高度
+    scrollViewHeight:'',//
+    nextPage:true,//下一页
+    pageNum:1,//页数
+    noMoreData:false,
+    userMobile:'',//绑定手机号
+    //跳转到求购求租
+    archiveId:'',
+    userName:'',
+    userPhoto:'',
+    userMobile:'',
+    buyMoney:'',
+    rentMoney:'',
+    serviceRegs:'',
+    moveStartTime: 0,  //移动开始时间
+    callShow:false,//小区专家显示
+  },
+  //地图底部按钮
+  typebtnTap:function(event){
+    var _this=this;
+    var type=event.currentTarget.dataset.type;
+    this.setData({
+      currentBtn: event.currentTarget.id,
+      caseType:type
+    });
+    if(_this.data.caseType==6){
+      _this.setData({
+        delegateBtnTxt:'免费专车看房',
+      })
+    } else if (_this.data.caseType == 2){
+      _this.setData({
+        delegateBtnTxt: '特权找好房',
+      })
+    }else{
+       _this.setData({
+        delegateBtnTxt:'特权找好房，成交抽送4999元',
+      })
+    }
+    _this.requestMap();
+    
+  },
+    /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+   var _this = this,myJson = {userMobile:wx.getStorageSync('userMobile'),locateCityName:wx.getStorageSync('locateCityName'),locateCityId:wx.getStorageSync('locateCityId')};
+    _this.mapCtx = wx.createMapContext('mapObj');
+    // 获取屏幕高度
+    try {
+       var res = wx.getSystemInfoSync();
+      windowH = res.windowHeight;
+      console.log(windowH);
+      windowW=res.windowWidth;
+    } catch (e) {}
+    myJson['scrollViewHeight'] = Math.floor(windowH/2* _this.data.height)/100 - 10;
+    if(!!options.caseType){
+      if (options.caseType==2){
+        myJson['caseType'] = options.caseType;
+        myJson['currentBtn'] = 'leaseBtn';
+        _this.setData({
+          delegateBtnTxt: '特权找好房',
+        })
+      }else{
+        myJson['caseType'] = options.caseType;
+        myJson['currentBtn'] = 'newhouseBtn';
+        _this.setData({
+          delegateBtnTxt: '免费专车看房',
+        })
+      }
+    	
+    }
+    _this.setData(myJson);
+     //获取城市ID
+    var value = wx.getStorageSync('cityId');
+
+    //如果定位城市和当前选择城市是同一城市 , 则定位 ,否则 ,地图跳转到选择城市的中心处 (20180427)
+    if(value == wx.getStorageSync('locateCityId')){
+        //获取定位
+    wx.getLocation({
+      type: 'gcj02',
+      success:function(res){
+        _this.setData({
+          latitude:res.latitude,
+          longitude:res.longitude,
+          cityId:value,
+          controls: [{
+            id: 0,
+            position: { left: 15, top: Math.floor(windowH * _this.data.height)/100 - 55, width: 35, height:35 },
+            iconPath: '../../images/map/resetloc.png',
+            clickable: true
+          },{
+            id:1,
+            position: { left: windowW/2-9, top:Math.floor(windowH/2* _this.data.height)/100 - 30, width: 18, height:30 },
+            iconPath: '../../images/map/local-icon.png',
+            clickable: false
+          }],
+        });
+       setTimeout(function(){
+             // 获取最大最小坐标
+          _this.mapCtx.getRegion({
+            success:function(res){
+              _this.setData({
+                beginLatitude:res.southwest.latitude,
+                beginLongitude:res.southwest.longitude,
+                endLatitude:res.northeast.latitude,
+                endLongitude:res.northeast.longitude,
+              });
+              //加载地图数据
+              _this.requestMap();
+            }, fail:function(){
+
+            }, complete:function(res){
+            }
+          });
+       },1000)
+      }
+      });
+    }else{
+      //不在定位城市 , 地图调整选中的城市中心
+      wx.request({
+          url: app.buildRequestUrl('getLocationByCityIdUrl'),
+          data:{cityId:value},
+          success: function (res) {
+            console.log(res);
+            if(res.data.STATUS == 1){
+              var resData = res.data.DATA;
+               _this.setData({
+                  latitude:resData.POSITION_X,
+                  longitude:resData.POSITION_Y,
+                  cityId:value,
+                  controls: [{
+                    id: 0,
+                    position: { left: 15, top: Math.floor(windowH * _this.data.height)/100 - 55, width: 35, height:35 },
+                    iconPath: '../../images/map/resetloc.png',
+                    clickable: true
+                  },{
+                    id:1,
+                     position: { left: windowW/2-9, top:Math.floor(windowH/2* _this.data.height)/100 - 30, width: 18, height:30 },
+                      iconPath: '../../images/map/local-icon.png',
+                      clickable: false
+                  }],
+              });
+              setTimeout(function(){
+                // 获取最大最小坐标
+                _this.mapCtx.getRegion({
+                success:function(res){
+                _this.setData({
+                  beginLatitude:res.southwest.latitude,
+                  beginLongitude:res.southwest.longitude,
+                  endLatitude:res.northeast.latitude,
+                  endLongitude:res.northeast.longitude,
+                });
+                //加载地图数据
+                _this.requestMap();
+                }, fail:function(){
+
+                }, complete:function(res){
+                }
+              });
+             },1000)
+
+            }
+          }
+      })
+    }
+
+    
+  },
+
+  /**
+   * 点击蒙层,关闭弹框
+   */
+  closeToastBox(){
+    this.setData({
+      toastHide: true
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+   
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+     
+    this.setData({ userMobile:app.globalData.userMobile});
+  },
+
+    /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  },
+/**
+ * 地图的相关事件
+ */
+  //点击标记点时触发
+  bindmarkertap:function(event){
+    var id = event.markerId;
+    var that = this;
+    if(that.data.caseType==6){
+      var buildId=event.markerId.buildId;
+      //是新房直接跳转到详情页面
+      wx.navigateTo({
+        url:'/pages/newHouseDetail/newHouseDetail?buildid='+buildId,
+      })
+    }else{
+      //隐藏户型选择蒙层
+      that.layoutChooseEvent();
+
+       //请求列表数据
+       that.setData({
+          room:'',
+          layoutChooseTxt:'户型筛选',//户型选择文字
+          pageNum:1,
+          nextPage:true,
+          noMoreData:false
+       })
+      that.setData({
+        buildId:event.markerId.buildId,
+        buildName:event.markerId.buildName,
+        controls: [{
+          id: 0,
+          position: { left: 15, top: Math.floor(windowH * 50)/100 - 55, width: 35, height:35 },
+          iconPath: '../../images/map/resetloc.png',
+          clickable: true
+        },{
+          id:1, 
+          position: { left: windowW/2-9, top:Math.floor(windowH/2* 50)/100 - 30, width: 18, height:30 },
+          iconPath: '../../images/map/local-icon.png',
+          clickable: false
+        }]
+      });
+      that.requestList('',that.data.pageNum);
+      that.showMarkerInfo(markersData,id);
+      that.changeMarkerColor(id); 
+      that.toggleTap();
+    }
+  },
+  /**
+   * 点击标记点对应的气泡时触发 
+   */
+  bindcallouttap: function () {
+
+  },
+  /**
+   * 点击控件时触发
+   */
+  bindcontroltap: function (e) {
+    var that = this;
+    if (e.controlId==0){
+      that.moveToLocation();
+    }
+  },
+  /** 
+   * 视野发生变化时触发
+  */
+  bindregionchange: function (e) {
+    var _this=this;
+    if (e.type == 'begin'){
+      this.setData({
+        moveStartTime: e.timeStamp
+      });
+    }else{
+      var startTime = _this.data.moveStartTime;
+      var minus = e.timeStamp - startTime;
+      if(minus>200){
+        _this.mapCtx.getRegion({
+          success: function (res) {
+            _this.setData({
+              beginLatitude: res.southwest.latitude,
+              beginLongitude: res.southwest.longitude,
+              endLatitude: res.northeast.latitude,
+              endLongitude: res.northeast.longitude,
+            });
+            //加载地图数据
+            _this.requestMap();
+          }, fail: function () {
+
+          }, complete: function () {
+
+          }
+        });
+      }
+    }
+    
+    
+  },
+  /**
+   * 请求地图数据
+   */
+  requestMap:function(e){
+    var _this=this;
+    var markerArr=[];
+      wx.request({
+         url:app.buildRequestUrl('mapFindHouseAction'),
+         data:{
+           cityId:_this.data.cityId,
+           beginLatitude:_this.data.beginLatitude,
+           beginLongitude:_this.data.beginLongitude,
+           endLatitude:_this.data.endLatitude,
+           endLongitude:_this.data.endLongitude,
+           caseType:_this.data.caseType,
+           pageNum:1,
+           pageSize:30
+         },
+         success:function(res){
+           if(res.data.STATUS==1){
+             if(!res.data.DATA){
+                // wx.showToast('请求错误');
+                return;
+             }
+             var listValue=res.data.DATA.DATA.list;
+             if(!listValue) return;
+             for(var i=0;i<listValue.length;i++){
+               var obj = {
+                  color: "#4daaf0",
+                  fontSize: 13,
+                  borderRadius: 5,
+                  bgColor: "transparent",
+                  padding:5,
+                  display: "ALWAYS",
+               };
+               obj['content'] = listValue[i].buildName;
+               var item = {};
+               item.id = listValue[i];
+               item.latitude = listValue[i].positionX;
+               item.longitude = listValue[i].positionY;
+               item.buildId= listValue[i].buildId;
+               item.iconPath = normalMarkerIcon;
+               item.width=22;
+               item.height=30;
+               item.name=listValue[i].buildName;
+               item.callout = obj;
+               markerArr.push(item);
+             };
+             _this.setData({
+               markers:markerArr
+             });
+            markersData = _this.data.markers;
+            oldMarkerData = JSON.parse(JSON.stringify(markersData));
+           }
+         }
+       })
+  },
+  /**
+   * 请求列表数据
+   */
+  requestList:function(e,pageNum){
+    var _this=this;
+    _this.setData({
+      loadingdata:true,
+      nodataShow:false,
+    })
+    wx.request({
+      url:app.buildRequestUrl('getListData'),
+      data:{
+        cityId:_this.data.cityId,
+        buildId:_this.data.buildId,
+        caseType:_this.data.caseType,
+        room:_this.data.room,
+        pageNum:pageNum
+      },
+      success:function(res){
+        if(res.data.STATUS==1){
+          var data=res.data.DATA;
+          if(!!data.biddBuilder){
+            data.biddBuilder.buildOwnerPicUrl = tool.addImgParamCrop(data.biddBuilder.buildOwnerPicUrl,120,120);
+            _this.setData({
+              biddBuilder:data.biddBuilder
+            })
+          }
+          if(_this.data.pageNum==1){
+            if(!!data.list&&data.list.length>0){
+              _this.setData({
+                houseList:data.list,
+                nodataShow:false,
+                loadingdata:false,
+              })
+            }else{
+              _this.setData({
+                houseList:'',
+                nodataShow:true,
+                loadingdata:false,
+                noMoreData:false,
+                nextPage:false
+              })
+            }
+          }else{
+            _this.setData({
+              nextPage:true
+            })
+            if(!!data.list&&data.list.length>0){
+              _this.setData({
+                houseList:_this.data.houseList.concat(data.list),
+              })
+            }else{
+               _this.setData({
+                loadingdata:false,
+                nextPage:false,
+                noMoreData:true,
+              })
+            }
+          }
+        }
+      }
+    })
+  },
+  /**
+   * 点击地图时触发
+   */
+  bindtap: function () {
+    var that = this;
+    that.setData({
+      height: gridHeightArr[0][0],
+      btnBoxHeight: gridHeightArr[0][1],
+      listBoxShow:'none',
+       controls: [{
+          id: 0,
+          position: { left: 15, top: Math.floor(windowH * 84)/100-55 , width: 35, height:35 },
+          iconPath: '../../images/map/resetloc.png',
+          clickable: true
+        },{
+          id:1,
+          position: { left: windowW/2-9, top:Math.floor(windowH/2*84)/100-30, width: 18, height:30 },
+          iconPath: '../../images/map/local-icon.png',
+          clickable: false
+        }]
+    });
+
+  },
+  /**
+   * 在地图渲染更新完成时触发
+   */
+  bindupdated: function () {
+
+  },
+  toggleTap:function(){
+    var that = this;
+    that.setData({
+      height: gridHeightArr[1][0],
+      btnBoxHeight: gridHeightArr[1][1],
+      listBoxShow:'block'
+    });
+  },
+  //=====================================
+  //========设置点的图标===============
+  showMarkerInfo: function (data, i) {
+     var that = this;
+      for(var i=0;i<data.length;i++){
+          that.setData({
+            textData: {
+              name: data[i].name,
+              desc: data[i].address
+            }
+         });
+      }
+   },
+   changeMarkerColor: function (i) {
+     var that = this;
+     var markers = [];
+     var markerIndex = -1;
+     for (var j = 0; j < markersData.length; j++) {
+       
+       if (markersData[j].buildId == i.buildId) {
+          markersData[j].iconPath = clickMarkerIcon;
+          markersData[j].width = 33;
+          markersData[j].height = 45;
+          markersData[j].callout.color = "#ff5400";
+          markerIndex = j;
+       }else{
+         markersData[j].width = 22;
+         markersData[j].height = 30;
+         markersData[j].iconPath = normalMarkerIcon;
+         markersData[j].callout.color = "#4daaf0";
+      }
+        markers.push(markersData[j]);
+
+     };
+     that.setData({
+       latitude: markersData[markerIndex].latitude, //中心经度
+       longitude: markersData[markerIndex].longitude,//中心纬度
+       markers: markers,
+        controls: [{
+              id: 0,
+              position: { left: 15, top: Math.floor(windowH * that.data.height)/100 - 55, width: 35, height:35 },
+              iconPath: '../../images/map/resetloc.png',
+              clickable: true
+        }]
+     });
+   },
+  /**
+   * 移动到中心
+   */
+    moveToLocation: function () {
+     this.mapCtx.moveToLocation()
+   },
+   /**
+    * 拨打电话
+    */
+    callEvent:function(e){
+      var _this=this;
+      var phoneNumber=e.currentTarget.dataset.tel;
+      wx.makePhoneCall({
+          phoneNumber: phoneNumber
+      })
+    },
+    /**
+     * 委托按钮事件
+     */
+    trustEvent:function(e){
+      var _this=this;
+      var archiveId=e.currentTarget.dataset.archiveid,
+          cityId=e.currentTarget.dataset.cityid,
+          username=e.currentTarget.dataset.username,
+          userphoto=e.currentTarget.dataset.userphoto,
+          usermobile=e.currentTarget.dataset.usermobile,
+          buymoney=e.currentTarget.dataset.buymoney,
+          rentmoney=e.currentTarget.dataset.rentmoney,
+          serviceregs=e.currentTarget.dataset.serviceregs;
+      if (wx.getStorageSync('locateCityId') != wx.getStorageSync('cityId')) {
+        //显示切换城市弹框
+          if (!!wx.getStorageSync('locateCityName')) {
+              //显示切换城市弹框
+              this.setData({
+                  toastHide: false,
+                  height: gridHeightArr[0][0],
+                  btnBoxHeight: gridHeightArr[0][1],
+                  listBoxShow: 'none'
+              });
+          } else {
+              app.getLocationAgain();
+          }
+        console.log('特权找房需要打开小程序定位功能，' + wx.getStorageSync('locateCityName'));
+        return;
+      }
+      _this.setData({
+        trustShow:true,
+        archiveId:archiveId,
+        userName:username,
+        userPhoto:userphoto,
+        userMobile:usermobile,
+        buyMoney:buymoney,
+        rentMoney:rentmoney,
+        serviceRegs:serviceregs,
+      })
+    },
+     /**
+     * 取消委托按钮事件
+     */
+    cancelTrustEvent:function(e){
+      var _this=this;
+      _this.setData({
+        trustShow:false,
+        archiveId:'',
+        userName:'',
+        userPhoto:'',
+        userMobile:'',
+        buyMoney:'',
+        rentMoney:'',
+        serviceRegs:'',
+      })
+    },
+    /**
+     *  阻止冒泡
+     */
+    cancelBubble(){
+      return false;
+    },
+    /**
+     * 群发找好房
+     */
+    entrustBtn:function(){
+      var _this=this;
+      var currentBtn = this.data.currentBtn;
+      if(currentBtn == 'newhouseBtn'){
+          _this.setData({
+            downAppBoxShow:true
+          })
+        return;//新房不能发布委托
+      }
+
+        if (wx.getStorageSync('locateCityId') != wx.getStorageSync('cityId')) {
+            if (!!wx.getStorageSync('locateCityId')) {
+                //显示切换城市弹框
+                this.setData({ toastHide: false });
+            } else {
+                app.getLocationAgain();
+            }
+            return;
+        }
+      var caseType = currentBtn=='saleBtn'?3:4;
+      wx.navigateTo({url:"/pages/entrust/entrust?caseType="+caseType})
+    },
+    /**
+     * 高度变化控制
+     */
+    heightChangeEvent:function(e){
+      var _this=this;
+      if(_this.data.heightChange){
+        _this.setData({
+          height: gridHeightArr[2][0],
+          btnBoxHeight: gridHeightArr[2][1],
+          heightChange:false,
+          scrollViewHeight:windowH - 60
+        })
+      }else{
+        _this.setData({
+          height: gridHeightArr[1][0],
+          btnBoxHeight: gridHeightArr[1][1],
+          heightChange:true,
+          scrollViewHeight:Math.floor(windowH/2* 84)/100 - 10
+        })
+      }
+    },
+    /**
+     * 户型选择
+     */
+    chooseLayoutEvent:function(e){
+      var _this=this;
+      var text=e.target.dataset.text;
+      var value=e.target.dataset.value;
+      _this.setData({
+        layoutChooseTxt:text,
+        room:value,
+        layoutChooseShow:false,
+        pageNum:1,
+        nextPage:true,
+        houseList:''
+      });
+      _this.requestList('',1);
+    },
+    /**
+     * 隐藏户型选择蒙层
+     */
+    layoutChooseEvent:function(e){
+       var _this=this;
+        _this.setData({
+           layoutChooseShow:false
+        })
+    },
+    /**
+     * 显示户型选择
+     */
+    layoutClickEvent:function(){
+      var _this=this;
+        _this.setData({
+           layoutChooseShow:true,
+      })
+    },
+    /**
+     * 去详情
+     */
+    goDetailEvent:function(e){
+      var _this=this;
+      var caseType=e.currentTarget.dataset.casetype,
+      caseId=e.currentTarget.dataset.caseid,
+      reSource=e.currentTarget.dataset.resource;
+      wx.navigateTo({
+          url: "../houseDetail/houseDetail?casetype=" + caseType + "&resource=" + reSource + "&cityid=" + _this.data.cityId + '&caseid=' + caseId
+      })
+    },
+    /**
+     * 关闭引导下载
+    */
+    downCloseEvent:function(e){
+      var _this=this;
+      _this.setData({
+        downAppBoxShow:false
+      })
+    },
+    /**
+     * 关闭引导下载
+    */
+    downCloseEvents: function (e) {
+      var _this = this;
+      _this.setData({
+        downAppBoxShow: false
+      })
+    },
+    /**
+     * 去下载
+     */
+    goDownEvent:function(e){
+      var _this=this;
+      wx.navigateTo({
+        url:'/packageWeb/pages/download/download'
+      })
+    },
+    /**
+     * 滚动加载数据
+     */
+    scrollBottomEvent:function(e){
+      var _this=this;
+      if(_this.data.nextPage){
+        _this.setData({
+          nextPage:false,
+          pageNum:_this.data.pageNum+1,
+        })
+        _this.requestList('',_this.data.pageNum);
+      }
+    },
+    /**
+     * 去发布委托页面
+    */
+    goBuyHouseEvent:function(e){
+      var _this=this;
+      var data=_this.data;
+      var caseType =data.currentBtn=='saleBtn'?3:4;
+      var url = '/pages/entrust/entrust?archiveId=' + data.archiveId + '&userName=' + data.userName + '&userMobile=' + data.userMobile + '&buyMoney=' + data.buyMoney + '&rentMoney=' + data.rentMoney + '&isVip=1' + '&serviceRegs=' + data.serviceRegs + '&caseType=' + caseType + '&userPhoto=' + data.userPhoto;
+      wx.navigateTo({url:url });
+    },
+     /**
+     * 去出租出售
+    */
+    goSaleHouseEvent:function(e){
+      var _this=this;
+      var data=_this.data;
+      if(data.currentBtn=='saleBtn'){
+          wx.navigateTo({
+            url:'/pages/registration/registration?caseType=1&archiveId='+data.archiveId+'&isVip=1'
+          })
+      }else{
+         wx.navigateTo({
+            url:'/pages/registration/registration?caseType=2&archiveId='+data.archiveId+'&isVip=1'
+          })
+      }
+    },
+    /**
+     * 小区专家显示
+     */
+    callShowEvent:function(e){
+         var _this=this;
+         _this.setData({
+           callShow:!_this.data.callShow
+         })
+    },
+    /**
+     * 去im
+     */
+    goImEvent:function(e){
+      var _this=this;
+      var archiveid=e.currentTarget.dataset.archiveid;
+      var caseType =_this.data.currentBtn=='saleBtn'?1:2;
+      	wx.navigateTo({
+            url: "/pages/im/im?to="+archiveid+'&caseType='+caseType
+        })
+    },
+    /**
+     * 同意切换到定位城市
+     */
+    changeCity:function(){
+    	this.setData({toastHide:true});
+    	wx.setStorageSync('cityId',this.data.locateCityId);
+    	wx.setStorageSync('cityName',this.data.locateCityName);
+    	wx.reLaunch({
+            url: "/pages/real_index/index"
+        });
+    }
+})

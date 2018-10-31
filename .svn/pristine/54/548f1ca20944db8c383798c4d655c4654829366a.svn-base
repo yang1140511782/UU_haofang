@@ -1,0 +1,421 @@
+@import "../common/loading/loading.wxss";
+page{
+    height: 100%;
+}
+.main{
+    padding-bottom: 140rpx;
+}
+/*加载图片*/
+.pre-loading{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+.pre-loading image{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 320rpx;
+  height: 320rpx;
+}
+.pre-loading .load-txt{
+  width: 100%;
+  line-height: 320rpx;
+  color: #249a24;
+  font-size: 30rpx;
+  text-align: center;
+}
+.lod-box{
+  position: absolute;
+  top: 300rpx;
+  width: 100%;
+  height: 320rpx;
+}
+.head-banner{
+    height: 520rpx;
+    position: relative;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    color: white;
+    position: relative;
+}
+
+.type{
+    position: absolute;
+    bottom: 20rpx;
+    left:  20rpx;
+    font-size:28rpx;
+    z-index: 8;
+}
+.head-area{
+    position: absolute;
+    bottom:60rpx;
+    left: 20rpx;
+    z-index: 8;
+}
+.head-mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background: url(https://static.haofang.net/Public/images/wap/house-banber-bg.png) center no-repeat;
+    background-size: 100% auto;
+}
+.transition-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    background: url(https://static.haofang.net/Public/images/wap/transition-mask.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.house-common {
+    margin: 0 40rpx;
+}
+.house-detail {
+    padding: 40rpx 0;
+    border-bottom: 1px solid #ccc;
+}
+.house-name {
+    font-family: '黑体';
+    font-size:40rpx;
+}
+.house-addr {
+    font-size: 30rpx;
+    color: #999;
+}
+.house-introduce {
+    text-align: center;
+}
+.house-title {
+    position: relative;
+    display: inline-block;
+    margin-top:56rpx;
+    margin-bottom: 40rpx;
+    padding: 10rpx 20rpx;
+    z-index: 2;
+    text-align: center;
+    color: #333;
+    font-size:34rpx;
+    font-weight: 100;
+}
+.house-title::after {
+    position: absolute;
+    top:30rpx;
+    left: 40rpx;
+    content: "";
+    height: 60%;
+    width: 90%;
+    background: #e6ebf3;
+    display: inline-block;
+    z-index: -1;
+}
+.house-txt {
+    color: #333;
+    font-size:24rpx;
+    text-indent:64rpx;
+    text-align: auto;
+    text-align: -webkit-auto;
+    line-height: 2;
+    word-break: break-all;
+    white-space: pre-line;
+}
+.house-introduce-swiper {
+    width: 100%;
+    height:428rpx;
+    margin-top: 40rpx;
+    background: #fff url(http://cdn.haofang.net/static/uuminiapp/default/detail_deafault.png) center center no-repeat;
+    background-size: 50% auto;
+    background-color: #fafafa;
+    position: relative;
+}
+.house-introduce-swiper .number {
+    pointer-events: none;
+    position: absolute;
+    bottom: 28rpx;
+    right: 20rpx;
+    z-index: 999!important;
+    display: inline-block;
+    height: 40rpx;
+    padding: 6rpx;
+    background-color: rgba(0,0,0,.6);
+    color: #fff;
+    line-height: 40rpx;
+    text-align: center;
+    border-radius: 4px;
+    width: 100rpx;
+    font-size: 30rpx;
+}
+.house-hot {
+    margin-top: 50rpx;
+    text-align: center;
+    position: relative;
+}
+.house-icon-con {
+    display: -webkit-box;
+    -webkit-box-align: center;
+}
+.house-icon-common {
+    width: 65rpx;
+    height:65rpx;
+    background-size: 100% 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-right:12rpx;
+}
+.house-icon-hot {
+    background-image: url(https://static.haofang.net/Public/images/wap/house-hot-icon.png);
+}
+.house-icon-title {
+    font-size:28rpx;
+    color: #000;
+    font-weight: bold;
+    text-align: start;
+}
+.house-icon-note {
+    font-size: 20rpx;
+    color: #333;
+}
+.swiper-pagination-custom{
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    padding: 20rpx;
+}
+.swiper-custom-index{
+    padding: 0 16rpx;
+    font-size:24rpx;
+    margin-right:20rpx;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: #333;
+}
+.swiper-pagination-custom .active {
+    border: 1px solid #333;
+}
+.hot-swiper-img{
+    height: 428rpx;
+}
+.house-hot-swiper{
+    min-height: 800rpx;
+}
+.swiper-slide-bottom {
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    box-sizing: border-box;
+    border: 1px solid #e6ebf3;
+    border-top: none;
+    padding: 20rpx;
+}
+.swiper-slide-bottom-left {
+    display: block;
+    width: 60%;
+    margin-right: 20rpx;
+    text-align: left;
+}
+.huxing-intr-icon {
+    font-size: 24rpx;
+    color: #1f4991;
+}
+.huxing-intr {
+    font-size: 24rpx;
+    color: #666;
+    text-align: left;
+    margin-top: 32rpx;
+}
+.huxing-icon {
+    font-size: 20rpx;
+    color: #666;
+    text-align: left;
+}
+.huxing-icon-text {
+    background: #e6ebf3;
+    padding: 4rpx 10rpx;
+    display: inline-block;
+    margin-top: 20rpx;
+    margin-right: 10rpx;
+}
+.swiper-slide-bottom-right {
+    width: 225rpx;
+    height:225rpx;
+    position: relative;
+    display: block;
+}
+.house-around {
+    margin-top: 50rpx;
+    text-align: center;
+}
+.house-icon-around {
+    background-image: url(https://static.haofang.net/Public/images/wap/house-icon-around.png);
+}
+.house-around .house-txt {
+    text-indent: 0;
+}
+.house-around-swiper{
+    min-height:600rpx;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: justify;
+}
+.house-around-swiper swiper-item{
+    width: 30%;
+    position: relative;
+}
+.house-around-swiper-txt{
+    font-size:24rpx;
+    color: #333;
+    max-width: 200rpx;
+    display: inline-block;
+    padding-top: 16rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.house-traffic-hot {
+    background-image: url(https://static.haofang.net/Public/images/wap/house-icon-traffic.png);
+}
+.house-traffic-img {
+    width: 100%;
+    height:572rpx;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    margin:30rpx 0;
+}
+.house-xiaoqu {
+    margin-top: 50rpx;
+    text-align: center;
+}
+.house-xiaoqu-hot {
+    background-image: url(https://static.haofang.net/Public/images/wap/house-icon-xiaoqu.png);
+}
+.house-xiaoqu-img {
+    width: 100%;
+    height:334rpx;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    margin: 30rpx 0;
+    position: relative;
+}
+.house-xiaoqu-img-mask {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+}
+.house-xiaoqu-img-txt {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    color: rgba(255,255,255,0.9);
+    font-size:26rpx;
+    width: 100%;
+    height:60rpx;
+    line-height:60rpx;
+}
+.house-xiaoqu-detail {
+    font-size: 24rpx;
+    color: #333;
+    text-align: left;
+}
+.map-box{
+    padding-top:20rpx; 
+}
+.foot {
+    display: -webkit-box;
+    height: 130rpx;
+    line-height: 130rpx;
+    position: fixed;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    -webkit-box-align: center;
+    width: 100%;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 -2px 2px #e0e0e0;
+    -webkit-box-pack: justify;
+    z-index: 9;
+}
+.house-collect {
+    color: #666;
+    font-size: 24rpx;
+    height: 100%;
+    line-height: 1;
+    text-align: center;
+    margin-left: 90rpx;
+}
+.house-contact {
+    display: block;
+    width: 418rpx;
+    border-radius:16rpx;
+    background: #25b764;
+    height:87rpx;
+    line-height:87rpx;
+    color: white;
+    text-align: center;
+    margin-right:60rpx;
+    position: relative;
+    font-size: 30rpx;
+}
+.house-contact::before {
+    content: '';
+    display: inline-block;
+    width: 15rpx;
+    height: 29rpx;
+    background: url(https://static.haofang.net/Public/images/wap/house-phone-icon.png) center no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 50%;
+    margin-top: -14rpx;
+    left: 26%;
+}
+.house-collect::before {
+    content: '';
+    display: block;
+    width:50rpx;
+    height:48rpx;
+    
+    background-size: 100% auto;
+    margin:6rpx auto;
+    margin-top: 24rpx;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.collect::before{
+    background-image: url(https://static.haofang.net/Public/images/wap/house-colloct-icon.png);
+}
+.collected::before{
+    background-image: url(https://weidian.haofang.net/Public/web/default/images/collected-icon.png);
+}
+.house-traffic .house-txt:first-child{
+    text-indent: 0;
+    text-align: center;
+}
+.house-traffic {
+    margin-top: 50rpx;
+    text-align: center;
+}

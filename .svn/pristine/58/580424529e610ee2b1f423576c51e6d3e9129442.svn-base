@@ -1,0 +1,19 @@
+<view class="cm-wrap">
+    <view class='prince-total-txt'>佣金（中介费）总额</view>
+    <view class='prince-total'>￥{{brokerMoney}}</view>
+    <view class='house-prince'>房屋总价{{houseMoney}}{{priceUnit}}</view>
+    <view class='cm-particulars'>
+        <view class='line-box'></view>
+        <view class='line-txt'>佣金支付明细</view>
+        <view class='line-box'></view>
+    </view>
+    <view class='pay-text'>线上佣金支付：<text>{{onlinePayMoney}}元</text></view>
+
+    <!-- 专属优惠券 -->
+    <view class='pay-text pay-text-coupan' wx:if="{{!!shareId}}">专属优惠券：<text>-{{shareMoney}}元</text></view>
+
+    <view class='pay-text'>线下佣金支付：<text>{{offlinePayMoney}}元</text></view>
+    <view class='pay-btn-box align-center' bindtap="weikuanPrePay" data-money="{{onlinePayMoney}}">确认支付{{onlinePayMoney}}元</view>
+    <view class='reminder-txt'>合同签订前请拒绝支付，剩余佣金请线下支付</view>
+    <view class='reminder-txt'>支付后，意向金若有剩余将退回您的原支付账号</view>
+</view>

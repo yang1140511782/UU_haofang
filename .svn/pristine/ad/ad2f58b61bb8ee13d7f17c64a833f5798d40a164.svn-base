@@ -1,0 +1,197 @@
+/* pages/history/history.wxss */
+/*出租出售样式*/
+.content{
+  height: 100%;
+  box-sizing: border-box;
+}
+.sale-rent-houseItem{
+  display: flex;
+  margin-left: 30rpx;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 29rpx;
+}
+.sale-rent-houseItem .sale-rent-picbox{
+  margin-top:42rpx;
+  width:210rpx;
+  height: 157rpx;
+  position:relative;
+  background: url(http://cdn.haofang.net/static/uuminiapp/default/list_deafault.png?t=20180606) no-repeat center center;
+  background-size: cover;
+}
+.sale-rent-houseItem .sale-rent-picbox image{
+  width:210rpx;
+  height: 157rpx;
+}
+.sale-rent-houseItem .sale-rent-infobox{
+  padding-left: 33rpx;
+  padding-top:36rpx;
+  width:445rpx;
+  position: relative;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-housetitle{
+  font-size: 28rpx;
+  color:#333333;
+  line-height: 38rpx;
+  height: 83rpx;
+  margin-bottom: 5rpx;
+  letter-spacing: 1px;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-text{
+  font-size: 24rpx;
+  line-height: 1;
+  color:#888888;
+  padding-bottom: 15rpx;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag{
+  line-height: 1;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text{
+  font-size: 22rpx;
+  letter-spacing: 1px;
+  display: inline-block;
+  color:#1bc964;
+  background: #e0f7ea;
+  padding:5rpx 8rpx;
+  padding-bottom: 6rpx;
+  border-radius: 3rpx;
+  margin-right:10rpx;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text:nth-child(4n+2){
+  color:#00a0e9;
+  background: #d9f1fc;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text:nth-child(4n+3){
+  color:#ff9600;
+  background: #ffeed8;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-tag text:nth-child(4n+4){
+  color:#f46f66;
+  background: #fdeae9;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-price{
+  font-size: 27rpx;
+  color:#ff5a1f;
+  font-weight: bold;
+  line-height: 61rpx;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-price text{
+  color:#999999;
+  font-weight: normal;
+  font-size: 22rpx;
+  margin-left: 18rpx;
+}
+.sale-rent-houseItem .sale-rent-infobox .sale-rent-top{
+  font-size: 24rpx;
+  letter-spacing: 1px;
+  color:#777;
+  padding:6rpx;
+  border: 1px solid #777;
+  border-radius: 3rpx;
+  position: absolute;
+  line-height: 1;
+  right:0;
+  bottom: 12rpx;
+}
+.sale-rent-tbb{
+    position: absolute;
+    width: 100%;
+    height: 34rpx;
+    padding-left: 8rpx;
+    box-sizing: border-box;
+    line-height: 34rpx;
+    display: block;
+    bottom: 12rpx;
+}
+.sale-rent-icon-vr{
+    width: 40rpx;
+    height: 33rpx;
+    display: inline-block;
+    float: left;
+    margin-right: 10rpx;
+    background: url(https://youjia.haofang.net/Public/images/vr_x.png) no-repeat;
+    background-size: 100%;
+}
+.sale-rent-icon-video {
+    width: 40rpx;
+    height: 33rpx;
+    display: inline-block;
+    background: url(https://youjia.haofang.net/Public/images/video_x.png) no-repeat;
+    background-size: 100%;
+}
+#pullUp,.pullUp_noData {
+    height:40px;
+    line-height:40px;
+    font-size:12px;
+    text-align: center;
+}
+#pullUp .pullUpIcon  {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    border-radius: 100%;
+    margin: 6px;
+    border: 2px solid #666;
+    border-bottom-color: transparent;
+    vertical-align: middle;
+    -webkit-animation: loading 0.75s linear infinite;
+    animation: loading 0.75s linear infinite;
+}
+#pullUp.flip .pullUpIcon {
+    -webkit-transform:rotate(0deg) translateZ(0);
+}
+#pullUp.loading .pullUpIcon {
+    background-position:0 100%;
+    -webkit-transform:rotate(0deg) translateZ(0);
+    -webkit-transition-duration:0ms;
+    -webkit-animation-name:loading;
+    -webkit-animation-duration:2s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+}
+@-webkit-keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.no-more-data{
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    font-size:30rpx;
+}
+.no-data{
+  width: 100%;
+  position: absolute;
+  top:30%;
+  left:0;
+  right:0;
+  bottom:0;
+}
+.no-data .no-data-img{
+  width: 283rpx;
+  height: 287rpx;
+  margin: 0 auto;
+}
+.no-data .no-data-img image{
+  width: 100%;
+  height: 100%;
+}
+.no-data text{
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  font-size: 28rpx;
+  color: #999;
+  margin:auto;
+}

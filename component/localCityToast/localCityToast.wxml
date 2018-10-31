@@ -1,0 +1,16 @@
+<template name="localCity">
+    <!-- 切换城市引导 -->
+    <view class="toastmask"  catchtap="closeToastBox">
+        <view class='toastbox' catchtap="cancelBubble">
+            <view class="name">切换城市</view>
+            <view wx:if="{{locateCityName != ''}}">
+                <view class="note">特权找房只能在定位城市发布委托</view>
+                <view class="btn" bindtap="changeCity">立即切换到{{locateCityName}}</view>
+            </view>
+            <view wx:else>
+                <view class="note">特权找房需要打开小程序定位功能</view>
+                <view class="btn" bindtap="changeCity">立即定位</view>
+            </view>
+        </view>
+    </view>
+</template>

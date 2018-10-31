@@ -1,0 +1,341 @@
+
+@import "../../template/authorizeMaskTmp.wxss";
+image{
+  width: 100%;display: block;
+}
+page{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+::-webkit-scrollbar{width:0px;height: 0}
+.coupon-page{
+  width: 100%;
+	height: 100%;
+	background-color: #f6f6f6;
+  overflow: hidden;
+}
+.coupon-page .coupon-detail{
+  width: 646rpx;
+  height: 890rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/im/coupon/coupon_display_bg.png);
+  background-size: 100% 100%;
+  background-color: #f6f6f6;
+  margin: 0 auto;
+  position: relative;
+  top: 100rpx;
+}
+.archive-img{
+  position: absolute;
+  top: -60rpx;
+  left: 50%;
+  margin-left: -65rpx;
+  width: 130rpx;
+	height: 130rpx;
+	border: solid 2rpx #ffffff;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.archive-img image{
+  width: 130rpx;
+  height: 130rpx;
+}
+.archive-name{
+  position: absolute;
+  width: 100%;
+  top: 100rpx;
+  margin: 0 auto;
+  text-align: center;
+	height: 31rpx;
+	font-size: 32rpx;
+	font-weight: bold;
+	font-stretch: normal;
+	line-height: 38rpx;
+	letter-spacing: 2rpx;
+	color: #333333;
+}
+.dept-info{
+  position: absolute;
+  width: 100%;
+  top: 150rpx;
+  margin: 0 auto;
+  text-align: center;
+}
+.dept-info .mobile{
+  position: relative;
+  display: inline-block;
+  width: 236rpx;
+	height: 38rpx;
+	font-size: 26rpx;
+	font-weight: normal;
+	font-stretch: normal;
+	line-height: 38rpx;
+	letter-spacing: 0px;
+	color: #666666;
+  text-align: left;
+  padding-left: 65rpx;
+}
+
+.dept-info .dept-name{
+  position: relative;
+  display: inline-block;
+  width: 236rpx;
+	height: 38rpx;
+	font-size: 26rpx;
+	font-weight: normal;
+	font-stretch: normal;
+	line-height: 38rpx;
+	letter-spacing: 0px;
+	color: #666666;
+  text-align: left;
+  padding-left: 65rpx;
+}
+.dept-info .mobile::before{
+  content:'';
+  background-image:url(http://cdn.haofang.net/static/uuminiapp/im/coupon/mobile.png);
+  background-size:28rpx 28rpx;
+  position: absolute;
+  width:28rpx;
+  height:28rpx;
+  z-index: 100;
+  left: 30rpx;
+  top: 50%;
+  margin-top: -14rpx;
+}
+.dept-info .dept-name::before{
+  content:'';
+  background-image:url(http://cdn.haofang.net/static/uuminiapp/im/coupon/dept.png);
+  background-size:28rpx 28rpx;
+  position: absolute;
+  width:28rpx;
+  height:28rpx;
+  z-index: 100;
+  left: 30rpx;
+  top: 50%;
+  margin-top: -14rpx;
+}
+/**
+* 服务人数，房源拥有数
+*/
+.house-num{
+  width: 100%;
+  position: absolute;
+  top: 225rpx;
+}
+.house-num .service-num,.house-num .sale-num,.house-num .lease-num{
+  display: inline-block;
+  text-align:center;
+}
+.house-num .sale-num{
+  width: 16%;
+}
+.house-num .service-num,.house-num .lease-num{
+  width: 42%;
+}
+.service-info .num,.sale-info .num,.lease-info .num{
+  display: inline-block;
+}
+.service-info,.sale-info,.lease-info{
+	font-size: 22rpx;
+	font-weight: normal;
+	font-stretch: normal;
+	line-height: 38rpx;
+	letter-spacing: 0px;
+	color: #333333;
+}
+.service-info .num{
+	height: 30rpx;
+	font-size: 40rpx;
+	font-weight: bold;
+	font-stretch: normal;
+	line-height: 38rpx;
+	letter-spacing: 0rpx;
+	color: #333333;
+}
+.sale-info .num{
+	height: 29rpx;
+	font-size: 40rpx;
+	font-weight: bold;
+	font-stretch: normal;
+	line-height: 38rpx;
+	letter-spacing: 0rpx;
+}
+.lease-info .num{
+	height: 29rpx;
+	font-size: 40rpx;
+	font-weight: bold;
+	font-stretch: normal;
+	line-height: 38rpx;
+	letter-spacing: 0rpx;
+}
+.label{
+	height: 21rpx;
+	font-family: PingFang-SC-Medium;
+	font-size: 22rpx;
+	font-weight: normal;
+	font-stretch: normal;
+	line-height: 38rpx;
+	letter-spacing: 0rpx;
+	color: #666666;
+}
+.display-coupon-top{
+  position: absolute;
+  top: 340rpx;
+	height: 27rpx;
+  width: 100%;
+  text-align: center;
+	font-family: PingFang-SC-Medium;
+	font-size: 28rpx;
+	font-weight: normal;
+	font-stretch: normal;
+	letter-spacing: 0px;
+	color: #ff7c00;
+}
+.display-coupon-many{
+   position: absolute;
+   top: 390rpx;
+   width: 100%;
+   text-align: center;
+}
+.display-coupon-many .price-unit{
+  display: inline-block;
+  width: 24rpx;
+	height: 29rpx;
+	font-size: 40rpx;
+	font-weight: normal;
+	font-stretch: normal;
+	letter-spacing: 0rpx;
+	color: #ff7c00;
+}
+.display-coupon-many .price-num{
+  display: inline-block;
+	height: 60rpx;
+	font-size: 80rpx;
+	font-weight: normal;
+	font-stretch: normal;
+	letter-spacing: 0rpx;
+	color: #ff7c00;
+  padding-left: 20rpx;
+}
+.dead-line{
+  position: absolute;
+  height: 1rpx;
+  width: 80%;
+  top: 515rpx;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  border-top: 1rpx dashed #e7e7e7;
+}
+.dead-time{
+  position: absolute;
+  top: 510rpx;
+  width: 292rpx;
+	height: 21rpx;
+  line-height: 21rpx;
+	font-size: 22rpx;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	font-weight: normal;
+	font-stretch: normal;
+	letter-spacing: 0px;
+	color: #bbbbbb;
+  z-index: 9999;
+  padding: 0 10rpx;
+  background: #fff;
+}
+
+.coupon-qrcode{
+  position: relative;
+  top: 556rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 300rpx;
+	height: 290rpx;
+  line-height: 241rpx;
+	background-color: #ffffff;
+  text-align: center;
+  vertical-align: middle;
+}
+.coupon-qrcode canvas{
+  position: absolute;
+  top: 50%;
+  margin-top: -120rpx;
+  left: 50%;
+  margin-left: -120rpx;
+  width: 240rpx;
+  height: 240rpx;
+  vertical-align: middle;
+}
+
+.coupon-detail-footer{
+  position: relative;
+  height: 200rpx;
+  width: 646rpx;
+  margin: 0 auto;
+  margin-top: 150rpx;
+  left: 50%;
+  margin-left: -323rpx;
+}
+.coupon-detail-footer .foot-line{
+  position: absolute;
+  height: 1rpx;
+  width: 90%;
+  top: 10rpx;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  border-top: 1rpx solid #ccc;
+}
+.coupon-detail-footer .foot-text{
+  position:absolute;
+  top:5rpx;
+  left:50%;
+  transform:translate(-50%, -50%);
+  z-index:9999;
+  padding:0 10rpx;
+  width: 360rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  font-family: PingFang-SC-Medium;
+  font-size: 22rpx;
+  font-weight: normal;
+  font-stretch: normal;
+  letter-spacing: 0px;
+  color: #666666;
+  background-color:#f6f6f6;
+  text-align: center;
+}
+.coupon-detail-footer .foot-text-second{
+  position:absolute;
+  top:50rpx;
+  left:50%;
+  transform:translate(-50%, -50%);
+  z-index:9999;
+  padding:0 10rpx;
+  width: 480rpx;
+  height: 40rpx;
+  font-family: PingFang-SC-Medium;
+  font-size: 22rpx;
+  font-weight: normal;
+  font-stretch: normal;
+  line-height: 30rpx;
+  letter-spacing: 0px;
+  color: #666666;
+  background-color:#f6f6f6;
+  text-align: center;
+}
+.coupon-detail-footer .send-msg{
+  position: absolute;
+  top: -40rpx;
+  right: 0;
+  width: 108rpx;
+	height: 108rpx;
+	background-color: #ff5400;
+  z-index: 9999;
+  background: url(http://cdn.haofang.net/static/uuminiapp/im/coupon/send_msg_icon.png);
+  background-size: 108rpx 108rpx;
+}

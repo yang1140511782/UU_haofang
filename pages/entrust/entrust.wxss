@@ -1,0 +1,108 @@
+@import "entrustCommon.wxss";
+
+.publish-flow-8::-webkit-scrollbar {
+  display: none;
+}
+
+page::-webkit-scrollbar {
+  display: none;
+}
+
+.publish-flow-8 .needs-box .intente-needs-li .needs-li-text::after {
+  display: none !important;
+}
+
+.sex-top-tt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: -10rpx;
+  width: 305rpx;
+  height: 59rpx;
+  color: #333;
+  font-size: 34rpx;
+  text-align: center;
+  background: url(http://cdn.haofang.net/static/uuminiapp/entrustImg/zs_bg.png)no-repeat center;
+  background-size: 100%;
+}
+
+.sex-new-choose {
+  padding: 10rpx 60rpx 0 !important;
+}
+
+
+/*最后一页底部情况 2018-04-14*/
+.reChoose {
+  width: 154rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  border: 2rpx solid #c1c1c1;
+  text-align: center;
+  border-radius: 50rpx;
+  color: #999;
+  font-size: 26rpx;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.publish-tips {
+  text-align: left;
+  color: #00481a;
+  font-size: 24rpx;
+  padding: 45rpx 0 240rpx;
+  line-height: 38rpx;
+  margin: 0 auto;
+  width: 630rpx;
+}
+
+.publish-box {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+
+}
+
+.publish-btn {
+
+  width: 630rpx;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 34rpx;
+
+  color: #fff;
+  padding: 20rpx 0;
+}
+
+.reward-btn {
+  background: -webkit-linear-gradient(left, rgb(255, 111, 46), rgb(254, 142, 13));
+  margin-bottom: 28rpx;
+}
+
+.common-btn {
+  color: #777;
+  background: #e5e5e5;
+  margin-bottom: 30rpx;
+}
+
+.reward-btn text {
+  position: relative;
+}
+
+.publish-box text {
+  letter-spacing: 1px;
+}
+
+.reward-btn text::before {
+  content: '';
+  display: inline-block;
+  width: 44rpx;
+  height: 37rpx;
+  background: url(https://uuweb.haofang.net/PublicC/images/publish/rewardInstruction-shang-icon.png) center center no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  top: 2rpx;
+  left: -50rpx;
+}

@@ -1,0 +1,447 @@
+
+const app = getApp();
+
+let imSdk = require('../../utils/NIM_Web_NIM_v5.0.0.js');
+let util = require('../../utils/util.js');
+let common = require('../../utils/common.js');
+let nim = '';
+var data = {};
+
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    contacts: [],
+    userInfo: [],
+    appKey: 'bbfa3e3f827bfb19d81b0197adb91758',
+    account: 'uu_'+app.globalData.userId,
+    toUserId: '297324',
+    toUserInfo: [],
+    sessions: [],
+    serviceInfo: {
+      id: app.globalData.imService,
+      photo: 'http://uuweb.haofang.net/Public/wxApp/images/im/server_icon.png?t=20180427',
+      name: '客服',
+      time: new Date().getTime(),
+      msg: '欢迎使用优优好房',
+      sendtime: new Date().getTime()
+    }
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    let _this = this;
+    //实例化用户和房源数据
+    wx.request({
+      url: app.buildRequestUrl('initIm'),
+      data: {
+        accid: 'uu_'+app.globalData.userId,
+        toUserId: _this.data.toUserId,
+        cityId: app.globalData.cityId
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          _this.setData({
+            toUserInfo: res.data.data.toUserInfo,
+            userInfo: res.data.data.userInfo,
+            houseInfo: res.data.data.houseInfo
+          })
+
+          app.globalData.imUserInfo = res.data.data.userInfo;
+          _this.initIm();
+   
+        } else {
+          wx.showToast({
+            title: '初始化失败',
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      }
+    })
+  },
+  getLastMsg: function(data){
+    var _this = this;
+    if(data.length > 0){
+      let len = data.length > 10 ? 10 : data.length;
+      for (var i = 0; i < len; i++){
+        if (data[i] == app.globalData.imService || data[i] == 'p2p-' + app.globalData.imService){
+          _this.data.serviceInfo.time = common.formatTimeNew(_this.data.serviceInfo.sendtime);
+          _this.setData({
+            serviceInfo: _this.data.serviceInfo
+          })
+          _this.data.contacts.push(_this.data.serviceInfo);
+          _this.setData({
+            contacts: common.unique1(_this.data.contacts)
+          })
+        }else{
+          wx.getStorage({
+            key: data[i],
+            success: function (res) {
+              let someone = res.data;
+              someone.time = common.formatTimeNew(someone.sendtime);
+
+              _this.data.contacts.push(someone);
+              _this.setData({
+                contacts: common.unique1(_this.data.contacts)
+              })
+            }
+          })
+        }
+
+      }
+    }
+  },
+  initIm() {
+    let _this = this;
+    //实例化im
+    nim = imSdk.getInstance({
+      debug: false,
+      db: true,
+      appKey: _this.data.appKey,
+      account: _this.data.userInfo.accid,
+      token: _this.data.userInfo.token,
+      onconnect: _this.onConnect,
+      onerror: _this.onError,
+      onwillreconnect: _this.onWillReconnect,
+      ondisconnect: _this.onDisconnect,
+      // 多端登录
+      onloginportschange: _this.onLoginPortsChange,
+      // 好友关系
+      // onfriends: onFriends,
+      // onsyncfriendaction: onSyncFriendAction,
+      // 用户名片
+      onmyinfo: _this.onMyInfo,
+      onupdatemyinfo: _this.onUpdateMyInfo,
+      onusers: _this.onUsers,
+      onupdateuser: _this.onUpdateUser,
+      // 会话
+      onsessions: _this.onSessions,
+      onupdatesession: _this.onUpdateSession,
+      // 消息
+      onroamingmsgs: _this.onRoamingMsgs,
+      onofflinemsgs: _this.onOfflineMsgs,
+      onmsg: _this.onMsg,
+      // 系统通知
+      // onofflinesysmsgs: onOfflineSysMsgs,
+      // onsysmsg: onSysMsg,
+      // onupdatesysmsg: onUpdateSysMsg,
+       onsysmsgunread: _this.onSysMsgUnread,
+      // onupdatesysmsgunread: onUpdateSysMsgUnread,
+      // onofflinecustomsysmsgs: onOfflineCustomSysMsgs,
+     oncustomsysmsg: _this.onCustomSysMsg,
+      // // 收到广播消息
+      // onbroadcastmsg: onBroadcastMsg,
+      // onbroadcastmsgs: onBroadcastMsgs,
+      // // 同步完成
+      // onsyncdone: onSyncDone
+    })
+    nim.getLocalSessions({
+      lastSessionId: '',
+      limit: 100,
+      done: _this.getLocalSessionsDone
+    });
+
+    nim.getLocalMsgs({
+      sessionId: 'p2p-account',
+      limit: 100,
+      done: _this.getLocalMsgsDone
+    })
+  },
+  getLocalMsgsDone: function (error, obj){
+    console.log('获取本地消息' + (!error ? '成功' : '失败'), error, obj)
+  },
+  onConnect: function () {
+    let _this = this;
+    console.log('连接成功')
+  },
+  onWillReconnect: function() {
+    console.log('onWillReconnect');
+  },
+  onRoamingMsgs: function (obj) {
+    console.log('收到漫游消息', obj);
+  },
+  onOfflineMsgs: function (obj) {
+    console.log(obj.to)
+    let contacts = this.data.contacts;
+    for (var i = 0; i < contacts.length; i++){
+      if (contacts[i].id == obj.to){
+        contacts[i].unread = true;
+      }
+    }
+
+    this.setData({
+      contacts: contacts
+    });
+    console.log('收到离线消息', obj);
+  },
+  onDisconnect: function (error) {
+    // 此时说明 SDK 处于断开状态, 开发者此时应该根据错误码提示相应的错误信息, 并且跳转到登录页面
+    console.log('丢失连接');
+    console.log(error);
+    if (error) {
+      switch (error.code) {
+        // 账号或者密码错误, 请跳转到登录页面并提示错误
+        case 302:
+          break;
+        // 被踢, 请提示错误后跳转到登录页面
+        case 'kicked':
+          break;
+        default:
+          break;
+      }
+    }
+  },
+  onSysMsgUnread: function(msg){
+    console.log(msg);
+  },
+  onMsg: function (msg) {
+    let contacts = this.data.contacts;
+    for (var i = 0; i < contacts.length; i++) {
+      if (contacts[i].id == msg.from) {
+        contacts[i].unread = true;
+      }
+    }
+
+    this.setData({
+      contacts: contacts
+    });
+
+    //app.imSendMsg();
+    console.log('收到消息', msg, msg.type, msg);
+  },
+  onCustomSysMsg: function(msg){
+    
+  },
+  onShareAppMessage: function () {
+    return {
+      title: app.globalData.compInfo.FCompName,
+      path: app.globalData.sharePublicUrl,
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+  },
+  onLoginPortsChange: function(){
+    console.log('onLoginPortsChange');
+  },
+  getLocalSessionsDone: function(error, obj) {
+    console.log(obj);
+    console.log('获取本地会话列表' + (!error ? '成功' : '失败'));
+    if(!error) {
+      //onSessions(obj.sessions);
+    }
+  },
+  onMyInfo: function (user){
+   // console.log('收到我的名片', user);
+    data.myInfo = user;
+  },
+  onSessions: function (sessions) {
+    console.log('收到会话列表', sessions);
+    data.sessions = nim.mergeSessions(data.sessions, sessions);
+    this.updateSessionsUI();
+  },
+  onUpdateSession: function (session) {
+    console.log('会话更新了', session);
+    data.sessions = nim.mergeSessions(data.sessions, session);
+    this.updateSessionsUI(session);
+  },
+  //刷新界面
+  updateSessionsUI: function (session) {
+    //console.log(data.sessions);
+    console.log('updateSessionsUI');
+    let _this = this;
+    let keyName = 'contract_list';
+    console.log(keyName);
+    //var session = _this
+    let id = session.id;
+    //当前聊天人的最后一条会话
+    // wx.setStorageSync(id, session.lastMsg);
+
+    console.log(session);
+    if (session.lastMsg.type == 'text') {
+      var msg = session.lastMsg.text;
+    } else if (session.lastMsg.type == 'image') {
+      var msg = '收到一张图片';
+    } else if (session.lastMsg.type == 'custom') {
+      var msg = '推荐房源';
+    } else {
+      var msg = '你有新消息啦';
+    }
+    var item = {
+      id: session.lastMsg.to,
+      photo: '',
+      name: session.lastMsg.fromNick,
+      msg: msg,
+      time: session.lastMsg.time,
+      sendtime: session.lastMsg.time
+    }
+    wx.setStorage({
+      key: id,
+      data: item
+    })
+
+    wx.getStorage({
+      key: keyName,
+      success: function (res) {
+        console.log(res.data);
+        _this.setData({
+          contact: res.data
+        })
+      }
+    })
+
+    //添加一个聊天人
+    // let value = wx.getStorageSync(key);//当前的联系人列表
+    console.log(_this.data.contact);
+    if (_this.data.contact) {
+      _this.data.contact.unshift(id);
+
+      _this.setData({
+        contact: common.unique1(_this.data.contact)
+      })
+
+      console.log(_this.data.contact);
+      wx.setStorage({
+        key: keyName,
+        data: _this.data.contact
+      })
+
+    } else {
+      wx.setStorage({
+        key: keyName,
+        data: JSON.stringify([id])
+      })
+
+      wx.getStorage({
+        key: keyName,
+        success: function (res) {
+          console.log(res.data)
+        }
+      })
+    }
+  },
+  onError: function(error){
+    console.log(error);
+  },
+  onUpdateMyInfo: function(info){
+    console.log(info);
+  },
+  onUsers:function(){
+    console.log('onUsers');
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    console.log('onReady');
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    this.contractList();
+    //this.initIm();
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+    //console.log('onHide');
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+    
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+    
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+    
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    
+  },
+  /**
+   * 跳转到IM页面
+   */
+  goIm: function(e) {
+    let to = e.currentTarget.dataset.to;
+    let from = 'uu_'+app.globalData.userId;
+
+    if (getCurrentPages().length < 5) {
+      wx.navigateTo({
+        url: '/pages/im/im?from=' + from + '&to=' + to,
+      })
+    } else {
+      wx.redirectTo({
+        url: '/pages/im/im?from=' + from + '&to=' + to,
+      })
+    }
+  },
+  contractList: function() {
+    let _this = this;
+    let keyName = 'contract_list';
+    wx.getStorage({
+      key: keyName,
+      success: function (res) {
+        if (res.data.indexOf('p2p-' + app.globalData.imService) == -1) {
+          res.data.unshift(app.globalData.imService);
+        } else {
+          console.log(2222);
+        }
+        _this.setData({
+          contacts: []
+        });
+
+        _this.getLastMsg(common.unique1(res.data));
+      },
+      fail: function () {
+        //默认客服
+        _this.setData({
+          contacts: []
+        });
+        _this.data.serviceInfo.time = common.formatTimeNew(_this.data.serviceInfo.sendtime);
+
+        _this.setData({
+          serviceInfo: _this.data.serviceInfo
+        })
+        _this.data.contacts.push(_this.data.serviceInfo);
+        _this.setData({
+          contacts: common.unique1(_this.data.contacts)
+        })
+        
+      },
+      complete: function () {
+        
+      }
+    })
+  }
+})

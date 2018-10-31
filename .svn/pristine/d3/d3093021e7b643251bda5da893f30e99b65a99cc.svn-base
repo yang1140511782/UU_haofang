@@ -1,0 +1,141 @@
+image{width: 100%;}
+
+page{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  overflow:auto;
+}
+.vocal-wrap{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url(http://uuweb.haofang.net/Public/wxApp/images/vocal/bg.png)no-repeat top;
+  background-size: 100% 100%;
+  min-height: 1182rpx;
+}
+.top-img{
+  position: relative;
+  top: 0rpx;
+  margin:0 auto;
+  width: 750rpx;
+  height: 648rpx;
+  background: url(http://uuweb.haofang.net/Public/wxApp/images/vocal/top-img-new.png?t=20180424) no-repeat center;
+  background-size: 100%;
+  margin-bottom: 10rpx;
+}
+.title-box{
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 34rpx;
+  /*margin-bottom: 48rpx;*/
+}
+.title-box text{
+  font-size: 40rpx;
+  color: #e84395;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+}
+.has-box{
+  position: relative;
+  top: 70rpx;
+  width: 100%;
+  text-align: center;
+  font-size: 36rpx;
+  color:#fc3f9c;
+}
+.tx-box-big{
+  display: flex;
+  width: 100%;
+  height: 215rpx;
+  flex-direction: column;
+  justify-content: center;
+}
+.tx-box{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.tx-li{
+  width: 94rpx;
+  height: 94rpx;
+  border-radius: 50%;
+  background: url(http://static.haofang.net/Public/images/fang_default.png)no-repeat center;
+  background-size: 100%;
+  overflow: hidden;
+  margin-right: 60rpx;
+}
+.tx-li image{
+  width: 100%;
+}
+.tx-li:last-child{
+   margin-right: 0;
+}
+.has-attend-tips{
+  color: #fff;
+  text-align: center;
+  font-size: 24rpx;
+  margin: 10rpx auto 0;
+}
+.has-attend-tips::after{
+  content: '>';
+  display: inline-block;
+  width: 20rpx;
+  height: 20rpx;
+  font-size: 24rpx;
+  color: #fff;
+  margin-left: 10rpx;
+  font-family: "宋体","Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+.has-attend-tips text{
+  color: #e84695;
+  font-size: 38rpx;
+  margin: 0 10rpx;
+}
+.btn-box{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin:  auto;
+  bottom: 220rpx;
+  width: 480rpx;
+  height: 80rpx;
+  background: #f9449c;
+  border-radius: 60rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 36rpx;
+  letter-spacing:4rpx;
+  white-space: nowrap;
+}
+.btn-box-down{
+  bottom: 195rpx;
+}
+.btn-box-down1{
+  bottom: 170rpx;
+}
+.v-footer{
+  position: absolute;
+  left: 0;
+  bottom: 45rpx;
+  width: 100%;
+  height: 100rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 32rpx;
+  line-height: 50rpx;
+}
+/*回首页*/
+.go-home{
+  position: fixed;
+  top: 150rpx;
+  left: 0;
+  width: 140rpx;
+  height: 140rpx;
+  background: url(http://uuweb.haofang.net/Public/wxApp/images/vocal/back-index.png?t=20180427) center center no-repeat;
+  background-size: 100% 100%;
+}

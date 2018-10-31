@@ -1,0 +1,142 @@
+<!-- 添加授权蒙层 -->
+<import src="../../../../template/authorizeMaskTmp.wxml" />
+<template is="authorizeMask" data="{{userInfo}}"></template>
+
+
+<!-- 顶部模块 -->
+<view class="top-mod" style=''>
+    <view class="top-text" bindtap='goMyPrize'>我的奖品</view>
+    <image src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/prize.png" alt=""></image>
+</view>
+<!-- 中间模块 -->
+<view class="middle-mod">
+    <view style="height:100%;">
+        <!-- 滚动信息 -->
+        <view class="loop-info">
+            <view class='loop-info-box' style='bottom:{{paizeUserLoop}}rpx'>
+                <view wx:for="{{prizeUserList}}" wx:key="{{index}}">
+                    <text class="one-line-text">用户{{item.nickName}}，获得{{item.remark}}</text>
+                </view>
+            </view>
+        </view>
+        <!-- 奖品滚动区 -->
+        <view class="prize-loop {{lampJumpVal?'paomadeng-a':'paomadeng-b'}}">
+            <image class='yytop' src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/yytop.png'></image>
+            <image class='yybottom' src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/yybottom.png'></image>
+            <view class='prize-loop-conten'>
+                <view class='pl-conten-bord' style='margin-left:12rpx;'>
+                    <view class='jp-list' style='bottom:{{imgboxNum}}rpx;'>
+                        <view class='jp-imgbox' wx:for="{{mgList}}" wx:key="{{index}}">
+                            <image src="{{item.prizePhoto}}" alt=""></image>
+                        </view>
+                    </view>
+                </view>
+                <view class='pl-conten-bord'>
+                    <view class='jp-list' style='bottom:{{imgboxNumTwo}}rpx;'>
+                        <view class='jp-imgbox' wx:for="{{mgList}}" wx:key="{{index}}">
+                            <image src="{{item.prizePhoto}}" alt=""></image>
+                        </view>
+                    </view>
+                </view>
+                <view class='pl-conten-bord' style='margin-right:12rpx;'>
+                    <view class='jp-list' style='bottom:{{imgboxNumThree}}rpx;'>
+                        <view class='jp-imgbox' wx:for="{{mgList}}" wx:key="{{index}}">
+                            <image src="{{item.prizePhoto}}" alt=""></image>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <!-- 抽奖按钮 -->
+        <view class="prize-btn" bindtap="actionStart">
+
+        </view>
+        <!-- 摇杆 -->
+        <navigator class="yaogan" target="" url="/packageActive/pages/jinyin/rule/rule" hover-class="none" open-type="navigate">
+            
+        </navigator>
+       
+        <!-- 漂浮的金币 -->
+        <view class="floar-jb">
+
+        </view>
+        <view style='text-align: center;'>
+            <text style="color:#d15c05;font-size: 26rpx;">剩余次数：{{remainder}} 次</text>
+        </view>
+    </view>
+</view>
+<!-- 底部模块 -->
+<view class="bottom-mod">
+    <view class="bot-title">
+        <image style='width:27rpx;left:0rpx;' src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/leftzs.png" alt=""></image>
+        <text class='jip-text'>奖品列表</text>
+        <view class='jip-text-back'></view>
+        <image style='width:32rpx;right:0rpx;' src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/rightzs.png" alt=""></image>
+    </view>
+    <!-- 奖品列表 -->
+    <view style='width:547rpx;margin:0 auto;top:60rpx;position:relative;overflow-x:auto'>
+    <view style='width:{{bottomImg}}rpx;overflow:hidden'>
+        <view class="bot-img" wx:for="{{mgListCopy}}" wx:key="{{index}}">
+            <view class="btnt-a">
+                剩余 {{item.surplusNum}} 件
+            </view>
+            <image src="{{item.prizePhoto}}" alt=""></image>
+            <view class="btnt-b">{{item.prizeName}}</view>
+        </view>
+    </view>
+  </view>
+</view>
+<!-- 中奖弹出层 -->
+<view class='page-modal backimg' wx:if="{{prizeType>=1&&prizeType<=3}}">
+  <!-- 内容 -->
+    <view class='modal-bgimg backimg'>
+        <view style='height:350rpx;'>
+          <view class='prize-title'></view>
+          <!-- 现金红包 -->
+          <view wx:if="{{prizeType===1||prizeType===2}}">
+              <view class='money-text'>
+                <text>好运现金红包</text>
+              </view>
+              <view class='modal-toprize'>
+                  <view class='mp-a'><text>{{awardReObj.money==null?'0':awardReObj.money}}</text></view>
+                  <view class='mp-c'></view>
+                  <text class='mp-b'>元</text>
+              </view>
+          </view>
+          <!-- 实物红包 -->
+          <view wx:if="{{prizeType===3}}">
+              <view class='shiwu-prize'>
+                  <image src='{{prizeImg}}'></image>
+              </view>
+          </view>
+          <view class='tell-you'>转发即可给好友发红包</view>
+          <view class='tell-you'>你还可再获 <text>1</text> 次抽奖机会和 <text>1</text> 个现金红包</view>
+        </view>
+        <view class='modal-btn'>
+            <button open-type="share">立即转发</button>
+        </view>
+        <view class='modal-footer'>已存入优优账户，可在“我的”-“个人钱包”查看</view>
+    </view>
+    <view class='close-modal backimg' bindtap='closeModal'></view>
+</view>
+<!-- 拿现金弹出层 -->
+<view class='page-modal backimg' wx:if="{{prizeType===4}}">
+    <view class='modal-bgimg backimg'>
+        <!-- 内容 -->
+        <view class='get-money-conten'>
+            <view class='get-money-img'>
+                <image src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/getMoney.png'></image>
+            </view>
+            <view class='get-money-img-ten'>
+                <image src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/luckDrawOut.png' style='width:267rpx;'></image>
+            </view>
+            <view class='get-money-forward'>转发好友立得抽奖机会及现金红包</view>
+            <view class='get-money-friends'>— 不同好友点开可多次获得 —</view>
+        </view>
+        <view class='modal-btn'>
+            <button open-type="share">立即转发</button>
+        </view>
+    </view>
+    <view class='close-modal backimg' bindtap='closeModal'></view>
+</view>
+

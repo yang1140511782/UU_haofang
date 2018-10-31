@@ -1,0 +1,19 @@
+<view id="app">
+    <image class="banner-top" src="http://uuweb.haofang.net/Public/wxApp/images/findHouse/banner.png" mode=""></image>
+    <view class="cont-wraper">
+        <view class="cont-wraper-box">
+            <view class="  cont-box sale-box" data-page="/pages/entrust/entrust?caseType=3" bindtap='chooseNavBtn'>
+
+                我要买房
+            </view>
+            <view class="  cont-box lease-box" data-page="/pages/entrust/entrust?caseType=4" bindtap='chooseNavBtn'>我要租房</view>
+            <view class="  cont-box buy-box" data-page="/pages/saleRegistration/saleRegistration" bindtap='chooseNavBtn'>我要卖房</view>
+            <view class="  cont-box rent-box" data-page="/pages/saleRegistration/rentRegistration" bindtap='chooseNavBtn'>我要出租</view>
+        </view>
+    </view>
+</view>
+
+<!-- 引入找房定位的公共模板 -->
+<import src="../../component/localCityToast/localCityToast.wxml"/>
+<template is="localCity" data="{{locateCityName}}" wx:if='{{!toastHide}}'/>
+

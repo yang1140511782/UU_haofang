@@ -1,0 +1,132 @@
+<!-- 顶部模块 -->
+<view class="top-mod" style=''>
+    <view class="top-text" bindtap='goMyPrize'>我的奖品</view>
+    <image src="./img/prize.png" alt=""></image>
+</view>
+<!-- 中间模块 -->
+<view class="middle-mod">
+    <view style="height:100%;">
+        <!-- 滚动信息 -->
+        <view class="loop-info">
+            <view class='loop-info-box' style='height:{{64*(prizeUserList.length-1)}}rpx;'>
+                <view wx:for="{{prizeUserList}}" wx:key="{{index}}">
+                    <text class="one-line-text">用户{{item.name}}，获得{{item.prizeType}}</text>
+                </view>
+            </view>
+        </view>
+        <!-- 奖品滚动区 -->
+        <view class="prize-loop {{lampJumpVal?'paomadeng-a':'paomadeng-b'}}">
+            <image class='yytop' src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/yytop.png'></image>
+            <image class='yybottom' src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/yybottom.png'></image>
+            <view class='prize-loop-conten'>
+                <view class='pl-conten-bord' style='margin-left:12rpx;'>
+                    <view class='jp-list' style='bottom:{{imgboxNum}}rpx;'>
+                        <view class='jp-imgbox' wx:for="{{mgList}}" wx:key="{{index}}">
+                            <image src="{{item.img}}" alt=""></image>
+                        </view>
+                    </view>
+                </view>
+                <view class='pl-conten-bord'>
+                    <view class='jp-list' style='bottom:{{imgboxNumTwo}}rpx;'>
+                        <view class='jp-imgbox' wx:for="{{mgList}}" wx:key="{{index}}">
+                            <image src="{{item.img}}" alt=""></image>
+                        </view>
+                    </view>
+                </view>
+                <view class='pl-conten-bord' style='margin-right:12rpx;'>
+                    <view class='jp-list' style='bottom:{{imgboxNumThree}}rpx;'>
+                        <view class='jp-imgbox' wx:for="{{mgList}}" wx:key="{{index}}">
+                            <image src="{{item.img}}" alt=""></image>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <!-- 抽奖按钮 -->
+        <view class="prize-btn" bindtap="actionStart">
+
+        </view>
+        <!-- 摇杆 -->
+        <view class="yaogan">
+
+        </view>
+        <!-- 漂浮的金币 -->
+        <view class="floar-jb">
+
+        </view>
+        <view style='text-align: center;'>
+            <text style="color:#d15c05;font-size: 26rpx;">剩余次数：2次</text>
+        </view>
+    </view>
+</view>
+<!-- 底部模块 -->
+<view class="bottom-mod">
+    <view class="bot-title">
+        <image style='width:27rpx;left:0rpx;' src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/leftzs.png" alt=""></image>
+        <text class='jip-text'>奖品列表</text>
+        <view class='jip-text-back'></view>
+        <image style='width:32rpx;right:0rpx;' src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/rightzs.png" alt=""></image>
+    </view>
+    <!-- 奖品列表 -->
+    <view style='width:547rpx;margin:0 auto;top:60rpx;position:relative;overflow-x:auto'>
+    <view style='width:{{bottomImg}}rpx;overflow:hidden'>
+        <view class="bot-img">
+            <view class="btnt-a">
+                剩余11件
+            </view>
+            <image src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png" alt=""></image>
+            <view class="btnt-b">iPhone Xs max</view>
+        </view>
+        <view class="bot-img">
+            <view class="btnt-a">
+                剩余11件
+            </view>
+            <image src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png" alt=""></image>
+            <view class="btnt-b">iPhone Xs max</view>
+        </view>
+        <view class="bot-img">
+            <view class="btnt-a">
+                剩余11件
+            </view>
+            <image src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png" alt=""></image>
+            <view class="btnt-b">iPhone Xs max</view>
+        </view>
+        <view class="bot-img">
+            <view class="btnt-a">
+                剩余11件
+            </view>
+            <image src="http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png" alt=""></image>
+            <view class="btnt-b">iPhone Xs max</view>
+        </view>
+    </view>
+  </view>
+</view>
+<!-- 中奖弹出层 -->
+<view class='page-modal backimg' wx:if="{{modalShow===1}}">
+  <!-- 内容 -->
+    <view class='modal-bgimg backimg'>
+        <view class='prize-title'></view>
+        <!-- 现金红包 -->
+        <view wx:if="{{prizeType===0}}">
+            <view class='money-text'>
+              <text>好运现金红包</text>
+            </view>
+            <view class='modal-toprize'>
+                <view class='mp-a'><text>9.54</text></view>
+                <view class='mp-c'></view>
+                <text class='mp-b'>元</text>
+            </view>
+        </view>
+        <!-- 实物红包 -->
+        <view wx:if="{{prizeType===1}}">
+            <view class='shiwu-prize'>
+                <image src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png'></image>
+            </view>
+        </view>
+        <view class='tell-you'>转发即可给好友发红包</view>
+        <view class='tell-you'>你还可再获 <text>1</text> 次抽奖机会和 <text>1</text> 个现金红包</view>
+        <view class='modal-btn'>立即转发</view>
+        <view class='modal-footer'>已存入优优账户，可在“我的”-“个人钱包”查看</view>
+    </view>
+    <view class='close-modal backimg' bindtap='closeModal'></view>
+</view>

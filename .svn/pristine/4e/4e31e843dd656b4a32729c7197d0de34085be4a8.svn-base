@@ -1,0 +1,573 @@
+var app = getApp();
+
+function MyPromise(fn,api,params) {
+  this.value;
+  this.api = api;
+  this.params = params;
+  this.resolveFunc = function() {};
+  this.rejectFunc = function() {};
+  fn(this.resolve.bind(this), this.reject.bind(this),this.api,this.params);
+}
+
+MyPromise.prototype.resolve = function(val) {
+  var self = this;
+  self.value=val;
+  setTimeout(function() {
+    self.resolveFunc(self.value);
+  }, 0);
+}
+
+MyPromise.prototype.reject = function(val) {
+  var self=this;
+  self.value=val;
+  setTimeout(function() {
+    self.rejectFunc(self.value);
+  }, 0);
+}
+
+MyPromise.prototype.then = function(resolveFunc, rejectFunc) {
+  this.resolveFunc = resolveFunc;
+  this.rejectFunc = rejectFunc;
+}
+
+var fn=function(resolve, reject,api,params){
+  wx.request({
+            url: api,
+            data: params,
+            header: {
+                'content-type': 'application/json'
+            },
+            success: function(res){
+                resolve(res.data);
+            },
+            fail: function(error){
+                 console.log(error);
+                reject(error);
+            }
+        })
+}
+
+
+function fetchApi(api, params) {
+    if(typeof Promise == 'undefined'){
+        return new MyPromise(fn,api,params)
+    }else{
+        return new Promise((resolve, reject) => {
+            wx.request({
+                url: api,
+                data: params,
+                header: {
+                    'content-type': 'application/json'
+                },
+                success: function(res){
+                     resolve(res.data);
+                },
+                fail: function(error){
+                    console.log(error);
+                     reject(error);
+                }
+            })
+        })
+    }
+    
+}
+
+function getHouseDetail(case_id) {
+    wx.request({
+        url: app.globalData.detailUrl,
+        data: {
+            comp_id: app.globalData.comp_id,
+            case_id: case_id
+        },
+        success: function (res) {
+            return res;
+        },
+        fail: function (fail) {
+            return fail;
+        }
+    })
+}
+
+//图片路径格式化
+function formateImg(imgList) {
+    var imgLists = [];
+    if (imgList.length) {
+        for (var i = imgList.length - 1; i >= 0; i--) {
+            imgLists.push(app.globalData.photoServerUrl + imgList[i].PHOTO_ADDR);
+        }
+    }
+
+    return imgLists;
+}
+//详情的图片列表转成数据返回
+function formatePicsUrl(picsUrlPath){
+    if (picsUrlPath) {
+        return picsUrlPath.split(',');
+    }else{
+        return '';
+    }
+}
+//经纪人头像
+function brokerAvar(icon) {
+    return app.globalData.photoBrokerUrl + icon;
+}
+
+//跳转链接
+function navigateTo(e) {
+    var url = e.target.dataset.url ? e.target.dataset.url : e.currentTarget.dataset.url;
+    wx.navigateTo({
+        url: url
+    })
+}
+function redirectTo(e) {
+    var url = e.target.dataset.url ? e.target.dataset.url : e.currentTarget.dataset.url;
+    wx.redirectTo({
+        url: url
+    })
+}
+function switchTab(e) {
+    var url = e.target.dataset.url ? e.target.dataset.url : e.currentTarget.dataset.url;
+    wx.switchTab({
+        url: url
+    })
+}
+function reLaunch(e) {
+    var url = e.target.dataset.url ? e.target.dataset.url : e.currentTarget.dataset.url;
+    wx.reLaunch({
+        url: url
+    })
+}
+function inArray(needle, haystack) {
+    var i = 0, n = haystack.length;
+    for (; i < n; ++i)
+        if (haystack[i] === needle)
+            return true;
+    return false;
+}
+function removeByValue(arr, val) {
+  for(var i=0; i<arr.length; i++) {
+    if(arr[i] == val) {
+      arr.splice(i, 1);
+      break;
+    }
+  }
+}
+/**
+ * 拨打电话
+ * @param  {[type]} e [description]
+ * @return {[type]}   [description]
+ */
+function calling(e) {
+    var mobile = e.target.dataset.mobile ? e.target.dataset.mobile : e.currentTarget.dataset.mobile;
+    wx.makePhoneCall({
+        phoneNumber: mobile
+    })
+}
+/**
+ * 错误图片处理
+ * @param  {[type]} e    []
+ * @param  {[type]} that []
+ * @param  {[type]} type [图片类型 avatar/house]
+ * @return {[type]}      [description]
+ */
+function errImgFun(e, that, type) {
+    var _errImg = e.target.dataset.errImg;
+    console.log(_errImg);
+    var _errObj = {};
+    _errObj[_errImg] = type == 'avatar' ? "http://cdn.haofang.net/static/uuminiapp/mine/fang_default.png" : "http://cdn.haofang.net/static/uuminiapp/default_house.jpg";
+    that.setData(_errObj);
+}
+var emoji={"[大笑]":{file:"emoji_0.png"},"[可爱]":{file:"emoji_01.png"},"[色]":{file:"emoji_02.png"},"[嘘]":{file:"emoji_03.png"},"[亲]":{file:"emoji_04.png"},"[呆]":{file:"emoji_05.png"},"[口水]":{file:"emoji_06.png"},"[汗]":{file:"emoji_145.png"},"[呲牙]":{file:"emoji_07.png"},"[鬼脸]":{file:"emoji_08.png"},"[害羞]":{file:"emoji_09.png"},"[偷笑]":{file:"emoji_10.png"},"[调皮]":{file:"emoji_11.png"},"[可怜]":{file:"emoji_12.png"},"[敲]":{file:"emoji_13.png"},"[惊讶]":{file:"emoji_14.png"},"[流感]":{file:"emoji_15.png"},"[委屈]":{file:"emoji_16.png"},"[流泪]":{file:"emoji_17.png"},"[嚎哭]":{file:"emoji_18.png"},"[惊恐]":{file:"emoji_19.png"},"[怒]":{file:"emoji_20.png"},"[酷]":{file:"emoji_21.png"},"[不说]":{file:"emoji_22.png"},"[鄙视]":{file:"emoji_23.png"},"[阿弥陀佛]":{file:"emoji_24.png"},"[奸笑]":{file:"emoji_25.png"},"[睡着]":{file:"emoji_26.png"},"[口罩]":{file:"emoji_27.png"},"[努力]":{file:"emoji_28.png"},"[抠鼻孔]":{file:"emoji_29.png"},"[疑问]":{file:"emoji_30.png"},"[怒骂]":{file:"emoji_31.png"},"[晕]":{file:"emoji_32.png"},"[呕吐]":{file:"emoji_33.png"},"[拜一拜]":{file:"emoji_160.png"},"[惊喜]":{file:"emoji_161.png"},"[流汗]":{file:"emoji_162.png"},"[卖萌]":{file:"emoji_163.png"},"[默契眨眼]":{file:"emoji_164.png"},"[烧香拜佛]":{file:"emoji_165.png"},"[晚安]":{file:"emoji_166.png"},"[强]":{file:"emoji_34.png"},"[弱]":{file:"emoji_35.png"},"[OK]":{file:"emoji_36.png"},"[拳头]":{file:"emoji_37.png"},"[胜利]":{file:"emoji_38.png"},"[鼓掌]":{file:"emoji_39.png"},"[握手]":{file:"emoji_200.png"},"[发怒]":{file:"emoji_40.png"},"[骷髅]":{file:"emoji_41.png"},"[便便]":{file:"emoji_42.png"},"[火]":{file:"emoji_43.png"},"[溜]":{file:"emoji_44.png"},"[爱心]":{file:"emoji_45.png"},"[心碎]":{file:"emoji_46.png"},"[钟情]":{file:"emoji_47.png"},"[唇]":{file:"emoji_48.png"},"[戒指]":{file:"emoji_49.png"},"[钻石]":{file:"emoji_50.png"},"[太阳]":{file:"emoji_51.png"},"[有时晴]":{file:"emoji_52.png"},"[多云]":{file:"emoji_53.png"},"[雷]":{file:"emoji_54.png"},"[雨]":{file:"emoji_55.png"},"[雪花]":{file:"emoji_56.png"},"[爱人]":{file:"emoji_57.png"},"[帽子]":{file:"emoji_58.png"},"[皇冠]":{file:"emoji_59.png"},"[篮球]":{file:"emoji_60.png"},"[足球]":{file:"emoji_61.png"},"[垒球]":{file:"emoji_62.png"},"[网球]":{file:"emoji_63.png"},"[台球]":{file:"emoji_64.png"},"[咖啡]":{file:"emoji_65.png"},"[啤酒]":{file:"emoji_66.png"},"[干杯]":{file:"emoji_67.png"},"[柠檬汁]":{file:"emoji_68.png"},"[餐具]":{file:"emoji_69.png"},"[汉堡]":{file:"emoji_70.png"},"[鸡腿]":{file:"emoji_71.png"},"[面条]":{file:"emoji_72.png"},"[冰淇淋]":{file:"emoji_73.png"},"[沙冰]":{file:"emoji_74.png"},"[生日蛋糕]":{file:"emoji_75.png"},"[蛋糕]":{file:"emoji_76.png"},"[糖果]":{file:"emoji_77.png"},"[葡萄]":{file:"emoji_78.png"},"[西瓜]":{file:"emoji_79.png"},"[光碟]":{file:"emoji_80.png"},"[手机]":{file:"emoji_81.png"},"[电话]":{file:"emoji_82.png"},"[电视]":{file:"emoji_83.png"},"[声音开启]":{file:"emoji_84.png"},"[声音关闭]":{file:"emoji_85.png"},"[铃铛]":{file:"emoji_86.png"},"[锁头]":{file:"emoji_87.png"},"[放大镜]":{file:"emoji_88.png"},"[灯泡]":{file:"emoji_89.png"},"[锤头]":{file:"emoji_90.png"},"[烟]":{file:"emoji_91.png"},"[炸弹]":{file:"emoji_92.png"},"[枪]":{file:"emoji_93.png"},"[刀]":{file:"emoji_94.png"},"[药]":{file:"emoji_95.png"},"[打针]":{file:"emoji_96.png"},"[钱袋]":{file:"emoji_97.png"},"[钞票]":{file:"emoji_98.png"},"[银行卡]":{file:"emoji_99.png"},"[手柄]":{file:"emoji_100.png"},"[麻将]":{file:"emoji_101.png"},"[调色板]":{file:"emoji_102.png"},"[电影]":{file:"emoji_103.png"},"[麦克风]":{file:"emoji_104.png"},"[耳机]":{file:"emoji_105.png"},"[音乐]":{file:"emoji_106.png"},"[吉他]":{file:"emoji_107.png"},"[火箭]":{file:"emoji_108.png"},"[飞机]":{file:"emoji_109.png"},"[火车]":{file:"emoji_110.png"},"[公交]":{file:"emoji_111.png"},"[轿车]":{file:"emoji_112.png"},"[出租车]":{file:"emoji_113.png"},"[警车]":{file:"emoji_114.png"},"[自行车]":{file:"emoji_115.png"}};
+/**
+* 通过正则替换掉文本消息中的emoji表情 
+* @param text：文本消息内容
+*/
+function buildEmoji(text) {
+    var re = /\[([^\]\[]*)\]/g;
+    var matches = text.match(re) || [];
+    var txtArr = text.split(/(\[[^\]]+\])/g); 
+    var emojiArr = [];
+    var txtEmoji = [];
+    for (var j = 0, len = matches.length; j < len; ++j) {
+      if (typeof (emoji[matches[j]]) == 'undefined'){
+        delete matches[j];
+        continue;
+      }
+      var url = "http://cdn.haofang.net/static/uuminiapp/emoji/" + emoji[matches[j]].file;
+
+        if(emoji[matches[j]]){
+          emojiArr.push(url);
+        }
+
+        for (var i = 0, leng = txtArr.length; i < leng; ++i){
+          if (txtArr[i] == matches[j]){
+            txtArr[i] = {
+              emoji:true,
+              url:url
+              }
+          } else if (txtArr[i] == ''){
+            delete txtArr[i];
+            continue;
+          }
+        }
+    }
+
+    txtEmoji.push(txtArr);
+    txtEmoji.push(emojiArr);
+    return txtEmoji;
+}
+
+function unique1(arr) {
+  var tmpArr = [];
+  for (var i = 0; i < arr.length; i++) {
+    //如果当前数组的第i已经保存进了临时数组，那么跳过，
+    //否则把当前项push到临时数组里面
+    if (tmpArr.indexOf(arr[i]) == -1) {
+      tmpArr.push(arr[i]);
+    }
+  }
+  return tmpArr;
+}
+/**
+ * 聊天列表去重
+ * @param  {[type]} arr [description]
+ * @return {[type]}     [description]
+ */
+function uniqueContactList(arr) {
+  var tmpArr = [];
+  var firstItem = {};
+
+  if(arr.length > 0){
+    for (var i = 0; i < arr.length-1; i++) {
+      //如果当前数组的第i已经保存进了临时数组，那么跳过，
+      //否则把当前项push到临时数组里面
+      for (var j = arr.length - 1; j >= 0; j--) {
+        if(typeof(arr[i]) != 'undefined' && typeof(arr[j]) != 'undefined'){
+          if(arr[i].id == arr[j].id && i != j){
+            var item = arr[i];
+            item.unread = arr[i].unread;
+            item.photo = !!arr[i].photo ? arr[i].photo : arr[j].photo;
+            item.name = !!arr[i].name ? arr[i].name : arr[j].name;
+            item.time = i<j ? arr[i].time : arr[j].time;
+            item.sendtime = i<j ? arr[i].sendtime : arr[j].sendtime;
+            delete arr[j];
+            delete arr[i];
+
+            arr.unshift(item);
+          }else if(arr[i].id == app.globalData.imService){
+            firstItem = arr[i];
+            delete arr[i];
+          }else{
+
+          }
+        }
+      }
+    }
+    //再把客服放到列表第一的位置来
+    arr.unshift(firstItem);
+  }else{
+    //只有客服一个元素
+    arr.unshift(firstItem);
+  }
+
+
+  return arr.filter(function(val){
+    return !(!val || val === "");
+  });
+}
+function extend(des, src, override){
+  if(src instanceof Array){
+    for(var i = 0, len = src.length; i < len; i++)
+       extend(des, src[i], override);
+  }
+  for( var i in src){
+    if(override || !(i in des)){
+      des[i] = src[i];
+    }
+  }
+  return des;
+}
+//数据转化
+function formatNumber(n) {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}  
+/** 
+ * 时间戳转化为年 月 日 时 分 秒 
+ * number: 传入时间戳 
+ * format：返回格式，支持自定义，但参数必须与formateArr里保持一致 
+*/
+function formatTime(number, format) {
+
+  var formateArr = ['Y', 'M', 'D', 'h', 'm', 's'];
+  var returnArr = [];
+
+  var date = new Date(number);
+  returnArr.push(date.getFullYear());
+  returnArr.push(formatNumber(date.getMonth() + 1));
+  returnArr.push(formatNumber(date.getDate()));
+
+  returnArr.push(formatNumber(date.getHours()));
+  returnArr.push(formatNumber(date.getMinutes()));
+  returnArr.push(formatNumber(date.getSeconds()));
+
+  for (var i in returnArr) {
+    format = format.replace(formateArr[i], returnArr[i]);
+  }
+  return format;
+}
+
+function formatTimeNew(number) {
+
+  var formateArr = ['Y', 'M', 'D', 'h', 'm', 's'];
+  var returnArr = [];
+  var currentArr = [];
+
+  //当前时间
+  var date = new Date();
+  var curYear = date.getFullYear();
+  var curMonth = formatNumber(date.getMonth() + 1);
+  var curDay = formatNumber(date.getDate());
+  var curHour = formatNumber(date.getHours());
+  var curMin = formatNumber(date.getMinutes());
+  var curSec = formatNumber(date.getSeconds());
+  //需要格式化的时间
+  var targetDate = new Date(number);
+  var tarYear = targetDate.getFullYear();
+  var tarMonth = formatNumber(targetDate.getMonth() + 1);
+  var tarDay = formatNumber(targetDate.getDate());
+  var tarHour = formatNumber(targetDate.getHours());
+  var tarMin = formatNumber(targetDate.getMinutes());
+  var tarSec = formatNumber(targetDate.getSeconds());
+  
+  //格式化输出日期
+  if (curDay == tarDay && tarHour < 12){
+    return '上午 ' + tarHour + ':'+tarMin;
+  } else if (curDay == tarDay && tarHour >= 12){
+    return '下午 ' + tarHour + ':' + tarMin;
+  } else if(curDay - tarDay == 1){
+    return '昨天 ' + tarHour + ':' + tarMin;
+  } else if (curDay - tarDay == 2) {
+    return '前天 ' + tarHour + ':' + tarMin;
+  } else{
+    return tarMonth + '月' + tarDay + '日 ' +  tarHour + ':' + tarMin;
+  }
+  
+}
+/**
+ * 封装一个可以定义数据缓存时间的方法
+ * key 缓存的key
+ * data 需要缓存的数据
+ * expiration 缓存时间(单位秒)
+ * 2018年4月19日10:57:08
+ */
+function setStorageData(key, data, expiration){
+  var timestamp = Date.parse(new Date());
+  console.log(timestamp);
+ 
+  var expiration = timestamp + expiration*1000;
+  console.log(expiration);
+  wx.setStorageSync(key, data);
+  wx.setStorageSync(key + '_expiration', expiration);
+}
+/**
+ * 获取缓存数据，判断是否过期
+ * 2018年4月19日10:57:08
+ */
+function getStorageData(key) {
+  var timestamp = Date.parse(new Date());
+  console.log(timestamp);
+  var expiration = wx.getStorageSync(key + '_expiration');
+  console.log(expiration);
+  var data = wx.getStorageSync(key);
+  if (data && expiration > timestamp){
+    return data;
+  }else{
+      //缓存已过期则清空该缓存
+      wx.removeStorageSync(key);
+      wx.removeStorageSync(key + '_expiration');
+    return false;
+  }
+}
+
+/**
+ * 收集获取FormId
+ * 2018年5月4日 18:03:08
+ * @param 
+ */
+function collectFormId(formId,formType,userId,openId){
+    let that = this;
+    let cacheKey = 'collectFormId_' + userId + '_' + formType;
+    if (that.getStorageData(cacheKey)) {
+        console.log('上次点击还在有效时间内');
+        return false;
+    }
+    wx.request({
+        url: app.buildRequestUrl('collectFormIdUrl'),
+        data: {
+         formId: formId,
+         userId: userId,
+         openId: openId,
+         formType:formType
+        },
+        header: {'content-type': 'application/json'},
+        success: function (res) {
+            //缓存一天
+            that.setStorageData(cacheKey, true, 86400);
+        }
+    })
+}
+//消息气泡上面未读数显示
+function setTabBarBadge(num) {
+  if(num <= 0){
+    removeTabBarBadge();
+    return true;
+  }
+  if (num > 99) {
+    num = '99+';
+  }
+
+  num = num.toString();
+  wx.setTabBarBadge({
+    index: 1,
+    text: num
+  })
+}
+//移出红点提示
+function removeTabBarBadge() {
+  wx.removeTabBarBadge({
+    index: 1
+  })
+}
+function isArray(o) {
+  return Object.prototype.toString.call(o) == '[object Array]';
+}
+/**
+ * 获取当前经纪人的未读消息数
+ */
+function getUnreadNum(arr, accid){
+  var unreadNum = 0;
+  if(arr.length > 0){
+    for(var i=0; i<arr.length; i++){
+      if(arr[i].to == accid){
+        unreadNum = arr[i].unread;
+      }
+    }
+
+    return unreadNum;
+  }else{
+    return 0;
+  }
+}
+//移出一个未读消息数据            
+function removeUnreadNum(session='', accid){
+  var unreadMsg = wx.getStorageSync('unreadMsg') ? wx.getStorageSync('unreadMsg') : [];
+  var unreadNum = 0;
+
+  if (unreadMsg.length > 0) {
+    for (var i = 0; i < unreadMsg.length; i++) {
+      if (unreadMsg[i].to == accid) {
+        unreadMsg.splice(i, 1);
+      }
+    }
+  }
+
+    if(!!session){
+      unreadMsg.push(session);//最新的未读消息数组
+    }
+
+    for(var p in unreadMsg){
+      unreadNum += unreadMsg[p].unread;
+    }
+    wx.setStorageSync('unreadMsg', unreadMsg);
+    wx.setStorageSync('unreadNum', unreadNum);
+    setTabBarBadge(unreadNum.toString());
+
+    return unreadMsg;
+}
+/**
+* 未读消息数组格式化
+ */
+function initTabUnreadNum(){
+  var unreadNum = wx.getStorageSync('unreadNum');
+  setTabBarBadge(unreadNum.toString());
+}
+/**
+ * C端用户在小程序待上1分钟，客服主动推送一条消息
+ */
+function servicePushMsg(){
+  if (!wx.getStorageSync('servicePushMsg' + app.globalData.accid)){
+    setTimeout(function () {
+      if (!wx.getStorageSync('servicePushMsg' + app.globalData.accid)){
+        wx.request({
+          url: app.buildRequestUrl('sendServiceMsgUrl'),
+          data: {
+            from: app.globalData.imService,
+            to: app.globalData.accid
+          },
+          success: function (res) {
+            wx.setStorageSync('servicePushMsg' + app.globalData.accid, true);
+          }
+        })
+      }
+    }, 60000)
+  }
+}
+/**
+ * 换行转换
+ */
+function formateMsg(text){
+  text = text.replace(/\\r\\n/g, "\n");
+  return text;
+}
+
+/**
+ * 获取行为配置
+ */
+function getBehaviorConfig(type){
+  var behaviorConfig = wx.getStorageSync('behaviorConfig');
+  for(var i in behaviorConfig){
+    if(behaviorConfig[i].behaviorType == type){
+      return behaviorConfig[i];
+    }
+  }
+}
+
+module.exports = {
+    formateMsg: formateMsg,
+    getHouseDetail: getHouseDetail,
+    formateImg: formateImg,
+    brokerAvar: brokerAvar,
+    navigateTo: navigateTo,
+    redirectTo: redirectTo,
+    switchTab: switchTab,
+    errImgFun: errImgFun,
+    inArray:inArray,
+    formatePicsUrl:formatePicsUrl,
+    removeByValue:removeByValue,
+    calling:calling,
+    reLaunch:reLaunch,
+    buildEmoji:buildEmoji,
+    unique1: unique1,
+    formatTime: formatTime,
+    formatTimeNew: formatTimeNew,
+    setStorageData: setStorageData,
+    getStorageData: getStorageData,
+    collectFormId: collectFormId,
+    uniqueContactList: uniqueContactList,
+    emoji: emoji,
+    setTabBarBadge: setTabBarBadge,
+    removeTabBarBadge: removeTabBarBadge,
+    isArray: isArray,
+    getUnreadNum: getUnreadNum,
+    initTabUnreadNum:initTabUnreadNum,
+    removeUnreadNum: removeUnreadNum,
+    servicePushMsg: servicePushMsg,
+    getBehaviorConfig:getBehaviorConfig,
+    getList: function (api, params) {
+        return fetchApi(api, params)
+    },
+    getRequest: function (api, params) {
+       return  fetchApi(api, params)
+    }
+}

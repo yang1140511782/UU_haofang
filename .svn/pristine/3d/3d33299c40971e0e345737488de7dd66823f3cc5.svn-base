@@ -1,0 +1,112 @@
+
+let mgListPush = [];
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    mgList: [
+      { id: '123', img:'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png'},
+      { id: '124', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/2.png' },
+      { id: '125', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/3.png' },
+      { id: '126', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/4.png' }
+    ],
+    speed:0,
+    imgboxNum:-220,
+    endTopNum: -1000,
+    bottomImg:0
+  },
+  // 调用滚动
+  callLoop(){
+    this.actionLoop();
+  },
+  // 开始滚动
+  actionLoop(){
+    this.loopFn({ltype:'action',speed:5,id:'124'})
+  },
+  // 缓慢滚动
+  endLoop(){
+    this.loopFn({ ltype: 'end', speed: 40,id:'124'});
+
+  },
+  loopFn(Obj){
+    let mgListCopy = this.data.mgList;
+    let imgboxNumStart = this.data.imgboxNum
+    let speed = 0
+    let time = setInterval(() => {
+      //400米 缓慢加速
+      speed = (imgboxNumStart - this.data.imgboxNum +100)/600 
+      speed = speed > 1 ? 1 : speed
+      speed = 1
+      
+      let imgboxNumNew = this.data.imgboxNum - 10 * speed
+      
+      this.setData({ imgboxNum: imgboxNumNew });
+
+      if (this.data.imgboxNum % (-(mgListCopy.length * 225)) == -0) {
+        mgListCopy.forEach((item) => {
+          mgListPush.push(item);
+        })
+      }
+      if (mgListPush.length > 0){
+        this.setData({ mgList: mgListPush });
+      }
+      if (!!this.data.endTopNum && this.data.endTopNum == this.data.imgboxNum){
+        clearInterval(time);
+      }
+      return
+      if (this.data.imgboxNum < (-(2 * 1000))) {
+        this.setData({ imgboxNum:0});
+        clearInterval(time);
+        // this.endLoop();
+        mgListPush.forEach((item,index)=>{
+          if (Obj.id == item.id){
+            console.log('fds');
+            clearInterval(time);
+          }
+        })
+      }
+    }, Obj.speed)
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    // this.actionStart()
+    let bottomImgWith = 174 * this.data.mgList.length;
+    this.setData({ bottomImg: bottomImgWith})
+    console.log(this.data.bottomImg)
+  },
+
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  }
+})

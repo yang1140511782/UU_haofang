@@ -1,0 +1,735 @@
+/* packageTool/pages/buildBook/buildBook.wxss */
+
+#app{
+    width: 100%;
+    min-height: 100%;
+    padding-bottom: 108rpx;
+}
+
+/* 全局样式
+------------------------------------------------------------------------------------------- */
+.newBuilding{
+    width: 100%;
+    min-height: 100%;
+    background-color: #fefefe;
+    background-image: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/foobg.png);
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+.header-box{
+    width: 100%;
+    height: 420rpx;
+    padding-top: 188rpx;
+    text-align: center;
+    background-image: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/quality.png),url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/w-bg.png);
+    background-repeat: no-repeat;
+    background-position: center 72rpx, center bottom;
+    background-size: 82rpx 118rpx,100% auto;
+    box-sizing: border-box;
+}
+.header-box .title-box{
+    width: 630rpx;
+    height: 128rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/title-bg.png) no-repeat center;
+    background-size: 100%;
+    margin: 0 auto;
+    padding-top: 20rpx;
+    box-sizing: border-box;
+}
+.header-box .title-box .build-name{
+    font-size: 60rpx;
+    color: #2e3746;
+    font-weight: bold;
+    margin-bottom: 24rpx;
+}
+.header-box .title-box .houseType-text .span-icon{
+    display: inline-block;
+    width: 12rpx;
+    height: 32rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/area.png) no-repeat center;
+    background-size: 100%;
+    margin-right: 10rpx;
+}
+.header-box .title-box .houseType-text .strong-icon{
+  display: inline-block;
+    font-size: 40rpx;
+    font-weight: normal;
+    margin-bottom: 6rpx;
+}
+.header-box .title-box .houseType-text .em-icon{
+    font-size: 28rpx;
+    display: inline-block;
+    margin: 0;
+}
+
+.houseimg-box{
+    height: 472rpx;
+    border-top: 1rpx solid #a6aebc;
+    border-bottom: 1rpx solid #a6aebc;
+    padding-top: 6rpx;
+    padding-bottom: 6rpx;
+}
+.houseimg-box .house-content{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.house-info-box{
+    width: 100%;
+    padding-top: 70rpx;
+}
+.house-info-title{
+    text-align: center;
+    margin-bottom: 108rpx;
+}
+.house-info-title .i-icon{
+    display: inline-block;
+    width: 168rpx;
+    height: 4rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/title-h.png) no-repeat center/100%;
+    margin-bottom: 28rpx;
+}
+.house-info-title .h3-text{
+
+}
+.h3-text .span-text{
+    display: inline-block;
+    font-size: 18rpx;
+    color: #2e3746;
+    width: 18rpx;
+}
+.house-info-title .h3-text text{
+    font-size: 40rpx;
+    color: #2e3746;
+    margin-left: 4rpx;
+}
+.house-info-title .p-text{
+    font-size: 28rpx;
+    margin-top: 20rpx;
+    color: #2e3746;
+}
+.house-info-box .h1-text{
+    margin: 0 auto;
+    width: 670rpx;
+    height: 36rpx;
+    border-bottom: 1rpx solid #a6aebc;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/text-eg.png) no-repeat center;
+    -webkit-background-size: 670rpx 10rpx;
+    background-size: 670rpx 10rpx;
+}
+.houseimg{
+    width: 670rpx;
+    height: 440rpx;
+    margin: 0 auto;
+    margin-top: 40rpx;
+    position: relative;
+}
+.houseimg-list{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.houseimg .i-text{
+    position: absolute;
+    display: block;
+    left: 0;
+    right: 0;
+    bottom: -32rpx;
+    z-index: 99;
+    margin: auto;
+    width: 64rpx;
+    height: 64rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/pz-bg.png) no-repeat center;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+}
+
+.house-about{
+    margin-top: 80rpx;
+    padding: 0 40rpx;
+    padding-top: 52rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/title-1.png) no-repeat 0.2rpx top;
+    background-size:  auto 8rpx;
+    margin-bottom: 138rpx;
+}
+.house-about .h2-text{
+    font-size: 40rpx;
+    color: #2e3746;
+    margin-bottom: 38rpx;
+}
+.house-about .p-text{
+    font-size: 26rpx;
+    color: #4a515b;
+    line-height: 40rpx;
+    margin-bottom: 20rpx;
+}
+.house-about .i-text{
+    display: block;
+    width: 18rpx;
+    height: 18rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/text-icon.png) no-repeat center;
+    background-size: 100%;
+}
+
+.houseType-box{
+    width: 100%;
+}
+.houseType-box .h2-text{
+    width: 362rpx;
+    height: 180rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/houseTypeImgTitle.png) no-repeat center;
+    background-size: 100%;
+    margin: 0 auto;
+    margin-bottom: 36rpx;
+}
+.houseimg-list-box {
+    padding: 0 40rpx;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+.houseimg-list-box .li{
+    width: 100%;
+    /* height: 100%; */
+    /* height: 900rpx; */
+    position: relative;
+    margin-bottom: 126rpx;
+}
+.houseimg-list-box .li image{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.houseimg-list-box li:last-child{
+    margin-bottom: 0;
+}
+.area-info{
+    width: 100%;
+    margin-top: 186rpx;
+}
+.area-info .h2-text{
+    width: 100%;
+    height: 182rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/area-title.png) no-repeat center;
+    background-size: 100%;
+    margin-bottom: 60rpx;
+}
+.map-box{
+    width: 100%;
+    height: 476rpx;
+    background:url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/area-line.png) no-repeat 606rpx top;
+    -webkit-background-size: 126rpx 56rpx;
+    background-size: 126rpx 56rpx;
+    padding-top: 36rpx;
+}
+#map{
+  position: relative;
+    width: 670rpx;
+    height: 440rpx;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#map image{
+  width: 100%;
+  height: 100%;
+}
+.BMap_Marker img{
+    width: 100%;
+}
+.addr-con-box{
+    position: absolute;
+    width: 670rpx;
+    height: 440rpx;
+    z-index: 60;
+}
+.addr-con{
+    width: 172rpx;
+    height: 68rpx;
+    position: absolute;
+    top: -120rpx;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/info-tip.png) no-repeat center;
+    background-size: 100%;
+    font-size: 24rpx;
+    color: #fff;
+    text-align: center;
+    line-height: 60rpx;
+}
+
+.check-out{
+    margin-top: 94rpx;
+    width: 100%;
+    text-align: center;
+}
+.check-out .i-text{
+    display: inline-block;
+    width: 90rpx;
+    height: 8rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/livable-city.png) no-repeat center;
+    background-size: 100%;
+    margin-bottom: 26rpx;
+}
+.check-out .p-text{
+    font-size: 24rpx;
+    margin-bottom: 24rpx;
+    color: #2e3746;
+}
+.check-out .address-info{
+    width: 606rpx;
+    min-height: 90rpx;
+    padding: 0 20rpx;
+    margin: 0 auto;
+    background-size: 100% 6rpx;
+    border: 1rpx solid #a6aebc;
+    position: relative;
+    font-size: 26rpx;
+    color: #2e3746;
+    text-align: center;
+    line-height: 1.8;
+    padding-top: 30rpx;
+    padding-bottom: 16rpx;
+}
+.address-info::after{
+    content: '';
+    position: absolute;
+    right: 40rpx;
+    bottom: -10rpx;
+    width: 190rpx;
+    height: 20rpx;
+    background-image: url(http://cdn.haofang.net/static/uuweb/buildingBook/newBuilding/bottom-img.png);
+    background-color:#fff;
+    background-position: center;
+    background-size: 172rpx 16rpx;
+    background-repeat: no-repeat;
+}
+
+.broker-information{
+    width: 100%;
+    margin-top: 200rpx;
+    height: 350rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/user.png) no-repeat center;
+    background-size: 550rpx 350rpx;
+    position: relative;
+    padding-top: 80rpx;
+    text-align: center;
+    box-sizing: border-box;
+}
+.user-photo{
+    position: absolute;
+    border-radius: 50%;
+    border:1rpx solid #becbdc;
+    width: 110rpx;
+    height: 110rpx;
+    background-image: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/default_head.png);
+    background-size: cover;
+    background-position: center;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: -50rpx;
+    background-color: #fff;
+}
+.user-photo .i-text{
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* background: ; */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.broker-information .p-text{
+    font-size: 38rpx;
+    color: #4a5871;
+    margin-top: 24rpx;
+    font-weight: bold;
+}
+.broker-information .h4-text{
+    font-size: 24rpx;
+    color: #4a5871;
+    margin-top: 20rpx;
+}
+.broker-information .h5-text{
+    font-size: 18rpx;
+    color: #909aad;
+    margin-top: 24rpx;
+}
+.ewm{
+  display: none;
+    margin-top: 110rpx;
+    text-align: center;
+}
+.ewm image{
+    width: 220rpx;
+    height: 220rpx;
+}
+.ewm .p-text{
+    margin-top: 32rpx;
+    font-size: 18rpx;
+    color: #909aad;
+}
+
+.share-box{
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: none;
+}
+.shareLongImg-btn,.shareLink-btn{
+    width: 50%;
+    height: 90rpx;
+    background: #3396fb;
+    text-align: center;
+    line-height: 90rpx;
+    color: #fff;
+    font-size: 32rpx;
+    margin-top: 110rpx;
+}
+.shareLongImg-btn{
+    background: #2c3f50;
+}
+.newBuilding.on .share-box{
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+}
+.newBuilding.on .house-content-box{
+    display: none;
+}
+.house-content-box{
+  padding-bottom: 144rpx;
+}
+.newBuilding.on{
+    background-image: none;
+}
+
+.switcher-img{
+    position: absolute;
+    width: 100rpx;
+    height: 100rpx;
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/switcher-img.png) no-repeat center;
+    background-size: 100%;
+    z-index: 50;
+    display: block!important;
+}
+
+.house-content .switcher-img{
+    position: absolute;
+    left: 20rpx;
+    bottom: 20rpx;
+}
+.houseimg-list .switcher-img{
+    position: absolute;
+    left: 20rpx;
+    bottom: 20rpx;
+}
+.houseimg-list-box li .switcher-img{
+    position: absolute;
+    left: 20rpx;
+    bottom: 20rpx;
+}
+.share-btn{
+    width: 100%;
+    height: 90rpx;
+    background: #3396fb;
+    text-align: center;
+    line-height: 90rpx;
+    color: #fff;
+    font-size: 32rpx;
+    margin-top: 110rpx;
+    position: fixed;
+    bottom: 0;
+    max-width: 750rpx;
+    z-index: 50;
+}
+
+.share-btn-box{
+    width: 100%;
+    height: 18rpx;
+    position: fixed;
+    z-index: 50;
+    bottom: 0;
+    background: #ebf0f5;
+}
+.iponeX-style{
+    width: 100%;
+    height: 90rpx;
+    background: #3396fb;
+    text-align: center;
+    line-height: 90rpx;
+    color: #fff;
+    font-size: 32rpx;
+}
+.iponeX-ewm{
+    padding-bottom: 260rpx!important;
+}
+
+#houseTypeimg-one,#houseTypeimg-two{
+    /* background: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/no-huxing.png) no-repeat 260rpx 400rpx; */
+    background-size: 146rpx 104rpx;
+    background-color: #ebf0f5;
+}
+#house-content,#houseimg-list{
+    background: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/no-img.png) no-repeat center;
+    background-size: 146rpx 104rpx;
+    background-color: #ebf0f5;
+}
+#houseimg-list image,
+#house-content image{
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+/*  */
+.footer-nav{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 108rpx;
+    z-index: 101;
+    background: #fff;
+}
+.ft-nav-a{
+  display: -webkit-box;
+  -webkit-box-align: center;
+  width: 100%;
+  height: 108rpx;
+  text-align: center;
+  -webkit-box-pack: justify;
+  align-items: center;
+  background-color: white;
+}
+
+.rent-agent {
+  display: -webkit-flex;
+  align-items: center;
+  -webkit-box-flex: 1;
+  height: 100%;
+  padding-left: 20rpx;
+  box-sizing: border-box;
+}
+.head-box{
+  width: 80rpx;
+  height: 80rpx;
+  background-image: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/default_head.png);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin-right: 20rpx;
+}
+.r-a-tx{
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 100%;
+}
+.r-a-name{
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+.r-na-box{
+  text-align: left;
+  padding-top: 23rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.staer-ic{
+  width: 90rpx;
+  height: 16rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/detail/star_new_a.png) no-repeat;
+  background-size: 100% auto;
+  vertical-align: middle;
+  background-position:0 0;
+  margin-top: 5rpx;
+}
+.querybox{
+  width:218rpx;
+  height: 80rpx;
+  border-radius: 50rpx 0px 0px 25px;
+  line-height: 80rpx;
+  color:#fff;
+  background: -webkit-linear-gradient(left, rgb(255,203,0) , rgb(255,148,2));
+  font-size: 30rpx;
+  text-align: center;
+  position: relative;
+  top:0rpx;
+}
+.aoebox{
+  width:218rpx;
+  height: 80rpx;
+  border-radius:  50rpx 0px 0px 50px;
+  line-height: 80rpx;
+  color:#ffffff;
+  font-size: 30rpx;
+  text-align: center;
+  position: relative;
+  top:0rpx;
+  margin-right: 20rpx;
+}
+.aoebox button{
+  width:218rpx;
+  height:80rpx;
+  border-radius:0rpx 50px 50px 0px;
+  background: -webkit-linear-gradient(left, rgb(255,132,0) , rgb(255,84,0));
+  font-size:30rpx;
+  text-align:center;
+  color: #fff;
+  line-height: 80rpx;
+  padding: 0;
+}
+.aoebox button::after{
+  border: 0;
+  border-radius:10rpx;
+  line-height: 80rpx;
+}
+.aoebox button::hover{
+  width:240rpx;
+  height:80rpx;
+  background-color: #ff5400;
+  font-size:30rpx;
+  text-align:center;
+  color: #fff;
+}
+
+/*详情页添加授权最高蒙层*/
+.authorize-mask{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+.authorize-mask button{
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: none;
+}
+/*详情页添加授权最高蒙层end*/
+
+/*  预约看房 弹层 */
+
+.phone-modal {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+  top: 0;
+  left: 0;
+}
+
+.pm-body {
+  position: fixed;
+  width: 550rpx;
+  height: 588rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+  z-index: 21;
+  top: 278rpx;
+  left: 50%;
+  margin-left: -305rpx;
+  padding: 40rpx 30rpx 10rpx;
+}
+
+.pm-close {
+  text-align: right;
+  height: 60rpx;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60rpx;
+}
+
+.pm-close>image {
+  position: absolute;
+  margin: auto;
+  display: block;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.pm-title {
+  text-align: center;
+  font-size: 38rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.pm-subtitle {
+  text-align: center;
+  font-size: 24rpx;
+  line-height: 35rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+}
+
+.pm-input {
+  margin-bottom: 20rpx;
+}
+
+.pm-input input {
+  background-color: #f2f2f2;
+  height: 86rpx;
+  padding: 0rpx 25rpx;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.pm-getphone-code {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 30rpx;
+}
+
+.pm-getcode-text {
+  width: 213rpx;
+  text-align: center;
+  color: #f24f00;
+  font-size: 28rpx;
+  line-height: 86rpx;
+}
+
+.pm-submit {
+  color: #fff;
+  border: none;
+  background: linear-gradient(to right, #fe8e0d, #ff7f1e, #ff6f2e);
+}
+
+/* 返回首页按钮 */
+.index-btn {
+  width: 100rpx;
+  height: 100rpx;
+  background: url('http://uuweb.haofang.net/Public/wxApp/images/personalCenter/index-btn.png?t=33') center center no-repeat;
+  background-size: 100% 100%;
+  position: fixed;
+  right: 2rpx;
+  bottom: 120rpx;
+  z-index: 101
+}

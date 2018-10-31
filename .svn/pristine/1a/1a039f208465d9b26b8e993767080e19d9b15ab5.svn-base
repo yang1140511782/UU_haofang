@@ -1,0 +1,677 @@
+/* pages/guide/index.wxss */
+@import "../../utils/toast/toast.wxss";
+page {
+  height: 100%;
+  font-family: "微软雅黑","Helvetica Neue",Helvetica,STHeiTi,sans-serif;
+  line-height: 1.5;
+  font-size:26rpx;
+  color: #333;
+}
+.font-color{
+  color: #999;
+}
+.header {
+    position: relative;
+    background: #fff;
+    padding-bottom:20rpx;
+    padding-top: 40rpx;
+}
+.uu-head {
+    widows: 615rpx;
+    height:122rpx;
+    background: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-uu.png) center center no-repeat;
+    background-size:auto 100%;
+    margin: 0 auto;
+}
+.evaluation-txt {
+    text-align: center;
+    color: #c09435;
+    font-size: 30rpx;
+    font-weight: bold;
+    position: relative;
+    width: 30%;
+    margin: 0 auto;
+}
+.evaluation-txt::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 1px;
+    background: #c09435;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -1%;
+}
+.evaluation-txt::after {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 1px;
+    background: #c09435;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -1%;
+}
+.header-txt{
+    text-align: center;
+    font-size: 24rpx;
+    color: #333;
+    margin-top:40rpx;
+}
+.header-ul {
+    overflow: hidden;
+    padding: 0 70rpx;
+    margin-top: 30rpx;
+}
+.header-ul .common-li {
+    width: 33.33%;
+    float: left;
+    text-align: left;
+    font-size: 24rpx;
+    color: #666;
+    position: relative;
+    padding: 30rpx 0;
+    padding-left:100rpx;
+}
+.header-ul .common-li::before {
+    content: '';
+    display: inline-block;
+    width:74rpx;
+    height:74rpx;
+    background-size: 100% 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -37rpx;
+}
+.shuju::before {
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-shuju.png);
+}
+.ai::before {
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-fenxi.png);
+}
+.suanfa::before {
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-jisuan.png);
+}
+.ugc::before {
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-shishi.png);
+}
+.head-bg {
+    width: 602rpx;
+    height:445rpx;
+    background: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-topbackgroupx.png) center center no-repeat;
+    background-size: 100% auto;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    -webkit-transform: translate(-50%,0);
+    -moz-transform: translate(-50%,0);
+    -ms-transform: translate(-50%,0);
+    -o-transform: translate(-50%,0);
+    transform: translate(-50%,0);
+}
+.community-info-box {
+    padding: 0 20rpx;
+    padding-top: 44rpx;
+}
+.community-info {
+    box-shadow: 0 0 3px 3px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    background: #fff;
+}
+.toward-con, .fitment-con {
+    position: relative;
+}
+.community-box-com {
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: justify;
+    margin: 0 30rpx;
+    padding: 30rpx 0;
+    border-bottom: 1px dashed #e6e6e6;
+}
+.icon-com-choose {
+    position: relative;
+    padding-right: 30rpx!important;
+    color: #333;
+    font-size:28rpx;
+    text-align: right;
+}
+.community-info-box .community-box-com:last-child{
+   border-bottom:none;
+}
+.icon-com {
+    position: relative;
+    padding-left:50rpx;
+    font-size: 30rpx;
+}
+.icon-com::before {
+    content: '';
+    display: inline-block;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.xiaoqu-icon{
+  font-size: 30rpx;
+}
+.xiaoqu-icon::before {
+    width: 33rpx;
+    height:30rpx;
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-mingcheng.png);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -15rpx;
+}
+.toward-con::before, .fitment-con::before {
+    content: '';
+    display: inline-block;
+    width: 14rpx;
+    height:26rpx;
+    background: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-youjiantou.png) center center no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    right: 0rem;
+    top: 50%;
+    margin-top: -11rpx;
+    z-index: 997;
+}
+.area-box input {
+    text-align: right;
+    color: #333;
+    font-size: 28rpx;
+    padding-right: 20rpx;
+    width: 80%
+}
+.area-box {
+    width: 60%;
+    text-align: right;
+    font-size: 30rpx;
+    display: -webkit-box;
+    -webkit-box-align: center;
+}
+.area-icon::before {
+    width: 37rpx;
+    height:33rpx;
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-mianji.png);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -16.5rpx;
+}
+.use-choose-com {
+    padding: 10rpx 36rpx;
+    background: #f0f0f0;
+    color: #999!important;
+    font-size: 28rpx!important;
+    border-radius: 2px;
+}
+.use-chooseing {
+    color: #fff!important;
+    background: #16C866;
+}
+.use-choose .use-choose-com:first-child {
+    margin-right:20rpx;
+}
+.use-icon::before {
+    width: 33rpx;
+    height:30rpx;
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-xiaoqu.png);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -15rpx;
+}
+.more-txt-con {
+    display: -webkit-box;
+    -webkit-box-pack: justify;
+    -webkit-box-align: center;
+    padding: 30rpx;
+}
+.more-txt {
+    font-size:24rpx;
+    color: #999;
+}
+.more-txt-btn {
+    font-size:24rpx;
+    color: #16C866;
+    padding-right: 60rpx!important;
+    position: relative;
+}
+.more-txt-btn::before {
+    content: '';
+    display: inline-block;
+    width: 26rpx;
+    height: 14rpx;
+    background: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-xiajiantou.png) center center no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    right:20rpx;
+    top: 50%;
+    margin-top:-7rpx;
+}
+.input-com-box {
+    display: -webkit-box;
+    -webkit-box-pack: justify;
+    -webkit-box-align: center;
+}
+.input-com-box input{
+    width:140rpx;
+    display: block;
+    text-align: right;
+    font-size: 26rpx;
+}
+.huxing-icon::before {
+    width: 33rpx;
+    height: 30rpx;
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-huxing.png);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -15rpx;
+}
+.text-color{
+   color: #ddd;
+}
+.chaoxiang-icon::before {
+    width: 35rpx;
+    height: 35rpx;
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-zhinan.png);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -15rpx;
+}
+.toward-choose,.fitment-choose{
+  padding-right: 30rpx;
+}
+.donghao-icon::before {
+    width: 28rpx;
+    height:30rpx;
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-fangzi.png);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top:-15rpx;
+}
+.floor-icon::before {
+    width: 32rpx;
+    height:30rpx;
+    background-image: url(https://uuweb.haofang.net/PublicC/images/estimate/evaluation-louceng.png);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top:-15rpx;
+}
+.apply-btn-box {
+    padding: 20rpx 0 30rpx 0;
+    background: #fff;
+}
+.apply-btn {
+    width: 90%;
+    margin: 0 auto;
+    height: 90rpx;
+    line-height:90rpx;
+    color: #fff;
+    background: #16C866;
+    font-size:30rpx;
+    text-align: center;
+    border-radius: 4px;
+}
+search-loupan-box{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #fff;
+  z-index:999;
+
+}
+.search-box-head{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #f6f6f6;
+  height:160rpx;
+   display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: justify;
+  z-index:99;
+}
+.search-head-con{
+  background: #fff;
+  border-radius: 6rpx;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  margin-left: 40rpx;
+  width: 90%;
+  height: 80rpx;
+  border:2rpx solid #ececec;
+  overflow: hidden;
+  position: relative;
+}
+.search-cancle-btn{
+  color: #1bc964;
+  font-size: 28rpx;
+   margin-right: 20rpx;
+}
+.search-input-box{
+  padding-left: 70rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  position: relative;
+  font-size: 28rpx;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.search-input-box::before{
+  content:'';
+  display: inline-block;
+  width:36rpx;
+  height: 36rpx;
+  background: url(https://static.haofang.net/Public/images/wap/hostory_search.png) center center no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  left:20rpx;
+  top: 50%;
+  margin-top: -18rpx;
+}
+.kwd-delte{
+  width: 60rpx;
+  height: 60rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/trendImg/colse.png) #fff  center center no-repeat;
+  background-size: 36rpx 36rpx;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -30rpx;
+  z-index: 100;
+}
+.search-list-con{
+  padding-top:160rpx;
+  height: 100%;
+  overflow: auto;
+  box-sizing:border-box;
+  margin-bottom: 40rpx;
+  border-bottom: 2rpx solid #ececec;
+}
+.search-list-li{
+  height: 100rpx;
+  background: #fff;
+  padding-left: 40rpx;
+  box-sizing: border-box;
+}
+.search-list-li:last-child .li-boxs{
+  border-bottom:0;
+}
+.li-boxs{
+  width: 100%;
+  height: 100%;
+  line-height:  100rpx;
+  border-bottom: 2rpx solid #e5e5e5;
+}
+.li-boxs text{
+  color: #999999;
+  float: right;
+  margin-right: 20rpx;
+}
+.l-ti{
+    font-size: 26rpx;
+    color: #999999;
+    padding-left: 40rpx;
+    box-sizing: border-box;
+    margin-bottom: 20rpx;
+}
+.search-build-name{
+  color: #3a4043;
+  font-size: 32rpx;
+  position: relative;
+  height: 100%;
+  line-height: 100rpx;
+}
+.search-build{
+  color: #666;
+}
+.search-build{
+  margin-right: 30rpx;
+}
+.search-loupan-box{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #f6f6f6;
+  z-index:999;
+}
+.more-txt-btn-rotate::before {
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+}
+.margin-top{
+  padding-top: 40rpx;
+  background: #f8f8f8;
+  padding-bottom: 30rpx;
+}
+.background {
+    background: #f8f8f8;
+    padding-top: 0;
+}
+.build-input{
+    -webkit-box-flex: 1;
+}
+.common-input{
+    width: 33.33%;
+}
+
+/*  新样式 2018.4.12  */
+
+#evaBox{
+  width:100%;
+  height: 100%;
+  position: relative;
+  background: #f6f6f6;
+}
+.e_title{
+  width: 479rpx;
+  height: 102rpx;
+  position: absolute;
+  top: 86rpx;
+  left:0;
+  right:0;
+  margin: auto;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/evaluate/title.png);
+  background-size: 100% 100%;
+}
+.e_box{
+  width: 100%;
+  position: absolute;
+  left:0;
+  right:0;
+  margin: auto;
+  top: 0rpx;
+  border-radius: 12rpx;
+  background: #ffffff;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-left: 24rpx;
+}
+.e_item{
+  height: 106rpx;
+  line-height: 106rpx;
+  color:#333333;
+  font-size: 30rpx;
+  letter-spacing: 1px;
+  border-bottom: 2rpx solid #dddddd;
+  position: relative;
+}
+.e_item:last-child{
+  border-bottom: 0;
+}
+.e_item text{
+  margin-right: 70rpx;
+  float:right;
+}
+.right_arrow::after{
+  content:'';
+  position: absolute;
+  width:14rpx;
+  height: 26rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/evaluate/right.jpg);
+  background-size: 100% 100%;
+  top:0;
+  bottom: 0;
+  margin: auto;
+  right: 20rpx;
+}
+/* .buildName{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/evaluate/ei1.png) no-repeat 6rpx center;
+  background-size: 34rpx 30rpx;
+} */
+/* .area{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/evaluate/ei2.png) no-repeat 6rpx center;
+  background-size: 37rpx 33rpx;
+} */
+.area::after{
+  content:'㎡';
+  position: absolute;
+  top:0;
+  height: 100%;
+  line-height: 106rpx;
+  right:20rpx;
+}
+/* .houseType{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/evaluate/ei3.png) no-repeat 6rpx center;
+  background-size: 29rpx 29rpx;
+} */
+/* .direction{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/evaluate/ei4.png) no-repeat 6rpx center;
+  background-size: 32rpx 32rpx;
+} */
+/* .floor{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/evaluate/ei5.png) no-repeat 6rpx center;
+  background-size: 32rpx 30rpx;
+} */
+/* .fitment{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/evaluate/ei6.png) no-repeat 6rpx center;
+  background-size: 34rpx 31rpx;
+  border:0;
+} */
+.inputBox{
+  position: absolute;
+  height: 100%;
+  width: 500rpx;
+  top:0;
+  right: 60rpx;
+}
+.inputBox input{
+  width:100%;
+  height: 100%;
+  display: block;
+  font-size: 30rpx;
+  text-align: right;
+}
+.fot-box{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 180rpx;
+  background: #fff;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+.e_btn{
+  position: absolute;
+  left:0;
+  right:0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 690rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  color:#fff;
+  background:-webkit-linear-gradient(left, rgb(255,203,0) , rgb(255,148,2));
+  font-size: 34rpx;
+  letter-spacing: 1px;
+  border-radius: 10rpx;
+}
+
+/*滑动选择器*/
+.time-toast{
+  position: absolute;
+  top: 0;
+  z-index: 100000;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  font-family: '微软雅黑';
+}
+.time-box{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 36rpx;
+  background: #fff;
+  border-color: red;
+}
+.time-b{
+  border-color: #00CA85;
+}
+.time-title{
+  position: absolute;
+  top: 0;
+  left:0;
+  width: 100%;
+  text-align: center;
+  color: #00CA85;
+  background: #fff;
+  z-index: 100;
+  height:100rpx;
+  font-size:33rpx;
+  line-height:85rpx;
+  letter-spacing:1px;
+}
+.btnaa-box{
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #fff;
+  font-size:34rpx; 
+  border-bottom: 1rpx solid #e5e5e5;
+  z-index: 1000;
+}
+.btnaa-box view{
+  width: 22%;
+  text-align: center;
+  font-size: 34rpx;
+  letter-spacing: 3px;
+}
+.qd-btn{
+  color:#ff5400;
+}
+.sjbox{
+  color: #333;
+}
+
+.placeHolder{
+  color:#CCCCCC;
+}

@@ -1,0 +1,8 @@
+
+<!-- 添加层级最高透明 授权 蒙层 -->
+<template name="authorizeMask">
+    <view class="authorize-mask" wx:if="{{!userInfo.nickName&&!userInfo.name}}">
+        <button open-type='getUserInfo' bindgetuserinfo="getUser"></button>
+    </view>
+</template>
+<!-- 添加层级最高透明 授权 蒙层/ -->

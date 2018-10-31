@@ -1,0 +1,143 @@
+<import src="../../component/tabNav/tabNav.wxml"/>
+  <view class='fixedBox'>
+    <!--  搜索栏  -->
+     <view class="searchbox" hidden="{{!scrollSearch}}">
+      <view class="inputbox{{!inputText?' searchicon':' searchicon leftsearchicon'}}" catchtap='goToSearch'>
+        <view class="input">{{inputText||'请输入楼盘名称'}}</view>
+        <view class='clearbtn' wx:if="{{inputText}}" catchtap='clearBuildName'></view>
+      </view>
+    </view>  
+
+    <!--  筛选栏  -->
+    <view class='filter'>
+      <view class="itembtn{{item.bcg?' choosed':''}}{{conditionModel&&conditionModelIndex==index?' choosing':''}}" 
+            wx:for="{{conditionScreening}}"
+            catchtap="conditionScreeningEvent" 
+            data-index="{{index}}" 
+            data-text="{{item.text}}" 
+            wx:key="{{index}}">{{item.text}}</view>
+    </view>
+  </view>
+
+  <!--  筛选菜单弹框  -->
+  <!--筛选条件的弹框 cd->condition-->
+  <view class="cd-model" hidden="{{!conditionModel || conditionModelIndex > 2}}">
+      <view class="cd-mask" catchtap="cdMaskEvent"></view>
+      <view class="{{!scrollSearch?'cd-con-top':'cd-con'}}">
+          <!--区域 -->
+          <view class="cd-reg" hidden="{{conditionModelIndex != 0}}">
+              <view class="l">
+                  <view wx:for="{{regionList}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="regionListEvent"
+                    class="li {{regionListIndex==index?'f-cd-reg':''}}">{{item.REG_NAME}}</view>
+              </view>
+              <view class="r">
+                  <view wx:for="{{businessList[RegionId]}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="businessListListEvent"
+                    class="li {{businessListIndex==index?'f-cg':''}}">{{item[0]}}</view>
+              </view>
+          </view>
+          <!--end-->
+          <!--价格-->
+          <view class="cd-p" hidden="{{conditionModelIndex != 1}}">
+              <view class="l ul">
+                  <view wx:for="{{priceItem}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="priceItemEvent"
+                    class="li {{priceItemIndex==index?'f-cd-reg':''}}">{{item.text}}</view>
+              </view>
+              <view class="r ul">
+                  <view wx:for="{{priceList[priceItemIndex]}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="priceListEvent"
+                    class="li {{priceListIndex==index?'f-cg':''}}">{{item.text}}</view>
+              </view>
+              <view class="btm">
+                  <input type="number" bindinput="minPriceEvent" placeholder="最小{{priceItemIndex==0?'均价':'总价'}}" value="{{minPrice}}" type='number' maxlength="5" />
+                  <input type="text" class="dis" disabled="true" value="-" /> 
+                  <input type="number" bindinput="maxPriceEvent" placeholder="最大{{priceItemIndex==0?'均价':'总价'}}" value="{{maxPrice}}" type='number' maxlength="5" />
+                  <text style="margin-left:10rpx;">{{priceItemIndex==0?'元':'万元'}}</text>
+                  <view catchtap="minAndMaxPriceEvent" class="search">确定</view>
+              </view>
+          </view>
+          <!--end-->
+          <!--户型-->
+            <view class="cd-p cd-pp" hidden="{{conditionModelIndex != 2}}">
+              <view class="ul">
+                  <view wx:for="{{roomList}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="roomListEvent"
+                    class="li {{roomListIndex==index?'f-cg':''}}">{{item.text}}</view>
+              </view>
+          </view>
+          <!--end-->
+      </view>
+  </view>
+  <!--end-->
+
+ 
+
+  <!--  列表  -->
+<scroll-view scroll-y
+             style="height: {{winHeight}}px;" 
+             lower-threshold="500"  
+             bindscrolltolower="lower"
+             bindscrolltoupper="upper"
+             bindscroll="scrollToL">
+  <view class='content{{!scrollSearch?" paddingtop80":""}}'>
+   
+    
+    <view class='houseItem' 
+          catchtap='goToNewHouseDetail' 
+          data-id="{{List.buildId}}"
+          wx:for="{{listValue}}" 
+          wx:key="{{index}}"
+          wx:for-item="List">
+      <view class='picbox'>
+        <image src='{{List.photoAddr}}'
+              lazy-load="{{true}}"
+              mode='aspectFill' />
+        <view wx:if="{{List.hotSaleHouse == 1}}" class="newhouse-hot-icon"></view> 
+      </view>
+      <view class='infobox'>
+        <view class="housetitle"><text class='buildNamebox'>{{List.buildName}}</text><text wx:if="{{List.buildStatus == 1}}" class='wait text'>待售</text><text wx:if="{{List.buildStatus == 2}}" class='selling text'>在售</text><text wx:if="{{List.buildStatus == 3}}" class='soldOut text'>售罄</text></view>
+        <view class="text">{{List.buildAddr}}</view>
+        <view class="text" wx:if="{{List.roomText&&List.areaLow}}">{{List.roomText}}室 | {{List.areaLow}}-{{List.areaHigh}}㎡</view>
+        <view class='tag'>
+          <text wx:if="{{List.buildTagArr.length > 0}}" wx:for="{{List.buildTagArr}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">{{tagItem}}</text>
+        </view>
+        <view class='price' wx:if="{{List.priceNumText}}">{{List.priceNumText}}<text>{{List.priceUnitText}}</text></view>
+        <view class='price' style="font-size:27rpx;" wx:else>价格待定</view>
+      </view>
+    </view>
+    <!--  loading  -->
+  <view id="pullUp" hidden="{{!loadingdata}}" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+      <text class="pullUpIcon"></text><text class="pullUpLabel">努力加载中...</text>
+    </view>
+    <view class="no-more-data" wx:if="{{noMoreData && !loadingdata}}">没有更多数据了！</view>
+    <view class='no-data' wx:if="{{listValue.length == 0  && !loadingdata}}">
+      <view class='no-data-img'>
+        <image src='https://uuweb.haofang.net/Public/wxApp/images/new_images/no_hostory.png' mode='aspectFill' />
+      </view>
+    </view>
+  </view>
+
+  
+    
+</scroll-view>
+<!--地图按钮-->
+<view id="mapBtn" catchtap='mapBtnClick'></view>
+<!--固定导航-->
+<!--<template is="tabNav" data="{{animationData,showFlas,offFlag}}"></template>-->

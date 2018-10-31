@@ -1,0 +1,74 @@
+<view class="reward-wrap">
+    <!--banner-->
+    <view class='banner-box'></view>
+    <!--/banner-->
+    <!--内容说明-->
+    <view class='cont-wrap'>
+        <view class="cont-box">
+            <view class='txt-b'>专享贵宾通道</view>
+            <view class='txt-b-a'>全城经纪人更快的响应，更专业的服务</view>
+        </view>
+        <view class="cont-box">
+            <view class='txt-b'>独家平台优惠</view>
+            <view class='txt-b-a'>线上成交可参与即抽4999元住房补贴</view>
+        </view>
+        <view class="cont-box">
+            <view class='txt-b'>佣金超值抵扣</view>
+            <view class='txt-b-a'>委托成交后，买房抵扣500元，租房抵扣200元</view>
+        </view>
+        <view class="cont-box">
+            <view class='txt-b'>安全保障</view>
+            <view class='txt-b-a'>取消委托立即退还意向金至您的充值账户</view>
+        </view>
+    </view>
+    <!--/内容说明-->
+    <!--底部按钮-->
+    <view class='foot-btn'>
+          <view class='btn-box reward-btn' bindtap='rewardEntrustBtn'><text>发布悬赏委托</text></view>
+          <view class='btn-box common-btn' bindtap="commonEntrustBtn"><text>发布普通委托</text></view>
+    </view>
+    <!--/底部按钮-->
+</view>
+
+<!--已发布过委托弹窗-->
+    <view wx:if="{{entrustRepeatBox}}" class="confirm-box">
+      <view class="confirm-content">
+        <view class="confirm-tt">该委托信息已经发布过了，请勿重复委托</view>
+        <view class="confirm-btn-box">
+          <view bindtap="publishErrBoxTapL" class="confirm-btn">取消</view>
+          <view bindtap="publishErrBoxTapR" class="confirm-btn">立即查看</view>
+        </view>
+      </view>
+    </view>
+ <!--已发布过委托弹窗end-->
+ <!--红包弹框-->
+  <view class='red-toast' wx:if="{{redMaskStatus}}">
+      <view class="{{redBefore ? 'r-box':'r-box-a'}}">
+          <view class='close-btn' bindtap='closeBtnRed'></view>
+          <view class='a-tx'>
+              <image mode="aspectFill" src="{{vipUserInfo.userPhoto}}"></image>
+          </view>
+          <view class='a-name'>{{vipUserInfo.userName}}</view>
+          <view wx:if="{{caseType==3}}" class='a-msg'>给你一个买房红包</view>
+          <view wx:else="" class='a-msg'>给你一个租房红包</view>
+          <view class='red-before' wx:if="{{redBefore}}">
+              <view class='open-box' animation="{{animationData}}"></view>
+              <view class='a-con'>优优好房 粉丝福利</view>
+          </view>
+          <view class='red-after' wx:if="{{redafter}}">
+            <block wx:if="{{caseType==3}}">
+                <view class='red-money'>{{vipUserInfo.buyMoney}}元</view>
+                <view class='af-msg'>买房专属委托红包</view>
+                <view class='af-txt'>买房专属委托红包已存至我的账户-优惠券。仅限于对经纪人{{vipUserInfo.userName}}发起的买房专属委托的线上佣金抵扣，不能提现和转让。</view>
+            </block>
+            <block wx:else="">
+                <view class='red-money'>{{vipUserInfo.rentMoney}}元</view>
+                <view class='af-msg'>租房专属委托红包</view>
+                <view class='af-txt'>租房专属委托红包已存至我的账户-优惠券。仅限于对经纪人{{vipUserInfo.userName}}发起的租房专属委托的线上佣金抵扣，不能提现和转让。</view>
+            </block>
+            <view class='af-btn' catchtap='closeBtnRed'>我知道了</view>
+          </view>
+          
+      </view>
+  </view>
+ <!--/红包弹框-->

@@ -1,0 +1,24 @@
+<view class="main">
+    <map id="map" 
+         longitude="{{longitude}}" 
+         latitude="{{latitude}}" 
+         scale="14"
+         markers="{{markers}}"></map>
+    <view class="nav">
+        <view class="scroll-view_H" id="scroll-map">
+           <view  wx:for="{{typeList}}" wx:key="item" class="scroll-view {{type==item.typeName?'choose-index':''}}" bindtap="search" data-type='{{item.typeName}}'>
+                <view class="common {{item.typeId}}-icon"></view>
+                <text class="map-type">{{item.typeName}}</text>
+            </view>
+          </view>
+    </view>
+     <view class="around-cotent">
+        <block wx:if="{{resMarkerData.length>0}}">
+          <view wx:for="{{resMarkerData}}" wx:key='item' class="around-cnt-item">
+            <view class="left">{{item.title}}</view>
+            <view class="right">{{item.address}}</view>
+          </view>
+        </block>
+        <view class="noSurroundData" wx:else>暂无相关数据~</view>
+    </view>
+</view>

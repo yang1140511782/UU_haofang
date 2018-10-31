@@ -1,0 +1,537 @@
+@import "../../template/listTmp.wxss";
+page{
+  width: 100%;
+  height: 100%;
+}
+.coupon_content{
+  width: 100%;
+  height: 100%;
+  background: #f6f6f6;
+}
+.user_info{
+  width: 100%;
+  height: 180rpx;
+  display: -webkit-box;
+  -webkit-box-pack: left;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 0 28rpx;
+  box-sizing: border-box;
+  background: #fff;
+  margin-bottom: 36rpx;
+}
+.user_photo{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%; 
+  overflow: hidden;
+}
+.user_photo view{
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-repeat:no-repeat;
+  background-size: 100% 100%; 
+}
+.user-text{
+  margin-left: 25rpx;
+  width: 472rpx;
+}
+.user_name,.user_tel{
+  color: #333;
+  font-size: 30rpx;
+}
+.user_tel{
+  
+}
+.user_address{
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-top: 10rpx;
+}
+.share_money{
+  width: 90rpx;
+  height: 102rpx;
+  background: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/hb.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  padding-top: 70rpx;
+}
+.money{
+  color: #ffd800;
+  font-size: 17rpx;
+  text-align: center;
+}
+.money_num{
+  font-size: 26rpx;
+  color: #ffd800;
+  display: inline-block;
+  /* font-weight: bold; */
+}
+.money_ing{
+  font-size: 16rpx;
+  color: #ffcf0f;
+  text-align: center;
+}
+
+.entruse_info{
+    width: 100%;
+    height: 370rpx;
+    background: #ffffff;
+    padding: 0 42rpx;
+    padding-top: 40rpx;
+    box-sizing: border-box;
+    margin-bottom: 20rpx;
+}
+.entruse_text{
+    font-size: 30rpx;
+    height: 58rpx;
+    color: #333333;
+    margin-bottom: 34rpx;
+}
+.entruse_time{
+    font-size: 24rpx;
+    color: #999999;
+    margin-bottom: 36rpx;
+}
+.entruse_progress{
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: justify;
+    height: 80rpx;
+    color: #777777;
+}
+.entruse_progress view{
+    position: relative;
+    display: block;
+    height: 100%;
+    padding-top: 55rpx;
+    background-size: 44rpx 44rpx;
+    background-position: center top;
+    background-repeat: no-repeat;
+    font-size: 24rpx;
+}
+.entruse_progress view::before{
+    position: absolute;
+    content: '';
+    width: 162rpx;
+    left: 46rpx;
+    top: 21rpx;
+    height: 1rpx;
+    background: #eeeeee;
+}
+.order{
+    background-image: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/order_h.png);
+    /* width: 25%; */
+}
+.recommend{
+    background-image: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/recom_h.png);
+}
+.see_house{
+    background-image: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/see_h.png);
+}
+.over{
+    background-image: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/over_h.png);
+}
+.entruse_progress .over::before{
+    content: '';
+    width: 0rpx;
+}
+.entruse_progress.on_1 .order,
+.entruse_progress.on_2 .order,
+.entruse_progress.on_3 .order,
+.entruse_progress.on_4 .order{
+    background-image: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/order.png);
+    color: #4daaf0;
+}
+.entruse_progress.on_2 .recommend,
+.entruse_progress.on_3 .recommend,
+.entruse_progress.on_4 .recommend{
+    background-image: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/recom.png);
+    color: #4daaf0;
+}
+.entruse_progress.on_3 .see_house,
+.entruse_progress.on_4 .see_house{
+    background-image: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/see.png);
+    color: #4daaf0;
+}
+.entruse_progress.on_4 .over{
+    background-image: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/over.png);
+    color: #4daaf0;
+}
+.entruse_progress.on_2 .order::before,
+.entruse_progress.on_3 .order::before,
+.entruse_progress.on_4 .order::before{
+    background: #4daaf0;
+}
+.entruse_progress.on_3 .recommend::before,
+.entruse_progress.on_4 .recommend::before{
+    background: #4daaf0;
+}
+.entruse_progress.on_4 .see_house::before{
+    background: #4daaf0;
+}
+.entruse_detaile{
+    font-size: 24rpx;
+    color: #4daaf0;
+    margin-top: 40rpx;
+    text-align: center;
+}
+.entruse_input{
+    margin-bottom: 20rpx;
+}
+
+.content_title{
+  font-size: 24rpx;
+  color: #bbb;
+  text-align: center;
+  position: relative;
+  height: 30rpx;
+  margin: 0 auto;
+  width: 694rpx;
+  background: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/line.png) no-repeat center;
+  background-size: 100% auto;
+  margin-bottom: 30rpx;
+}
+.content_box{
+  width: 694rpx;
+  /* height: 408rpx; */
+  background: #fff;
+  margin: 0 auto;
+  padding: 0 26rpx; 
+  padding-top:36rpx;
+  box-sizing: border-box;
+  border-radius: 4rpx;
+  margin-bottom: 50rpx;
+}
+.content_con_title{
+  text-align: center;
+  height: 64rpx;
+  display: -webkit-box;
+  padding: 0 60rpx;
+}
+.content_con_title .content_con_tab{
+  -webkit-box-flex: 1;
+}
+.title_text{
+  color: #999;
+  font-size: 28rpx;
+  margin: 0 85rpx;
+  padding-bottom: 12rpx;
+}
+.title_text.on{
+  color: #f24f00;
+  border-bottom: 4rpx solid #f24f00;
+}
+.content_text{
+  width: 100%;
+  /* height: 110rpx; */
+}
+.text-box{
+  width: 100%;
+  height: 110rpx;
+  padding-left: 48rpx;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size: 24rpx 24rpx;
+  background-position: 4rpx center;
+}
+.text-box button::after{
+  border: none;
+}
+.text-box button{
+  width: 100%;
+  height: 100%;
+  border:none;
+  box-shadow: none;
+  background: none;
+  border-bottom: 1rpx solid #eeeeee; 
+  text-align: left;
+  color: #333;
+  font-size: 26rpx;
+  display: -webkit-box;
+  -webkit-box-align: center;
+}
+.text_box button{
+  border: none;
+}
+#submit{
+  background: -webkit-linear-gradient(left, #ff6f2e , #fe8e0d);
+  background-size: 100% 100%;
+  width: 690rpx;
+  height: 80rpx;
+  margin: 0 auto;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  color: #fff;
+  line-height: inherit;
+  font-size: 30rpx;
+  margin-bottom: 60rpx;
+  border-radius: 10rpx;
+}
+#submit::after{
+  border: none;
+}
+.resource{
+  width: 100%;
+  padding: 36rpx 0;
+  background: #fff;
+}
+.resource_title{
+  font-size: 24rpx;
+  padding-left: 30rpx;
+  color: #999;
+}
+.resource_list{
+  margin-top: 30rpx;
+}
+
+
+/* 地址选择 */
+#address_list{
+  width: 100%;
+  height: 820rpx;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.add_title{
+  display: -webkit-box;
+  -webkit-box-pack: justify;
+  height: 100rpx;
+  -webkit-box-align: center;
+  padding: 0 48rpx;
+  background: #f9f9f9;
+}
+.close{
+  font-size: 28rpx;
+  color: #999;
+}
+.add_title_text{
+  font-size: 32rpx;
+  color: #666;
+}
+.sure{
+  font-size: 28rpx;
+  color: #3396fb;
+}
+
+.add_box{
+  width: 100%;
+  height: 820rpx;
+  display: -webkit-box;
+  -webkit-box-flex: 2;
+}
+.add_box>view{
+  width: 50%;
+}
+.dis_list,.road_list{
+  height: 90rpx;
+  font-size: 28rpx;
+  padding-left:48rpx;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  color: #333;
+}
+.dis_box{
+  background: #f4f4f4;
+  overflow-y: auto;
+}
+.road_box{
+  overflow-y: auto;
+}
+.dis_list.on{
+  color: #3396fb;
+  background: #fff;
+}
+.road_list.on{
+  color: #3396fb;
+}
+
+/* 户型选择 */
+.time-toast{
+  position: absolute;
+  top: 0;
+  z-index: 100000;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  font-family: '微软雅黑';
+}
+.time-box{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 36rpx;
+  background: #fff;
+  border-color: red;
+}
+.time-b{
+  border-color: #00CA85;
+}
+.time-title{
+  position: absolute;
+  top: 0;
+  left:0;
+  width: 100%;
+  text-align: center;
+  color: #00CA85;
+  background: #fff;
+  z-index: 100;
+  height:100rpx;
+  font-size:33rpx;
+  line-height:85rpx;
+  letter-spacing:1px;
+}
+.btnaa-box{
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #fff;
+  font-size:34rpx; 
+  border-bottom: 1rpx solid #e5e5e5;
+  z-index: 1000;
+}
+.btnaa-box view{
+  width: 22%;
+  text-align: center;
+  font-size: 34rpx;
+  letter-spacing: 3px;
+}
+.qd-btn{
+  color:#ff5400;
+}
+.sjbox{
+  color: #333;
+}
+
+.placeHolder{
+  color:#CCCCCC;
+}
+
+
+
+
+
+/* 红包弹窗 */
+#red_packet{
+  position: fixed;
+  top:0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.5) 
+}
+.red_fg{
+  width: 100%;
+  height: 100%;
+  background:url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/g.png) no-repeat center;
+  background-size: 100% auto;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  -webkit-box-orient: vertical;
+}
+.red_packet_box{
+  width: 530rpx;
+  height: 697rpx;
+  background: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/red_packet.png) no-repeat center;
+  background-size: 100% 100%;
+  margin-bottom: 50rpx;
+  padding: 45rpx;
+}
+.red_packet_get{
+  width: 100%;
+}
+.red_packet_text{
+  margin-top: 38rpx;
+  font-size: 36rpx;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin-bottom: 10rpx;
+}
+.red_packet_money{
+  font-size: 54rpx;
+  color: #ffcd16;
+  font-weight: bold;
+  text-align: center;
+}
+.red_packet_money text{
+  /* font-weight: bold; */
+  font-size: 130rpx;
+}
+.red_packet_get_over{
+  font-size: 44rpx;
+  color: #b11f18;
+  margin-top: 127rpx;
+  text-align: center;
+  display: block;
+}
+.red_icon{
+  width: 130rpx;
+  height: 130rpx;
+  background: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/get_icon.png) no-repeat center;
+  background-size: 100% 100%;
+  margin: 0 auto;
+  margin-top: 64rpx;
+  display: block;
+}
+.user_tx{
+  width: 121rpx;
+  height: 121rpx;
+  background: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/userPhoto.png) no-repeat center;
+  background-size: 100% 100%;
+  margin: 0 auto;
+  margin-top: 150rpx;
+  display: block;
+}
+
+.red_userName{
+  color: #fff;
+  font-size: 34rpx;
+  margin-top: 22rpx;
+  text-align: center;
+  display: block;
+}
+.red_packet_con{
+  /* margin-top:36rpx;  */
+  margin-top: 56rpx;
+  display: block;
+  width: 100%;
+  font-size: 26rpx;
+  line-height: 36rpx;
+  color: #fff;
+  opacity: 0.5;
+  text-align: justify;
+}
+
+
+.red_packet_close{
+  width: 66rpx;
+  height: 66rpx;
+  background: url(http://ltuuweb.hftsoft.com/Public/wxApp/images/coupon/close_icon.png) no-repeat center;
+  background-size:100% 100%; 
+  display: block;
+}
+
+
+
+
+
+
+

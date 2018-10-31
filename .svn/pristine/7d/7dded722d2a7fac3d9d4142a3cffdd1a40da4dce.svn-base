@@ -1,0 +1,668 @@
+<import src="../../component/tabNav/tabNav.wxml"/>
+<view class="{{videoShow?'pageWrapper':''}}">
+<import src="../common/loading/loading.wxml"/>
+<view class="v-wraper" wx:if="{{videoShow}}">
+    <video id="myVideo"
+           src="{{videoUrlPath}}"
+           autoplay='{{autoplay}}'
+           style='height:{{videoHeight}}px'
+           controls="true"
+           objectFit="fill"
+           wx:if="{{videoShowLater}}"></video>
+    <view class="close-video" bindtap="closeBtn"></view>
+</view>
+<view id="preloader">
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/1.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/2.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/3.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/4.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/5.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/6.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/7.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/8.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/9.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/10.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/11.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/12.png"></image>
+    <image src="http://uuweb.haofang.net/Public/wxApp/images/detail/720/13.png"></image>
+</view>
+<view class="container-box {{isIphoneX?'iphonex-container':''}}">
+
+    <view class="wrapper">
+        <view class="container_pic_video">
+            <block>
+                <view class="banner-box">
+                    <swiper indicator-dots="{{indicatorDots}}"
+                            interval="{{interval}}"
+                            duration="{{duration}}"
+                            bindchange="changePic"
+                            circular="{{false}}"
+                            class="banner">
+                        <block class="container_vr" wx:if="{{panoramaMap > 0}}">
+                            <swiper-item>
+                                <view class="vr-box" catchtap='vrBtnTo' data-url="{{vrUrl}}">
+                                    <view   class="vr-icon {{!!vrIconShow?'vrIconShow':'vrIconhide'}}">
+                                        <view class="vr-pic-icon"></view>
+                                    </view>
+                                    <view class="vr-bg-img" 
+                                     style="-webkit-transform:translate3d({{_left}}px,{{_top}}px,0); background-image: url({{panoramaThumbUrl}});" 
+                                    ></view>
+                                    <!--<image  lazy-load="{{lazyLoad}}" src="{{panoramaThumbUrl}}" mode="widthFix"></image>-->
+                                    <view  wx:if="{{videoUrlPath!=''}}" class="bico-viedo" catchtap="playVideo"></view>
+                                </view>
+                            </swiper-item>
+                        </block>
+                        <block class="container_video" wx:if="{{videoUrlPath!='' && panoramaMap == 0}}">
+                            <swiper-item>
+                                <view class="video-box" catchtap="playVideo">
+                                    <view class="ic-box" >
+                                        <view class="bico-viedo-a_new" catchtap="playVideo"></view>
+                                        <!-- <view class="bico-viedo-a" catchtap="playVideo">
+                                              <view class="vd-pic-icon"></view>
+                                        </view> -->
+                                    </view>
+                                    <image lazy-load="{{lazyLoad}}" src="{{videoTopPicUrlPath}}" mode="widthFix"></image>
+                                </view>
+                            </swiper-item>
+                        </block>
+                        <block wx:key="{{item}}" wx:for="{{picUrl}}" wx:for-index="id">
+                            <swiper-item data-image="{{item}}" catchtap='getImageInfo'>
+                                <view class="banner-img" style="background-image:url('{{item}}');"></view>
+                            </swiper-item>
+                        </block>
+                    </swiper>
+                    <view class="numDesc" wx:if="{{totalImg > 0}}">
+                        <text class="num" id="currindex">{{currentPic}}/{{totalImg}}</text>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <view class="infoBox1 infoBoxs">
+            <view class='h-ti'>{{houseSubject}}</view>
+            <view class='collect-box' bindtap='starBtn'>
+                <view class="{{isCollected==1 ? 'stard-icon' :'star-icon'}}"></view>
+                <view class='sc-txt'>{{isCollected==1 ? '已收藏' :'收藏'}}</view>
+            </view>
+        </view>
+
+        <!-- 房源核验编号 -->
+        <view class="check-num-box">
+            <view class="check-num">核验编号：45662365</view>
+        </view>
+        <!-- 房源核验编号/ -->
+
+        <view class="infoBox2 infoBoxs">
+          <text class='i2_1'>{{houseTotalPrice}}</text><text class='i2_2'>{{priceUnitCn}}</text>
+          <text class='i2_3' hidden='{{caseType != 1}}'>{{houseUnitPrice}}元/㎡</text>
+          <text class='i2_4' wx:if="{{(houseUseageCn=='住宅' || houseUseageCn=='别墅') && caseType==1}}" bindtap='calculator'>评估房价</text>
+        </view>
+        <view class="infoBox3 infoBoxs">
+          <text style="margin-right:44rpx;" wx:if="{{houseUseageCn=='住宅'}}">{{houseRoom}}室{{houseHall}}厅{{houseWei}}卫</text>
+          <text style="margin-right:44rpx;" wx:else>{{houseUseageCn}}</text>
+          <text style="margin-right:44rpx;">{{houseArea}}㎡</text>
+          <text hidden="{{houseDirectCn=='--'}}">朝{{houseDirectCn}}</text>
+        </view>
+        <view class="infoBox4 infoBoxs">
+          <view class="house-tag">
+            <view class="dec-con" wx:for="{{tagArr}}" wx:key="index">{{tagArr[index]}}</view>
+          </view>
+        </view>
+      
+        <view class='house-ms mar-bot map-wrap' wx:if="{{openHuabei==1 && currUserMobile!='' && houseUseage==1}}">
+            <view class='ms-title msa-t map-ti' bindtap='goToFenQi' data-mobile="{{currUserMobile}}">
+                <view class='zhufang-img'></view>
+                <view class='zhufang-tip'>房租按月付,好房轻松住</view>
+                <view class='look-more'></view>
+            </view>
+        </view>
+
+        <view class='cont-w mar-bot'>
+          <view class='h-detail'>
+              <view class='l-msg'><text class="l2em">装</text>修: <text class='tx-b' style="margin-left:15rpx;">{{houseFitmentCn}}</text></view>
+              <view class='r-msg'><text class="l2em">楼</text>层: <text class='tx-b' style="margin-left:15rpx;">{{houseFloor}}/{{houseFloors}}层</text></view>
+          </view>
+          <view class='h-detail c-detail'>
+              <view class='l-msg'><text class="l2em">年</text>代: <text class='tx-b' style="margin-left:15rpx;">{{houseYear}}</text></view>
+              <view class='r-msg'><text class="l2em">朝</text>向: <text class='tx-b' style="margin-left:15rpx;">{{houseDirectCn}}</text></view>
+          </view>
+        </view>
+        <view class='act-banner' wx:if="{{trueFlag==1}}">
+         
+          <view class="btn-area">
+             <view class='btn-a' bindtap='formSubmit'><image src='http://uuweb.haofang.net/Public/wxApp/images/detail/act-100.png'></image><text>本人承诺房源真实有效，点击查看详细规则</text></view>
+          </view>
+        </view>
+        <view class='house-ms mar-bot' wx:if="{{!!houseDesc || houseDesc.length>0}}">
+          <view class='ms-title'>房源描述</view>
+          <view class="{{showmor ? 'feature_b' : 'feature_c'}} f14 c-666 feature" ><text>{{houseDesc}}</text></view>
+          <view class="checkAll-up descMore" bindtap="moreBtn" wx:if="{{describeHouse}}">
+            <view class='checkAll-up-box'>
+              <image lazy-load="{{lazyLoad}}" src="{{morejt}}" class="morepic {{closepic ? 'closepic' :''}}"></image>
+            </view>
+          </view>
+        </view>
+
+        <view class='house-ms mar-bot' wx:if="{{setting.length>0}}">
+            <view class='ms-title'>配套设施</view>
+            <view class='pt-box'>
+                <view class='pt-b' wx:for="{{setting}}" wx:key="{{index}}">
+                    <image lazy-load="{{lazyLoad}}" mode="widthFix" src="{{item.icon}}"/>
+                    <text>{{item.name}}</text>
+                </view>
+            </view>
+        </view>
+
+        <view class='house-ms mar-bot'>
+            <view class='ms-title msa-t'>小区介绍</view>
+            <view class="ms-cont-big">
+                <view class='h-detail'>
+                    <view class='l-msg msl-width'>
+                        <text class='tx-a'>物业类别: </text>
+                        <text class='tx-b'>{{houseUseageCn}}</text>
+                    </view>
+                    <view class='r-msg msr-width'>
+                        <text class='tx-a'>建筑类型: </text>
+                        <text class='tx-b'>{{buildType}}</text>
+                    </view>
+                </view>
+                <view class='h-detail'>
+                    <view class='l-msg msl-width'>
+                        <text class='tx-a'>产权年限: </text>
+                        <text class='tx-b'>{{rightYears}}</text>
+                    </view>
+                    <view class='r-msg msr-width'>
+                        <text class='tx-a'><text class='letter-space'>物业</text>费: </text>
+                        <text class='tx-b'>{{costStandard}}</text>
+                    </view>
+                </view>
+                <view class='h-detail'>
+                    <view class='l-msg msl-width'>
+                        <text class='tx-a'><text class='letter-space'>绿化</text>率: </text>
+                        <text class='tx-b'>{{projectGreen}}</text>
+                    </view>
+                    <view class='r-msg msr-width'>
+                        <text class='tx-a'><text class='letter-space'>容积</text>率: </text>
+                        <text class='tx-b'>{{projectSpace}}</text>
+                    </view>
+                </view>
+                <view class="h-detail{{lessContent?' showOrhide':''}}">
+                  <view class='l-msg sj-width'>
+                    <text class='tx-a'>竣工时间:</text>
+                    <text class='tx-b'>{{submitDate||'--'}}</text>
+                  </view>
+                </view>
+                <view class="h-detail{{lessContent?' showOrhide':''}}">
+                  <view class='l-msg sj-width'>
+                    <text class='tx-a'><text class='letter-space'>开发</text>商:</text>
+                    <text class='tx-b'>{{builder||'--'}}</text>
+                  </view>
+                </view>
+                <view class="h-detail{{lessContent?' showOrhide':''}}">
+                  <view class='l-msg sj-width'>
+                    <text class='tx-a'>物业公司:</text>
+                    <text class='tx-b'>{{propertyComp}}</text>
+                  </view>
+                </view>
+                <view class="h-detail{{lessContent?' showOrhide':''}}">
+                  <view class='sj-width '>
+                    <text class='tx-a'>小区概况:</text>
+                    <text class='tx-b'>{{buildDescript}}</text>
+                  </view>
+                </view>
+            </view>
+        </view>
+    
+        <view class="checkAll-up descMore" catchtap="lookMoreFeature">
+                <view class='checkAll-up-box'>
+                    <image src="{{morejt}}" class="morepic {{xqClosepic ? 'closepic' :''}}"></image>
+                </view>
+            </view>
+
+        <!-- <view class='house-ms ag-box mar-bot'>
+            
+                <view class='other-house' wx:if="{{buildOwnerHouseList&&buildOwnerHouseList.length>0}}">
+                    <view></view>
+                    <text>该小区TA的房源</text>
+                    <view></view>
+                </view>
+                <view class='other-list' wx:if="{{buildOwnerHouseList&&buildOwnerHouseList.length>0}}">
+                    <view class="ot-box" wx:for="{{buildOwnerHouseList}}" wx:key="{{item}}" bindtap="houseDetail" data-url="/pages/houseDetail/houseDetail?caseId={{item.houseId}}&caseType={{caseType}}&cityId={{item.cityId}}&reSource={{item.reSource}}&fromDetail=1">
+                        <view class='ot-img'>
+                            <image mode="aspectFill" src="{{item.thumbUrl}}" class="ot-image" />
+                            <view class="tbb">
+                                <view class='icon-vr' wx:if="{{item.hasPanorama>0}}"></view>
+                                <view class='icon-video' wx:if="{{item.videoNum>0}}"></view>
+                            </view> 
+                        </view>
+                        <view class='ot-msg'>
+                            <view class='ot-msg-title'>{{item.houseSubject}}</view>
+                            <view class='ot-msg-ad'>{{item.houseRoom}}室{{item.houseHall}}厅 {{item.houseArea}}㎡ {{item.buildName}}</view>
+                            <view class='ot-tag'>
+                                <view class="dec-con" wx:for="{{item.houseTagDesc}}" wx:key="{{i}}" wx:for-item="tag">{{tag}}</view>
+                            </view>
+                            <view class='ot-prince'>
+                                <text class='text-bold'>{{item.houseTotalPrice}}</text>{{item.priceUnitCn}}
+                                <text wx:if="{{item.houseUnitPrice>0}}">{{item.houseUnitPrice}}元/㎡</text>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view> -->
+
+        <view class='house-ms mar-bot' wx:if="{{buildOwnerArchiveId>0 && !shareInfoFlag}}">
+          <view class='ms-title msa-t'>小区专家</view>
+          <view class='brokerBox'>
+            <view class="brokerBox_left">
+              <image mode="aspectFill" src="{{buildOwnerPicUrl}}" />
+              <view class="left_text">
+                <view class="left_text_name">{{buildOwnerName}}</view>
+                <view class="left_text_centence">本人专注服务于{{buildName}}生活圈,欢迎来电!</view>
+              </view>
+            </view>
+            <view class="brokerBox_right">
+              <view class="brokerBox_right_item" bindtap='zjAgentChat'>
+                <view class="onlineDelegate picItembox"></view>
+                <view>在线委托</view>
+              </view>
+              <view class="brokerBox_right_item" bindtap='xiaoquCallEvent'>
+                <view class="callRightNow picItembox"></view>
+                <view>立即联系</view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        
+        <view class="house-ms mar-box" wx:if="{{!!evaluateValue.unitPrice && (houseUseageCn=='住宅' || houseUseageCn=='别墅')&&caseType==1}}">
+          <view class='ms-title msa-t'>小区房价走势</view>
+            <view class="evaluate-con">
+                <view class="evaluate-com">
+                    <view class="txt-col">{{evaluateValue.unitPrice}}元/㎡</view>
+                    <view class="eva-txt">本月均价</view>
+                </view>
+                <view class="evaluate-com">
+                    <view class="txt-col up" wx:if="{{evaluateValue.ratioByLastMonthForPrice>0}}">{{ratioByLastMonthForPrice}}%</view>
+                    <view class="txt-col down" wx:else>{{ratioByLastMonthForPrice}}%</view>
+                    <view class="eva-txt">环比上月</view>
+                </view>
+                <view class="evaluate-com">
+                     <view class="txt-col up" wx:if="{{evaluateValue.ratioByLastYearForPrice>0}}">{{ratioByLastYearForPrice}}%</view>
+                    <view class="txt-col down" wx:else>{{ratioByLastYearForPrice}}%</view>
+                    <view class="eva-txt">同比去年</view>
+                </view>
+            </view>
+        </view>
+        
+        <view class='house-ms mar-bot' wx:if="{{!!busLine}}">
+            <view class='ms-title'>交通状况</view>
+            <view class='transportation-cont'>
+                <text>{{busLine}}</text>
+            </view>
+        </view>
+        <view class='house-ms mar-bot' wx:if="{{!!addCase}}">
+            <view class='ms-title'>周边配套</view>
+            <view class="{{showmorZb ? 'feature_b' : 'feature_c'}} f14 c-666 feature"><text>{{addCase}}</text></view>
+            <view class="checkAll-up descMore" bindtap="moreZbBtn" wx:if="{{surroudMore}}">
+                <view class='checkAll-up-box'>
+                    <image src="{{morejt}}" class="morepic {{!zbClosepic ? '' :'closepic'}}"></image>
+                </view>
+            </view>
+        </view>
+        <view class='house-ms mar-bot map-wrap' wx:if="{{buildPositionx>0&&buildPositiony>0}}">
+            <view class='ms-title msa-t map-ti'>
+                <view class='ms-title' style="width:70%;">位置及周边</view>
+                <view class='look-more' 
+                      bindtap='goToMap' 
+                      data-lng="{{buildPositiony}}"
+                      data-lat="{{buildPositionx}}"
+                      data-buildname="{{buildName}}">查看全部</view>
+            </view>
+            <view class='map-box'>
+                <image lazy-load="{{lazyLoad}}" mode="widthFix" src="https://apis.map.qq.com/ws/staticmap/v2/?center={{buildPositionx}},{{buildPositiony}}&zoom=16&scale=2&markers=size:large|icon:https://cd.haofang.net/Public/images/wap/icon_mylocation.png|{{buildPositionx}},{{buildPositiony}}&key=DGFBZ-3IFW2-PDEUL-CBLCE-XOSYK-K5B5I&size=375*320"
+                    class='map-img'></image>
+            </view>
+            <view class="nav"  style="border-bottom:13rpx solid #f6f6f6;">
+              <view class="scroll-view_H" id="scroll-map">
+                  <view wx:for="{{typeList}}" 
+                        wx:key="item" 
+                        class="scroll-view" 
+                        data-lng="{{buildPositiony}}"
+                        data-lat="{{buildPositionx}}"
+                        data-buildname="{{buildName}}"
+                        catchtap="goToMap" 
+                        data-type='{{item.typeName}}'>
+                      <view class="common {{item.typeId}}-icon"></view>
+                      <text class="map-type">{{item.typeName}}</text>
+                  </view>
+                </view>
+            </view>
+        </view>
+        <view class='house-ms ms-new mar-bot' wx:if="{{houseList.length>0 && (!isOwner) && !shareInfoFlag}}">
+            <view class='ms-title'>周边新房</view>
+            <view style="width:100%;-x:auto;">
+                <view class='new-list-rim'>
+                  <block wx:for="{{houseList}}" wx:key="{{item}}">
+                      <view class='rim-box' bindtap='goToNewHouseDetail' data-uid="{{item.buildId}}">
+                          <view class='rim-img'>
+                              <image lazy-load="{{lazyLoad}}" mode="aspectFill" src="{{item.photoAddr}}" class="ot-image" />
+                          </view>
+                          <view class='zb-title'>{{item.buildName}}</view>
+                          <view class='zb-address'>{{item.sellAddr}}</view>
+                          <view class="{{item.priceText=='价格待定'?'zb-prince':'zb-prince-a'}}">{{item.priceText}}</view>
+                      </view>
+                  </block>
+                </view>
+            </view>
+        </view>
+        <view class='house-ms ms-new mar-bot' wx:if="{{gpBrokerList.length>0}}">
+            <view class='ms-title new-h'>挂牌经纪人</view>
+            <view class='gpagent-list' wx:for="{{gpBrokerList}}" wx:key="{{item}}">
+                <view class='gp-agent-msg'>
+                    <image lazy-load="{{lazyLoad}}" mode="aspectFill" src="{{item.gpBrokerPhoto}}" class="gp-agent-image" />
+                    <view class='ag-nbox'>
+                        <view class='gp-a-name'>{{item.gpBrokerName}}</view>
+                        <view class='gp-a-msg'>服务：{{item.gpBrokerDesc}}</view>
+                    </view>
+                    <view class='tel-btn' data-mobile="{{item.brokerMobilePhone}}" data-mobilefour="{{item.gpBroker400Phone}}" bindtap='gpCallBtn'></view>
+                </view>
+            </view>
+            <view class='to-msg'>通过400电话联系经纪人，不会暴露您的真实电话</view>
+        </view>
+        <!--/引导下载板块-->
+    </view>
+    <view class='footer-nav-daikan {{isIphoneX?"iphonex-daikan":""}}' wx:if="{{isSee}}">
+      <view class="house-btn-li see-evaluate" bindtap="daikanEva" data-recominfoid="{{daikanRecomInfoId}}">带看评价</view>
+    </view>
+    <view class='payYj {{isIphoneX?"iphonex-payYj":""}}' bindtap="weikuanPrePay" data-money="{{brokerMoney}}" wx:if="{{showPay}}">
+    <view class='mon-icon'></view>
+          佣金支付
+    </view>
+    <view wx:if="{{isSeeEvaluate}}" class='house-progress-btn {{isIphoneX?"iphonex-footer-fuwu":""}}'>
+          <view class="house-btn-li server-evaluate" bindtap="showCompleteEvaDialog" data-recominfoid="{{List.recomInfoId}}">服务评价</view>
+    </view>
+    <view class='footer-nav {{isIphoneX?"iphonex-footer":""}}' wx:if="{{footerNav && !seeEvaluateBox && !isSee && !isSeeEvaluate}}">
+      <view wx:if="{{!isSee}}">
+        <!--免费咨询-->
+        <view wx:if="{{!showKanFang && !showPay}}">
+           <view class='ft-nav-a' wx:if="{{agentCont || shareInfoFlag}}"> 
+            <view class='rent-agent'>
+                <image mode="aspectFill" src="{{currUserPhotoUrlPath}}" class='r-a-tx' binderror="errImg" data-err-img="currUserPhotoUrlPath"/>
+                <view class='r-a-name'>
+                    <view class='r-na-box'>{{currUserName}}</view>
+                    <view class='staer-ic star-value-5'></view>
+                </view>
+            </view>
+
+            <view class='querybox' bindtap="chooseContactType" data-archive="{{archiveId}}">
+              <text>咨询经纪人</text>
+            </view>
+            <view class='aoebox'>
+             <form bindsubmit="goToEntrust" bindreset="formReset" report-submit="true">
+                  <view><button formType="submit">{{backToIndexBtn==true?'返回首页':'特权找好房'}}</button></view>
+             </form>
+            </view>
+          </view>
+
+           <view class='ft-nav-a qf-box-w' wx:if="{{allAgentCont}}"> 
+              <view class='rent-agent qf-txt'>
+                  该房源还有
+                  <text>{{gpBrokerCount}}</text>位经纪人挂牌
+              </view>
+              <view class='querybox' bindtap="onlineChat" data-archive="{{serviceArchiveId}}">咨询客服</view>
+              <view class='aoebox aoeboxhai' catchtap='goToEntrust'><text>{{backToIndexBtn==true?'返回首页':'特权找好房'}}</text></view>
+          </view>
+
+
+
+          <view class='ft-nav-a' wx:if="{{yezhuCont}}"> 
+              <view class='rent-agent'>
+                  <view class='rent-tx'>
+                        <image mode="widthFix" src="{{currUserPhotoUrlPath}}" class='r-a-tx' binderror="errImg" data-err-img="currUserPhotoUrlPath"/> 
+                  </view>
+                  
+                  <view class='r-a-name'>
+                      <view class='r-na-box yz-name'>{{currUserName==''?'房东':currUserName}}</view>
+                  </view>
+              </view>
+  
+              <view class="querybox {{backToIndexBtn==true?'':'queryMaster'}}" bindtap='dial' data-yezhu="1" data-hezu="0" data-imid='{{imId}}' data-mobile='{{currUserMobile}}'>
+                  <view class='consult'></view><text>咨询业主</text>
+              </view>
+            <view class='aoebox aoeboxhai' catchtap='goToEntrust' wx:if="{{backToIndexBtn}}">
+                <text>返回首页</text>
+            </view>
+
+          </view>
+
+
+
+           <view class='ft-nav-a' wx:if="{{hezu}}"> 
+              <view class='rent-agent'>
+                  <image mode="aspectFill" src="{{currUserPhotoUrlPath}}" class='r-a-tx' binderror="errImg" data-err-img="currUserPhotoUrlPath"/>
+                  <view class='r-a-name'>
+                      <view class='r-na-box yz-name'>{{currUserName?currUserName:'业主'}}</view>
+                  </view>
+              </view>
+              <view class="querybox {{backToIndexBtn==true?'':'queryMaster'}}" bindtap='dial' data-yezhu="1" data-hezu="1" data-imid='{{imId}}' data-mobile='{{currUserMobile}}'>
+                  <text>咨询业主</text>
+              </view>
+              <view class='aoebox aoeboxhai' catchtap='goToEntrust' wx:if="{{backToIndexBtn}}">
+                <text>返回首页</text>
+            </view>
+          </view>
+
+
+
+        </view>
+         <view class='ft-nav-a' wx:if="{{showKanFang}}"> 
+            <view class='choose-kf' bindtap='disagreen4Daikan'>
+                不看该房
+            </view>
+            <view class='con-box' bindtap="agreen4Daikan">
+                同意看房
+            </view>
+        </view>
+      </view>
+    </view>
+</view>
+
+    <view class='soldout-box' wx:if="{{toastMask}}" >
+        <view class='tost-mask' bindtap='maskHideBtn'></view>
+        <view class="s-toast" wx:if="{{sealedHouse}}">
+            <view class='tos-txt'>该房源已下架！</view>
+            <view class='s-btn' bindtap='outedHouseBtn'>确定</view>
+        </view>
+        <view class="refer-toast" wx:if="{{guideToast&&!communityToast}}">
+            <view class='refer-txt'>
+              <view class='tos-line'></view>
+               <view class='ref-t'>选择联系方式</view>
+              <view class='tos-line'></view>
+            </view>
+            <view class='contract-box'>
+                <view class='chat-b' bindtap='onlineChat' data-archive="{{archiveId}}"><view class='chat-ic'></view><text>在线聊天</text></view>
+                <view class='call-b' bindtap="dial" data-mobile='{{currUserMobile}}'><view class='call-ic'></view><text>拨打电话</text></view>
+            </view>
+            <view class='close-btn'></view>
+        </view>
+        <view class='lead-toast' wx:if="{{leadToast}}">
+           <view class="down-con">
+                <view class="down-txt down-txt-top">该功能小程序暂不支持</view>
+                <view class="down-txt">请打开App Atore或应用市场</view>
+                <view class="down-txt down-txt-bottom">下载优优好房App</view>
+                <view class="down-img"></view>
+                <view class="down-btn" catchtap='orderClose'>
+                    <view class="down-btn-txt">我知道了</view>
+                </view>
+            </view>
+        </view>
+        <view class="refer-toast" wx:if="{{communityToast}}">
+            <view class='refer-txt'>
+              <view class='tos-line'></view>
+               <view class='ref-t'>选择联系方式</view>
+              <view class='tos-line'></view>
+            </view>
+            <view class='contract-box'>
+                <view class='chat-b' bindtap='onlineChat' data-archive="{{buildOwnerArchiveId}}"><view class='chat-ic'></view><text>在线聊天</text></view>
+                <!-- <view class='yinhao-b' bindtap='yinhao'><view class='yinhao-ic'></view><text>隐号拨打</text></view> -->
+                <view class='call-b' bindtap="dial" data-mobile='{{buildOwnerMobile}}'><view class='call-ic'></view><text>拨打电话</text></view>
+            </view>
+            <view class='close-btn'></view>
+        </view>
+        <view class="refer-toast" wx:if="{{yezhuContactFlag}}">
+            <view class='refer-txt'>
+              <view class='tos-line'></view>
+               <view class='ref-t'>选择联系方式</view>
+              <view class='tos-line'></view>
+            </view>
+            <view class='contract-box'>
+                <view class='chat-b' bindtap='onlineChat4C' data-imid="{{imId}}"><view class='chat-ic'></view><text>在线聊天</text></view>
+                <view class='yinhao-b' bindtap='yinhao'><view class='yinhao-ic'></view><text>隐号拨打</text></view>
+            </view>
+            <view class='close-btn'></view>
+        </view>
+    </view>
+<view class='discount-toast' wx:if="{{discountStatus}}">
+    <view class='dis-marsk' bindtap='diCloseBtn'></view>
+    <view class='dis-box'>
+          <view class='dis-li' bindtap='goToBuyHouseBtn' 
+          data-buildownerarchiveid="{{buildOwnerArchiveId}}"
+          data-buildownermobile='{{buildOwnerMobile}}'
+          data-buildownername='{{buildOwnerName}}'
+          data-rentmoney='{{rentMoney}}'
+          data-buymoney='{{buyMoney}}'
+          data-serviceregs='{{serviceRegs}}'
+          data-buildownerpicurl='{{buildOwnerPicUrl}}'>{{caseType==1?"我要买房":"我要租房"}}</view>
+          <view class='dis-li mar-bot' data-buildownerarchiveid="{{buildOwnerArchiveId}}" bindtap='goToEntrustLiBtn'>{{caseType==1?"我是房东，我要卖房":"我是房东，我要出租"}}</view>
+          <view class='dis-li' bindtap='diCloseBtn'>取消</view>
+    </view>
+</view>
+<view class='clooect-toast' wx:if="{{collectToast}}">
+    {{collectTxt}}
+</view>
+<template is="loading" data="{{...__loading__}}" wx:if="{{loadingFlag}}"/>
+</view>
+
+<!-- 引入找房定位的公共模板 -->
+<import src="../../component/localCityToast/localCityToast.wxml"/>
+<template is="localCity" data="{{locateCityName}}"  wx:if='{{!toastHide}}'/>
+
+
+<!--<template is="tabNav" data="{{animationData,showFlas,offFlag}}"></template>-->
+
+<!--  该房源已下架  -->
+<view class='downMask' wx:if="{{hasPullDown}}">
+  <view class="contentBox">
+    <view class="contentInfoBox">该房源已下架</view>
+    <view class="contentBtn" catchtap='iHaveKnowItPullOff'>我知道了</view>
+  </view>
+</view>
+<!--引导返回首页-->
+<view class='guide-back-index' wx:if="{{guideBackIndex && backToIndexBtn && userId>0}}">
+  <form bindsubmit="guideBackHome" bindreset="formReset" report-submit="true">
+    <button formType="submit">
+      <image src='https://uuweb.haofang.net/Public/wxApp/images/detail/guide_back_index.png'></image>
+      <view class='back-index-btn'>
+      返回首页
+      </view>
+    </button>
+  </form>
+</view>
+<!--引导返回首页-->
+
+<!-- 添加层级最高透明 蒙层 -->
+<view class="authorize-mask" wx:if="{{userId==''}}">
+    <button open-type='getUserInfo' bindgetuserinfo="getUser"></button>
+</view>
+<!-- 添加层级最高透明 蒙层/ -->
+
+
+
+<!--首页按钮-->
+<!-- <navigator url="/pages/real_index/index" open-type="switchTab" wx:if="{{backToIndexBtn}}" id="homeBtn"></navigator> -->
+<!--首页按钮end-->
+
+<!--带看评价弹窗-->
+    <view wx:if="{{seeEvaluateBox}}" class="see-evaluate-box">
+      <view class="see-evaluate-content">
+        <view class="see-evaluate-header">
+          <view class="see-evaluate-tt">匿名评价带看服务</view>
+          <view class="see-evaluate-close" catchtap="daikanEvaClose"></view>
+        </view>
+        <view class="see-evaluate-main">
+          <!--真房源/假房源-->
+          <view class="true-house-box">
+            <view class="unreal-house-btn {{realHouse==0?'select':''}}" bindtap="toggleRealHouse" data-val="0"></view>
+            <view class="real-house-btn {{realHouse==1?'select':''}}" bindtap="toggleRealHouse" data-val="1"></view>
+          </view>
+          <view class="unreal-house-text" wx:if="{{realHouse==1}}">
+             我们将会替您打赏获得五星好评的经纪人
+          </view>
+          <view class="star_box" wx:if="{{realHouse==1}}">
+               服务态度
+              <view data-val="1" catchtap="chooseServeStar" class="{{seeStarVal>=1?'activestar':''}}"></view>
+              <view data-val="2" catchtap="chooseServeStar" class="{{seeStarVal>=2?'activestar':''}}"></view>
+              <view data-val="3" catchtap="chooseServeStar" class="{{seeStarVal>=3?'activestar':''}}"></view>
+              <view data-val="4" catchtap="chooseServeStar" class="{{seeStarVal>=4?'activestar':''}}"></view>
+              <view data-val="5" catchtap="chooseServeStar" class="{{seeStarVal>=5?'activestar':''}}"></view>
+          </view>
+          <view class="star_box" wx:if="{{realHouse==1}}">
+              专业水平
+              <view data-val="1" catchtap="chooseLevelStar" class="{{levStarVal>=1?'activestar':''}}"></view>
+              <view data-val="2" catchtap="chooseLevelStar" class="{{levStarVal>=2?'activestar':''}}"></view>
+              <view data-val="3" catchtap="chooseLevelStar" class="{{levStarVal>=3?'activestar':''}}"></view>
+              <view data-val="4" catchtap="chooseLevelStar" class="{{levStarVal>=4?'activestar':''}}"></view>
+              <view data-val="5" catchtap="chooseLevelStar" class="{{levStarVal>=5?'activestar':''}}"></view>
+          </view>
+           <view class="reason_box" wx:if="{{realHouse!=1}}">
+            <view class="reason {{checkedEvaReasonArr[index]?'select':''}}" wx:for="{{serverFakeReasonArr[1]}}"
+                 wx:key="{{index}}" data-index="{{index}}" data-name="{{item}}" catchtap="toogleEvaReason">{{item}}
+            </view>
+          </view> 
+           <view class="reason_box_remark" >  <!--wx:if="{{seeStarVal<4 || realHouse!=1}}" -->
+            <textarea placeholder="简要说明便于尽快为您处理举报（15字以上）" bindinput="evaContentBlur" placeholder-class="reason-remark-text-placeholder" maxlength="100" wx:if="{{realHouse!=1}}"></textarea>
+            <textarea placeholder="其他建议或吐槽（匿名评价，放心填写）" bindinput="evaContentBlur" placeholder-class="reason-remark-text-placeholder" maxlength="100" wx:if="{{realHouse==1}}"></textarea>
+            <view>{{evaContent.length}}/100</view>
+          </view>
+        </view>
+        <!-- <view class="see-evaluate-footer-btn" wx:if="{{realHouse!=1}}"> -->
+           <view class="see-evaluate-footer see-evaluate-submit" bindtap="chooseHouseIntentDialog" data-recomInfoId = '' wx:if="{{realHouse!=1}}">提交</view>
+        <!-- </view> -->
+        <view class="see-evaluate-footer-btn"  wx:if="{{realHouse==1}}">
+          <view class="see-evaluate-leaveOut" bindtap="chooseHouseIntentDialog" data-val = '0'>不再考虑该房</view>
+          <view class="see-evaluate-retain" bindtap="chooseHouseIntentDialog" data-val = '1'>保留该房源意向</view>
+        </view>
+      </view>
+    </view>
+    <!--带看评价弹窗end-->
+    <!--  服务评价:未评价 -->
+      <view wx:if="{{showCompleteEvaDialog}}" class="evaluate_mask" catchtap="closeServiceEvaluateBox">
+        <view class="evaluate_box">
+          <view class="fee-info-box">
+            <view class="fee-info-tt">线上佣金（中介费）实际支付:</view>
+            <view class="fee-info-num">￥{{realPayMoney4C}}</view>
+            <view class="fee-info-remark">恭喜您找到好房，祝您新居生活幸福！</view>
+          </view>
+          <view class="title">本次服务评价：</view>
+          
+          <view class="server-result-star">
+            <view data-val="1" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=1?'activestar':''}}"></view>
+            <view data-val="2" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=2?'activestar':''}}"></view>
+            <view data-val="3" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=3?'activestar':''}}"></view>
+            <view data-val="4" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=4?'activestar':''}}"></view>
+            <view data-val="5" catchtap="chooseCompleteEvaStar" class="{{serverStarVal>=5?'activestar':''}}"></view>
+          </view>
+          <view class="reasonBoxWrap" wx:if="{{serverStarVal ==0 || serverStarVal<4}}">
+            <view class="reason_box">
+              <view class="reason {{checkedCompleteReasonArr[index]?'select':''}}" wx:for="{{serverReasonArr[serverStarVal]}}"
+                wx:key="{{index}}" data-index="{{index}}" data-name="{{item}}" catchtap="chooseCompleteReason">{{item}}</view>
+            </view>
+            <view class="reason_box_remark">
+              <textarea placeholder="其他原因可在此对经纪人匿名反馈，帮助我们提高质量。" bindinput="completeEvaContentBlur" placeholder-class="reason-remark-text-placeholder" maxlength="100"></textarea>
+              <view>{{completeEvaContent.length}}/100字</view>
+            </view>
+          </view>
+          <view class="evaluate_btn active" catchtap='submitCompleteEvaData'>提交匿名评价</view>
+        </view>
+      </view>
+  <!--服务评价end-->

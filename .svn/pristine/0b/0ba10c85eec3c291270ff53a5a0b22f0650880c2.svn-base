@@ -1,0 +1,58 @@
+<view class='coupon-page'>
+  <!--优惠券详情-->
+  <view class='coupon-detail'>
+    <view class='archive-img'><image mode="aspectFit" src='{{couponInfo.userPhoto}}' binderror="defaultImg" data-err-img="couponInfo.userPhoto"></image></view>
+    <view class='archive-name'>{{couponInfo.userName}}</view>
+    <view class='dept-info'>
+      <view class='mobile'>{{couponInfo.userMobile}}</view>
+      <view class='dept-name'>{{couponInfo.deptName}}</view>
+    </view>
+    <view class='house-num'>
+      <!--服务人数-->
+      <view class='service-num'>
+        <view class='service-info'>
+          <view class='num'>{{couponInfo.servicNum}}</view>
+          人
+        </view>
+        <view class='label'>已服务</view>
+      </view>
+      <!--在售数量-->
+       <view class='sale-num'>
+        <view class='sale-info'>
+          <view class='num'>{{couponInfo.saleHouseNum}}</view>
+          套
+        </view>
+        <view class='label'>在售</view>
+      </view>
+      <!--在租数量-->
+       <view class='lease-num'>
+        <view class='lease-info'>
+          <view class='num'>{{couponInfo.leaseHouseNum}}</view>
+          套
+        </view>
+        <view class='label'>在租</view>
+      </view>
+    </view>
+    <!--优惠券价值-->
+    <view class='display-coupon-top'>{{couponInfo.caseType==1?'买房':'租房'}}专属优惠券</view>
+    <view class='display-coupon-many'>
+      <view class='price-unit'>￥</view>
+      <view class='price-num'>{{couponInfo.couponMoney}}</view>
+    </view>
+    <!--优惠券价值-->
+    <!--有效期时间-->
+    <view class='dead-line'></view>
+    <view class='dead-time'>有效期至：{{couponInfo.validTime}}</view>
+    <!--有效期时间-->
+    <!--二维码-->
+    <view class='coupon-qrcode'><canvas canvas-id="myQrcode"></canvas></view>
+    <!--二维码-->
+  </view>
+  <!--优惠券详情-->
+  <view class='coupon-detail-footer'>
+    <view class='foot-line'></view>
+    <view class='foot-text'>成交后线下展示此二维码可抵扣等额中介费用哦</view>
+    <view class='send-msg' bindtap='sendMsg'></view>
+  </view>
+  
+</view>

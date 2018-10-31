@@ -1,0 +1,48 @@
+
+<view class="vocal-wrap">
+    <view class='top-img'>
+
+        <!--抽奖码-->
+        <view wx:if="{{step == 1 && friendNum >=3}}" class="code-num">抽奖码:{{codeNum}}</view>
+    </view>
+    <view class='title-box' wx:if="{{step == 1 }}"><text style="font-size:32rpx">满三个好友助力即获免费抽票资格\n助力越多机会越大</text></view>
+    <view class='title-box' wx:if="{{step == 2}}">
+        <view>您的好友正在抢</view>
+        <view>周杰伦地表最强2演唱会门票</view>
+        <view>邀请您为TA助力</view>
+    </view>
+    <view class='has-box' wx:if="{{step==3}}">已为您的好友助力成功!</view>
+    <view class='has-box' wx:if="{{step==4}}">您已为其他好友助力,不能重复助力!</view>
+
+    <view class="tx-box-big">
+     <view class='tx-box' wx:if="{{step == 1}}">
+            <view class='tx-li'>
+                <image mode="widthFix" src="{{imgUrl0}}" class='r-a-tx' />
+            </view>
+            <view class='tx-li'>
+                <image mode="widthFix" src="{{imgUrl1}}" class='r-a-tx' />
+            </view>
+            <view class='tx-li'>
+                <image mode="widthFix" src="{{imgUrl2}}" class='r-a-tx' />
+            </view>
+        </view>
+        <!--  -->
+        <view class='has-attend-tips' catchtap='goToListDetail' wx:if="{{step == 1 && friendNum!=0}}">已有<text>{{friendNum}}</text>位好友为你助力</view>
+
+    </view>
+    
+       
+
+    <button class='btn-box {{friendNum!=0?"btn-box-down1":"btn-box-down"}}' wx:if="{{step == 1}}" open-type="share">邀请好友助力</button>
+    <form bindsubmit="helpBtn" bindreset="formReset" report-submit="true">
+        <button class='btn-box' wx:if="{{step == 2}}" formType="submit" report-submit="true">为TA助力</button>
+    </form>
+    <button class='btn-box' wx:if="{{step==3 || step==4}}" open-type="share" catchtap='share'>我也要门票</button>
+    <view class='v-footer'>
+        <view>微信关注“优优好房”公众号</view>
+        <view>获取活动进度和抽奖查询</view>
+    </view>
+    <!--回首页-->
+    <view class='go-home' catchtap='goToHome'></view>
+
+</view>

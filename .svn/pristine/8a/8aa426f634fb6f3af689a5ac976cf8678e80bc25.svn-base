@@ -1,0 +1,152 @@
+image{width: 100%;}
+page{
+  height: 100%;
+  background: #f2f2f2;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+/*加载图片*/
+.pre-loading{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+.pre-loading image{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 320rpx;
+  height: 320rpx;
+}
+.pre-loading .load-txt{
+  width: 100%;
+  line-height: 320rpx;
+  color: #249a24;
+  font-size: 30rpx;
+  text-align: center;
+}
+.lod-box{
+  position: absolute;
+  top: 300rpx;
+  width: 100%;
+  height: 320rpx;
+}
+/**/
+.container-box{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100rpx;
+  box-sizing: border-box;
+}
+.f14{
+  font-size: 28rpx;
+}
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
+
+.banner-box{
+    position: relative;
+    width: 100%;
+    height: 479.25rpx;
+}
+.banner{
+    width: 100%;
+    height: 479.25rpx;
+}
+container_video{
+  position: relative;
+  width: 100%;
+}
+.video-box{
+  width: 100%;
+  height: 480rpx;
+}
+.video-box image{
+  width: 100%;
+}
+.ic-box{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2)
+}
+.bico-viedo{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 70rpx;
+  height: 70rpx;
+  background: url(https://youjia.haofang.net/Public/images/video-icon-green.png) no-repeat;
+  background-size: 100%;
+}
+.v-wraper{
+  position: relative;
+  width:100%;
+  height: 100%;
+  background: #000;
+}
+#myVideo{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width:100%;
+  display:block;
+  line-height:0;
+}
+.close-video{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  bottom: 120rpx;
+  width: 70rpx;
+  height: 70rpx;
+  background: url(https://youjia.haofang.net/Public/images/index/close-viedo.png) no-repeat; 
+  background-size:100% 
+}
+.slide-image{
+    width: 100%;
+}
+.numDesc{
+    position: absolute;
+    bottom: 20rpx;
+    right: 20rpx;
+    display: flex;
+    padding: 0 40rpx;
+    height: 40rpx;
+    background-color: rgba(69,162,110,.7);
+    color: #fff;
+    line-height: 40rpx;
+    text-align: center;
+    border-radius: 40rpx;
+    font-size: 24rpx;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+.cont-box{
+  position: relative;
+  width: 100%;
+  padding: 20rpx;
+  padding-bottom: 10rpx;
+  box-sizing: border-box;
+  background: #fff;
+  border-bottom: 1px solid #dfdfdf;
+  margin-bottom: 16rpx;
+}

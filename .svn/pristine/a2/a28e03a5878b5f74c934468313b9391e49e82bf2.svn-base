@@ -1,0 +1,379 @@
+<!-- 添加授权蒙层 -->
+<import src="../../template/authorizeMaskTmp.wxml"/>
+<template is="authorizeMask" data="{{userInfo}}"></template>
+
+<block wx:if="{{indexTab == 3}}">
+   <!--  筛选菜单弹框  -->
+  <!--筛选条件的弹框 cd->condition-->
+    <view class="cd-model" hidden="{{!conditionModel || conditionModelIndex > 2}}">
+      <view class="cd-mask" catchtap="cdMaskEvent"></view>
+      <view class="{{!scrollSearch?'cd-con-top':'cd-con'}}">
+          <view class="filter">
+          <view class="itembtn{{item.bcg?' choosed':''}}{{conditionModel&&conditionModelIndex==index?' choosing':''}}" 
+                wx:for="{{conditionScreening}}"
+                catchtap="conditionScreeningEvent" 
+                data-index="{{index}}" 
+                data-text="{{item.text}}" 
+                wx:key="{{index}}">{{item.text}}</view>
+          </view> 
+          <!--区域 -->
+          <view class="cd-reg" hidden="{{conditionModelIndex != 0}}">
+              <view class="l">
+                  <view wx:for="{{regionList}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="regionListEvent"
+                    class="li {{regionListIndex==index?'f-cd-reg':''}}">{{item.REG_NAME}}</view>
+              </view>
+              <view class="r">
+                  <view wx:for="{{businessList[RegionId]}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="businessListListEvent"
+                    class="li {{businessListIndex==index?'f-cg':''}}">{{item[0]}}</view>
+              </view>
+          </view>
+          <!--end-->
+          <!--价格-->
+          <view class="cd-p" hidden="{{conditionModelIndex != 1}}">
+              <view class="ul">
+                  <view wx:for="{{priceList}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="priceListEvent"
+                    class="li {{priceListIndex==index?'f-cg':''}}">{{item.text}}</view>
+              </view>
+              <view class="btm">
+                  <input type="number" bindinput="minPriceEvent" placeholder="最小价格" value="{{minPrice}}" type='number' maxlength="6" />
+                  <input type="text" class="dis" disabled="true" value="-" /> 
+                  <input type="number" bindinput="maxPriceEvent" placeholder="最大价格" value="{{maxPrice}}" type='number' maxlength="6" />
+                  <text style="margin-left:10rpx;">万元</text>
+                  <view catchtap="minAndMaxPriceEvent" class="search">确定</view>
+              </view>
+          </view>
+          <!--end-->
+          <!--户型-->
+            <view class="cd-p cd-pp" hidden="{{conditionModelIndex != 2}}">
+              <view class="ul">
+                  <view wx:for="{{roomList}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="roomListEvent"
+                    class="li {{roomListIndex==index?'f-cg':''}}">{{item.text}}</view>
+              </view>
+          </view>
+          <!--end-->
+      </view>
+  </view>
+  <!--end-->
+  <!--  更多筛选弹框  -->
+  <view class="cd-model cdd {{scrollSearch?'':'moreTop'}}" hidden="{{!conditionModel || conditionModelIndex != 3}}">
+    <view class="cd-mask" catchtap="cdMaskEvent"></view>
+    <view class="filter">
+      <view class="itembtn{{item.bcg?' choosed':''}}{{conditionModel&&conditionModelIndex==index?' choosing':''}}" 
+            wx:for="{{conditionScreening}}"
+            catchtap="conditionScreeningEvent" 
+            data-index="{{index}}" 
+            data-text="{{item.text}}" 
+            wx:key="{{index}}">{{item.text}}</view>
+    </view> 
+    <!--更多-->
+    <view class="cd-more" hidden="{{conditionModelIndex != 3}}">
+    <view class="more">
+        <view class="item item1">
+            <view class="ti">来源</view>
+            <view class="choosebox">
+                <view class="option{{more_reSourceIndex === index?' curr':''}}"
+                      wx:for="{{more_reSourceList}}"
+                      wx:key="{{index}}"
+                      data-index="{{index}}"
+                      data-item="{{item}}"
+                      data-type="reSource"
+                      catchtap="moreClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="item">
+            <view class="ti">面积(平米)</view>
+            <view class="choosebox">
+                <view class="option{{more_areaIndex === index?' curr':''}}"
+                        wx:for="{{more_areaList}}"
+                        wx:key="{{index}}"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        data-type="area"
+                        catchtap="moreClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="item">
+            <view class="ti">类型</view>
+            <view class="choosebox">
+                <view class="option{{more_houseUseageIndex === index?' curr':''}}" 
+                        wx:for="{{more_houseUseageList}}"
+                        wx:key="{{index}}"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        data-type="houseUseage"
+                        catchtap="moreClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="item">
+            <view class="ti">特色</view>
+            <view class="choosebox">
+                <view class="option{{index === more_specialIndex[0]||index === more_specialIndex[1]||index === more_specialIndex[2]?' curr':''}}" 
+                        wx:for="{{more_specialList}}"
+                        wx:key="{{index}}"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        data-type="special"
+                        catchtap="moreSpecialClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="morebtnbox">
+            <view catchtap="moreReset">重置</view>
+            <view class="confirm" catchtap="moreconfirm">确定</view>
+        </view>
+    </view>
+</view>
+<!--end-->
+</view>
+<!--  列表  -->
+<scroll-view scroll-y
+             style="height: {{winHeight}}px;"
+             lower-threshold="200"
+             upper-threshold="200"
+             bindscrolltolower="lower"
+             bindscrolltoupper="upper"
+             bindscroll="scrollToL">
+             <!--头部-->
+    <view class="top-wrap">
+        <view class="tx-box">
+            <image mode="aspectFill" src="{{archiveInfo.USER_PHOTO}}"></image>
+        </view>
+        <view class="ms-wrap {{msgShow ? '':'ma-top'}}">
+            <view class="name-box"><text class="n-na">{{archiveInfo.USER_NAME}}</text><text class="n-ms">{{archiveInfo.SERVICE_ZONE ? archiveInfo.SERVICE_ZONE : ''}}</text></view>
+            <view class="ms-js">{{archiveInfo.PROFESSION_SUB}}</view>
+        </view>
+        <view class="icon-wrap">
+            <view class="wx-icon" catchtap="skipToIm"></view>
+            <view class="phone-icon" data-nums='{{archiveInfo.USER_MOBILE}}' catchtap="callTel"></view>
+        </view>
+    </view>
+    <!--/头部-->
+    <!--tab-->
+    <view class="s-l-wrap">
+        <view class="sale-b {{tabFlag == 1 ? 'n-ch':''}}" catchtap="chooseCaseType" data-type="1">出售</view>
+        <view class="lease-b {{tabFlag == 2 ? 'n-ch':''}}" catchtap="chooseCaseType" data-type="2">出租</view>
+    </view>
+    <!--/tab--> 
+    <!--  筛选栏  -->
+     <view class="filter">
+      <view class="itembtn{{item.bcg?' choosed':''}}{{conditionModel&&conditionModelIndex==index?' choosing':''}}" 
+            wx:for="{{conditionScreening}}"
+            catchtap="conditionScreeningEvent" 
+            data-index="{{index}}" 
+            data-text="{{item.text}}" 
+            wx:key="{{index}}">{{item.text}}</view>
+    </view> 
+  <view class='content' >
+    
+    <view class='houseItem' 
+          wx:for="{{listValue}}" 
+          wx:key="{{List.houseId}}" 
+          wx:for-item="List"
+          catchtap="goToHouseDetail"
+          data-buildid="{{List.buildId}}"
+          data-id="{{List.houseId}}" 
+          data-cityid="{{List.cityId}}"
+          data-resource="{{List.reSource}}"
+          data-casetype="{{List.caseType}}">
+      <view class='picbox'>
+        <!--  旅居地产标识  -->
+        <view wx:if="{{List.caseType == 9}}" id="tour"></view>
+        <!--  热销新房标识  -->
+        <view wx:elif="{{List.caseType == 6}}" id="new"></view>
+
+        <image src='{{List.thumbUrl}}'
+               lazy-load="{{true}}"
+               mode='aspectFill' />
+        <view class="tbb">
+            <view class='icon-vr' wx:if="{{List.hasPanorama>0}}"></view>
+            <view class='icon-video' wx:if="{{List.videoNum>0}}"></view>
+        </view> 
+      </view>
+      <view class='infobox'>
+        <view class="housetitle">{{List.houseSubject}}</view>
+        <view class="text" >{{List.houseRoom > 0? List.houseRoom + '室': ''}}{{List.houseHall>0?List.houseHall+ '厅 ': ''}}{{List.houseArea>0? List.houseArea+'㎡ ':''}}{{List.buildName}}</view>
+        <view class='tag' wx:if="{{List.houseTagDesc.length>0}}">
+          <text wx:for="{{List.houseTagDesc}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">{{tagItem}}</text>
+        </view>
+        <view class='price' wx:if="{{List.caseType == 1}}">{{List.houseTotalPrice}}万<text>{{List.houseUnitPrice}}元/㎡</text></view>
+        <view class='price' wx:else>{{List.houseTotalPrice}}<text style="color:#ff5a1f;margin-left:3rpx;">元/月</text></view>
+      </view>
+    </view>
+    <!--  loading  -->
+    <view id="pullUp" hidden="{{!loadingdata}}" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+      <text class="pullUpIcon"></text><text class="pullUpLabel">努力加载中...</text>
+    </view>
+    <view class="no-more-data" wx:if="{{noMoreData && !loadingdata}}">没有更多数据了！</view>
+     <view class="sale_no_data" wx:if="{{listValue.length == 0  && !loadingdata}}">
+          <view class='no-pic'></view>
+          <view class='no-txt'>没有找到房源！</view>
+    </view> 
+  </view>
+</scroll-view>
+
+
+<!--  委托弹框  -->
+<view class='discount-toast' wx:if="{{discountStatus}}">
+    <view class='dis-marsk' bindtap='diCloseBtn'></view>
+    <view class='dis-box'>
+          <view class='dis-li' 
+                bindtap='goToBuyHouseBtn' 
+                data-buildownerarchiveid="{{buildExpert.buildOwnerArchiveId}}"
+                data-buildownermobile='{{buildExpert.buildOwnerMobile}}'
+                data-buildownername='{{buildExpert.buildOwnerName}}'
+                data-rentmoney='{{buildExpert.rentMoney}}'
+                data-buymoney='{{buildExpert.buyMoney}}'
+                data-serviceregs='{{buildExpert.serviceRegs}}'
+                data-buildownerpicurl='{{buildExpert.buildOwnerPicUrl}}'>我要买房</view>
+          <view class='dis-li mar-bot' bindtap='goToEntrustLiBtn'
+                data-buildownerarchiveid="{{buildExpert.buildOwnerArchiveId}}"
+                data-buildownermobile='{{buildExpert.buildOwnerMobile}}'
+                data-buildownername='{{buildExpert.buildOwnerName}}'
+                data-rentmoney='{{buildExpert.rentMoney}}'
+                data-buymoney='{{buildExpert.buyMoney}}'
+                data-serviceregs='{{buildExpert.serviceRegs}}'>我是房东，我要卖房</view>
+          <view class='dis-li' bindtap='diCloseBtn'>取消</view>
+    </view>
+</view>
+<!--小区专家联系选择弹框-->
+<view class="ddc_contact"
+      wx:if="{{contactBox}}" 
+      style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+    <view class="ddc_contact_mc" catchtap="closeContactBox"></view>
+  <view class="refer-toast">
+    <view class='refer-txt'>
+      <view class='tos-line'></view>
+        <view class='ref-t'>选择联系方式</view>
+      <view class='tos-line'></view>
+    </view>
+    <view class='contract-box'>
+        <view class='chat-b' 
+              catchtap='goToIM' 
+              data-archiveid="{{buildExpert.buildOwnerArchiveId}}"><view class='chat-ic'></view><text>在线聊天</text></view>
+        <view class='call-b' 
+              catchtap="dial" 
+              data-mobile='{{buildExpert.buildOwnerMobile}}'><view class='call-ic'></view><text>拨打电话</text></view>
+    </view>
+    <view class='close-btn'></view>
+  </view>
+</view>
+<!--/联系选择弹框-->
+<!--  引导下载弹框  -->
+<view class='downMask' wx:if="{{downBox}}">
+  <view class="download" catchtap="clickToDownloadApp">
+    <image src="https://uu.haofang.net/Public/images/wap/detail-down-img.png" mode='aspectFill' />
+    <view class="closeBtn" catchtap="closeDownBox"></view>
+  </view>
+</view>
+
+<!--  切换城市  -->
+<!-- 引入找房定位的公共模板 -->
+<import src="../../component/localCityToast/localCityToast.wxml"/>
+<template is="localCity" data="{{locateCityName}}" wx:if='{{!toastHide}}'/>
+
+
+  </block>
+
+<!-- 我的委托 -->
+<block wx:if="{{indexTab == 2}}">
+  <view class='bigbox'>
+    <!--头部-->
+      <view class="top-wrap">
+          <view class="tx-box">
+              <image mode="aspectFill" src="{{archiveInfo.USER_PHOTO}}"></image>
+          </view>
+          <view class="ms-wrap {{msgShow ? '':'ma-top'}}">
+              <view class="name-box"><text class="n-na">{{archiveInfo.USER_NAME}}</text><text class="n-ms">{{archiveInfo.SERVICE_ZONE}}</text></view>
+              <view class="ms-js">{{archiveInfo.PROFESSION_SUB}}</view>
+          </view>
+          <view class="icon-wrap">
+              <view class="wx-icon" catchtap="skipToIm"></view>
+              <view class="phone-icon" data-nums='{{archiveInfo.USER_MOBILE}}'  catchtap="callTel"></view>
+          </view>
+      </view>
+      <!--/头部-->
+      <!-- 底部 -->
+      <view class='bottom-wrap'>
+      <!--底部中间内容  -->
+      <view class='bottomcont'>
+        <view class='nav-top'>
+          <view class='nav-tab' catchtap="skipToUrl" data-type="entrust">
+              <view class='navtab-bef'></view>
+              <text class='size'>我的委托</text>
+              <view class='navtab-aft'></view>
+          </view>
+        </view>
+
+        <view class='nav-top'>
+          <view class='nav-tab nav-tabbott' catchtap="skipToUrl" data-type="sale">
+              <view class='navtab-bef navtab-houser'></view>
+              <text class='size'>有房出售</text>
+              <view class='navtab-aft'></view>
+          </view>
+          <view class='nav-tab nav-tabbott' catchtap="skipToUrl" data-type="lease">
+              <view class='navtab-bef navtab-lease'></view>
+              <text class='size'>有房出租</text>
+              <view class='navtab-aft'></view>
+          </view>
+          <view class='nav-tab nav-tabbott' catchtap="skipToUrl" data-type="buy">
+              <view class='navtab-bef navtab-buy'></view>
+              <text class='size'>我要买房</text>
+              <view class='navtab-aft'></view>
+          </view>
+          <view class='nav-tab' catchtap="skipToUrl" data-type="rent">
+              <view class='navtab-bef navtab-rent'></view>
+              <text class='size'>我要租房</text>
+              <view class='navtab-aft'></view>
+          </view>
+        </view>
+      
+      
+      </view>
+      <!--/底部中间内容  -->
+    </view>
+    <!-- /底部 -->
+    
+    </view>
+</block>
+<!--底部固定切换  -->
+      <view class='bottomtab'>
+        <view class='bottomatab-cont'>
+            <view class="group {{indexTab == 1?'home_choose':''}}"  catchtap="swichTab" data-tab='1'>
+                <view class='icon_tab icon_home'></view>
+                <view class='group-font'>首页</view>
+            </view>
+            <view class="group {{indexTab == 3?'kf_choose':''}}" catchtap="swichTab" data-tab='3'>
+                <view class='icon_tab icon_kf'></view>
+                <view class='group-font'>房源</view>
+            </view>
+            <view class="group {{indexTab == 2?'weituo_choose':''}}" catchtap="swichTab" data-tab='2'>
+                <view class='icon_tab icon_weituo'></view>
+                <view class='group-font'>委托</view>
+            </view>
+          </view>
+      </view>
+      <!--/底部固定切换  -->
+<!-- 我的委托end -->
+<!--活动弹框-->
+<view class='ac-wrap' wx:if="{{acShow}}">
+    <view class='ac-to' catchtap='offAcToast'></view>
+    <view class='bg-box'>
+        <view class='btn-join' catchtap='joinBtn'></view>
+    </view>
+    <view class='off-btn' catchtap='offAcToast'></view>
+</view>

@@ -1,0 +1,683 @@
+// pages/coupon/index.js
+
+var app = getApp();
+var api = require('../../utils/common.js');
+
+Page({
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    shareId: '', //优惠券分享Id
+    couponInfo: {},  //红包数据
+    entrustBaseData: '', //专属 委托的基础数据
+    caseType: '3', //求购 : 3. 求租:4
+
+    saleList: [],  //专属经纪人的 出售房源
+    leaseList: [], //专属经纪人的 出租房源
+
+    sendParam: {
+      3: {
+        houseRegion: '',//行政区id
+        regionName: '',//行政区名字
+        houseSection: '',//商圈ID(片区id)
+        sectionName: '不限',//商圈名称(片区名称)
+        priceL: '', //
+        priceH: '',
+        roomL: '',
+        roomH: '',
+        houseFitment: '',
+      },   //出售委托条件
+      4: {
+        houseRegion: '',//行政区id
+        regionName: '',//行政区名字
+        houseSection: '',//商圈ID(片区id)
+        sectionName: '不限',//商圈名称(片区名称)
+        priceL: '', //
+        priceH: '',
+        roomL: '',
+        roomH: '',
+        houseFitment: '',
+      },   //出租委托条件
+    },
+
+    cityId: '',
+    wxId: '',
+    youyouUserId: '',
+    houseRegion: '',//行政区id
+    regionName: '',//行政区名字
+    houseSection: '',//商圈ID(片区id)
+    sectionName: '',//商圈名称(片区名称)
+    isVip: '1', //1为专属委托
+
+
+    initLocalStorageUrl: app.buildRequestUrl('initLocalStorage'),
+    isShow: false,  //红包页面是否显示 true为显示 false隐藏
+    redPacketNum: 0, //红包数量
+    // buyOrRentClass:'3',  //求购 求租切换
+    // buyOrRent: true,  //购买或者租赁  true为购买 false为租赁
+    isAddress: false,  //是否显示地址选择弹窗  true显示 false隐藏
+    isShowPrice: false,  //价格选择弹窗  true显示  false关闭
+    couponBoxFlag: true, //优惠券红包弹窗
+
+    //地址选择
+    
+    regData: [], //行政区域
+    businessList: [],//商圈数据
+    indexSectionList: [], //附近商圈
+    
+
+    onStrtus: '', //区域点击状态 
+    
+    
+    sectionBoxShow: true, //商圈显示
+    // princeMoveChoose: '',//价格区间初始值
+    road_on: '', //商圈点击高亮
+
+    buy_houseRegion: '',//行政区id
+    buy_regionName: '',//行政区名字
+    buy_houseSection: '',//商圈ID(片区id)
+    buy_sectionName: '不限',//商圈名称(片区名称)
+    sureBuyAddressInfo: '发布求购委托', //确定求购选择的地址
+
+    roomL: '',
+    roomH: '',
+
+    rent_houseRegion: '',//行政区id
+    rent_regionName: '',//行政区名字
+    rent_houseSection: '',//商圈ID(片区id)
+    rent_sectionName: '不限',//商圈名称(片区名称)
+    sureRentAddress: '发布求租委托', //确定求租选择的地址
+
+    // 户型装修数据
+    isShowHouseType: false,  //是否显示户型选择  true显示 , false隐藏
+    buyHouseType: '一室', //求购户型
+    buyTotalFloor: '精装', //购房装修程度
+    buyIndex: [0, 0], //购房选择值id
+    sureBuyHouseType: '户型与装修',  //求购选择值  
+
+    rentHouseType: '一室', //求租户型
+    rentTotalFloor: '精装', //租房装修程度
+    rentIndex: [0, 0], //租房选择值id
+    sureRentHouseType: '户型与装修',  //求租选择值
+
+    houseFitment: '',  //装修情况
+
+    roomNumArr: [
+      { text: '1室', value: '1' },
+      { text: '2室', value: '2' },
+      { text: '3室', value: '3' },
+      { text: '4室', value: '4' },
+      { text: '5室', value: '5' }
+    ],
+    fitmentArr: [
+      { value: 1, text: '普通' },
+      { value: 2, text: '精装' },
+      { value: 3, text: '中档' },
+      { value: 4, text: '高档' },
+      { value: 5, text: '豪装' },
+      { value: 6, text: '毛坯' },
+      { value: 7, text: '装修不限' }
+    ],
+
+    // 价格选择
+    priceL: '', //
+    priceH: '',
+    price: [],
+    priceIndex: [],
+
+    rentPrice: [],   //价格区间
+    rentIndexPrice: [0], //默认显示价格
+    surRentPrice: '您的预算(元)', //初始值
+    rent_priceL: '',  //确定价格最小值
+    rent_priceH: '',  //确定价格最大值
+
+    buyIndexPrice: [0], //默认显示价格
+    buyPrice: [], //价格区间
+    surBuyPrice: '您的预算(万元)',  //初始值
+    buy_priceL: '',  //确定价格最小值
+    buy_priceH: '',  //确定价格最大值
+  },
+
+
+
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    app.checkLogin();//登录验证
+    var _this = this;
+    let shareId = options.shareId ? options.shareId : '';
+    let showCoupon = options.showCoupon ? options.showCoupon : '1';//默认展示红包: 但是个人中心 不展示
+
+    var cityId = wx.getStorageSync('cityId');
+    var userId = wx.getStorageSync('userId');
+
+    _this.setData({
+      shareId: shareId,
+      cityId: cityId,
+      wxId: userId,
+      youyouUserId: userId,
+      couponBoxFlag: showCoupon == '1' ? true : false,
+    });
+
+    //请求获取红包数据
+    _this.initCouponData();
+
+    //初始化专属委托数据
+    _this.initEntrustData();
+
+    //初始化 商圈/区域/价格 数据
+    var savedData = api.getStorageData('filterData_' + _this.data.cityId);
+    if (savedData) {
+      _this.formatRegData(savedData);
+    } else {
+      var url = _this.data.initLocalStorageUrl;
+      var params = { cityId: _this.data.cityId };
+      api.getList(url, params).then(res => {
+        console.log(res)
+        if (res.STATUS != 1) return;
+        //设置行政区商圈缓存
+        var storageData = JSON.stringify(res);
+        //缓存行政区商圈数据 1天
+        api.setStorageData('filterData_' + _this.data.cityId, storageData, 86400);
+        _this.formatRegData(storageData);
+
+      });
+    }
+  },
+
+  /**
+   * 请求获取红包数据
+   */
+  initCouponData: function () {
+    var _this = this;
+    wx.request({
+      url: app.buildRequestUrl('getCouponInfo'),
+      data: {
+        shareId: _this.data.shareId,
+        youyouUserId: _this.data.youyouUserId,
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          if (res.data.ERROR_CODE == 0) {
+            var couponInfo = res.data.DATA;
+            _this.setData({ couponInfo: couponInfo });
+          }
+        }
+      }, complete: function () {
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /**
+   * 领取获取 红包数据
+   */
+  getCoupon: function () {
+    var _this = this;
+    wx.request({
+      url: app.buildRequestUrl('customerGetCoupon'),
+      data: {
+        shareId: _this.data.shareId,
+        youyouUserId: _this.data.youyouUserId,
+      },
+      success: function (res) {
+        console.log(res);
+        if (res.statusCode == 200) {
+          if (res.data.ERROR_CODE == 0) {
+            //领取成功
+            var couponInfo = _this.data.couponInfo;
+            couponInfo.isGet = 1;
+            _this.setData({
+              couponInfo:couponInfo,
+              couponBoxFlag:false
+            });
+            
+          }
+        }
+      }, complete: function () {
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /**
+   * 初始化专属委托数据
+   */
+  initEntrustData: function () {
+    var _this = this;
+    wx.request({
+      url: app.buildRequestUrl('getVipEntrustInit'),
+      data: {
+        shareId: _this.data.shareId,
+        youyouUserId: _this.data.youyouUserId,
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          if (res.data.ERROR_CODE == 0) {
+            var entrustBaseData = res.data.DATA;
+            console.log(entrustBaseData);
+            //如果已经发布了委托 , 处理下委托状态数据
+            if (entrustBaseData.existence == 1) {
+              var pushStatusClassJson = { 0: 1, 2: 1, 5: 2, 3: 3, 4: 4 };
+              entrustBaseData.entrustInfoVO['pushStatusClass'] = pushStatusClassJson[entrustBaseData.entrustInfoVO.pushStatus];
+            }
+
+            _this.setData({ entrustBaseData: entrustBaseData });
+            //专属委托数据初始化成功后,获取该经纪人的房源
+            _this.getBrokerHouseList();
+
+          }
+        }
+      }, complete: function () {
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /**
+   * 获取专属委托经纪人的房源
+   */
+  getBrokerHouseList: function () {
+    let _this = this;
+    let archiveId = _this.data.entrustBaseData.brokerInfo.archiveId;
+    if (!!archiveId) {
+      //出售房源
+      wx.request({
+        url: app.globalData.javaOnlineHost + '/uuhfWeb/secondHouseManager/getSecondHouseListAction',
+        data: {
+          pageNum: 1,
+          cityId: _this.data.cityId,
+          caseType: 1,
+          pageSize: 20,
+          archiveId: archiveId,
+        },
+        success: function (res) {
+          if (res.statusCode == 200) {
+            if (res.data.ERROR_CODE == 0) {
+              var list = res.data.DATA.list;
+              //处理标签
+              list.map(function (ele, i) {
+                if (ele['houseTagDesc']) {
+                  ele['houseTagDesc'] = ele['houseTagDesc'].split('|').slice(0, 3);
+                } else if (ele.projectSpec) {
+                  if (ele['projectSpec'].indexOf('、') > -1) {
+                    ele['houseTagDesc'] = ele['projectSpec'].split('、').slice(0, 3);
+                  } else {
+                    ele['houseTagDesc'] = ele['projectSpec'].split(',').slice(0, 3);
+                  };
+                } else if (ele['buildType']) {
+                  ele['houseTagDesc'] = ele['buildType'].split(',').slice(0, 3);
+                  if (ele['buildFitment']) {
+                    ele['houseTagDesc'].push(ele['buildFitment']);
+                  }
+                }
+              });
+              _this.setData({ saleList: list });
+            }
+          }
+        }
+      });
+
+      //出租房源
+      wx.request({
+        url: app.globalData.javaOnlineHost + '/uuhfWeb/secondHouseManager/getSecondHouseListAction',
+        data: {
+          pageNum: 1,
+          cityId: _this.data.cityId,
+          caseType: 2,
+          pageSize: 20,
+          archiveId: archiveId,
+        },
+        success: function (res) {
+          if (res.statusCode == 200) {
+            if (res.data.ERROR_CODE == 0) {
+              var list = res.data.DATA.list;
+              //处理标签
+              list.map(function (ele, i) {
+                if (ele['houseTagDesc']) {
+                  ele['houseTagDesc'] = ele['houseTagDesc'].split('|').slice(0, 3);
+                } else if (ele.projectSpec) {
+                  if (ele['projectSpec'].indexOf('、') > -1) {
+                    ele['houseTagDesc'] = ele['projectSpec'].split('、').slice(0, 3);
+                  } else {
+                    ele['houseTagDesc'] = ele['projectSpec'].split(',').slice(0, 3);
+                  };
+                } else if (ele['buildType']) {
+                  ele['houseTagDesc'] = ele['buildType'].split(',').slice(0, 3);
+                  if (ele['buildFitment']) {
+                    ele['houseTagDesc'].push(ele['buildFitment']);
+                  }
+                }
+              });
+              _this.setData({ leaseList: list });
+            }
+          }
+        }
+      });
+
+    }
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  // 初始化 商圈/区域/价格 数据
+  formatRegData: function (resStr) {
+    var _this = this;
+    var res = JSON.parse(resStr);
+
+    //初始化商圈列表
+    var businessData = res.DATA.SECTION_DATA;
+    for (var i in businessData) {
+      businessData[i].unshift(['不限', '']);
+    };
+    //初始化区域数据
+    var regData = res.DATA.REG_DATA;
+    _this.setData({
+      regData: regData,
+      businessList: businessData,
+      indexSectionList: businessData[1]
+    });
+
+    //初始化价格区间
+    var _buyPrice = res.DATA.BUY_PRICE_DATA; //求购
+    var _rentPrice = res.DATA.RENT_PRICE_DATA; //求租
+    function initPrice(data, priceArr) {
+      var arr = data.split(',')
+      arr.unshift('0')
+      priceArr = [];
+      for (let i = 0; i < arr.length - 1; i++) {
+        priceArr.push({ id: i, priceL: arr[i], priceH: arr[i + 1] })
+      }
+      return priceArr;
+    }
+    _this.setData({
+      buyPrice: initPrice(_buyPrice, this.data.buyPrice),
+      rentPrice: initPrice(_rentPrice, this.data.rentPrice),
+    })
+  },
+
+  // 切换求购/求租
+  changeCaseType: function (e) {
+    let caseType = e.currentTarget.dataset.type;
+    this.setData({ caseType: caseType})
+  },
+
+  //显示地址选择
+  isShowAddress: function () {
+    //初始化选中的值
+
+    this.setData({
+      isAddress: true,
+    })
+  },
+  //隐藏地址选择
+  hideAddress: function () {
+
+    this.setData({
+      isAddress: false,
+    })
+  },
+
+  //点击选择的区域
+  onStrtus: function (e) {
+    var regId = e.currentTarget.dataset.id;
+    var regName = e.currentTarget.dataset.name;
+
+    var indexSectionData = this.data.businessList[regId];//获取当前行政区商圈列表
+    if (!indexSectionData) {
+      indexSectionData = [["不限", ""]]
+    }
+    if (regId == this.data.houseRegion) {
+      //如果点击的是当前选中的行政区
+      var sectionBoxShow = this.data.sectionBoxShow;
+      this.setData({ sectionBoxShow: !sectionBoxShow });
+      return;
+    } else {
+      this.setData({
+        onStrtus: regId,
+        sectionBoxShow: true,
+        houseRegion: regId,
+        regionName: regName,
+        houseSection: '',
+        sectionName: '不限',
+        sectionSelectArr: [''],//当前选中商圈数组清空
+        sectionSelectNameArr: ['不限'],//当前选中商圈数组清空
+        indexSectionList: indexSectionData,
+      });
+    }
+
+  },
+  road_on: function (e) {
+    var roadID = e.currentTarget.dataset.id;
+    var roadName = e.currentTarget.dataset.name;
+    this.setData({
+      houseSection: roadID,
+      road_on: roadID,
+      sectionName: roadName
+    })
+  },
+  //确定当前选择的地址
+  sureAddress: function () {
+    var buyRent = this.data.caseType;
+    if (buyRent == '3') {
+      this.setData({
+        isAddress: false,
+        buyOrRent: true,
+        sureBuyAddressInfo: this.data.regionName + this.data.sectionName,
+
+      })
+    } else {
+      this.setData({
+        isAddress: false,
+        buyOrRent: false,
+        sureRentAddress: this.data.regionName + this.data.sectionName,
+      })
+    }
+  },
+  //户型选择
+  houseType: function () {
+    this.setData({
+      isShowHouseType: true
+    })
+  },
+  //隐藏户型选择
+  hideHouseType: function () {
+    this.setData({
+      isShowHouseType: false,
+    })
+  },
+  //确定选择的户型
+  sureHouseType: function () {
+    var caseType = this.data.caseType;
+    if (caseType == 3) {
+      this.setData({
+        isShowHouseType: false,
+        roomL: this.data.buyHouseType,
+        roomH: this.data.buyHouseType,
+        sureBuyHouseType: this.data.buyHouseType + this.data.buyTotalFloor,
+        houseFitment: this.data.sureBuyHouseType
+      })
+    } else {
+      this.setData({
+        isShowHouseType: false,
+        roomL: this.data.buyHouseType,
+        roomH: this.data.buyHouseType,
+        sureRentHouseType: this.data.rentHouseType + this.data.rentTotalFloor,
+        houseFitment: this.data.sureBuyHouseType
+      })
+    }
+  },
+  // 户型选择
+  floorChange: function (e) {
+    var that = this;
+    var val = e.detail.value;
+    var floor = that.data.roomNumArr[val[0]].text;
+    var totalFloor = that.data.fitmentArr[val[1]].text;
+    var caseType = this.data.caseType;
+    if (caseType == 3) {
+      that.setData({
+        buyHouseType: floor,
+        buyTotalFloor: totalFloor,
+        buyIndex: [val[0], val[1]]
+      });
+    } else {
+      that.setData({
+        rentHouseType: floor,
+        rentTotalFloor: totalFloor,
+        rentIndex: [val[0], val[1]]
+      });
+    }
+  },
+
+
+  // 取消选择价格弹窗
+  hideClose: function () {
+    this.setData({
+      isShowPrice: false
+    })
+  },
+  // 确定选择值
+  surePrice: function () {
+    var caseType = this.data.caseType;
+    if (caseType == 3) {
+      this.setData({
+        isShowPrice: false,
+        surBuyPrice: this.data.priceL + '-' + this.data.priceH
+      })
+    } else {
+      this.setData({
+        isShowPrice: false,
+        surRentPrice: this.data.priceL + '-' + this.data.priceH
+      })
+    }
+  },
+  // 打开选择价格弹窗
+  isShowPrice: function () {
+    var caseType = this.data.caseType;;
+    if (caseType == 3) {
+      this.setData({
+        isShowPrice: true,
+        price: this.data.buyPrice,
+        priceL: this.data.buyPrice[0].priceL,
+        priceH: this.data.buyPrice[0].priceH,
+      })
+    } else {
+      this.setData({
+        isShowPrice: true,
+        price: this.data.rentPrice,
+        priceL: this.data.rentPrice[0].priceL,
+        priceH: this.data.rentPrice[0].priceH,
+      })
+    }
+  },
+  // 价格选择
+  priceChange: function (e) {
+    var that = this;
+    var val = e.detail.value;
+    var caseType = this.data.caseType;
+    if (caseType == 3) {
+      that.setData({
+        buyIndexPrice: [val[0]],
+        priceL: this.data.price[val[0]].priceL,
+        priceH: this.data.price[val[0]].priceH,
+      });
+    } else {
+      that.setData({
+        buyIndexPrice: [val[0]],
+        priceL: this.data.price[val[0]].priceL,
+        priceH: this.data.price[val[0]].priceH,
+      });
+    }
+  },
+
+  formSubmit: function () {
+    var _this = this;
+    var isHelp = 0;     //默认 不代填
+    if (!_this.data.houseRegion) { isHelp = 1 };
+    if (!_this.data.houseSection) { isHelp = 1 };
+    if (!_this.data.roomL) { isHelp = 1 };
+    if (!_this.data.priceL) { isHelp = 1 };
+    if (!_this.data.priceH) { isHelp = 1 };
+    var sendData = {
+      caseType: _this.data.caseType,
+      shareId: _this.data.shareId,
+      archiveId: _this.data.entrustBaseData.brokerInfo.archiveId,
+      youyouUserId: _this.data.youyouUserId,
+      isHelp: isHelp,
+      cityId: _this.data.cityId,
+      houseRegion: _this.data.houseRegion,
+      regionName: _this.data.regionName,
+      houseSection: _this.data.houseSection,
+      sectionName: _this.data.sectionName,
+      houseFitment: _this.data.houseFitment,
+      roomL: _this.data.roomL,
+      roomH: _this.data.roomH,
+      priceL: _this.data.priceL,
+      priceH: _this.data.priceH,
+      isVip: 1 //
+    };
+    wx.showLoading({
+      title: '加载中'
+    });
+    wx.request({
+      url: app.buildRequestUrl('createCustEntrust'),
+      data: sendData,
+      success: function (res) {
+        if (res.statusCode == 200) {
+          if (res.data.STATUS == 1) {
+            var data = res.data.DATA
+            console.log(data)
+            if (data.type == 1) {
+              wx.navigateTo({
+                url: "/pages/trustList/trustList?caseType=" + data.caseType  //发布成功跳转委托列表
+              })
+            } else {
+              // console.log(data.info)    
+              // 发布失败
+              wx.showModal({
+                title: '',
+                content: data.info,
+                showCancel: false,
+              })
+              return;
+              wx.showToast({
+                title: data.info,
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          } else {
+            wx.showToast({
+              title: res.INFO,
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        }
+      },
+      complete: function () {
+        wx.hideLoading();
+      }
+    });
+  },
+
+  //点击显示红包
+  showRedPacket: function () {
+    this.setData({ couponBoxFlag: true })
+  },
+
+  // 关闭红包弹窗
+  couponBoxClose: function () {
+    this.setData({ couponBoxFlag: false })
+  },
+
+
+})

@@ -1,0 +1,120 @@
+<view class="t-wraper">
+    <view class='top-b' wx:if="{{dataShow}}">
+        <!--header-->
+      <view class='header'>
+          <view class='h-title'>{{buildName}} {{roomNum||'-'}}室{{hallNum||'-'}}厅{{toiletNum||'-'}}卫 {{houseArea||'-'}}㎡ {{floor}}/{{totalFloor}}层</view>
+          <view class='h-price'>{{resultData.totalprice}}<text>万　{{resultData.offset}}万 较上月{{resultData.ratioByLastMonthForPrice>0?'上升':'下降'}}{{ratioByLastMonthForPrice}}%</text></view>
+    </view>
+    <!--/header-->
+    <!--cont-->
+    <view class='cont-box' wx:if="{{dataShow}}">
+        <view class='cont-b'>
+            <view class="cb-title">
+                价格走势
+            </view>
+            <view class="chartBox">
+                  <canvas canvas-id="lineCanvas" style="width:100%;height:100%;transform:scale(1)"></canvas>
+            </view>
+        </view>
+        <!--小区专家-->
+        <view class='house-ms mar-bot' wx:if="{{!!housePer && housePer.length>0}}">
+          <view class='brokerBox'>
+            <view class="brokerBox_left">
+              <image mode="aspectFill" src="{{housePer.brokerUserPicUrl}}" />
+              <view class="left_text">
+                <view class="left_text_name">{{housePer.brokerName}}</view>
+                <view class="left_text_centence">本人专注服务于 <text wx:for='{{housePer.serviceRegNames}}' wx:key="{{index}}">{{item}}</text>生活圈,欢迎来电!</view>
+              </view>
+            </view>
+            <view class="brokerBox_right">
+              <view class="brokerBox_right_item" bindtap='zjAgentChat'>
+                <view class="onlineDelegate picItembox"></view>
+                <view>在线委托</view>
+              </view>
+              <view class="brokerBox_right_item" bindtap='xiaoquCallEvent'>
+                <view class="callRightNow picItembox"></view>
+                <view>立即联系</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!--/小区专家-->
+        <!--附件房源-->
+        <view class='cont-house' wx:if='{{!!onSaleHouse && onSaleHouse.length>0}}'>
+            <view class='ho-title'>
+                <view class='ti-co'>小区在售房源 <text catchtap='goToList' wx:if="{{!!onSaleHouse && onSaleHouse.length>3}}">查看更多</text> </view>
+            </view>
+            <view class='houseItem'
+                wx:for="{{onSaleHouse}}" 
+                wx:key="houseId" 
+                wx:for-item="List"
+                catchtap="goToHouseDetail"
+                data-buildid="{{List.buildId}}"
+                data-id="{{List.houseId}}" 
+                data-cityid="{{List.cityId}}"
+                data-resource="{{List.reSource}}"
+                data-casetype="{{List.caseType}}">
+                      <view class='picbox'>
+                        <image src='{{List.thumbUrl}}'
+                              lazy-load="{{true}}"
+                              mode='aspectFill' />
+                        <view class="tbb">
+                            <view class='icon-vr' wx:if="{{List.hasPanorama>0}}"></view>
+                            <view class='icon-video' wx:if="{{List.videoNum>0}}"></view>
+                        </view> 
+                      </view>
+                      <view class='infobox'>
+                        <view class="housetitle">{{List.houseSubject}}</view>
+                        
+                        <view class="text">{{List.houseRoom > 0? List.houseRoom + '室': ''}}{{List.houseHall>0?List.houseHall+ '厅 ': ''}}{{List.houseArea>0? List.houseArea+'㎡ ':''}}{{List.buildName}}</view>
+
+                        <view class='tag' wx:if="{{List.houseTagDesc.length>0 || List.trueFlag == 1}}">
+                            <text wx:if="{{List.trueFlag == 1}}" class="true_flag"></text>
+                            <text  wx:for="{{List.houseTagDesc}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">{{tagItem}}</text>
+                        </view>
+                        
+                        <view class='price'>{{List.houseTotalPrice}}万<text>{{List.houseUnitPrice}}元/㎡</text></view>
+                      </view>
+              </view>
+        </view>
+        <!--/附件房源-->
+    </view>
+    <!--/cont-->
+    </view>
+
+    <view class='discount-toast' wx:if="{{discountStatus}}">
+    <view class='dis-marsk' bindtap='diCloseBtn'></view>
+    <view class='dis-box'>
+          <view class='dis-li' bindtap='goToBuyHouseBtn' 
+          data-hs='{{housePer}}'
+          data-buildownerarchiveid="{{housePer.brokerArchiveId}}"
+          data-buildownermobile='{{housePer.brokerMobile}}'
+          data-buildownername='{{housePer.brokerName}}'
+          data-serviceregs='{{housePer.serviceReg}}'
+          data-buildownerpicurl='{{buildOwnerPicUrl}}'>{{caseType==1?"我要买房":"我要租房"}}</view>
+          <view class='dis-li mar-bot' data-buildownerarchiveid="{{buildOwnerArchiveId}}" bindtap='goToEntrustLiBtn'>{{caseType==1?"我是房东，我要卖房":"我是房东，我要出租"}}</view>
+          <view class='dis-li' bindtap='diCloseBtn'>取消</view>
+    </view>
+</view>
+   <view class='soldout-box' wx:if="{{toastMask}}">
+        <view class='tost-mask' bindtap='maskHideBtn'></view>
+        <view class="refer-toast">
+            <view class='refer-txt'>
+              <view class='tos-line'></view>
+               <view class='ref-t'>选择联系方式</view>
+              <view class='tos-line'></view>
+            </view>
+            <view class='contract-box'>
+                <view class='chat-b' bindtap='onlineChat4C' data-imid="{{imId}}"><view class='chat-ic'></view><text>在线聊天</text></view>
+                <view class='yinhao-b' bindtap='yinhao' data-mobile='{{housePer.brokerMobile}}'><view class='yinhao-ic'></view><text>隐号拨打</text></view>
+            </view>
+            <view class='close-btn'></view>
+        </view>
+    </view>
+    <!--无数据页面-->
+    <view class='no-data-box' wx:if="{{noDataShow}}">
+        <view class='no-img'></view>
+        <view class='goback-btn' catchtap='gobackBtn'>换个条件试试</view>
+    </view>
+    <!--/无数据页面-->
+</view>

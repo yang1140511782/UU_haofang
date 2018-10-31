@@ -1,0 +1,735 @@
+
+const app = getApp();
+
+let imSdk = require('../../utils/NIM_Web_NIM_v5.0.0.js');
+let util = require('../../utils/util.js');
+let common = require('../../utils/common.js');
+let nim = '';
+var data = {};
+/**
+ * 滑动事件所需参数
+ */
+var touchDot = 0;    //触摸时的原点 
+var time = 0;        // 时间记录，用于滑动时且时间小于1s则执行左右滑动 
+var interval = "";   // 记录/清理时间记录
+
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    contacts: common.unique1(app.globalData.recentChatList),
+    userInfo: [],
+    appKey: app.globalData.appKey,
+    userId:'',
+    userInfo:{},
+    account: 'uu_'+app.globalData.userId,
+    toUserId: app.globalData.imService,
+    shiledToUserId:'',//被屏蔽人用户id
+    toUserInfo: [],
+    sessions: [],
+    deleteBtnShow:'',  //展示删除的id
+    isShowId:'',//显示/屏蔽标签 id 
+    isAddBlacklist: false,//是否加入黑名单
+    isRefresh:0,
+    addBlacklistToastShow: false,  //移除黑名单toast提示框
+    addBlacklistToastShowText: '已解除屏蔽，去联系吧~',  //加入黑名单toast提示框文字
+    serviceInfo: {
+      id: app.globalData.imService,
+      photo: 'http://uuweb.haofang.net/Public/wxApp/images/im/server_icon.png?t=20180427',
+      name: '客服小优',
+      time: new Date().getTime(),
+      msg: '很高兴为您服务！',
+      sendtime: new Date().getTime()
+    }
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    let _this = this;
+    //实例化用户和房源数据
+    _this.loadImData(0);
+    var flag = wx.getStorageSync('new_msg_flag');
+    if(flag==1){
+    	wx.hideTabBarRedDot({index:1})
+    }
+  },
+  loadImData:function(isRefresh){
+    let _this = this;
+    wx.request({
+      url: app.buildRequestUrl('initIm'),
+      data: {
+       accid: 'uu_' + app.globalData.userId,
+        toUserId: _this.data.toUserId,
+        cityId: app.globalData.cityId,
+        isRefresh: _this.data.isRefresh
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          _this.setData({
+            toUserInfo: res.data.data.toUserInfo,
+            userInfo: res.data.data.userInfo,
+            houseInfo: res.data.data.houseInfo
+          })
+
+          app.globalData.imUserInfo = res.data.data.userInfo;
+          _this.initIm();
+
+        } else {
+          wx.showToast({
+            title: '初始化失败',
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      }
+    })
+  },
+  /**
+   * 触摸开始事件
+   */
+  touchStart(e) {
+    touchDot = e.touches[0].pageX; // 获取触摸时的原点 
+    // 使用js计时器记录时间  
+    interval = setInterval(function () {
+      time++;
+    }, 100);
+  },
+
+  /**
+   * 触摸移动事件
+   */
+  touchMove(e) {
+    //滑动出现 按钮的条件
+    var status = e.currentTarget.dataset.status;
+    if (status == 1 || status == 2) {
+      return;
+    }
+    var id = e.currentTarget.dataset.to;
+    var that = this;
+    var touchMove = e.touches[0].pageX;
+    // 向左滑动 
+    if (touchMove - touchDot <= -40 && time < 10) {
+      that.setData({
+        deleteBtnShow: id
+      })
+    }
+    // 向右滑动 
+    if (touchMove - touchDot >= 40 && time < 10) {
+      that.setData({
+        deleteBtnShow: ''
+      })
+    }
+  },
+
+  /**
+  * 触摸结束事件
+  */
+  touchEnd(e) {
+    clearInterval(interval); // 清除setInterval 
+    time = 0;
+  },
+  getLastMsg: function(data){
+    var _this = this;
+
+    var unreadMsg = app.globalData.unreadMsg;
+    console.log(unreadMsg);
+    var contactsTmp = [];
+    if(data.length > 0){
+      //客服添加到列表
+       _this.data.serviceInfo.time = common.formatTimeNew(_this.data.serviceInfo.sendtime);
+        _this.setData({
+          serviceInfo: _this.data.serviceInfo
+        })
+        contactsTmp.push(_this.data.serviceInfo);
+      //接口取回的联系人列表字段整理
+      let len = data.length > 10 ? 10 : data.length;
+      let unreadLen = unreadMsg.length;
+      for (var i = 0; i < len; i++){
+        if (data[i].accid == app.globalData.imService || data[i] == 'p2p-' + app.globalData.imService){
+          contactsTmp[0].msg = data[i].body;
+          contactsTmp[0].time = common.formatTimeNew(data[i].msg_timestamp);
+          contactsTmp[0].sendtime = common.formatTimeNew(data[i].msg_timestamp);
+        }else{
+          var userPhoto = typeof(data[i].icon) == 'undefined' ? 'http://uuweb.haofang.net/Public/wxApp/images/detail/fang_default.png?t=20180427' : data[i].icon;
+          var item = {
+              id: data[i].accid,
+              photo: userPhoto,
+              name: data[i].name,
+              msg: data[i].body,
+              time: common.formatTimeNew(data[i].msg_timestamp),
+              sendtime: common.formatTimeNew(data[i].msg_timestamp),
+              isShield: data[i].isShield,
+              unread:0
+            }
+          if (unreadLen > 0) {
+            for(var j=0; j<unreadLen; j++){
+              if (unreadMsg[j].to == data[i].accid){
+                item.unread += unreadMsg[j].unread;
+              }
+            }
+          }
+          contactsTmp.push(item);
+          contactsTmp = common.unique1(contactsTmp);
+        }
+      }
+
+     
+    }else{
+       //客服添加到列表
+       _this.data.serviceInfo.time = common.formatTimeNew(_this.data.serviceInfo.sendtime);
+        _this.setData({
+        serviceInfo: _this.data.serviceInfo
+      })
+      contactsTmp.push(_this.data.serviceInfo);
+    }
+
+    app.globalData.recentChatList = contactsTmp;
+    console.log(app.globalData.recentChatList);
+    _this.setData({
+      contacts: common.unique1(app.globalData.recentChatList)
+    })
+  },
+  initIm() {
+    let _this = this;
+    console.log(_this.data.userInfo.token);
+    //实例化im
+    nim = imSdk.getInstance({
+      debug: false,
+      db: true,
+      syncSessionUnread:true,
+      appKey: _this.data.appKey,
+      account: _this.data.userInfo.accid,
+      token: _this.data.userInfo.token,
+      onconnect: _this.onConnect,
+      // 会话
+      onsessions: _this.onSessions,
+      onupdatesession: _this.onUpdateSession,
+      onerror: _this.onError,
+      onwillreconnect: _this.onWillReconnect,
+      ondisconnect: _this.onDisconnect,
+      // 多端登录
+      onloginportschange: _this.onLoginPortsChange,
+      // 好友关系
+      // onfriends: onFriends,
+      // onsyncfriendaction: onSyncFriendAction,
+      // 用户名片
+      onmyinfo: _this.onMyInfo,
+      onupdatemyinfo: _this.onUpdateMyInfo,
+      onusers: _this.onUsers,
+      onupdateuser: _this.onUpdateUser,
+      // 消息
+      onroamingmsgs: _this.onRoamingMsgs,
+      onofflinemsgs: _this.onOfflineMsgs,
+      onmsg: _this.onMsg,
+      // 系统通知
+      onofflinesysmsgs: _this.onOfflineSysMsgs,
+      // onsysmsg: onSysMsg,
+      // onupdatesysmsg: onUpdateSysMsg,
+       onsysmsgunread: _this.onSysMsgUnread,
+      // onupdatesysmsgunread: onUpdateSysMsgUnread,
+      // onofflinecustomsysmsgs: onOfflineCustomSysMsgs,
+     oncustomsysmsg: _this.onCustomSysMsg,
+      // // 收到广播消息
+      // onbroadcastmsg: onBroadcastMsg,
+      // onbroadcastmsgs: onBroadcastMsgs,
+      // // 同步完成
+      onsyncdone: _this.onSyncDone
+    })
+  },
+  //登出
+  logOut: function(){
+    nim.disconnect();
+  },
+  getLocalMsgsDone: function (error, obj){
+    console.log('获取本地消息' + (!error ? '成功' : '失败'), error, obj)
+  },
+  onConnect: function (res) {
+    let _this = this;
+    console.log('连接成功')
+    // _this.logOut();
+  },
+  onOfflineSysMsgs: function(res){
+    console.log(res);
+  },
+  onWillReconnect: function() {
+    console.log('onWillReconnect');
+  },
+  onRoamingMsgs: function (obj) {
+    console.log('收到漫游消息', obj);
+  },
+   onSyncDone() {
+        console.log('同步完成');
+    },
+  onOfflineMsgs: function (obj) {
+    console.log(obj.to)
+    let contacts = this.data.contacts;
+    for (var i = 0; i < contacts.length; i++){
+      if (contacts[i].id == obj.to){
+        contacts[i].unread = 1;
+      }
+    }
+
+    this.setData({
+      contacts: contacts
+    });
+    console.log('收到离线消息', obj);
+  },
+  onDisconnect: function (error) {
+    var _this = this;
+    // 此时说明 SDK 处于断开状态, 开发者此时应该根据错误码提示相应的错误信息, 并且跳转到登录页面
+    console.log('丢失连接');
+    console.log(error);
+    if (error) {
+      switch (error.code) {
+        // 账号或者密码错误, 请跳转到登录页面并提示错误
+        case 302:
+          //如果是token问题就刷新token，只请求一次
+          if(_this.data.isRefresh === 0){
+              _this.setData({
+                isRefresh:1
+              })
+              _this.loadImData(1);
+          }
+          break;
+        // 被踢, 请提示错误后跳转到登录页面
+        case 'kicked':
+          break;
+        default:
+          break;
+      }
+    }
+  },
+  onSysMsgUnread: function(msg){
+    console.log(msg);
+  },
+  onMsg: function (msg) {
+    //app.imSendMsg();
+    console.log('收到消息', msg, msg.type, msg);
+    wx.setStorageSync('new_msg_flag',1);
+	// wx.hideTabBarRedDot({index:1});
+  },
+  onCustomSysMsg: function(msg){
+    
+  },
+  onShareAppMessage: function () {
+    return {
+      title: app.globalData.compInfo.FCompName,
+      path: app.globalData.sharePublicUrl,
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+  },
+  onLoginPortsChange: function(){
+    console.log('onLoginPortsChange');
+  },
+  getLocalSessionsDone: function(error, obj) {
+    console.log(obj);
+    console.log('获取本地会话列表' + (!error ? '成功' : '失败'));
+    if(!error) {
+      //onSessions(obj.sessions);
+    }
+  },
+  onMyInfo: function (user){
+   // console.log('收到我的名片', user);
+    data.myInfo = user;
+  },
+  onSessions: function (sessions) {
+    console.log('收到会话列表', sessions);
+   // data.sessions = nim.mergeSessions(data.sessions, sessions);
+    // this.updateSessionsUI();
+  },
+  onUpdateSession: function (session) {
+    var _this = this;
+    console.log('会话更新了', session);
+    // data.sessions = nim.mergeSessions(data.sessions, session);
+    _this.updateSessionsUI(session);
+  },
+  //刷新界面
+  updateSessionsUI: function (session) {
+    //console.log(data.sessions);
+    console.log('updateSessionsUI');
+    let _this = this;
+    let keyName = 'contract_list';
+    console.log(keyName);
+    //var session = _this
+    let id = session.id;
+    //当前聊天人的最后一条会话
+    // wx.setStorageSync(id, session.lastMsg);
+
+    console.log(session);
+    console.log(session.lastMsg.from.indexOf('u'));
+    if(session.lastMsg.from.indexOf('uu_') != -1){
+      this.contactList();
+      return;
+    }
+    
+    if (session.lastMsg.type == 'text') {
+      var msg = session.lastMsg.text;
+    } else if (session.lastMsg.type == 'image') {
+      var msg = '收到一张图片';
+    } else if (session.lastMsg.type == 'custom') {
+      var msg = '推荐房源';
+    } else {
+      var msg = '你有新消息啦';
+    }
+
+    var currentId = session.lastMsg.to.indexOf('uu_') != -1 ? session.lastMsg.from : session.lastMsg.to
+    var unreadNum = app.globalData.unreadNum;
+    var unreadMsg = app.globalData.unreadMsg;
+
+    common.removeUnreadNum(unreadMsg, currentId);
+    unreadNum += session.unread;
+    unreadMsg.push(session);
+    
+    if (unreadNum > 0) {
+      app.globalData.unreadMsg = unreadMsg;
+      common.setTabBarBadge(unreadNum.toString());
+    }
+
+    var item = {
+      id: currentId,
+      photo: '',
+      name: session.lastMsg.fromNick,
+      msg: msg,
+      time: common.formatTimeNew(session.lastMsg.time),
+      sendtime: common.formatTimeNew(session.lastMsg.time),
+      unread: 0
+    }
+    var unreadNums = common.getUnreadNum(unreadMsg, item.id);
+    item.unread = unreadNums;
+    console.log(item);
+    app.globalData.recentChatList.unshift(item);
+    // console.log(app.globalData.recentChatList);
+     _this.setData({
+      contacts: common.uniqueContactList(app.globalData.recentChatList)
+    })
+  },
+  changeData:function(list){
+    this.setData({
+      contacts:list
+    })
+  },
+  onError: function(error){
+
+    console.log(error);
+  },
+  onUpdateMyInfo: function(info){
+    console.log(info);
+  },
+  onUsers:function(){
+    console.log('onUsers');
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    console.log('onReady');
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    //如果当前未授权 ,则 展示 添加授权蒙层
+    if (!!wx.getStorageSync('userInfo')) {
+        this.setData({
+           userInfo:wx.getStorageSync('userInfo')
+        });
+    }
+    this.setData({
+      deleteBtnShow: ''
+    });
+    this.contactList();
+    //this.initIm();
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+    //console.log('onHide');
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+    
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+    
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+    
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    
+  },
+  /**
+   * 跳转到IM页面
+   */
+  goIm: function(e) {
+    let to = e.currentTarget.dataset.to;
+    let from = 'uu_'+app.globalData.userId;
+    var that = this;
+    that.setData({
+      deleteBtnShow: ''
+    });
+    if (getCurrentPages().length < 5) {
+      wx.navigateTo({
+        url: '/pages/im/im?from=' + from + '&to=' + to,
+      })
+    } else {
+      wx.redirectTo({
+        url: '/pages/im/im?from=' + from + '&to=' + to,
+      })
+    }
+  },
+  /**
+   * 通过服务器去获取最近联系人
+   * @return {[type]} [description]
+   */
+  contactList:function(){
+    let _this = this;
+    //实例化用户和房源数据
+    wx.request({
+      url: app.buildRequestUrl('contactListUrl'),
+      // url: 'http://lwjuuweb.hftsoft.com/Mini/Im/getContactList',
+      data: {
+        accid: 'uu_'+app.globalData.userId,
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        if (res.data.code == 200) {
+            _this.getLastMsg(common.unique1(res.data.contactList));
+        } else {
+          wx.showToast({
+            title: '初始化失败',
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      }
+    })
+  },
+  /**
+   * 授权弹层回调
+   */
+  getUser:function(e){
+    console.log(e);
+  	var that = this;
+    var userInfo = e.detail.rawData;
+    //更新当前 用户信息缓存
+    if(!!userInfo){
+      that.setData({userInfo: JSON.parse(userInfo)});
+      //设置缓存
+      wx.setStorageSync('userInfo',JSON.parse(userInfo));
+    }
+	  wx.login({
+    	success: function (loginRes) {
+			if (loginRes.code) {
+				wx.request({
+					url: app.buildRequestUrl('dealUserInfo'),
+					data:{
+						code:loginRes.code,
+						userInfo:e.detail
+					},
+					success: function (res) {
+						var json = res.data;
+						if (json.STATUS==1){
+							try {
+								wx.setStorageSync('userId', json.DATA.userId);
+								wx.setStorageSync('openId', json.DATA.openId);
+								app.globalData.userId = json.DATA.userId;
+								app.globalData.openId = json.DATA.openId;
+								that.setData({userId:json.DATA.userId});
+								var shareOpen = wx.getStorageSync('shareOpenId');
+								var shareArchive = wx.getStorageSync('shareArchiveId');
+								var shareUserId = wx.getStorageSync('shareUserId');
+								var shareCaseType = wx.getStorageSync('shareCaseType');
+								var shareCityId = wx.getStorageSync('shareCityId');
+								var shareCaseId = wx.getStorageSync('shareCaseId');
+								if(!!shareArchive){
+									wx.request({
+										url: app.buildRequestUrl('inviteFromBroker'),
+										data: {
+											openId:json.DATA.openId,
+											caseType:shareCaseType,
+											cityId:shareCityId,
+											caseId:shareCaseId,
+											shareArchiveId:shareArchive,
+											come:wx.getStorageSync('come')
+										}
+									});
+								}
+								
+							} catch (e) {
+								console.log(e);
+							}
+						}
+					},
+					fail: function (res) {
+						console.log('刷新session失败！');
+						console.log(res)
+					},
+					complete:function(){
+						let userId = wx.getStorageSync('userId');
+						let cityId = wx.getStorageSync('locateCityId');
+						app.bindCity(userId,cityId);
+					}
+				});
+			} else {
+				console.log('获取用户登录态失败！' + res.errMsg)
+			}
+		}
+    })
+	  
+  },
+
+  //屏蔽、解除屏蔽
+  unBlock:function(e){
+    var _this = this;
+    var shiledToUserId = e.currentTarget.dataset.to;
+    var status = e.currentTarget.dataset.status;
+    _this.setData({ 
+      shiledToUserId: shiledToUserId,
+      isAddBlacklist: status == 1 ? true : false,
+      isShowId: shiledToUserId
+      });
+
+    nim.markInBlacklist({
+      account: shiledToUserId,//被屏蔽人用户id
+      isAdd: status == 1 ? true : false, // `true`表示加入黑名单, `false`表示从黑名单移除
+      done: _this.markInBlacklistDone
+    });
+  },
+  markInBlacklistDone: function (error, obj) {
+    var _this = this;
+    var isAddBlacklist = _this.data.isAddBlacklist;
+    console.log('将' + obj.account +  '从黑名单移除' + (!error ? '成功' : '失败'));
+    if (!error) {
+      //屏蔽成功调用接口同步屏蔽结果
+      var status = isAddBlacklist ? 1 : 0;
+      var userId = app.globalData.userId;//屏蔽人的id;
+      var params = {
+        userId: userId,        //屏蔽人用户id
+        shieldUserId: _this.data.shiledToUserId, //被屏蔽人用户id
+        status: status                     //状态 1屏蔽 0取消屏蔽
+      }
+     
+      var requestUrl = app.buildRequestUrl('saveShield');
+      //请求接口进行 解锁屏蔽 B端经纪人信息
+      common.getList(requestUrl, params).then(res => {
+        if (res.STATUS != 1) {
+          wx.showToast({
+            icon:'none',
+            title: res.error,
+            duration: 2000
+          });
+          _this.setData({
+            deleteBtnShow: ''
+          });
+          return;
+        }else{
+          var _type = 1;  //屏蔽、解除屏蔽
+          _this.proData(_this.data.shiledToUserId, status, _type);
+          var toastText = isAddBlacklist ? '屏蔽成功，对方无法主动联系您！' : '已解除屏蔽，去联系吧~';
+            _this.addBlacklistToast(toastText);
+          }
+        _this.setData({
+          deleteBtnShow: ''
+        });
+      });
+    }
+  },
+  /** 移除黑名单后提示框*/
+  addBlacklistToast: function (text) {
+    var _this = this;
+    _this.setData({
+      addBlacklistToastShow: true,
+      addBlacklistToastShowText: text
+    });
+    setTimeout(function () {
+      _this.setData({
+        addBlacklistToastShow: false,
+      });
+    }, 2000);
+  },
+  // 删除联系人
+  delLinkMan:function(e){
+    var _this = this;
+    var toUser = e.currentTarget.dataset.to; //被屏蔽人的id
+    var account = 'uu_'+ app.globalData.userId;//屏蔽人的id;
+    var requestUrl =  app.buildRequestUrl('delLinkMan');
+    //var requestUrl =  'http://lwjuuweb.hftsoft.com/Mini/Im/delLinkMan';
+    var params = {
+      account: account,        //屏蔽人用户id
+      toUser: toUser //被屏蔽人用户id
+    }
+    //请求接口进行 解锁屏蔽 B端经纪人信息
+    common.getList(requestUrl, params).then(res => {
+      if (res.status != 1) {
+        var toastText = '删除失败~';
+      } else {
+        var toastText = '删除成功~';
+        var _type = 2; 
+        if (toUser){
+          _this.proData(toUser, '', _type);
+        }
+      }
+      _this.setData({
+        deleteBtnShow: ''
+      })
+      _this.addBlacklistToast(toastText);
+    });
+  },
+  //处理消息列表数据
+  proData: function (shiledToUserId,status,_type)
+  {
+    let contacts = this.data.contacts;
+    var len = contacts.length;
+    for (var i = 0; i < len; i++) {
+      if(_type == 1){
+        //屏蔽
+        if (contacts[i].id == shiledToUserId){
+          contacts[i].isShield = status;
+        }
+      }else{
+        //删除
+        
+        if (contacts[i].id == shiledToUserId) {
+          contacts.splice(i,1);
+          break;
+        }
+      }
+    }
+    this.setData({
+      contacts: contacts
+    });
+  }
+})

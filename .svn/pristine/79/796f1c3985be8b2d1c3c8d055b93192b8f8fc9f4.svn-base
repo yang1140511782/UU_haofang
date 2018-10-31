@@ -1,0 +1,90 @@
+.down-app-box-load{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 99;
+}
+.down-mask-load{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  height: 100%;
+}
+.down-con-load{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600rpx;
+  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  -o-transform: translate(-50%,-50%);
+  z-index: 20;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background: #fff;
+}
+.down-txt-load{
+  font-size: 26rpx;
+  text-align: center;
+  font-weight: bold;
+}
+.down-txt-top-load{
+  font-size: 30rpx;
+  color: #363f61;
+  padding-top:30rpx; 
+  margin-bottom: 10rpx;
+}
+.down-txt-bottom-load{
+   font-weight: normal;
+   color: #6b6f84;
+}
+.down-img-load{
+  width: 427rpx;
+  height: 321rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/mine/down-bg.png) center center no-repeat;
+  background-size: 100% 100%;
+  margin: 0 auto
+}
+.down-btn-txt-load{
+  color: #ff5400;
+  font-size: 32rpx;
+  width: 490rpx;
+  height: 90rpx;
+  border: 2rpx solid #ff5400;
+  line-height: 90rpx;
+  text-align: center;
+  margin: 40rpx auto;
+  border-radius: 60rpx;
+}
+.d-top-img-load{
+  position: relative;
+  width: 100%;
+  height: 265rpx;
+  padding-top: 10rpx;
+  box-sizing: border-box;
+}
+.d-top-img-load image{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.close-icon{
+  position: absolute;
+  width: 70rpx;
+  height: 70rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/loadDownImg/close_icon.png)no-repeat center;
+  background-size: 27rpx 27rpx;
+  top: 0;
+  right: 0;
+  z-index: 100;
+}

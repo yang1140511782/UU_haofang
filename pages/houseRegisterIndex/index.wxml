@@ -1,0 +1,35 @@
+<view class='cam-app' style='height:{{winHeight}}px;'>
+  <view class='cam-header'>
+    <image src='https://uuweb.haofang.net/PublicC/images/campaign_top_bg.png' mode="aspectFill" />
+    <view class='cam-header-btn' catchtap='redirDetail'>了解详情</view>
+  </view>
+  <view class='cam-content'>
+    <view class='cam-want-btn' data-type='1' catchtap='goToUrl'>
+      <view class='cam-li-icon cam-icon-sale'></view>
+      <view class='cam-li-content'>
+        <view class="common">我要出售</view>
+        <view>优优好房助你闪电出手，省心省力</view>
+      </view>
+    </view>
+    <view class='cam-want-btn' data-type='2' catchtap='goToUrl'>
+      <view class='cam-li-icon cam-icon-lease'></view>
+      <view class='cam-li-content'>
+        <view class="common">我要出租</view>
+        <!--<view>支付宝分期租房支持，闪电成交</view>-->
+        <view>大数据精准匹配，专业、专注</view>       
+      </view>
+    </view>
+    <!--<view class='cam-want-btn' data-type='3' catchtap='goToUrl'>
+      <view class='cam-li-icon cam-icon-index'></view>
+      <view class='cam-li-content'>
+        <view class="common">我的委托</view>
+        <view>线上全程监控，交易更透明</view>
+      </view>
+    </view>-->
+  </view>
+</view>
+
+<!--  切换城市  -->
+<!-- 引入找房定位的公共模板 -->
+<import src="../../component/localCityToast/localCityToast.wxml"/>
+<template is="localCity" data="{{locateCityName}}" wx:if='{{!toastHide}}'/>

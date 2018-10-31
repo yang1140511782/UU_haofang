@@ -1,0 +1,42 @@
+<view class="t-wraper">
+    <view class='top-b'>
+        <!--header-->
+    <view class='header'>
+        <view class='h-title'>{{cityName}}· <text>{{currentMonth}}月参考均价</text>  </view>
+        <view class='h-price'>{{currentPrice}}<text>元/平</text></view>
+    </view>
+    <!--/header-->
+    <!--cont-->
+    <view class='cont-box'>
+        <view class='cont-a'>
+            <view class='a-box'>
+                <view class="a-box-a">昨日新增房(套)</view>
+                <view class='a-box-num'>{{newHouse}}</view>
+            </view>
+            <view class='a-box'>
+                <view class="a-box-a">昨日新增客(人)</view>
+                <view class='a-box-num'>{{newClient}}</view>
+            </view>
+            <view class='a-box'>
+                <view class="a-box-a">昨日带看量(次)</view>
+                <view class='a-box-num'>{{dk}}</view>
+            </view>
+        </view>
+        <view class='cont-b'>
+            <view class="cb-title">
+                价格走势
+            </view>
+            <view class="chartBox">
+                  <canvas canvas-id="lineCanvas" style="width:100%;height:100%;transform:scale(1)"></canvas>
+            </view>
+            <view class='frombox'>
+                <view>数据来源：由好房通Saas系统提供</view>
+                <view>更新时间：2018年{{currentMonth}}月</view>
+            </view>
+        </view>
+    </view>
+    <!--/cont-->
+    </view>
+    
+    <view class='footer {{isIphoneX?"iphone_footer":""}}' catchtap='gotoFjPg'><text></text>查看我感兴趣的小区房价</view>
+</view>

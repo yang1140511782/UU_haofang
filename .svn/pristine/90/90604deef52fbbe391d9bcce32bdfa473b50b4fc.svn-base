@@ -1,0 +1,201 @@
+<!-- 自定义Toast -->
+<import src="../../utils/toast/toast.wxml"  />
+<template is="toast" data="{{ ..._toast_ }}"  />
+<view class="main">
+<form report-submit="true" bindsubmit="submitData" wx:if="{{!rentBompShow}}">
+    <view class="conten-box">
+        <view class="common-list">
+            <view class="common-txt">类型</view>
+            <view class="type-con">
+                <view class="lease-ck  {{ishezu==0?'common-active':''}}" data-ishezu='0' catchtap='chooseTypeEvent'>整租</view>
+                <view class="lease-ck {{ishezu==1?'common-active':''}}" data-ishezu='1' catchtap='chooseTypeEvent'>合租</view>
+            </view>
+        </view>
+        <view class="common-list">
+            <view class="common-txt">楼盘</view>
+            <view class="input-con" bindtap='buildSearchBompEvent'>
+                <input placeholder="请选择楼盘" value="{{buildName}}"  class="input-com-color" placeholder-class="input-font" placeholder-style="color:#d1d1d1;font-size:27rpx" bindtap="searchBuildData" disabled="true"/>
+            </view>
+        </view>
+        <!-- 用途 -->
+        <view class="common-list" wx:if="{{ishezu==0}}">
+            <view class="common-txt">用途</view>
+            <picker class="use-choose" mode="selector" value="{{id}}" range="{{useageArr}}" range-key="{{'name'}}"
+                    bindchange="useageChange">
+                <view class="picker use-picker">
+                    <text class="{{(useageText!=''&&useageText!='请选择用途')?'':'text-color'}}">{{useageText}}</text>
+                </view>
+            </picker>
+        </view>
+        <!-- 户型 -->
+        <view class="common-list">
+            <view class="common-txt">户型</view>
+            <view class="input-box">
+                <view class="input-com">
+                    <input placeholder="几室" placeholder-style="color:#d1d1d1;font-size:27rpx" class="input-com-color" name="room" value="{{houseRoom}}" bindblur="blurHuXing" data-unit="室"
+                           data-type="houseRoom" maxlength="2" placeholder-class="input-font"  />
+                </view>
+                <view class="input-com">
+                    <input placeholder="几厅"  placeholder-style="color:#d1d1d1;font-size:27rpx" class="input-com-color" name="hall" value="{{houseHall}}" maxlength="2" bindblur="blurHuXing"
+                           data-type="houseHall" data-unit="厅" placeholder-class="input-font"  />
+                </view>
+                <view class="input-com">
+                    <input placeholder="几卫" placeholder-style="color:#d1d1d1;font-size:27rpx"  class="input-com-color" name="wei" value="{{houseWei}}" maxlength="2" bindblur="blurHuXing"
+                           data-type="houseWei" data-unit="卫" placeholder-class="input-font"  />
+                </view>
+            </view>
+        </view>
+        <!-- 楼层 -->
+        <view class="common-list">
+            <view class="common-txt">楼层</view>
+            <view class="input-box">
+                <view class="input-com">
+                    <input placeholder="几楼" placeholder-style="color:#d1d1d1;font-size:27rpx" class="input-com-color" name="houseFloor" value="{{houseFloor}}" bindblur="blurFloor"
+                           data-type="houseFloor" maxlength="3" placeholder-class="input-font"  />
+                </view>
+                <view class="input-com">
+                    <input placeholder="共几层" placeholder-style="color:#d1d1d1;font-size:27rpx" class="input-com-color" name="houseFloors" value="{{houseFloors}}" bindblur="blurFloor"
+                           data-type="houseFloors" maxlength="4" placeholder-class="input-font"  />
+                </view>
+            </view>
+        </view>
+        <!-- 面积 -->
+        <view class="common-list">
+            <view class="common-txt">面积</view>
+            <view class="input-con">
+                <input style="width:93%;" placeholder-style="color:#d1d1d1;font-size:27rpx"  class="input-com-color" placeholder="请输入面积" name="houseArea" value="{{houseArea}}" bindblur="setVal" data-type='houseArea' type="number" maxlength="5" placeholder-class="input-font"  />
+                <view class="unit">平米</view>
+            </view>
+        </view>
+        <!-- 售价 -->
+        <view class="common-list">
+            <view class="common-txt">租金</view>
+            <view class="input-con">
+                <input class="input-com-color" placeholder-style="color:#d1d1d1;font-size:27rpx" class="input-com-color" style="width:93%;" placeholder="请输入租金" bindblur="setVal" data-type='price' name="price" maxlength="5" type="number"
+                       placeholder-class="input-font"  />
+                <view class="unit">元/月</view>
+            </view>
+        </view>
+        <!-- 付款方式 -->
+        <view class="common-list">
+            <view class="common-txt">付款</view>
+            <picker class="use-choose" mode="selector" value="{{id}}" range="{{caseAccountArr}}" range-key="{{'name'}}"
+                    bindchange="caseAccountChange">
+                <view class="picker use-picker">
+                    <text class="{{caseAccountText=='请选择付款方式'?'text-color':''}}">{{caseAccountText}}</text>
+                </view>
+            </picker>
+        </view>
+        <!-- 房间 -->
+        <view class="common-list" wx:if="{{ishezu==1}}">
+            <view class="common-txt">房间</view>
+            <picker class="use-choose" mode="selector" value="{{id}}" range="{{roomArr}}" range-key="{{'name'}}"
+                    bindchange="roomChange">
+                <view class="picker use-picker">
+                    <text class="{{masterRoomText=='请选择房间类型（选填）'?'text-color':''}}">{{masterRoomText}}</text>
+                </view>
+            </picker>
+        </view>
+        <!-- 装修 -->
+        <view class="common-list" wx:if="{{ishezu==1}}">
+            <view class="common-txt">装修</view>
+            <picker class="use-choose" mode="selector" value="{{id}}" range="{{fitmentArr}}" range-key="{{'name'}}"
+                    bindchange="fitmentChange">
+                <view class="picker use-picker">
+                    <text class="{{houseFitmentText=='请选择装修（选填）'?'text-color':''}}">{{houseFitmentText}}</text>
+                </view>
+            </picker>
+        </view>
+        <!-- 性别 -->
+        <view class="common-list" wx:if="{{ishezu==1}}">
+            <view class="common-txt">性别</view>
+            <picker class="use-choose" mode="selector" value="{{id}}" range="{{sexArr}}" range-key="{{'name'}}"
+                    bindchange="sexChange">
+                <view class="picker use-picker">
+                    <text class="{{sexLimitText=='请选择性别（选填）'?'text-color':''}}">{{sexLimitText}}</text>
+                </view>
+            </picker>
+        </view>
+        <!-- 配套 -->
+        <view class="common-list peitao-box" wx:if="{{ishezu==1}}">
+            <view class="common-txt">配套</view>
+            <view class="peitao-con">
+                <view catchtap="matchClick"
+                      class="option {{index==matchChoosed[0]||index==matchChoosed[1]||index==matchChoosed[2]||index==matchChoosed[3]||index==matchChoosed[4]||index==matchChoosed[5]||index==matchChoosed[6]||index==matchChoosed[7]?' option-active':''}}"
+                      wx:key='{{item}}' wx:for="{{houseSetArr}}" data-value="{{item.value}}" data-index="{{index}}">{{item.text}}</view>
+            </view>
+        </view>
+        <!-- 描述 -->
+        <view class="common-list textarea-box" wx:if="{{!searchLoupanBox}}">
+            <view class="common-txt">描述</view>
+            <view class="input-con textarea-con">
+                <textarea  class="input-com-color" placeholder-style="color:#d1d1d1;font-size:27rpx" name="{{descp}}" value="{{descp}}" bindinput="blurDesc" style="width:100%;height:100rpx" placeholder="请输入装修配套等体现房屋亮点的简单描述" maxlength="200"
+                          placeholder-class="input-font"></textarea>
+            </view>
+        </view>
+        <!-- 姓名 -->
+        <!--<view class="common-list" wx:if="{{ishezu==1}}">
+            <view class="common-txt">姓名</view>
+            <view class="input-con">
+                <input class="input-com-color" placeholder="请输入姓名" value="{{publishUserName}}" bindblur="bulrUserName" placeholder-class="input-font"
+                       placeholder-style="color:#d1d1d1;font-size:27rpx" />
+            </view>
+        </view>-->
+        <!-- 电话 -->
+        <!--<view class="common-list" wx:if="{{ishezu==1}}">
+            <view class="common-txt">电话</view>
+            <view class="input-con">
+                <input class="input-com-color" placeholder="请输入手机号" value="{{publishUserMobile}}" maxlength="11" bindblur="changeMobile" placeholder-class="input-font"
+                       placeholder-style="color:#d1d1d1;font-size:27rpx"/>
+            </view>
+        </view>
+        <view class="common-list" wx:if="{{ishezu==1 && publishUserMobile != bindMobile}}">
+            <view class="common-txt">验证码</view>
+            <view class="input-con get-code-con">
+                <input type="number" class="input-com-color" placeholder="请输入验证码" value="{{VerifyCode}}" bindblur="codeBlur" maxlength="6" placeholder-class="input-font"
+                       placeholder-style="color:#d1d1d1;font-size:27rpx"/>
+                <view class="get-code-txt" bindtap="getCode">{{getCodeTxt}}</view>       
+            </view>
+        </view>-->
+        <!-- 图片 -->
+        <view class="img-txt">
+            <view class="common-txt">图片</view>
+            <view class="img-note">( 最多可上传9张 )</view>
+        </view>
+        <view class="img-list-box">
+            <view class="img-list-con" wx:for='{{imgArr}}' wx:key="index">
+                <image src="{{imgArr[index]}}" mode="aspectFill"></image>
+                <view class="delete-img" data-id="{{index}}" bindtap='deleteImg'></view>
+            </view>
+            <view class="choose-img" wx:if="{{imgArr.length < 9}}" bindtap="chooseImg"></view>
+        </view>
+        <!-- 登记按钮 -->
+        <button class="register-btn" form-type="submit">确认登记</button>
+        <view class="text-add-explain">为保护您免受骚扰，经纪人只能通过平台的免费语音电话与您联系，请保持登录状态。</view>
+    </view>
+    <!--楼盘搜索-->
+        <view class="search-loupan-box" wx:if="{{searchLoupanBox}}">
+            <view class="search-box-head">
+                <view class="search-head-con">
+                    <view class="search-input-box">
+                        <input type="text"  bindinput='searchBuildData'  value="{{searchInputValue}}" style="width:100%;height:100%;" placeholder="请输入楼盘名或首字母搜索" placeholder-class="input-font"/>
+                    </view>
+                    <view class="kwd-delte" catchtap='deleteKedEvent'></view>
+                </view>
+                <view class="search-cancle-btn" catchtap='searchCancleEvent'>取消</view>
+            </view>
+            <view class="search-list-con">
+                <view class="search-list-li" wx:for="{{buildArr}}" wx:key="{{index}}" data-id="{{item.buildId}}" data-text='{{item.buildName}}' catchtap="listTap">
+                    <view class="search-build-name">{{item.buildName}}</view>
+                    <view class="search-build">{{item.regName}}</view>
+                </view>
+            </view>
+        </view>
+        </form>
+    <view class="rent-bomp" wx:if="{{rentBompShow}}">
+        <view class="rent-bomp-con">
+            <view class="rent-img"></view>
+            <view class="rent-cancle" catchtap='rentCancleEvent'></view>
+        </view>
+    </view>
+</view>

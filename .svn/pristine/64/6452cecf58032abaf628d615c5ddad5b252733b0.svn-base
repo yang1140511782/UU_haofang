@@ -1,0 +1,597 @@
+const app = new getApp();
+import { Tools } from '../../utils/tools';
+const tool = new Tools();
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    animationData: {},
+    showFlas: true,
+    offFlag: false,
+    ajaxUrl: '',
+    info: '',
+    banner: [],
+    userName: '',     //客户名
+    userTel: '',      //客户电话
+    currentPic: 1,    //当前轮播图的index
+    longitude: '',    //经度
+    latitude: '',     //纬度
+    hasloaded: false, //初次进入页面,数据是否加载完
+    bigPicBox: false,
+    hasCollect: false,
+    bookToLookBox: false,
+    telephone: '',
+    archiveId: '',
+    markers: [],
+    buildId: 0,
+    imgUrls: [],       //banner图
+    newHouseDetailUrl: app.buildRequestUrl('newHouseDetail'),     //新房详情数据接口
+    addOrDeleteCollectUrl: app.buildRequestUrl('addOrDeleteCollectUrl'),     //新房收藏接口
+    getSaleUserListUrl: app.buildRequestUrl('getSaleUserList'),   //置业顾问接口
+    winWidth: '',      //屏幕宽度
+    typeList: {
+      '公交': { typeId: 'bus', typeName: '公交' },
+      '地铁': { typeId: 'subway', typeName: '地铁' },
+      '学校': { typeId: 'school', typeName: '学校' },
+      '医院': { typeId: 'hospital', typeName: '医院' },
+      '银行': { typeId: 'bank', typeName: '银行' },
+      '休闲娱乐': { typeId: 'leisure', typeName: '休闲娱乐' },
+      '购物': { typeId: 'shopping', typeName: '购物' },
+      '餐饮': { typeId: 'food', typeName: '餐饮' },
+      '运动健身': { typeId: 'sports', typeName: '运动健身' },
+    },
+    queryBoxHide: true,  //置业顾问弹框
+    downBox: false,       //引导下载弹框
+    userList: [],         //置业顾问列表
+    currentIndex: 0,      //当前置业顾问的序号
+    collectToast: false,  //收藏tosat弹框
+    collectTxt: "",       //收藏提示文字
+    downAppBoxShow:false,
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    var that = this;
+    var userId = wx.getStorageSync('userId');
+    that.setData({
+      buildId: options.buildid
+    });
+    if(!wx.getStorageSync('openId')){
+  	  app.saveUserData();
+    }
+    //获取设备宽度
+    try {
+      var winWidth = wx.getSystemInfoSync().windowWidth;
+    } catch (e) {
+      console.log('获取设备宽度失败!')
+    };
+    wx.request({
+      url: that.data.newHouseDetailUrl,
+      data: {
+        buildId: that.data.buildId,
+        youyouUserId: userId
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          if (!res.data.DATA) return;
+          var arr = res.data.DATA;
+
+          //设置页面标题
+          var buildName = arr.buildName;
+          wx.setNavigationBarTitle({
+            title: buildName
+          });
+
+          //楼盘标签
+          arr['BUILDING_FEATURE'] = [];
+          if (!!arr['buildTag'] && arr['buildTag'] != '-') {
+            arr['BUILDING_FEATURE'] = (arr['buildTag'].split(','));
+          } 
+          if (!!arr['buildType'] && arr['buildType'] != '-') {
+            arr['BUILDING_FEATURE'].push(arr['buildType'].split(','));
+          };
+
+          if (!!arr['buildFitment'] && arr['buildFitment'] != '-') {
+            arr['BUILDING_FEATURE'].push(arr['buildFitment'].split(','));
+          };
+
+          arr['BUILDING_FEATURE'] = arr['BUILDING_FEATURE'].slice(0,3);
+          
+
+          //是否收藏
+          if (arr['isCollected'] == 1) {
+            that.setData({
+              hasCollect: true
+            });
+          };
+
+          //是否有置业顾问
+          if (arr['userList']){
+            arr['userList'].map(function(ele, i){
+              ele['userId'] = 'ld_' + ele['userId'];  //置业顾问Id = ld_ + userId;
+            });
+            that.setData({
+              userList: arr['userList']
+            });
+          };
+
+          //户型数据
+          if (arr['layoutCount'] != 0 ){
+            var huxing = arr['layoutList'];
+            for (var i = 0; i < huxing.length; i++) {
+              if (huxing[i]['layoutTag']) {
+                huxing[i]['layoutTag'] = huxing[i]['layoutTag'].split(' ').splice(0,3);
+              } else {
+                huxing[i]['layoutTag'] = [];
+              };
+            };
+            arr['HUXINGS'] = huxing;
+          };
+          
+          //地图
+          var mapImgUrl = "https://apis.map.qq.com/ws/staticmap/v2/"
+            + "?center=" + arr.positionX + "," + arr.positionY
+            + "&zoom=16"
+            + "&markers=size:large|icon:https://cd.haofang.net/Public/images/wap/icon_mylocation.png|" + arr.positionX + "," + arr.positionY
+            + "&key=DGFBZ-3IFW2-PDEUL-CBLCE-XOSYK-K5B5I"
+            + "&size=" + winWidth + "*" + parseInt(winWidth*0.5);
+
+          //地图数据
+          that.setData({
+            mapImgUrl: mapImgUrl,
+            preLoading: true,
+            maskShow: false
+          });
+          //坐标
+          var marker = [{
+            iconPath: "https://weidian.haofang.net/Public/images/newhouse/images/mymy.png",
+            id: 0,
+            latitude: arr.positionX ? arr.positionX : '',
+            longitude: arr.positionY ? arr.positionY : '',
+            width: 30,
+            height: 30,
+            // callout: {
+            //   content: arr.BUILDING_NAME,
+            //   bgColor: '#00ca85',
+            //   color: '#fff',
+            //   fontSize: 15,
+            //   padding: 10,
+            //   borderRadius: 5,
+            //   display: 'ALWAYS'
+            // }
+          }];
+
+          //banner图
+          var bannerArr = [];
+          if(arr.photoList){
+            arr.photoList.map(function (ele, i) {
+        	  var a = tool.addImgParam(ele.photoAddr,640,480);
+              bannerArr.push(a);
+            });
+          };
+          if(arr.buildPhotoList){
+        	  var b = arr.buildPhotoList;
+        	  var plArr = [];
+        	  for (var i = 0; i < b.length; i++) {
+				 for(var j=0;j<b[i]['photoListSub'].length;j++){
+					 b[i]['photoListSub'][j]['photoAddr'] = tool.addImgParamCrop(b[i]['photoListSub'][j]['photoAddr'],133,100);
+				 }
+			  }
+          };
+          
+          if (arr.hasSaleUsers==1) {
+            that.setData({
+              info: arr,
+              latitude: arr.positionX ? arr.positionX : '',
+              longitude: arr.positionY ? arr.positionY : '',
+              imgUrls: bannerArr,
+              markers: marker,
+              hasloaded: true,
+              winWidth: winWidth
+            });
+            //获取置业顾问数据
+            wx.request({
+              url: that.data.getSaleUserListUrl,
+              data: {
+                buildId: arr.buildId
+              },
+              success: function (res) {
+                if(res.data.STATUS != 1)return;
+                console.log(res.data.DATA.userList[0]);
+                that.setData({
+                  userList: res.data.DATA.userList,
+                  telephone: res.data.DATA.userList[0].phone400Num ? res.data.DATA.userList[0].phone400Num : "",
+                  archiveId: res.data.DATA.userList[0].imId
+                });
+              }
+            });
+          } else {
+            that.setData({
+              telephone: arr.buildPhone400Num ? arr.buildPhone400Num :'',
+              info: arr,
+              latitude: arr.positionX ? arr.positionX : '',
+              longitude: arr.positionY ? arr.positionY : "",
+              imgUrls: bannerArr,
+              markers: marker,
+              hasloaded: true,
+              winWidth: winWidth
+            });
+          };
+
+        }
+
+      }
+    })
+  },
+
+  /**
+   * 有多个置业顾问,切换置业顾问
+   */
+  changeArchive(e){
+    var index = e.detail.current;
+    var userList = this.data.userList;
+    this.setData({
+      telephone: userList[index].phone400Num ? userList[index].phone400Num :'',
+      archiveId: userList[index].userId,
+      currentIndex: index
+    });
+  },
+
+  /**
+   * 点击咨询置业顾问
+   */
+  showQueryBox(){
+    this.setData({
+      queryBoxHide: false
+    });
+  },
+
+  /**
+   * 点击置业顾问的叉
+   */
+  hideQueryBox(){
+    this.setData({
+      queryBoxHide: true
+    });
+  },
+
+  /**
+   * 关闭引导下载弹框
+   */
+  closeDownBox(){
+    this.setData({
+      downBox: false
+    });
+  },
+
+  /**
+   * 点击隐号通话
+   */
+  clickHiddenCall(){
+    this.setData({
+      downAppBoxShow: true,
+      queryBoxHide:true
+    });
+  },
+  downCloseEvent(){
+    this.setData({
+      downAppBoxShow: false
+    });
+  },
+  /**
+   * 点击引导下载图片
+   */
+  clickToDownloadApp(){
+    wx.navigateTo({
+      url: "../download/download",
+    });
+  },
+
+  /**
+   * 调整地图页
+   */
+  goToMap(e){
+    var lat = e.currentTarget.dataset.lat;
+    var lng = e.currentTarget.dataset.lng;
+    var type = e.currentTarget.dataset.type;
+    var buildname = e.currentTarget.dataset.buildname;
+    if(!!type){
+      wx.navigateTo({
+        url: "../map/map?lat=" + lat + "&long=" + lng + "&type=" + type + '&buildname=' + buildname
+      });
+    }else{
+      wx.navigateTo({
+        url: "../map/map?lat=" + lat + "&long=" + lng + '&buildname=' + buildname
+      });
+    }
+  },
+
+  /**
+   * 滑动轮播图
+   */
+  changePic: function (e) {
+    var current = e.detail.current;
+    this.setData({
+      currentPic: current + 1
+    });
+  },
+
+  /**
+   * 点击收藏按钮
+   */
+  collectEvent() {
+    //登录验证
+    let checkLoginFlag = app.checkLogin();
+    if(!checkLoginFlag){return;}
+
+    var that = this;
+    var boo = !that.data.hasCollect;
+    var info = that.data.info; 
+    wx.request({
+      url: that.data.addOrDeleteCollectUrl,
+      data: {
+        cityId: info.cityId,
+        caseType: 6,
+        caseId: info.buildId,
+        reSource: 6,
+        userId: app.globalData.userId
+      },
+      success: function (res) {
+        if(res.data.STATUS == 1){
+          that.setData({
+            hasCollect: boo,
+            collectToast: true,
+            collectTxt: res.data.INFO
+          });
+          setTimeout(function () {
+            that.setData({
+              collectToast: false
+            });
+          }, 1000);
+        }else{
+          that.setData({
+            collectToast: true,
+            collectTxt: res.data.INFO
+          });
+          setTimeout(function () {
+            that.setData({
+              collectToast: false
+            });
+          }, 1000);
+        };
+      }
+    });
+  },
+
+  /**
+   * 点击轮播图,看大图
+   */
+  bigImg(e) {
+    var currentImage = e.currentTarget.dataset.image;
+    var imageArr = this.data.imgUrls;
+    wx.previewImage({
+      current: currentImage,
+      urls: imageArr
+    })
+  },
+  /**
+   * map周边
+   * @param  {[type]} e [description]
+   * @return {[type]}   [description]
+   */
+  viewDetailMap: function (e) {
+    var data = this.data.info;
+    var type = e.currentTarget.dataset.type;
+    console.log(data);
+    var url = '/pages/map/map?type=' + type + '&buildName=' + data.BUILDING_NAME + '&lat=' + data.POSITION_X + '&long=' + data.POSITION_Y;
+    wx.navigateTo({
+      url: url
+    })
+  },
+  /**
+   * 点击预约看房
+   */
+  openBookToLookBox() {
+    this.setData({
+      bookToLookBox: true
+    });
+  },
+
+  /**
+   * 点击弹框的叉和蒙层,关闭弹框
+   */
+  closeBookToLookBox() {
+    this.setData({
+      bookToLookBox: false
+    });
+  },
+
+  /**
+   * 点击弹框,阻止事件冒泡
+   */
+  prevent() {
+
+  },
+
+
+
+
+
+  /**
+   * 电话咨询
+   */
+  makeacall() {
+    var tel = this.data.telephone;
+    wx.makePhoneCall({
+      phoneNumber: tel
+    });
+  },
+
+  /**
+   * 进入户型页
+   */
+  goTohuxing() {
+    wx.navigateTo({
+      url: '../allHouseType/allHouseType?buildid=' + this.data.buildId
+    });
+  },
+  /**
+   * 进入图库页
+   */
+  goTotuku() {
+    wx.navigateTo({
+      url: '../houseGallery/houseGallery?buildid=' + this.data.buildId
+    });
+  },
+
+  /**
+   * 进入周边新房详情
+   */
+  goToSurroundNewHouse(e){
+    var id = e.currentTarget.dataset.id;
+    wx.redirectTo({
+      url: '../newHouseDetail/newHouseDetail?buildid=' + id
+    });
+  },
+
+  /**
+   * 周边新房查看更多
+   */
+  goToSurroundNewHouseList(e){
+    var regId = e.currentTarget.dataset.regid;
+    var regName = e.currentTarget.dataset.regname
+    wx.redirectTo({
+      url: '../newHouseList/newHouseList?buildregion=' + regId +'&regname=' + regName
+    });
+  },
+
+  /**
+   * 点击在线聊天
+   */
+  goToIM() {
+    var data = this.data;
+    var userId = data.archiveId;   
+    var caseId = data.buildId;
+    wx.navigateTo({
+      url: '../im/im?caseType=6&caseId=' + caseId + '&to=' + userId
+    });
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+  /**
+       *tab导航点击 
+       */
+  tabBtnCheck(e) {
+    var that = this;
+    var _t = e.currentTarget.dataset.shows;
+    if (_t == 's') {
+      that.setData({
+        showFlas: false,
+        offFlag: true,
+      })
+      var animation = wx.createAnimation({
+        duration: 1000,
+        timingFunction: "ease",
+      })
+      this.animation = animation
+
+      animation.translateX(-195).step();
+
+      this.setData({
+        animationData: animation.export()
+      })
+    } else {
+      that.setData({
+        showFlas: true,
+        offFlag: false,
+      })
+      var animation = wx.createAnimation({
+        duration: 1000,
+        timingFunction: "ease",
+      })
+      this.animation = animation
+
+      animation.translateX(0).step();
+
+      this.setData({
+        animationData: animation.export()
+      })
+    }
+
+  },
+  /**
+   *点击导航遮罩层 
+   */
+  offToast: function () {
+    var that = this;
+    that.setData({
+      showFlas: true,
+      offFlag: false,
+    })
+    var animation = wx.createAnimation({
+      duration: 1000,
+      timingFunction: "ease",
+    })
+    this.animation = animation
+
+    animation.translateX(0).step();
+
+    this.setData({
+      animationData: animation.export()
+    })
+  },
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+	  var data = this.data;
+ 	 return{
+ 	 	title: options.buildId,
+ 	 	path: '/pages/newHouseDetail/newHouseDetail?buildId='+data.buildId+"&shareOpenId="+wx.getStorageSync('openId')
+ 	 }
+  }
+})

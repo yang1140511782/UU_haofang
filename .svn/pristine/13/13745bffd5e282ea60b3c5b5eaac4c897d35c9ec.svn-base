@@ -1,0 +1,35 @@
+<!--  列表  -->
+<scroll-view scroll-y style="height: {{winHeight}}px;" lower-threshold="50" bindscrolltolower="lower">
+  <view class='content' wx:if="{{listHiden}}">
+    <!--出租出售-->
+    <view class='sale-rent-houseItem' wx:for="{{saleRentList}}" wx:key="{{index}}" wx:for-item="List">
+      <view class='sale-rent-picbox'>
+        <image src='{{List.thumbUrl}}' mode='aspectFill' />
+        <view class="sale-rent-tbb">
+          <view class='sale-rent-icon-vr' wx:if="{{List.hasPanorama>0}}"></view>
+          <view class='sale-rent-icon-video' wx:if="{{List.hasVideo>0}}"></view>
+        </view>
+      </view>
+      <view class='sale-rent-infobox'>
+        <view class="sale-rent-housetitle">{{List.houseSubject}}</view>
+        <view class="sale-rent-text">{{List.room}}室{{List.hall}}厅 {{List.area}}㎡ {{List.buildName}}</view>
+        <view class='sale-rent-tag' wx:if="{{List.houseTagDesc.length>0}}">
+          <text wx:for="{{List.houseTagDesc}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">{{tagItem}}</text>
+        </view>
+        <view class='sale-rent-price'>{{List.totalPrice}}{{List.priceUnit}}</view>
+        <view class='sale-rent-top'>{{List.caseTypeCn}}</view>
+      </view>
+    </view>
+    <view id="pullUp" wx:if="{{loadingdata}}" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+      <text class="pullUpIcon"></text>
+      <text class="pullUpLabel">努力加载中...</text>
+    </view>
+    <view class="no-more-data" wx:if="{{noMoreData && !loadingdata}}">没有更多数据了！</view>
+    <view class='no-data' wx:if='{{noData&& !loadingdata}}'>
+      <view class='no-data-img'>
+        <image src='https://uuweb.haofang.net/Public/wxApp/images/nodata/nodata_list.png' mode='aspectFill'/>
+      </view>
+      <text>暂无数据记录...</text>
+    </view>
+  </view>
+</scroll-view>

@@ -1,0 +1,194 @@
+<!-- 现金红包的头 -->
+<view class="top-title {{currentTab==0?'top-title-show':''}}">
+    <view class='top-title-money-num'>{{tabList[0]['totalNum']}}
+        <text class='top-title-money-icon'>￥</text>
+        <text class='top-title-money-btn' style='right:-100rpx;' bindtap='applyGeActivityMoney'>提现</text>
+    </view>
+    <view class='top-title-money-atext'>
+        <button class='share-btn' open-type="share">分享好友，和您的好友各获等额现金，<text>立即分享</text></button>
+        <text> ></text>
+    </view>
+</view>
+<!-- 购房补贴的头 -->
+<view class="top-title {{currentTab==1?'top-title-show':''}}">
+    <view class='top-title-money-num'>{{tabList[1]['totalNum']}}
+    <text class='top-title-money-icon'>￥</text>
+    <text class='top-title-money-btn' style='right:-150rpx;' bindtap='skipNewPage' data-href='/pages/entrust/entrust?caseType=3'>发布委托</text>
+    </view>
+    <view class='top-title-money-atext'>
+        <text>发布委托，线上成交即可抵扣中介费</text>
+    </view>
+</view>
+<!-- 租房补贴的头 -->
+<view class="top-title {{currentTab==2?'top-title-show':''}}">
+    <view class='top-title-money-num'>{{tabList[2]['totalNum']}}
+        <text class='top-title-money-icon'>￥</text>
+        <text class='top-title-money-btn' style='right:-150rpx;' bindtap='skipNewPage' data-href='/pages/entrust/entrust?caseType=4'>发布委托</text>
+    </view>
+    <view class='top-title-money-atext'>
+        <text>发布委托，线上成交即可抵扣中介费</text>
+    </view>
+</view>
+<!-- 实物奖品的头 -->
+<view class="top-title {{currentTab==3?'top-title-show':''}}">
+    <text style='font-size:120rpx;line-height: 190rpx;'>{{tabList[3]['totalNum']}}</text>
+    <text style='font-size:40rpx;'> 件</text>
+    <view class='top-title-money-atext'>
+        <text>实物奖品将以快递的方式为您寄出</text>
+    </view>
+</view>
+ <!--nav切换-->
+<view class='nav-wrap'>
+    <view class="nav-li {{currentTab==0?'active':''}}" data-current='0' bindtap='swichNav'>现金红包</view>
+    <view class="nav-li {{currentTab==1?'active':''}}" data-current='1' bindtap='swichNav'>购房补贴</view>
+    <view class="nav-li {{currentTab==2?'active':''}}" data-current='2' bindtap='swichNav'>租房补贴</view>
+    <view class="nav-li {{currentTab==3?'active':''}}" data-current='3' bindtap='swichNav'>实物奖品</view>
+</view>
+<view class='tab-cont'>
+<swiper class="tab-content" current="{{currentTab}}"  duration="300" bindchange="switchTab" style="min-height:800rpx;">
+    <!--现金红包-->
+    <swiper-item>
+        <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+            <view class='swiper-content'  wx:if="{{tabList[0]['list'].length >0}}">
+                <view wx:for="{{tabList[0]['list']}}"  wx:key="index" class='swiper-content-list'>
+                    <view>
+                        <text>{{item.remark}}</text>
+                    </view>
+                    <view>
+                        <text>{{item.createTime}}</text>
+                    </view>
+                    <text>{{item.prizeMoney}}</text>
+                </view>
+                
+            </view>
+            <!-- 无数据情况 -->
+                <view class="nodata-tips" wx:else=''>
+                    <image class="nodata-icon" src="http://cdn.haofang.net/static/uuweb/activity/jinyin/list/noPrizeData.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
+                    <view class='desc'>
+                        <text>点击转发获得现金红包</text>
+                    </view>
+                    <button class="nodata-share-btn" open-type="share">立即转发</button>
+                </view>
+        </scroll-view>
+    </swiper-item>
+    <!-- 购房补贴 -->
+    <swiper-item>
+        <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+            <view class='swiper-content' wx:if="{{tabList[1]['list'].length >0}}">
+                <view  wx:for="{{tabList[1]['list']}}" wx:key="index" class='swiper-content-list'>
+                    <view>
+                        <text>{{item.remark}}</text>
+                    </view>
+                    <view>
+                        <text>{{item.createTime}}</text>
+                    </view>
+                    <text>{{item.prizeMoney}}</text>
+                </view>
+            </view>
+            <!-- 无数据情况 -->
+            <view class="nodata-tips" wx:else=''>
+                <image class="nodata-icon" src="http://cdn.haofang.net/static/uuweb/activity/jinyin/list/noPrizeData.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
+                <view class='desc'>
+                    <text >补贴可多次累计，购房直接抵扣！\n点击转发获得抽奖机会，100%中奖！</text>
+                </view>
+                <button  class="nodata-share-btn" open-type="share">立即转发</button>
+            </view>
+        </scroll-view>
+    </swiper-item>
+    <!-- 租房补贴 -->
+    <swiper-item>
+        <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+            <view class='swiper-content'  wx:if="{{tabList[2]['list'].length >0}}">
+                <view  wx:for="{{tabList[2]['list']}}"  wx:key="index" class='swiper-content-list'>
+                    <view>
+                        <text>{{item.remark}}</text>
+                    </view>
+                    <view>
+                        <text>{{item.createTime}}</text>
+                    </view>
+                    <text>{{item.prizeMoney}}</text>
+                </view>
+            </view>
+            <!-- 无数据情况 -->
+            <view class="nodata-tips" wx:else=''>
+                <image class="nodata-icon" src="http://cdn.haofang.net/static/uuweb/activity/jinyin/list/noPrizeData.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
+                <view class='desc'>
+                    <text >补贴可多次累计，租房直接抵扣！\n点击转发获得抽奖机会，100%中奖！</text>
+                </view>
+                <button  class="nodata-share-btn" open-type="share">立即转发</button>
+            </view>
+        </scroll-view>
+    </swiper-item>
+    <!-- 实物奖品 -->
+    <swiper-item>
+        <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+            <view class='swiper-content'  wx:if="{{tabList[3]['list'].length >0}}">
+                <view wx:if="{{tabList[3]['list'].length >0}}" wx:for="{{tabList[3]['list']}}"  wx:key="index" class='material-list'>
+                  <view class='malist-img'>
+                    <image src='{{item.prizePhoto}}'></image>
+                  </view> 
+                  <view class='malist-content'>
+                    <view class='malist-content-left'>
+                      <view>{{item.remark}}</view>
+                      <view>{{item.expiryTime}} 过期</view>
+                    </view>
+                    
+                    <view class='malist-content-right'>
+                        <!-- 未领奖(已过期) -->
+                        <block wx:if="{{item.prizeStatus == 1 && item.hasExpiryed == 1}}">
+                          <view class='malist-daoqitext'>已到期</view>
+                        </block>
+                         <!-- 未领奖(未过期) -->
+                        <block wx:if="{{item.prizeStatus == 1  && item.hasExpiryed == 0}}">
+                            <view class='malist-btn' data-href='/packageActive/pages/jinyin/addr/addr?id={{item.id}}' data-id='{{item.id}}' bindtap='goMyaddr'>立即领取</view>
+                            <view class='one-line-text prizeuser-info'>请填写收奖人联系信息</view>
+                        </block>
+                        <!--  已寄出 -->
+                        <block wx:if="{{item.prizeStatus == 3}}">
+                          <view class='malist-btntext' style='color:#999'>已寄出</view>
+                          <view>{{item.sendTime}} 已发奖</view>
+                        </block>
+                        <!--  待发奖 -->
+                        <block wx:if="{{item.prizeStatus == 2}}">
+                            <view class='malist-btntext' style='color:#ff830a'>待发奖</view>
+                            <view>{{item.sendEndTime}} 前发奖</view>
+                        </block>
+                    </view>
+                    
+                  </view>
+                </view>
+                
+            </view>
+             <!-- 无数据情况 -->
+            <view class="nodata-tips" wx:else=''>
+                <image class="nodata-icon" src="http://cdn.haofang.net/static/uuweb/activity/jinyin/list/noPrizeData.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
+                <view class='desc'>
+                    <text >iPhone XS 大奖等你拿！\n点击转发免费获得抽奖机会！</text>
+                </view>
+                <button  class="nodata-share-btn" open-type="share">立即转发</button>
+            </view>
+        </scroll-view>
+    </swiper-item>
+</swiper>
+</view>
+
+<!-- 绑定号码弹层 -->
+<view wx:if="{{phoneModalFlag}}" class='phone-modal'>
+    <view class='pm-body'>
+        <view class='pm-close'>
+            <image bindtap='closePhoneModalFn' src='http://cdn.haofang.net/static/uuweb/activity/jinyin/list/phoneClose.png'></image>
+        </view>
+        <view class='pm-title'><text>手机验证</text></view>
+        <view class='pm-subtitle'><text>为方便在提现审核过程中对您身份核实，</text></view>
+        <view class='pm-subtitle' style='margin-bottom:46rpx;'><text>请提供您本人手机号！</text></view>
+        <view class='pm-input'>
+            <input type='number' data-key='forData.userPhone' bindinput="bindKeyInput" bindblur='testPhoneNum' placeholder-style='color:#aaa' placeholder='请输入手机号'></input>
+        </view>
+        <view class='pm-input pm-getphone-code'>
+            <view style='width:337rpx'><input type='number' data-key='forData.phoneCode' bindinput="bindKeyInput" placeholder-style='color:#aaa' placeholder='请输入短信验证码'></input></view>
+            <view wx:if="{{testCodeTime<1}}" bindtap='getTestCode' class='pm-getcode-text'><text>获取验证码</text></view>
+            <view wx:if="{{testCodeTime>0}}" style='color:#ccc;' class='pm-getcode-text'><text>已发送({{testCodeTime}})</text></view>
+        </view>
+        <view><button class='pm-submit'  catchtap="submitBindPhone">提交</button></view>
+    </view>
+</view>

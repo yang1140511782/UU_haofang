@@ -1,0 +1,178 @@
+.page,page{
+  padding: 0;
+  margin: 0;
+}
+.header{
+  width: 100%;
+  height: auto;
+  background: #fff;
+  top: 0;
+}
+.header-top{
+  width: 100%;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 10rpx;
+  position: relative;
+}
+.house-box{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 20rpx;
+}
+.house-img{
+  width: 160rpx;
+  height: 120rpx;
+}
+.house-img image{
+  width: 100%;
+  height: 100%;
+}
+.case-type{
+  font-size: 28rpx;
+}
+.publish-time{
+  color: #c6c6c6;
+  font-size: 26rpx;
+  padding-left: 20rpx;
+}
+.header-top .kefu{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  right: 20rpx;
+  width: 80rpx;
+  height: 38rpx;
+  color: #333;
+  font-size: 26rpx;
+  background: url("https://uuweb.haofang.net/PublicC/images/service_new.png") left center no-repeat;
+  background-size: 30rpx 30rpx;
+  padding-left: 35rpx; 
+}
+
+.house-info{
+  width: 65%;
+  padding-left: 20rpx;
+  line-height: 1.5;
+}
+.house-info .title{
+  width: 80%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 28rpx;
+}
+
+.house-info .detail{
+  font-size: 26rpx;
+  color: #999;
+}
+.house-price{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.house-price .total-price{
+  font-size: 28rpx;
+  color: red;
+}
+.track-num{
+  font-size: 25rpx;
+  right: 20rpx;
+  width: 230rpx;
+  color: #c6c6c6;
+}
+.push{
+  padding-left: 34rpx;
+  height: 100%;
+  line-height: 100%;
+  background: url("https://uuweb.haofang.net/PublicC/images/icon_ts_new.png") left center no-repeat;
+  background-size: 30rpx 30rpx;
+}
+
+.take-view{
+  padding-left: 34rpx;
+  height: 100%;
+  line-height: 100%;
+  background: url("https://uuweb.haofang.net/PublicC/images/icon_dk_new.png") left center no-repeat;
+  background-size: 30rpx 30rpx;
+  margin-left: 10rpx;
+}
+
+/**列表样式*/
+.track-list{
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #fff;
+  border-top: 1px solid #e6e6e6;
+  padding-top:20rpx;
+}
+.listItem {
+    position: relative;
+    padding-left: 40px;
+    padding-top: 4px;
+}
+.listItem:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    border-right: 1px solid #00ca85;
+    left: 19px;
+    z-index: 1;
+}
+.listItem-first:before {
+    height: 50%;
+    top: 50%;
+}
+.listItem-last:before {
+    height: 50%;
+}
+.listItem:after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #00ca85;
+    border-radius: 4px;
+    left: 16px;
+    top: 50%;
+    margin-top: -2px;
+    z-index: 1;
+}
+.listItem.highlight:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border: 4px solid #c6c6c6;
+    border-radius: 8px;
+    left: 12px;
+    -webkit-box-shadow: 0 0 0 3px #00ca85;
+    box-shadow: 0 0 0 3px #00ca85;
+    z-index: 2;
+}
+.listItem.highlight > .listItemContent {
+    color: #000;
+    font-size: 26rpx;
+}
+.listItem.highlight .listItemContent-date{
+    color: #333;
+}
+
+.listItemContent {
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 26rpx;
+}
+.listItemContent-date {
+    color: #333;
+    font-size: 26rpx;
+}

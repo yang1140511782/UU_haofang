@@ -1,0 +1,142 @@
+@import "../../template/authorizeMaskTmp.wxss";
+page{
+  margin: 0;
+  padding: 0;
+  background-color: #f6f6f6;
+}
+.content-list{
+  width: 100%;
+  overflow: hidden;
+}
+.item{
+  width: 100%;
+  height: 140rpx;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  padding: 17rpx 26rpx;
+  background-color: #fff;
+  border-bottom: 1px solid #f9f9f9;
+  transform: translateX(0rpx);
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.user-face{
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right:33rpx;
+  margin-left:12rpx;
+}
+.service{
+  width:90rpx;
+height:90rpx;
+overflow:hidden;
+margin-right:33rpx;
+box-sizing:border-box;
+
+margin-left:12rpx;
+border-radius: 6rpx;
+
+}
+.user-face image{
+  width: 100%;
+  height: 100%;
+}
+.service image{
+  width: 100%;
+  height: 100%;
+}
+.item-right{
+   width:566rpx; 
+}
+.username{
+  font-size: 28rpx;
+  letter-spacing: 1px;
+  height: 60rpx;
+  line-height: 60rpx;
+  color:#343434;
+  position: relative;
+  width:100%;
+}
+.username text{
+  position: absolute;
+  letter-spacing: normal;
+  display: inline-block;
+  top:0;
+  bottom: 0;
+  right:0;
+  font-size: 25rpx;
+  color:#999999;
+}
+.last-msg{
+  font-size: 22rpx;
+  color: #989898;
+  width: 75%;
+  height: 29rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.avatar{
+  position: relative;
+}
+.redDot{
+  width:18rpx;
+  height: 18rpx;
+  background: #fb0a00;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 999;
+  top:5rpx;
+  right:13rpx;
+}
+
+.Shield-button{
+   width: 110rpx;
+  height: 66rpx;
+  border: 1rpx #fb0a00;
+  background: url(http://lwjuuweb.hftsoft.com/Public/wxApp/images/im/shield.png)  center no-repeat;
+  background-size: 100%; 
+  position: relative;
+  float:right;
+  bottom:45rpx;
+}
+/*消息删除, 屏蔽 按钮*/
+.delete-box{
+  position: absolute;
+  right: -270rpx;
+  width: 270rpx;
+  top: 0;
+  height: 110rpx;
+  z-index: 222;
+}
+.goLeft {
+  /* right: 141rpx; */
+  transform: translateX(-270rpx);
+}
+
+
+.unblock{
+  color: white;
+  float: left;
+  text-align: center;
+  width: 170rpx;
+  height:  110rpx;
+  line-height:  110rpx;
+  letter-spacing:1px;
+  background-color:#989898; 
+}
+.delete{
+  color: white;
+  float: right;
+  width: 100rpx;
+  height:  110rpx;
+  text-align: center;
+  line-height:  110rpx;
+  letter-spacing:1px;
+  background-color:#fc4c2f;
+}

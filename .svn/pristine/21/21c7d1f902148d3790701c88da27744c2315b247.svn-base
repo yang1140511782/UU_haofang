@@ -1,0 +1,173 @@
+.top-title{
+  background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/head.jpg')no-repeat;
+  background-size: 100% 100%;
+  height:289rpx;
+  text-align: center;
+  display: none;
+}
+.top-title-show{
+  display: block;
+}
+
+.top-title>text{
+  color: #fefefe;
+}
+.top-title>.top-title-a{
+  font-size: 62rpx;
+}
+.top-title>.top-title-b{
+  font-size: 104rpx;
+  line-height: 190rpx;
+  margin-right:10rpx;
+  width: 100%;
+  position: relative;
+}
+.top-title .top-title-c{
+  font-size: 26rpx;
+  height: 36rpx;
+  line-height: 36rpx;
+  border:solid 2rpx #fff;
+  border-radius: 20rpx;
+  padding:0rpx 20rpx;
+  position:absolute;
+  top:60rpx;
+}
+.top-title>.top-title-d>text{
+  font-size: 26rpx;
+  color:#fff;
+}
+.top-title>.top-title-d>text.top-title-border{
+    padding-bottom: 2rpx;
+    border-bottom: 2rpx solid #fff;
+}
+/* nav切换 */
+.nav-wrap{
+  display: -webkit-flex;
+  width: 100%;
+  height: 80rpx;
+  border-bottom: 1px solid #eee;
+  padding: 0 60rpx;
+  box-sizing: border-box;
+}
+.nav-li{
+  width: 50%;
+  text-align: center;
+  font-size: 30rpx;
+  line-height: 80rpx;
+  color:#999;
+}
+.active{
+  border-bottom:2px solid #ff5c00;
+  color: #333;
+}
+.tab-cont{
+  flex: 1;
+}
+.scoll-h{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.ticket-box{
+  padding-left: 20rpx;
+  box-sizing: border-box;
+}
+.swiper-content{
+  padding:0px 20px;
+}
+.swiper-content-list{
+  height: 130rpx;
+  border-bottom: solid 2rpx #ededed;
+  position: relative;
+  padding-right: 72rpx;
+}
+.swiper-content-list>view:nth-child(1){
+  position: relative;top:18rpx;
+}
+.swiper-content-list>view:nth-child(1)>text{
+  font-size: 30rpx;
+  color:#333;
+  line-height: 60rpx;
+}
+.swiper-content-list>view:nth-child(2)>text{
+  font-size: 24rpx;
+  color:#999;
+}
+.swiper-content-list>text{
+  font-size: 48rpx;
+  color:#333;
+  position: absolute;
+  right: 0;
+  top:33rpx;
+}
+.material-list{
+  height: 176rpx;
+  border-bottom: solid 2rpx #ededed;
+  position: relative;
+  padding-left: 140rpx;
+}
+.malist-img{
+  position: absolute;
+  width:140rpx;
+  height: 140rpx;
+  left: 0;
+  top:0;
+  padding-top:20rpx;
+}
+.malist-img>image{
+  height:100%;
+  width: 100%;
+}
+.malist-content{
+  padding:40rpx 0rpx;
+  position: relative;
+  overflow: hidden;
+}
+.malist-content-left{
+  float: left;
+  width: 60%;
+}
+.malist-content-left>view{
+  text-align: left;
+}
+.malist-content-left>view:first-child{
+  font-size: 40rpx;
+  margin-bottom: 20rpx;
+}
+.malist-content-left>view:last-child{
+  font-size: 24rpx;
+  color:#999;
+}
+.malist-content-right{
+  float: right;
+  width: 40%;
+}
+.malist-content-right>.malist-btn{
+  float: right;
+  width: 140rpx;
+  height:46rpx;
+  font-size: 30rpx;
+  line-height: 46rpx;
+  text-align: center;
+  color:#4daaf0;
+  border-radius: 4rpx;
+  border:solid 2rpx #4daaf0;
+  margin-bottom: 20rpx;
+}
+.malist-content-right>.malist-btntext{
+  font-size: 30rpx;
+  text-align: right;
+  margin-bottom: 32rpx;
+}
+.malist-content-right>.malist-daoqitext{
+  font-size: 30rpx!important;
+  text-align: right;
+  color:#ff5700!important;
+  padding-top:26rpx;
+}
+
+.malist-content-right>view:last-child{
+  font-size: 24rpx;
+  text-align: right;
+  color:#999;
+}

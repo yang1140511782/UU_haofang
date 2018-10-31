@@ -1,0 +1,144 @@
+<view class='head'>
+  <view class='head-item' data-casetype='4' catchtap='tableClick'>
+    <view class="{{caseType == 4 ? 'head-item-current': ''}}">新房</view>
+  </view>
+  <view class='head-item' data-casetype='1' catchtap='tableClick'>
+    <view class="{{caseType ==1 ? 'head-item-current': ''}}">二手房</view>
+  </view>
+  <view class='head-item' data-casetype='2' catchtap='tableClick'>
+    <view class="{{caseType == 2 ? 'head-item-current': ''}}">整租</view>
+  </view>
+  <view class='head-item' data-casetype='3' catchtap='tableClick'>
+    <view class="{{caseType == 3 ? 'head-item-current': ''}}">合租</view>
+  </view>
+  <view class='head-item' data-casetype='5' catchtap='tableClick'>
+    <view class="{{caseType == 5 ? 'head-item-current': ''}}">公寓</view>
+  </view>
+</view>
+
+<!--  列表  -->
+<scroll-view scroll-y style="height: {{winHeight}}px;" lower-threshold="50" bindscrolltolower="lower">
+  <!-- 新房 -->
+  <view class='content' wx:if="{{listHiden}}">
+    <view class="newhouse-houseItem{{deleteBtnShow==List.buildId?' goLeft':''}}" 
+          wx:for="{{newHouseList}}" 
+          wx:key="{{index}}" 
+          catchtap='goToNewHouseDetail'
+          data-id="{{List.buildId}}" 
+          bindtouchstart="touchStart" 
+          bindtouchmove="touchMove" 
+          bindtouchend="touchEnd" 
+          wx:for-item="List" 
+          hidden='{{newHouseHidden}}'>
+      <view class='newhouse-picbox'>
+        <image src='{{List.photoAddr}}' mode='aspectFill' lazy-load='{{lazyLoad}}' />
+        <view wx:if="{{List.hotSaleHouse == 1}}" class="newhouse-hot-icon"></view>
+      </view>
+      <view class='newhouse-infobox'>
+        <view class="newhouse-housetitle">{{List.buildName}}
+          <text wx:if="{{List.buildStatus == 1}}" class='newhouse-wait'>待售</text>
+          <text wx:if="{{List.buildStatus == 2}}" class='newhouse-selling'>在售</text>
+          <text wx:if="{{List.buildStatus == 3}}" class='newhouse-soldOut'>售完</text>
+        </view>
+        <view class="newhouse-text">{{List.buildAddr}}</view>
+        <view class="newhouse-text" wx:if="{{List.roomText&&List.areaLow}}">{{List.roomText}}室 | {{List.areaLow}}-{{List.areaHigh}}㎡</view>
+        <view class='newhouse-tag'>
+          <text wx:if="{{List.buildType.length>0}}" wx:for="{{List.buildType}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">{{tagItem}}</text>
+          <text wx:if="{{List.buildFitment}}">{{List.buildFitment}}</text>
+          <text wx:if="{{List.buildTag}}">{{List.buildTag}}</text>
+        </view>
+        <view class='newhouse-price'>{{List.priceText || '价格待定'}}</view>
+      </view>
+      <!--  删除按钮  -->
+      <view class="deletebtn" data-index="{{index}}" data-id="{{List.buildId}}" data-cityid="{{List.cityId}}" data-type="{{List.caseType}}" catchtap="deletaNewHouse">
+        <view class="deleteword">删除</view>
+      </view>
+    </view>
+
+
+    <!--出租出售-->
+    <view class="sale-rent-houseItem{{deleteBtnShow==List.houseId?' goLeft':''}}" 
+          wx:for="{{saleRentList}}" 
+          wx:key="{{index}}" 
+          wx:for-item="List" 
+          catchtap="goToHouseDetail"
+          data-buildid="{{List.buildId}}"
+          data-id="{{List.houseId}}" 
+          data-cityid="{{List.cityId}}"
+          data-resource="{{List.reSource}}"
+          data-casetype="{{List.caseType}}"
+          hidden='{{saleRentHidden}}'
+          bindtouchstart="touchStart"
+          bindtouchmove="touchMove"
+          bindtouchend="touchEnd">
+      <view class='sale-rent-picbox'>
+        <image src='{{List.thumbUrl}}' mode='aspectFill' lazy-load='{{lazyLoad}}' />
+        <view class="sale-rent-tbb">
+          <view class='sale-rent-icon-vr' wx:if="{{List.hasPanorama>0}}"></view>
+          <view class='sale-rent-icon-video' wx:if="{{List.videoNum>0}}"></view>
+        </view>
+      </view>
+      <view class='sale-rent-infobox'>
+        <view class="sale-rent-housetitle">{{List.houseSubject}}</view>
+        <view class="sale-rent-text">{{List.houseRoom}}室{{List.houseHall}}厅 {{List.houseArea}}㎡ {{List.buildName}}</view>
+        <view class='sale-rent-tag' wx:if="{{List.houseTagDesc.length>0 || List.trueFlag == 1}}">
+          <view wx:if="{{List.trueFlag == 1}}" class="true_flag"></view>
+          <text wx:for="{{List.houseTagDesc}}" wx:if="{{tagItem != '真房源'}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">{{tagItem}}</text>
+        </view>
+        <view class='sale-rent-price'>{{List.houseTotalPrice}}{{caseType==1? '万': List.priceUnitCn}}
+          <text wx:if="{{caseType == 1}}">{{List.houseUnitPrice}}元/㎡</text>
+        </view>
+      </view>
+      <!--  删除按钮  -->
+      <view class="deletebtn" data-index="{{index}}" data-id="{{List.houseId}}" data-cityid="{{List.cityId}}" data-resource="{{List.reSource}}" data-type="{{List.caseType}}" catchtap="deleteDelegate">
+        <view class="deleteword">删除</view>
+      </view>
+    </view>
+
+    <!--公寓-->
+    <view class="apartment-houseItem{{deleteBtnShow==List.uuid?' goLeft':''}}" 
+          wx:for="{{apartmentList}}" 
+          wx:key="{{index}}" 
+          wx:for-item="List" 
+          data-id="{{List.uuid}}"
+          data-renttype="{{List.rentType}}"
+          data-roomuuid='{{List.roomUuid}}' 
+          catchtap='skipToDetail' 
+          bindtouchstart="touchStart" 
+          bindtouchmove="touchMove" 
+          bindtouchend="touchEnd" 
+          hidden='{{aparentHidden}}'>
+      <view class='apartment-picbox'>
+        <image src='{{List.thumbUrl}}' mode='apartment-aspectFill' lazy-load='{{lazyLoad}}' />
+        <text class='apartment-price'>{{List.monthRent + '元/月'}}</text>
+      </view>
+      <view class='apartment-infobox'>
+        <view class="apartment-text">
+          <text class='apartment-rentType'>{{List.rentType == 1? '整租':'合租'}}</text>
+          <text class='apartment-title'>{{List.hftSectionName}} {{List.hftBuildName}} {{List.bedRoomNum}}室 {{List.livingRoomNum > 0? List.livingRoomNum+ '厅': ''}} {{List.toiletNum > 0? List.toiletNum + '卫': ''}}</text>
+        </view>
+        <view class="apartment-houseSubject" wx:if="{{List.tags.length>0}}">
+          <text wx:for="{{List.tags}}" wx:for-item="item" class='apartment-pay-method' wx:if="{{item.length>0}}">{{item}}</text>
+        </view>
+
+        <!--  删除按钮  -->
+        <view class="deletebtn" data-index="{{index}}" data-id="{{List.uuid}}" data-roomuuid="{{List.roomUuid}}" data-type="{{List.rentType}}" catchtap="deletaApartment">
+          <view class="deleteword">删除</view>
+        </view>
+
+      </view>
+    </view>
+    <!--  loading  -->
+    <view id="pullUp" wx:if="{{loadingdata}}" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+      <text class="pullUpIcon"></text>
+      <text class="pullUpLabel">努力加载中...</text>
+    </view>
+    <view class="no-more-data" wx:if="{{noMoreData && !loadingdata}}">没有更多数据了！</view>
+    <view class='no-data' wx:if="{{noData&& !loadingdata}}">
+      <view class='no-data-img'>
+        <image src='http://uuweb.haofang.net/Public/wxApp/images/new_images/nodata_list_new.png' mode='aspectFill' />
+        </view>
+      <text>暂无数据记录...</text>
+    </view>
+  </view>
+</scroll-view>

@@ -1,0 +1,423 @@
+<!--trustList-->
+<!-- caseType委托信息的类型 1出售 2出租 3求购 4求租 -->
+<!--isVip": "是否是专属委托，1：是，0：否", -->
+<scroll-view enable-back-to-top='true' style="height: {{winHeight}}px;box-sizing: border-box;" scroll-y="true" bindscrolltolower="scrollBottomEvent" lower-threshold='10'>
+<block wx:for="{{listValue}}" wx:key='{{item}}' wx:for-index="idx">
+
+    <!-- 普通委托 -->
+    <view class="common-trust" wx:if="{{item.isVip==0}}">
+        <!-- 求购求租盒子 -->
+        <view class="request-rent-box{{deleteBtnShow==item.vipCaseId?' goLeft':''}}" 
+              wx:if="{{item.caseType==3||item.caseType==4}}"
+              bindtouchstart="touchStart" 
+              data-id="{{item.vipCaseId}}" 
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd" data-status="{{item.wfStatus}}">
+            <view class="trust-list-title">
+                <view class="house-type" wx:if="{{item.caseType==3}}">求购</view>
+                <view class="house-type" wx:if="{{item.caseType==4}}">求租</view>
+                <view class="house-info-con">
+                    <view wx:if="{{!!item.infoSubject && (item.infoSubject != '' && item.priceUnitCn != '')}}" class="house-price-addr">{{item.infoSubject}}{{item.priceUnitCn}}</view>
+                    <view wx:else="" class="house-price-addr">我的{{item.caseType==3?"买房":"租房"}}委托</view>
+                    <view class="house-info">
+                        <view class="house-info-tt">
+                        {{item.houseUseageCn}}
+                        {{item.houseType}}
+                        {{item.houseFitmentCn}} 
+                        <text wx:if="{{item.wfFee}}">佣金{{item.wfFee}}</text>
+                        </view>
+                    </view>
+                        <view class="create-time">发布于 {{item.infoCreateTime}}</view>
+                </view>
+            </view>
+            <!-- 经纪人信息 -->
+            <view class="agent-list-con" wx:if="{{item.entrustUsers.length>0}}" catchtap='goEntustDetail' data-rewardtype="{{item.rewardType}}" data-pushlogid="{{item2.pushLogId}}"  wx:for="{{item.entrustUsers}}" wx:key='{{index}}' wx:for-item="item2" >
+                <view class="agent-con">
+                    <view class="agent-head">
+                        <view class="agent-head-img">
+                            <image src="{{item2.brokerUserPicUrl}}" mode="aspectFill" binderror="defaultImg" data-err-img="listValue[{{idx}}].entrustUsers[{{index}}].brokerUserPicUrl"></image>
+                        </view>
+                        <!-- 红点 -->
+                        <view class="hongdain" wx:if="{{item2.isUpdateRedFlag==1}}"></view>
+                    </view>
+                    <view class="agent-info">
+                        <view class="agent-name"><text>{{item2.brokerName}}</text><text wx:if="{{item.broberComitionRage > 0}}">佣金:{{item.broberComitionRage}}</text>
+                            <view class="start-icon star-value-{{item2.starLevelClass}}"></view>
+                            <view class="staer-num">{{item2.starLevel}}</view>
+                            <view class="brober-rage">{{item2.broberComitionRage}}</view>
+                        </view>
+                        <view class="agent-start-con">
+                            <view class="pushLogTime">{{item2.pushLogTime}} 接单</view>
+                        </view>
+                        <view class="agent-note-txt" wx:if="{{item2.pushStatus==2}}">正在为您推荐房源，请耐心等待</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==5}}">推荐了{{item2.entrustHouseNum}}套房源></view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==3}}">推荐了{{item2.entrustHouseNum}}套房源【已带看】></view>
+                        <view class="agent-note-txt" wx:if="{{item2.pushStatus==7}}">房勘申请通过,即将联系您现场勘察</view>
+                        <view class="agent-note-txt" wx:if="{{item2.isEvaluate==1 && item2.pushStatus==4}}">感谢您的信任，祝您生活愉快</view>
+                        <view class="agent-note-txt" wx:if="{{item2.isEvaluate==0 && item2.pushStatus==4}}">请对本次服务做出评价></view>
+                    </view>
+                </view>
+            </view>
+            <!--委托中的框-->
+            <view class="trusting-con" data-caseType="{{item.caseType}}" data-caseId='{{item.vipCaseId}}' data-cityid='{{item.cityId}}'catchtap='goGrabDetail' wx:if="{{item.entrustUsers.length==0 && item.wfStatus==1}}">
+                <view class="trusting-icon"></view>
+                <view class="trusting-txt">全城经纪人正在抢单中</view>
+            </view>
+            <!-- 取消委托按钮 -->
+            <view class="cancle-trust-btn" data-ishezu="{{item.isHezu?item.isHezu:0}}" data-cityid="{{item.cityId}}" data-isvip="{{item.isVip}}" data-vipQueueId="{{item.vipQueueId}}" data-caseType="{{item.caseType}}"  data-caseId='{{item.vipCaseId}}' catchtap='trustBompEvent' wx:if="{{item.wfStatus==1}}"></view>
+            <!-- 成交或者取消委托的icon -->
+            <view class="success-fail-com {{item.wfStatus==2?'success-icon':''}}"></view>
+            <view class="success-fail-com {{item.wfStatus==0?'fail-icon':''}}"></view>
+            <!--删除-->
+            <view class="deletebtn"  data-vipQueueId="{{item.vipQueueId}}" catchtap="deletaNewHouse">
+                <view class="deleteword">删除</view>
+            </view>
+        </view>
+        <!-- 出租出售盒子 -->
+        <view class="request-rent-box {{deleteBtnShow==item.vipCaseId?'goLeft':''}} {{item.toSend == 1?'pb-no':''}}" 
+              bindtouchstart="touchStart" 
+              data-id="{{item.vipCaseId}}" 
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd" data-status="{{item.wfStatus}}"
+             wx:else>
+            <view class="trust-list-title">
+                <view class="house-type" wx:if="{{item.toSend==1}}">自助</view>
+                <view class="house-type" wx:else>委托</view>
+                <view class="house-info-con">
+                    <view wx:if="{{!!item.infoSubject}}" class="house-price-addr">{{item.infoSubject}}</view>
+                    <view wx:else="" class="house-price-addr">我的{{item.caseType==1?'卖房':'出租'}}委托</view>
+                    <view class="house-publish-time">发布于 {{item.infoCreateTime}}</view>
+                </view>
+            </view>
+           
+            <view class="list-box" catchtap='goHouseDetail' data-caseid='{{item.vipCaseId}}' data-cityid='{{item.cityId}}' data-status="{{item.wfStatus}}"   data-casetype='{{item.caseType}}' data-rerource='{{item.sourceType}}'>
+                <view class="list-img-box">
+                    <image src="{{item.thumbUrl}}" mode='aspectFill'></image>
+                </view>
+                <view class="house-list-info">
+                    <view class="house-price">{{item.houseTotalPrice}}{{item.priceUnitCn}}</view>
+                    <view class="house-list-type">
+                    {{item.houseUseageCn}}
+                    <text wx:if="{{item.houseRoom}}"> {{item.houseRoom}}室</text>
+                    <text wx:if="{{item.toSend== 1}}"> {{item.houseArea}}㎡</text>
+                   </view>
+                    <view class="house-list-area">
+                        <text wx:if="{{item.toSend== 1}}" class="house-list-browse">浏览{{item.browseNum}}次</text>
+                        <text wx:else="">面积: {{item.houseArea}}㎡</text>
+                        <view wx:if="{{item.toSend== 1 && item.consultationNum>0}}" catch:tap="goToNewsRecentList"
+                         data-cityId="{{item.cityId}}" data-caseType="{{item.caseType}}" data-caseId="{{item.vipCaseId}}" class="house-list-imNum">
+                        最近咨询:{{item.consultationNum |0}}人
+                            <text wx:if="{{item.consultationNum >0}}" class="house-list-im-arrow">></text>
+                        </view>
+                    </view>
+                    <!--有奖委托还差几个经纪人-->
+                    <block wx:if="{{item.caseType == 1 && item.isRewardDelegate ==1 && item.toSend != 1}}">
+                        <view class="reward-differPerson-box" wx:if="{{item.differPerson > 0}}">
+                            <view>还差<text class="color-red">{{item.differPerson}}</text>个诚意经纪人</view>
+                            <view>可获<text class="color-red">{{item.rewardMoney}}</text>元现金</view>
+                        </view>
+                        <view class="reward-differPerson-box" wx:if="{{!!item.differPerson && item.differPerson == 0}}">
+                            恭喜您获得<text class="color-red">{{item.rewardMoney}}</text>元现金，可到个人钱包去提现
+                        </view>
+                    </block>
+                   
+                </view>
+            </view>
+            <!--自助委托 无人咨询时的 提示框-->
+            <view class="zizu-no-contact-tips" wx:if="{{item.toSend == 1 && item.consultationNum == 0}}">房源登记成功！请耐心等待有买房需求的客户联系您</view>
+            <!-- 经纪人信息 -->
+            <view class="agent-list-box" wx:if="{{item.entrustUsers.length>0}}">
+                <view class="agent-list-con"  wx:for="{{item.entrustUsers}}" wx:key='{{index}}' wx:for-item="item2" wx:if="{{index<5 || !!item.showAllEntrustUsers}}" data-rewardtype="{{item.rewardType}}" catchtap='goEntustDetail' data-pushlogid="{{item2.pushLogId}}"  data-casetype="{{item.caseType}}">
+                    <view class="agent-con">
+                    <view class="agent-head">
+                        <view class="agent-head-img">
+                            <image src="{{item2.brokerUserPicUrl}}" mode="aspectFill" binderror="defaultImg" data-err-img="listValue[{{idx}}].entrustUsers[{{index}}].brokerUserPicUrl"></image>
+                        </view>
+                        <!-- 红点 -->
+                        <view class="hongdain" wx:if="{{item2.isUpdateRedFlag==1}}"></view>
+                    </view>
+                    <view class="agent-info">
+                        <view class="agent-name">{{item2.brokerName}}
+                            <!--还差多久到72小时单位秒 为空时展示 诚信经纪人标签-->
+                            <text wx:if="{{!item2.validTime && item.isRewardDelegate ==1 && item2.pushStatus != 0 }}" class="reward-val-person"></text>
+                        </view>
+                        <view class="agent-start-con">
+                            <view class="start-icon star-value-{{item2.starLevelClass}}"></view>
+                            <view class="staer-num">{{item2.starLevel}}</view>
+                        </view>
+                        <!--有奖委托 : 接单时间和成为诚信经纪人所需要的时间-->
+                        <view class="agent-val-box" wx:if="{{item.caseType == 1 && item.toSend != 1}}">
+                            <view class="agent-take-time">{{item2.pushLogTime}} 接单</view>
+                            <view class="agent-val-time" wx:if="{{!!item2.validTime && item.isRewardDelegate ==1 && item2.pushStatus != 0}}">还剩<text class="color-red">{{item2.validTime}}</text>小时成为诚意经纪人</view>
+                        </view>
+
+                        <view class="agent-note-txt" wx:if="{{item2.isEvaluate==0 && item2.requireStatus==2}}"> 请对本次服务做出评价></view>
+                        <view class="agent-note-txt" wx:if="{{item2.isEvaluate==1 && item2.requireStatus==2}}"> 感谢您的信任，祝您生活愉快</view>
+                        <view class="agent-note-txt" wx:if="{{item2.rewardStatus==2}}" >正在向您发起投诉，如有疑问可进行申诉</view>
+                        <view class="agent-note-txt" wx:if="{{item2.rewardStatus==3}}" >投诉处理完毕，投诉属实，奖励金已退还经纪人</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==2}}">正在火速赶来为您服务，请耐心等待</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==4}}">房堪申请中，希望现场了解</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==5}}">房堪申请通过，即将联系您现场勘察</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==7 && item2.requireStatus<2}}"> 正在为您介绍客户，请耐心等待</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==0}}">已拒绝该经纪人继续为您提供服务</view>
+                        
+                    </view>
+
+                    <!-- 投诉icon -->
+                    <view class="tousu-icon-icon  tousuing" wx:if="{{item2.rewardStatus==2}}"></view>
+                    <view class="tousu-icon-icon  zhifu-icon" wx:if="{{item2.rewardStatus==1||item2.rewardStatus==4}}"></view>
+                    <view class="tousu-icon-icon  tousuing-icon" wx:if="{{item2.rewardStatus==3}}">投诉结束</view>
+                    </view>
+                    <!--拒绝icon-->
+                    <view class="agent-refuse" wx:if="{{item2.pushStatus ==0}}"></view>
+                </view>
+                <!--接单超过5个人时展示更多-->
+                <view class="agent-list-show-all" data-index="{{idx}}" bindtap="showAllEntrustUsers" wx:if="{{item.entrustUsers.length >5}}">
+                    <text data-index="{{idx}}" class="down" wx:if="{{!item.showAllEntrustUsers}}">查看全部</text>
+                    <text data-index="{{idx}}" class="up" wx:else="">收起</text>
+                </view>
+            </view>
+            
+            <!--委托中的框-->
+            <view class="trusting-con" wx:if="{{item.entrustUsers.length==0 && item.toSend!=1 && item.wfStatus!=0}}" data-casetype="{{item.caseType}}" data-hezunum='{{item.isHezu}}' data-caseid='{{item.vipCaseId}}' data-cityid='{{item.cityId}}' catchtap='goGrabDetail'>
+                <view class="trusting-icon" wx:if="{{item.isHezu != 1}}"></view>
+                <view class="{{item.isHezu== 1 ? 'trusting-txt-h':'trusting-txt'}}">{{item.isHezu== 1 ? "房源登记成功！请耐心等待有合租需求的客户联系您。" : "全城经纪人正在抢单中"}}</view>
+                <!-- <view class="trusting-txt">全城经纪人正在抢单中</view> -->
+            </view>
+            <!-- 取消委托按钮 -->
+             <view class="cancle-trust-btn" data-ishezu="{{item.isHezu}}" data-isvip="{{item.isVip}}" data-vipQueueId="{{item.vipQueueId}}" data-caseType="{{item.caseType}}" data-caseId='{{item.vipCaseId}}'  data-cityid='{{item.cityId}}' catchtap='trustBompEvent' wx:if="{{item.wfStatus==1}}"></view>
+            <!-- 成交或者取消委托的icon -->
+            <view class="success-fail-com {{item.wfStatus==2?'success-icon':''}}"></view>
+            <view class="success-fail-com {{item.wfStatus==0?'fail-icon':''}}"></view>
+            <!--删除-->
+            <view class="deletebtn"  data-vipQueueId="{{item.vipQueueId}}" catchtap="deletaNewHouse">
+                <view class="deleteword">删除</view>
+            </view>
+        </view>
+    </view>
+    <!-- 专属委托 -->
+    <view class="common-trust" wx:else>
+        <!-- 求购求租盒子 -->
+        <view class="request-rent-box{{deleteBtnShow==item.vipCaseId?' goLeft':''}}" 
+              wx:if="{{item.caseType==3||item.caseType==4}}"
+              bindtouchstart="touchStart" 
+              data-id="{{item.vipCaseId}}" 
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd" data-status="{{item.wfStatus}}">
+            <view class="trust-list-title">
+                <view class="house-type" wx:if="{{item.caseType==3}}">求购</view>
+                <view class="house-type" wx:if="{{item.caseType==4}}">求租</view>
+                <view class="house-info-con">
+                    <view wx:if="{{!!item.infoSubject && (item.infoSubject != '' && item.priceUnitCn != '')}}" class="house-price-addr">{{item.infoSubject}}{{item.priceUnitCn}}</view>
+                    <view wx:else="" class="house-price-addr">我的专属委托</view>
+                    <view class="house-info">
+                      <view class='house-info-tt'>
+                        {{item.houseUseageCn}}
+                        {{item.houseType}}
+                        {{item.houseFitmentCn}} 
+                        <text wx:if="{{item.wfFee}}">佣金{{item.wfFee}}</text>
+                      </view>
+
+                        <view class="create-time">{{item.infoCreateTime}}</view>
+                    </view>
+                </view>
+            </view>
+            <!-- 经纪人信息 -->
+            <view class="agent-list-con" wx:if="{{item.entrustUsers.length>0}}" catchtap='goEntustDetail' data-rewardtype="{{item.rewardType}}" data-pushlogid="{{item2.pushLogId}}"  wx:for="{{item.entrustUsers}}" wx:key='{{index}}' wx:for-item="item2" >
+                <view class="agent-con">
+                    <view class="agent-head">
+                        <view class="agent-head-img">
+                            <image src="{{item2.brokerUserPicUrl}}" mode="aspectFill"></image>
+                        </view>
+                        <!-- 红点 -->
+                        <view class="hongdain" wx:if="{{item2.isUpdateRedFlag==1}}"></view>
+                         <!--专属经纪人的皇冠-->
+                        <view class="vip-icon"></view>
+                    </view>
+                    <view class="agent-info">
+                        <view class="agent-name">{{item2.brokerName}}<text class="vip-agent">(专属经纪人)</text></view>
+                        <view class="agent-start-con">
+                            <view class="start-icon star-value-{{item2.starLevelClass}}"></view>
+                            <view class="staer-num">{{item2.starLevel}}</view>
+                        </view>
+                        <view class="agent-note-txt" wx:if="{{item2.pushStatus==2}}">正在为您推荐房源，请耐心等待</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==5}}">推荐了{{item2.entrustHouseNum}}套房源></view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==3}}">推荐了{{item2.entrustHouseNum}}套房源【已带看】></view>
+                        <view class="agent-note-txt" wx:if="{{item2.pushStatus==7}}">房勘申请通过,即将联系您现场勘察</view>
+                        <view class="agent-note-txt" wx:if="{{item2.isEvaluate==1 && item2.pushStatus==4}}">感谢您的信任，祝您生活愉快</view>
+                        <view class="agent-note-txt" wx:if="{{item2.isEvaluate==0 && item2.pushStatus==4}}">请对本次服务做出评价></view>
+                    </view>
+                </view>
+            </view>
+            <!--委托中的框-->
+            <view class="trusting-con" data-caseType="{{item.caseType}}" data-caseId='{{item.vipCaseId}}' catchtap='goGrabDetail' wx:if="{{item.entrustUsers.length==0 && item.wfStatus==1}}">
+                <view class="trusting-icon"></view>
+                <view class="trusting-txt">全城经纪人正在抢单中</view>
+            </view>
+            <!-- 取消委托按钮 -->
+            <view class="cancle-trust-btn" data-ishezu="{{item.isHezu}}" data-isvip="{{item.isVip}}" data-vipQueueId="{{item.vipQueueId}}" data-caseType="{{item.caseType}}" data-caseId='{{item.vipCaseId}}'   data-cityid='{{item.cityId}}' catchtap='trustBompEvent' wx:if="{{item.wfStatus==1}}"></view>
+            <!-- 成交或者取消委托的icon -->
+            <view class="success-fail-com {{item.wfStatus==2?'success-icon':''}}"></view>
+            <view class="success-fail-com {{item.wfStatus==0?'fail-icon':''}}"></view>
+            <!--删除-->
+            <view class="deletebtn"  data-vipQueueId="{{item.vipQueueId}}" catchtap="deletaNewHouse">
+                <view class="deleteword">删除</view>
+            </view>
+        </view>
+        <!-- 出租出售盒子 -->
+        <view class="request-rent-box{{deleteBtnShow==item.vipCaseId?' goLeft':''}}" 
+              bindtouchstart="touchStart" 
+              data-id="{{item.vipCaseId}}" 
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd" data-status="{{item.wfStatus}}"
+             wx:else>
+            <view class="trust-list-title">
+                <view class="house-type" wx:if="{{item.caseType==1}}">出售</view>
+                <view class="house-type" wx:else>出租</view>
+                <view class="house-info-con">
+                    <view wx:if="{{!!item.infoSubject}}" class="house-price-addr">{{item.infoSubject}}</view>
+                    <view class="house-price-addr">我的专属委托</view>
+                </view>
+            </view>
+           
+            <view class="list-box" catchtap='goHouseDetail' data-caseid='{{item.vipCaseId}}' data-cityid='{{item.cityId}}'  data-status="{{item.wfStatus}}"  data-status="{{item.wfStatus}}"  data-casetype='{{item.caseType}}' data-rerource='{{item.sourceType}}'>
+                <view class="list-img-box">
+                    <image src="{{item.thumbUrl}}" mode='aspectFill'></image>
+                    <!-- 有奖委托图标 -->
+                    <view class="youjiao-icon" wx:if="{{item.rewardType==1}}"></view>
+                </view>
+                <view class="house-list-info">
+                    <view class="house-price">{{item.houseTotalPrice}}{{item.priceUnitCn}}</view>
+                    <view class="house-list-type">
+                    {{item.houseUseageCn}}
+                    <text wx:if="{{item.houseRoom}}"> {{item.houseRoom}}室</text>
+                    <text wx:if="{{item.houseHall}}"> {{item.houseHall}}厅</text>
+                    <text wx:if="{{item.houseWei}}"> {{item.houseWei}}卫</text>                
+                   </view>
+                    <view class="house-list-area">
+                        <text>面积: {{item.houseArea}}㎡</text>
+                        <text wx:if="{{item.hhouseFloors}}">楼层: {{item.hhouseFloor}}/{{item.hhouseFloors}}</text>
+                    </view>
+                </view>
+            </view>
+            <!-- 经纪人信息 -->
+            <view class="agent-list-con"  wx:if="{{item.entrustUsers.length>0}}" data-rewardtype="{{item.rewardType}}" catchtap='goEntustDetail'  data-casetype='{{item.caseType}}' data-pushlogid="{{item2.pushLogId}}"   wx:for="{{item.entrustUsers}}" wx:key='{{index}}' wx:for-item="item2">
+                <view class="agent-con">
+                    <view class="agent-head">
+                        <view class="agent-head-img">
+                            <image src="{{item2.brokerUserPicUrl}}" mode="aspectFill"></image>
+                        </view>
+                        <!-- 红点 -->
+                        <view class="hongdain" wx:if="{{item2.isUpdateRedFlag==1}}"></view>
+                         <!--专属经纪人的皇冠-->
+                        <view class="vip-icon"></view>
+                    </view>
+                    <view class="agent-info">
+                        <view class="agent-name">{{item2.brokerName}}<text class="vip-agent">(专属经纪人)</text></view>
+                        <view class="agent-start-con">
+                            <view class="start-icon star-value-{{item2.starLevelClass}}"></view>
+                            <view class="staer-num">{{item2.starLevel}}</view>
+                        </view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==2}}">正在火速赶来为您服务，请耐心等待</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==4}}">房堪申请中，希望现场了解</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==5}}">房堪申请通过，即将联系您现场勘察</view>
+                        <view class="agent-note-txt agent-note-txt-color" wx:if="{{item2.pushStatus==7 && item2.requireStatus<2}}">正在为您介绍客户，请耐心等待</view>
+                        <view class="agent-note-txt" wx:if="{{item2.isEvaluate==1 && item2.requireStatus==2}}">请对本次服务做出评价></view>
+                        <view class="agent-note-txt" wx:if="{{item2.isEvaluate==0 && item2.requireStatus==2}}">感谢您的信任，祝您生活愉快</view>
+                    </view>
+                </view>
+            </view>
+            <!--委托中的框-->
+            <view class="trusting-con" data-casetype="{{item.caseType}}" data-caseid='{{item.vipCaseId}}' data-cityid='{{item.cityId}}'catchtap='goGrabDetail' wx:if="{{item.entrustUsers.length==0 && item.wfStatus==1}}">
+                <view class="trusting-icon"></view>
+                <view class="trusting-txt">全城经纪人正在抢单中</view>
+            </view>
+            <!-- 取消委托按钮 -->
+             <view class="cancle-trust-btn" data-ishezu="{{item.isHezu}}" data-isvip="{{item.isVip}}" data-vipQueueId="{{item.vipQueueId}}" data-caseType="{{item.caseType}}" data-caseId='{{item.vipCaseId}}'  data-cityid='{{item.cityId}}' catchtap='trustBompEvent' wx:if="{{item.wfStatus==1}}"></view>
+            <!-- 成交或者取消委托的icon -->
+            <view class="success-fail-com {{item.wfStatus==2?'success-icon':''}}"></view>
+            <view class="success-fail-com {{item.wfStatus==0?'fail-icon':''}}"></view>
+            <!--删除-->
+            <view class="deletebtn"  data-vipQueueId="{{item.vipQueueId}}" catchtap="deletaNewHouse">
+                <view class="deleteword">删除</view>
+            </view>
+        </view>
+    </view>
+</block>
+<!-- 发布委托按钮 -->
+<view class="fabu-trust-icon" bindtap='fabuTrustEvent'></view>
+<!--/首页按钮-->
+<view class="index-btn"  bindtap='indexBtnEvent'></view>
+<!-- 出租出售求购求租的选项 -->
+<view class="publish-entrust" wx:if="{{publishEntrustShow}}">
+    <view class="publish-entrust-mask" bindtap='publishCancleEvent'></view>
+    <view class="publish-content">
+            <view bindtap='publishBtn' data-url="/pages/entrust/entrust?caseType=4" class="publish-li"><text class="publish-li-icon-com trust-zufang-icon">我要租房</text></view>
+            <view bindtap='publishBtn' data-url="/pages/entrust/entrust?caseType=3" class="publish-li"><text class="publish-li-icon-com trust-maifang-icon">我要买房</text></view >
+            <view bindtap='publishBtn' data-url="/pages/registration/registration?caseType=2" class="publish-li"><text class="publish-li-icon-com trust-chuzu-icon">我要出租</text></view>
+            <view bindtap='publishBtn' data-url="/pages/registration/registration?caseType=1" class="publish-li"><text class="publish-li-icon-com trust-chushou-icon">我要出售</text></view>
+            <view class="publish-li" bindtap='publishCancleEvent'>取消</view>
+    </view>
+</view>
+<!--出租出售取消委托-->
+<view class="publish-entrust" wx:if="{{rentOutShow}}">
+    <view class="publish-entrust-mask" catchtap='requestForRentEvent'></view>
+    <view class="publish-content">
+        <view class="publish-li"  catchtap='entrustEdit'><text>编辑信息</text></view >
+        <view class="publish-li" catchtap='houseFlowEvent'><text>房源跟进</text></view >
+        <view class="publish-li" catchtap='againPushEvent'><text>再次推送</text></view >
+        <view class="publish-li" catchtap='cancelTrustEvent'><text>取消委托</text></view >
+        <view class="publish-li-after"></view>
+        <view class="publish-li cancle-class" catchtap='requestForRentEvent'>取消</view>
+    </view>
+</view>
+<!--求租求购取消委托-->
+<view class="publish-entrust" wx:if="{{requestForRentShow}}">
+    <view class="publish-entrust-mask" catchtap='requestForRentEvent'></view>
+    <view class="publish-content">
+        <view class="publish-li" catchtap='againPushEvent'><text>再次推送</text></view >
+        <view class="publish-li" catchtap='cancelTrustEvent'><text>取消委托</text></view >
+        <view class="publish-li-after"></view>
+        <view class="publish-li cancle-class" catchtap='requestForRentEvent'>取消</view>
+    </view>
+</view>
+<!--没有数据显示-->
+<view class="no-data-box" wx:if="{{nodataShow}}">
+    <view class="no-data-con">
+        <view class="no-data-img"></view>
+        <view class="no-data-btn-box">
+            <view data-url="{{caseTypeMap[caseType]['url']}}"  bindtap='publishBtn' class="find-house-btn">{{caseTypeMap[caseType]['text']}}</view>
+        </view>
+    </view>
+</view>
+<!--拒绝经纪人弹窗-->
+<view wx:if="{{refuseBrokerBox}}" class="refuse-broker-box">
+    <view class="refuse-broker-content">
+    <view class="refuse-broker-header">
+        <view class="refuse-broker-tt">取消委托原因</view>
+        <view class="refuse-broker-close" catchtap='cancelBrokerEvent'></view>
+    </view>
+    <view class="refuse-broker-main">
+        <view class="reason_box">
+        <view class="reason {{ifChoosed[0] == index ||ifChoosed[1] == index ||ifChoosed[2] == index ||ifChoosed[3] == index||ifChoosed[4] == index||ifChoosed[5] == index ?'select':''}}" 
+              wx:for="{{refuseBrokerReason[cancelCaseType]}}"
+              wx:key="{{index}}" 
+              data-index="{{index}}" 
+              data-name="{{item}}" 
+              catchtap="chooseReason">{{item}}</view>
+        </view>
+        <view class="reason_box_remark">
+            <textarea placeholder="其他原因..." bindinput="cancleTextAreaEvent" placeholder-class="reason-remark-text-placeholder" maxlength="100"></textarea>
+            <view>{{reasonTextLength}}/100字</view>
+        </view>
+    </view>
+    <view class="refuse-broker-footer-line"></view>
+    <view class="refuse-broker-footer refuse-broker-submit" catchtap='confirmCancleEvent'>确认取消</view>
+    </view>
+</view>
+<!--拒绝经纪人弹窗end-->
+</scroll-view>
+
+<!-- 引入找房定位的公共模板 -->
+<import src="../../component/localCityToast/localCityToast.wxml"/>
+<template is="localCity" data="{{locateCityName}}" wx:if='{{!toastHide}}'/>

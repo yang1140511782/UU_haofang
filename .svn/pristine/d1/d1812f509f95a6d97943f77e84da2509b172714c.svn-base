@@ -1,0 +1,110 @@
+
+<!-- 二手房/租房 列表 -->
+<template name="list">
+    <navigator class='houseItem' hover-class="none" url="/pages/houseDetail/houseDetail?cityid={{cityId}}&caseid={{houseId}}&casetype={{caseType}}&resource={{reSource}}" >
+        <view class='picbox'>
+            <image src='http://cdn.haofang.net/static/uuminiapp/index/720_icon.png'  wx:if="{{hasPanorama>0}}" class='vri'/>
+            <image wx:if="{{videoNum>0 && hasPanorama==0}}" src='http://cdn.haofang.net/static/uuminiapp/index/video_icon.png'  class='vri' />
+            <image src='{{thumbUrl}}' class='bgImg' lazy-load="{{true}}" mode='aspectFill'  />
+        </view>
+        <view class='infobox'>
+            <view class="housetitle">{{houseSubject}}</view>
+            <!-- 房源样式调整 -->
+            <view class="text" wx:if="{{houseUseage==1}}" >{{houseRoom >0? houseRoom + '室': ''}}{{houseHall>0?houseHall+ '厅 ': ''}}{{houseArea>0? houseArea+'㎡ ':''}}{{buildName}}</view>
+            <view class="text" wx:else="">{{houseUseageCn}}</view>
+            <view class='tag' wx:if="{{houseTagDesc.length>0 || trueFlag == 1}}">
+                <view wx:if="{{trueFlag == 1}}" class="true_flag"></view>
+                <block wx:for="{{houseTagDesc}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">
+                    <view wx:if="{{tagItem == '房租月付'}}" class="month_flag">{{tagItem}}</view>
+                    <view wx:if="{{tagItem == '业主房源'}}" class="owner_flag">{{tagItem}}</view>
+                    <text wx:elif="{{!!tagItem}}">{{tagItem}}</text>
+                </block>
+            </view>
+            <view class='price' wx:if="{{caseType == 1}}">{{houseTotalPrice}}万<text>{{houseUnitPrice}}元/㎡</text></view>
+            <view class='price' wx:else="">{{houseTotalPrice}}<text>{{priceUnitCn}}</text></view>
+            <view class='top' wx:if="{{competePriceFlag == 1}}">置顶</view>
+        </view>
+    </navigator>
+</template>
+<!-- 二手房/租房 列表/ -->
+
+<!-- 二手房插入的 旅居列表 caseType==9 / -->
+<template name="saleLvjuList">
+    <navigator class='houseItem' data-type="{{caseType}}" url="/pages/posterDetail/posterDetail?cityId={{cityId}}&buildId={{buildId}}">
+        <view class='picbox'>
+            <!-- 旅居地产标识 -->
+            <view id="tour"></view>
+            <image src='{{thumbUrl}}' class='bgImg' lazy-load="{{true}}" mode='aspectFill'  />
+        </view>
+        <view class='infobox'>
+            <view class="housetitle" >{{buildName}}
+                <text wx:if="{{buildStatus == 1}}" class='wait'>待售</text>
+                <text wx:if="{{buildStatus == 2}}" class='selling'>在售</text>
+                <text wx:if="{{buildStatus == 3}}" class='soldOut'>售罄</text>
+            </view>
+            <!-- 房源样式调整 -->
+            <view class="text">{{buildAddr}}</view>
+            <view class='tag newTag' wx:if="{{houseTagDesc.length>0}}">
+                <text wx:for="{{houseTagDesc}}" wx:key="{{i}}" wx:for-item="tagItem">{{tagItem}}</text>
+            </view>
+            <view class='price'>{{priceText||'价格待定'}}</view>
+        </view>
+    </navigator>
+</template>
+
+<!-- 二手房插入的 新房列表 caseType==6 -->
+<template name="saleNewHouseList">
+    <navigator class='houseItem' hover-class="none" url="/pages/newHouseDetail/newHouseDetail?cityid={{cityId}}&buildid={{buildId}}">
+        <view class='picbox'>
+            <!-- 热销新房标识 -->
+            <view id="new"></view>
+            <image src='{{thumbUrl}}' class='bgImg' lazy-load="{{true}}" mode='aspectFill'  />
+        </view>
+        <view class='infobox'>
+            <view class="housetitle">{{buildName}}
+                <text wx:if="{{buildStatus == 1}}" class='wait'>待售</text>
+                <text wx:if="{{buildStatus == 2}}" class='selling'>在售</text>
+                <text wx:if="{{buildStatus == 3}}" class='soldOut'>售罄</text>
+            </view>
+            <!-- 房源样式调整 -->
+            <view class="text">{{buildAddr}}</view>
+            <view class='tag' wx:if="{{houseTagDesc.length>0}}">
+                <text wx:for="{{houseTagDesc}}" wx:key="{{i}}" wx:for-item="tagItem">{{tagItem}}</text>
+            </view>
+            <view class='price'>{{priceText||'价格待定'}}</view>
+        </view>
+    </navigator>
+</template>
+
+
+<!-- 新房列表/ -->
+<template name="newHouseList">
+    <navigator class='newhouseItem' hover-class="none" url="/pages/newHouseDetail/newHouseDetail?cityid={{cityId}}&buildid={{buildId}}">
+      <view class='picbox'>
+        <image src='{{photoAddr}}' mode='aspectFill' />
+        <view wx:if="{{hotSaleHouse == 1}}" class="newhouse-hot-icon"></view> 
+      </view>
+      <view class='infobox'>
+        <view class="housetitle">
+            <text class='buildNamebox'>{{buildName}}</text>
+            <text wx:if="{{buildStatus == 1}}" class='wait text'>待售</text>
+            <text wx:if="{{buildStatus == 2}}" class='selling text'>在售</text>
+            <text wx:if="{{buildStatus == 3}}" class='soldOut text'>售罄</text>
+        </view>
+        <view class="text">{{buildAddr}}</view>
+        <view class="text" wx:if="{{roomText&&areaLow}}">{{roomText}}室 | {{areaLow}}-{{areaHigh}}㎡</view>
+        <view class='tag'>
+          <text  wx:for="{{buildTagArr}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">{{tagItem}}</text>
+        </view>
+        <view class='price' wx:if="{{priceNumText}}">{{priceNumText}}<text>{{priceUnitText}}</text></view>
+        <view class='price' style="font-size:27rpx;" wx:else>价格待定</view>
+      </view>
+    </navigator>
+</template>
+
+<!-- 公寓列表:暂时不需要 -->
+<template name="apartmentList">
+
+</template>
+<!-- 公寓列表/ -->
+

@@ -1,0 +1,390 @@
+/* pages/focusCollect/focusCollect.wxss */
+
+/* 引入列表样式 */
+@import "../../../template/listTmp.wxss";
+
+/*page*/
+page {
+  font-size: 28rpx;
+  font-family: "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "微软雅黑", 'Segoe UI', Tahoma, "宋体b8b\4f53", SimSun, sans-serif;
+}
+
+.textOverHidden {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#app {
+  background: #ffffff;
+  color: #333333;
+}
+
+#app .common-tt {
+  padding: 50rpx 0 50rpx 40rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+#app .follow-one {
+  display: flex;
+  padding-left: 40rpx;
+  align-items: center;
+}
+
+#app .follow-one .head {
+  width: 120rpx;
+  height: 120rpx;
+  background: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/default_head.png) center center no-repeat;
+  background-size: 100% 100%;
+  margin-right: 30rpx;
+  border-radius: 100%;
+  overflow: hidden;
+}
+#app .follow-one .head image{
+  width: 100%;
+  height: 100%;
+}
+#app .follow-one .info {
+  flex: 1;
+}
+
+#app .follow-one .info .name-box {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+#app .follow-one .info .name-box .name {
+  font-weight: bold;
+  font-size: 38rpx;
+  color: #333;
+}
+
+#app .follow-one .info .name-box .icon {
+  margin-left: 13rpx;
+  color: #67778d;
+  font-size: 22rpx;
+  padding: 4rpx 7rpx;
+  border: solid 1rpx #67778d;
+  border-radius: 4rpx;
+}
+
+#app .follow-one .info .dept {
+  color: #888;
+  margin-bottom: 12rpx;
+  line-height: 1;
+}
+
+#app .follow-one .info .server-reg {
+  color: #888;
+  line-height: 1;
+}
+
+#app .follow-one .line-bord {
+  height: 1rpx;
+  width: 1rpx;
+  background: #e6e6e6;
+}
+
+#app .follow-one .score {
+  width: 195rpx;
+  text-align: center;
+}
+
+#app .follow-one .score .num {
+  color: #ff7200;
+  font-size: 66rpx;
+  font-weight: bold;
+  margin-bottom: 15rpx;
+  line-height: 1;
+}
+
+#app .follow-one .score .desc {
+  color: #666;
+  font-size: 26rpx;
+}
+
+#app .follow-list-box {
+  padding-right: 40rpx;
+}
+
+#app .follow-list {
+  padding-left: 40rpx;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#app .follow-list .section {
+  width: 200rpx;
+  height: 260rpx;
+  box-shadow: 0rpx 0rpx 20rpx 0rpx rgba(194, 194, 194, 0.3);
+  border-radius: 6rpx;
+  border: solid 1rpx #f2f2f2;
+  padding-top: 17rpx;
+  box-sizing: border-box;
+  margin-right: 18rpx;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+#app .follow-list .section .head {
+  position: relative;
+  width: 120rpx;
+  height: 120rpx;
+  
+  margin-bottom: 25rpx;
+  background: url(http://cdn.haofang.net/static/uuweb/buildingBook/housingLongFigure/default_head.png) center center no-repeat;
+  background-size: 100% 100%;
+}
+#app .follow-list .section .head image{
+  width: 100%;height: 100%;
+  border-radius: 100%;
+  overflow: hidden;
+}
+#app .follow-list .section .head .icon{
+  position: absolute;width: 104rpx;height: 37rpx;bottom: -6rpx;left: 50%;margin-left: -52rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/focusCollect/xqzj_icon.png) center bottom no-repeat;
+  background-size: 100% 100%;
+}
+
+#app .follow-list .section .name {
+  color: #333;
+  font-size: 30rpx;
+  line-height: 1;
+  margin-bottom: 17rpx;
+  font-weight: bold;
+}
+
+#app .follow-list .section .join-btn {
+  color: #597192;
+  font-size: 22rpx;
+}
+
+#app .follow-list .section .join-btn::after{
+  content: '';
+  position: relative;
+  display: inline-block;
+  width: 10rpx;
+  height: 18rpx;
+  margin-left: 8rpx;
+  vertical-align: middle;
+  background: url(http://cdn.haofang.net/static/uuminiapp/focusCollect/left_arrow.png) center center no-repeat;
+  background-size: 100% 100%;
+}
+
+#app .collet-list-box {
+  padding: 0 40rpx 20rpx 0;
+  position: relative;
+}
+
+#app .collet-list {
+  padding-left: 40rpx;
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#app .collet-list .section {
+  width: 600rpx;
+  margin-right: 28rpx;
+  flex-shrink: 0;
+  /* overflow-y: hidden; */
+}
+
+#app .collet-list .section .pic-box {
+  position: relative;
+  width: 600rpx;
+  height: 396rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+  background: #f8f8f8 url(http://cdn.haofang.net/static/uuminiapp/default/detail_deafault.png) no-repeat center center;
+  background-size: 60%;
+}
+
+#app .collet-list .section .pic-box image{
+  width: 100%;height: 100%;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+#app .collet-list .section .pic-box .icon{
+  position: absolute;
+  z-index: 1;
+  width: 115rpx;height: 115rpx;
+  left: 0;
+  top: 0;right: 0;bottom: 0;
+  margin: auto;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#app .collet-list .section .pic-box .icon.vr-icon{
+  background-image: url(http://cdn.haofang.net/static/uuminiapp/index/720_icon.png);
+}
+#app .collet-list .section .pic-box .icon.vd-icon{
+  background-image: url(http://cdn.haofang.net/static/uuminiapp/index/video_icon.png);
+}
+
+#app .collet-list .section .title {
+  margin-top: 24rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  white-space: nowrap;
+  /* line-height: 1; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#app .collet-list .section .tags {
+  margin-top: 10rpx;
+}
+
+#app .collet-list .section .tags text {
+  font-size: 18rpx;
+  display: inline-block;
+  line-height: 1;
+  color: #1bc964;
+  background: #e1f7e8;
+  padding: 6rpx 6rpx 4rpx;
+  border-radius: 30rpx;
+  margin-right: 8rpx;
+}
+#app .collet-list .section .tags .tag-icon{
+  display: inline-block;
+}
+
+#app .collet-list .section .tags text.tag-icon:nth-of-type(4n+1) {
+  color: #18acf0;
+  background: #ddf3fd;
+}
+
+#app .collet-list .section .tags text.tag-icon:nth-of-type(4n+2) {
+  color: #ff9600;
+  background: #fff1dc;
+}
+
+#app .collet-list .section .tags text.tag-icon:nth-of-type(4n+3) {
+  color: #f3685f;
+  background: #fde8e7;
+}
+
+#app .collet-list .section .tags text.tag-icon:nth-of-type(4n+4) {
+  color: #1bc964;
+  background: #ddf7e8;
+}
+
+#app .collet-list .section .tags .tag-icon-gy{
+  font-size: 18rpx;
+  display: inline-block;
+  line-height: 1;
+  padding: 6rpx 6rpx 4rpx;
+  border-radius: 30rpx;
+  margin-right: 8rpx;
+  background-color: #ff8a00;
+  color: #fff;
+}
+
+#app .collet-list .section .tags .true_flag {
+  position: relative;
+  display: inline-block;
+  top: 5rpx;
+  width: 81rpx;
+  padding-top: 21rpx;
+  background: url(http://uuweb.haofang.net/Public/wxApp/images/index/true_house_flag.png) center bottom no-repeat;
+  background-size: 81rpx 21rpx;
+  height: 38rpx;
+  line-height: 19rpx;
+  padding: 0;
+  margin-right: 10rpx;
+}
+
+#app .collet-list .section .tags .owner_flag,
+#app .collet-list .section .tags .month_flag {
+  font-size: 18rpx;
+  display: inline-block;
+  line-height: 1;
+  padding: 6rpx 6rpx 4rpx;
+  border-radius: 30rpx;
+  margin-right: 8rpx;
+  color: #ff580a !important;
+  background: #ffeade !important;
+}
+
+#app .collet-list .section .desc {
+  margin-top: 16rpx;
+  color: #999999;
+  font-size: 24rpx;
+}
+
+#app .collet-list .section .price-box {
+  margin-top: 20rpx;
+  display: flex;
+  align-items: flex-end;
+}
+
+#app .collet-list .section .price-box .pirce-text {
+  color: #ff5400;
+  font-size: 34rpx;
+  font-weight: bold;
+}
+
+#app .collet-list .section .price-box .average-price {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 5rpx;
+}
+
+/* 我浏览的房源 */
+#app .history-list{}
+#app .history-list .date-tt {
+  padding: 22rpx 0 0 40rpx;
+  font-size: 20rpx;
+  color: #999;
+}
+#app .history-list .tag .tag-icon-gy {
+  font-size: 18rpx;
+  display: inline-block;
+  line-height: 1;
+  padding: 6rpx 6rpx 4rpx;
+  border-radius: 30rpx;
+  margin-right: 8rpx;
+  background-color: #ff8a00;
+  color: #fff;
+}
+#app .history-list .newhouseItem .infobox .price{
+  font-weight: bold;
+}
+
+/* 无数据情况 */
+#app .nodata{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+#app .nodata .content {}
+#app .nodata .content image{
+  width:283rpx;
+  height:287rpx;
+  margin:0 auto;
+}
+#app .nodata .content .text{
+  font-size:28rpx;
+  color:#999;
+  text-align: center;
+  margin: 20rpx auto 0;
+}

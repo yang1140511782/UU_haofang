@@ -1,0 +1,430 @@
+// pages/collect/collect.js
+var app = getApp();
+var api = require('../../utils/common.js');
+
+/**
+ * 滑动事件所需参数
+ */
+var touchDot = 0;    //触摸时的原点 
+var time = 0;        // 时间记录，用于滑动时且时间小于1s则执行左右滑动 
+var interval = "";   // 记录/清理时间记录
+
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    winHeight: 0,       //屏幕高度
+    requestUrl: app.buildRequestUrl('collect'),
+    deleteCollect: app.buildRequestUrl('addOrDeleteCollectUrl'),
+    collectApartment: app.buildRequestUrl('collectApartment'),
+    userId: null,
+    cityId: null,
+    caseType:4,
+    pageNum:1,
+    newHouseList:[],    //新房
+    newHouseHidden: false,
+    saleRentList: [],   //出租|出售
+    saleRentHidden: true,
+    apartmentList: [],  //公寓
+    aparentHidden: true,
+    listHiden: true,
+    ajaxListTag: true,
+    loadingdata: true,  //正在加载数据
+    noMoreData: true,  //没有更多数据
+    //动画
+    animationData: {},
+    //当前在前端删除的委托个数
+    ourDelete: 0,
+    deleteBtnShow: '',   //当前处于删除状态的房源ID
+    noData: false,      //没有数据显示
+    lazyLoad: true      //懒加载
+  },
+
+  /**
+   * 触摸开始事件
+   */
+  touchStart(e) {
+    touchDot = e.touches[0].pageX; // 获取触摸时的原点 
+    // 使用js计时器记录时间  
+    interval = setInterval(function () {
+      time++;
+    }, 100);
+  },
+
+  /**
+   * 触摸移动事件
+   */
+  touchMove(e) {
+    var id = e.currentTarget.dataset.id;
+    var that = this;
+    var touchMove = e.touches[0].pageX;
+    // 向左滑动 
+    if (touchMove - touchDot <= -40 && time < 10) {
+      that.setData({
+        deleteBtnShow: id
+      })
+    }
+    // 向右滑动 
+    if (touchMove - touchDot >= 40 && time < 10) {
+      that.setData({
+        deleteBtnShow: ''
+      })
+    }
+  },
+
+  /**
+  * 触摸结束事件
+  */
+  touchEnd(e) {
+    clearInterval(interval); // 清除setInterval 
+    time = 0;
+  },
+
+  /**
+   * 删除收藏(二手房,整租,合租)
+   */
+  deleteDelegate(e){
+    wx.showLoading({
+      title: '删除中',
+    });
+    var that = this;
+    var index = e.currentTarget.dataset.index;
+    var cityId = e.currentTarget.dataset.cityid;
+    var id = e.currentTarget.dataset.id;
+    var caseType = e.currentTarget.dataset.type;
+    var reSource = e.currentTarget.dataset.resource;
+    var requestUrl = this.data.deleteCollect;
+    var params = {
+      userId: that.data.userId,
+      caseId: id,
+      caseType: caseType,
+      cityId: app.globalData.cityId,
+      reSource: reSource,
+    };
+    api.getList(requestUrl, params).then(res => {
+      var arr = that.data.saleRentList;
+      arr.splice(index,1);
+      that.setData({
+        saleRentList: arr
+      });
+      wx.hideLoading();
+      if (arr.length == 0) {
+        that.setData({
+          noData: true,
+          noMoreData: false
+        });
+      };
+    });
+  },
+
+  /**
+   * 删除收藏(新房)
+   */
+  deletaNewHouse(e){
+    wx.showLoading({
+      title: '删除中',
+    });
+    var that = this;
+    var index = e.currentTarget.dataset.index;
+    var cityId = e.currentTarget.dataset.cityid;
+    var id = e.currentTarget.dataset.id;
+    var caseType = e.currentTarget.dataset.type;
+    var requestUrl = this.data.deleteCollect;
+    var params = {
+      userId: that.data.userId,
+      caseId: id,
+      caseType: caseType,
+      cityId: cityId,
+      reSource: 6,
+    };
+    api.getList(requestUrl, params).then(res => {
+      var arr = that.data.newHouseList;
+      arr.splice(index, 1);
+      that.setData({
+        newHouseList: arr
+      });
+      wx.hideLoading();
+      if (arr.length == 0) {
+        that.setData({
+          noData: true,
+          noMoreData: false
+        });
+      } else if (arr.length < 4) {
+        that.setData({
+          noMoreData: false
+        });
+      };
+    });
+  },
+
+  /**
+   * 删除公寓
+   */
+  deletaApartment(e){
+    wx.showLoading({
+      title: '删除中',
+    });
+    var that = this;
+    var index = e.currentTarget.dataset.index;
+    var rentType = e.currentTarget.dataset.type;
+    var requestUrl = this.data.collectApartment;
+    if (rentType == 2){
+      //合租
+      var id = e.currentTarget.dataset.roomuuid;
+      var params = {
+        youyouUserId: that.data.userId,
+        uuid: id,
+        rentType: rentType,
+      };
+    } else {
+      var id = e.currentTarget.dataset.id;
+      var params = {
+        youyouUserId: that.data.userId,
+        uuid: id,
+        rentType: rentType,
+      };
+    }
+
+    api.getList(requestUrl, params).then(res => {
+      var arr = that.data.apartmentList;
+      arr.splice(index, 1);
+      that.setData({
+        apartmentList: arr
+      });
+      wx.hideLoading();
+      if (arr.length == 0) {
+        that.setData({
+          noData: true,
+          noMoreData: false
+        });
+      };
+    });
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    app.checkLogin();//登录验证
+    var that = this;
+    this.setData({ cityId: app.globalData.cityId, userId: wx.getStorageSync('userId')});
+    that.setData({
+      locateCityId: wx.getStorageSync('cityId')
+    });
+    //获取设备屏幕高度
+    try {
+      var res = wx.getSystemInfoSync()
+      that.setData({
+        winHeight: res.windowHeight
+      });
+    } catch (e) {
+      console.log('获取屏幕高度失败')
+    };
+  },
+  /**
+   * 获取列表数据
+   */
+  getListData: function(){
+    var that = this,
+        requestUrl = that.data.requestUrl,
+        caseType = that.data.caseType,
+        params = {
+          youyouUserId: that.data.userId,
+          caseType: caseType,
+          cityId: that.data.locateCityId,
+          pageNum: that.data.pageNum,
+        };
+
+    that.setData({
+      ajaxListTag: false,
+      loadingdata: true,
+      noData : false,
+    });
+
+    api.getList(requestUrl, params).then(res=>{
+      console.log(res);
+      res = res.DATA.list;
+      if (caseType == 4){
+        //新房
+        var newHouseArr = [];
+        res.map(function (ele, i) {
+          if (ele['buildType']) {
+            ele['buildType'] = ele['buildType'].split(',');
+          };
+          if (ele.cityId == that.data.locateCityId) {
+            newHouseArr.push(ele);
+          };
+        });
+        that.setData({
+          newHouseHidden: false,
+          newHouseList: newHouseArr,
+          saleRentHidden: true,
+          aparentHidden: true,
+          loadingdata: false
+        });
+        res = newHouseArr;
+      } else if (caseType == 5) {
+        //公寓
+        res.map(function (ele, i) {
+          ele['tags'] = ele['tags'].split(',');
+        });
+        that.setData({
+          newHouseHidden: true,
+          apartmentList: res,
+          saleRentHidden: true,
+          aparentHidden: false,
+          loadingdata: false
+        });
+      } else {
+        //出租出售
+        res.map(function (ele) {
+          if (ele['houseTagDesc']) {
+            ele['houseTagDesc'] = ele['houseTagDesc'].split('|');
+          };
+          for (var i = 0; i < ele['houseTagDesc'].length; i++) {
+            if (ele['houseTagDesc'][i] == '' || ele['houseTagDesc'][i] == null || typeof (ele['houseTagDesc'][i]) == undefined) {
+              ele['houseTagDesc'].splice(i, 1);
+              i = i - 1;
+            }
+          };
+        });
+        that.setData({
+          newHouseHidden: true,
+          saleRentList: res,
+          saleRentHidden: false,
+          aparentHidden: true,
+          loadingdata: false
+        });
+      }
+
+      if (res.length == 0){
+        that.setData({
+          noData: true,
+          noMoreData: false
+        });
+      } else if (res.length < 4) {
+        that.setData({
+          noMoreData: false
+        });
+      };
+    })
+  },
+  /**
+   * 切换收藏源
+   */
+  tableClick: function(e){
+    var caseType = e.currentTarget.dataset.casetype;
+    this.setData({
+      caseType:caseType
+    });
+    this.getListData();
+  },
+  /**
+     * 列表滑动到底部加载更多
+     */
+  lower() {
+    if (this.data.ajaxListTag) {
+      var pageNum = this.data.pageNum;
+      pageNum++;
+      this.setData({
+        pageNum: pageNum,
+        listHiden: false
+      })
+      this.getListData(true);
+    }
+  },
+
+  /**
+   * 点击房源,进入新房详情页
+   */
+  goToNewHouseDetail(e) {
+    var id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../newHouseDetail/newHouseDetail?buildid=' + id
+    });
+  },
+
+  /**
+   * 点击出租出售, 进入详情页
+   */
+  goToHouseDetail(e) {
+    var caseId = e.currentTarget.dataset.id;
+    var cityId = e.currentTarget.dataset.cityid;
+    var reSource = e.currentTarget.dataset.resource;
+    var caseType = e.currentTarget.dataset.casetype;
+    var buildid = e.currentTarget.dataset.buildid;
+    wx.navigateTo({
+      url: "../houseDetail/houseDetail?casetype=" + caseType + "&resource=" + reSource + "&cityid=" + cityId + '&caseid=' + caseId
+    });
+
+  },
+
+  /**
+   * 公寓,跳转至详情
+   */
+  skipToDetail: function (e) {
+    var apartmentUuid = e.currentTarget.dataset.id;
+    var roomuuid = e.currentTarget.dataset.roomuuid;
+    var rentType = e.currentTarget.dataset.renttype;
+    var url = '';
+    if (rentType == 2) {
+      url = '/pages/apartmentDetail/apartmentDetail?apartmentUuid=' + apartmentUuid + '&roomUuid=' + roomuuid + '&rentType=2';
+    } else {
+      url = '/pages/apartmentDetail/apartmentDetail?apartmentUuid=' + apartmentUuid + '&rentType=1';
+    }
+    wx.navigateTo({
+      url: url,
+    });
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    var that=this;
+   that.getListData();
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+  
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+  
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+  
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
+  }
+})

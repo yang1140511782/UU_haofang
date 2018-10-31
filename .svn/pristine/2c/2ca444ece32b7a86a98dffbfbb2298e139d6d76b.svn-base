@@ -1,0 +1,30 @@
+<view class='content-list'>
+  <view class='item' wx:for="{{contacts}}" data-to='{{item.id}}' 
+              bindtap='goIm'
+              bindtouchstart="touchStart" 
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd"  wx:key="{{index}}">
+    <!--头像-->
+    <view class="avatar">
+      <view class='{{item.id=="618239"?"service":"user-face"}}'>
+        <image src='{{item.photo}}' mode='aspectFill' style='border-radius:50%;'></image>
+        <!--  红点  -->
+        <view class="redDot" wx:if="{{item.unread}}"></view>
+      </view>
+    </view>
+    <!--姓名和最后一条消息-->
+    <view class='item-right'>
+      <view class='username'>{{item.name}}<text>{{item.time}}</text></view>
+      <view class='last-msg'>{{item.msg}}</view>
+      <view class='Shield-button' wx:if="{{item.isShield == 1}}"></view>
+    </view>
+    <view class='delete-box'>
+       <view class='unblock'>解除屏蔽</view>
+       <view class='delete'>删除</view>
+    </view>
+  </view>
+</view>
+
+<!-- 添加授权蒙层 -->
+<import src="../../template/authorizeMaskTmp.wxml"/>
+<template is="authorizeMask" data="{{userInfo}}"></template>

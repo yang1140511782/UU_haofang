@@ -1,0 +1,329 @@
+<import src="../../utils/wetoast.wxml"/>
+
+<view id="app" class="publish-flow-{{publishFlow}}{{publishFlow==8?' absolute':''}}">
+    <!-- 顶部banner -->
+        <view wx:if="{{publishFlow ==1}}" class="top-banner"><image  src="https://uuweb.haofang.net/Public/wxApp/images/entrustImg/banner.png" alt=""></image></view>
+        <view wx:if="{{publishFlow >=2 && publishFlow<=6}}" class="top-banner"><image  src="https://uuweb.haofang.net/Public/wxApp/images/entrustImg/banner2.png" alt=""></image></view>
+        <view wx:if="{{publishFlow ==7}}" class="top-banner top-three"><image  src="https://uuweb.haofang.net/Public/wxApp/images/entrustImg/banner5_new.png" alt=""></image></view>
+        <view wx:if="{{publishFlow ==8}}" class="top-banner top-four"><image  src="https://uuweb.haofang.net/Public/wxApp/images/entrustImg/banner6_new.png" alt=""></image></view>
+        <!-- <view wx:else="" class="top-banner top-banner-vip"><image  src="https://uuweb.haofang.net/PublicC/images/publish/index/top-banner-vip.png" alt=""></image></view> -->
+
+    <!--购房需求-->
+        <view wx:if="{{publishFlow == '8'}}" class="needs-box">
+            <view class="needs-top">
+                <view class="needs-top-bg"></view>
+                <view class="needs-top-m">我的找房条件</view>
+                <view class="needs-top-bg"></view>
+            </view>
+            <view class="needs-list">
+                <view wx:for="{{needsList}}"
+                      wx:key="{{item}}"
+                      wx:if="{{(houseUseage != 3 && houseUseage != 4) ||  item.needsFlow != 4}}" 
+                      data-flow="{{item.needsFlow}}"
+                      bindtap="needsEditTap" 
+                      class="needs-li region-needs-li">
+                    <view wx:if="{{caseType==3}}" class="needs-li-tt">{{item.needsName3}}</view>
+                    <view wx:else="" class="needs-li-tt">{{item.needsName4}}</view>
+                    <text></text>
+                    <view wx:if="{{item.needsValue.length > 0}}" class="needs-li-text">{{item.needsValue}}</view>
+                    <view wx:else="" class="needs-li-text needs-li-text-gray">{{item.defaultTips}}</view>
+                </view>
+                <!--详情页:群发找好房 添加意向房源内容项展示-->
+                <view wx:if="{{intenteHouse != ''}}" class="needs-li region-needs-li intente-needs-li">
+                    <view class="needs-li-tt">意向房源</view>
+                    <text></text>
+                    <view class="needs-li-text">{{intenteHouse}}</view>
+                </view>
+            </view>
+        </view>
+    <!--购房需求end-->
+
+    <!-- part2 区域选择 -->
+    <view wx:if="{{publishFlow == 1}}" class="filter-box region-box">
+        <view wx:if="{{caseType==3}}" class="filter-tt filter-ttb"><view class="filter-tt-text">您想买哪里的房子？</view></view>
+        <view wx:else="" class="filter-tt filter-ttb"><view class="filter-tt-text">您想租哪里的房子？</view></view>
+      
+      <view class='area-wraper'>
+        <view wx:for="{{regList}}" wx:for-item="regItem" wx:key="{{item}}" wx:for-index="regIndex" class="area-section">
+          <view class="reg-list">
+            <view wx:for="{{regItem}}" wx:key="{{item}}" class="reg-li {{item.REG_ID==houseRegion?'select':''}}" data-name="{{item.REG_NAME}}" data-id="{{item.REG_ID}}" data-index="{{item.index}}" bindtap="regTap" >{{item.REG_NAME}}</view>
+          </view>
+          <view class="section-list" wx:if="{{(regIndex == regIndexId)&&(sectionBoxShow)}}"  data-index="{{regIndex}}" >
+            <!-- <view class="leftline"></view>
+            <view class="rightline"></view> -->
+            <view class="section-li-box">
+              <view class="section-ul">
+                <view wx:for="{{indexSectionList}}" wx:key="{{item}}" data-name="{{item[0]}}"  data-id="{{item[1]}}" bindtap="sectionTap"
+                class="section-li {{(item[1]==sectionSelectArr[0] || item[1]==sectionSelectArr[1] || item[1]==sectionSelectArr[2])?'select':''}}" >{{item[0]}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="filter-bb"></view>
+    </view>
+    <!-- /part2 区域选择-->
+
+     <!-- 您想买什么样的房子 -->
+    <block wx:if="{{publishFlow >= 2 && publishFlow <= 6}}" >
+        <view class='block-box'>
+            <!--悬浮按钮-->
+            <view class="arrow-up"></view>
+
+        <!--选择标题-->
+            <view wx:if="{{caseType==3}}" class="filter-tt filter-ttb"><view class="filter-tt-text new-ti">您买什么样的房子？</view></view>
+            <view wx:else="" class="filter-tt filter-ttb"><view class="filter-tt-text">您租什么样的房子？</view></view>
+        <view class='net-wrap'>
+        <!-- 房屋类型筛选 -->
+        <view class="filter-box useage-box">
+            <view wx:if="{{caseType==3}}" class="filter-tt filter-ttaa"><view class="filter-tt-text new-txt">您想买的房屋类型？</view></view>
+            <view wx:else="" class="filter-tt filter-ttaa"><view class="filter-tt-text new-txt">您想租的房屋类型？</view></view>
+            <view class="type-list">
+                <view class="type-ul">
+                    <view wx:for="{{useageMap}}" wx:key="{{item}}" bindtap="useageTap" class="type-li {{item.id==houseUseage?'select':''}}"
+                     data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                </view>
+            </view>
+        </view>
+        <!-- 房屋装修筛选 -->
+        <view class="filter-box fitment-box">
+            <!--选择标题-->
+            <view class="filter-tt filter-mb"><view class="filter-tt-text new-txt">您对装修的要求？</view></view>
+            <view class="type-list">
+                <!--7装修不限、5豪装、4精装、2简装、1毛坯-->
+                <view class="type-ul">
+                    <view wx:for="{{fitmentMap}}" wx:key="{{item}}" bindtap="fitmentTap" class="type-li {{item.id==houseFitment?'select':''}}"
+                     data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                </view>
+            </view>
+        </view>
+        <!-- 房屋户型筛选: 房屋类型为 商铺或写字楼 时不展示 -->
+        <view class="filter-box room-box" wx:if="{{houseUseage != 3 && houseUseage != 4}}">
+            <!--选择标题-->
+            <view class="filter-tt filter-mb"><view class="filter-tt-text new-txt">您想要几室的房子？</view></view>
+            <view class="type-list">
+                <view class="type-ul">
+                    <view wx:for="{{roomMap}}" wx:key="{{item}}" bindtap="roomTap" class="type-li {{item.roomH==roomH?'select':''}}" 
+                    data-rooml="{{item.roomL}}" data-roomh="{{item.roomH}}" data-name="{{item.name}}">{{item.name}}</view>
+                </view>
+            </view>
+        </view>
+        <!-- 房屋类型筛选end -->
+
+        <!-- 理想面积筛选 -->
+        <view class="filter-box area-box">
+            <!--选择标题-->
+            <view class="filter-tt filter-mb"><view class="filter-tt-text new-txt">您想要多大的房子？</view></view>
+            <view class="scroll-section">
+                <movable-area class="move-box">
+                  <movable-view class="scroll-move-pic" x="{{areaMoveViewX}}" y="0" direction="horizontal" bind:touchmove="dragAreaMoveBtn">
+                      <view class='scroll-move-tt'style='margin-left:-{{marginLeft}}px;'>{{areaMoveChoose}}</view>
+                  </movable-view>
+                </movable-area>
+                <!-- <view id="area-scroll-btn" class="scroll-move-pic"></view>
+                <view id="area-scroll-tt" class="scroll-move-tt">50㎡以下</view> -->
+                <view class="scroll-bg">
+                    <view class="scroll-bg-pic"></view>
+                    <view class="scroll-bg-line"><text></text><text></text><text></text><text></text><text></text><text></text></view>
+                    <view class="scroll-bg-text">
+                        <view class="scroll-bg-text-ul">
+                            <view wx:for="{{areaRange}}" wx:key="{{item}}" wx:if="{{index != 0 && index!=6}}" class="scroll-bg-text-li">{{item}}㎡</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <!-- 理想面积筛选end -->
+
+        <!-- 购房预算筛选 -->
+        <view class="filter-box price-box">
+            <!--选择标题-->
+            <view wx:if="{{caseType==3}}" class="filter-tt filter-mb"><view class="filter-tt-text new-txt">您的购房预算是多少？</view></view>
+            <view wx:else="" class="filter-tt filter-mb"><view class="filter-tt-text new-txt">您的租房预算是多少？</view></view>
+            <view class="scroll-section">
+                <movable-area class="move-box">
+                  <movable-view class="scroll-move-pic" x="{{priceMoveViewX}}" y="0" direction="horizontal" bind:touchmove="dragPrinceMoveBtn">
+                      <view class='scroll-move-tt'style='margin-left:-{{pMarginLeft}}px;'>{{princeMoveChoose}}</view>
+                  </movable-view>
+                </movable-area>
+                <!-- <view id="price-scroll-btn" class="scroll-move-pic"></view> -->
+                <!-- <view id="price-scroll-tt" class="scroll-move-tt">asdasd</view> -->
+                <view class="scroll-bg">
+                    <view class="scroll-bg-pic"></view>
+                    <view class="scroll-bg-line"><text></text><text></text><text></text><text></text><text></text><text></text></view>
+                    <view class="scroll-bg-text">
+                        <view class="scroll-bg-text-ul">
+                            <view wx:for="{{priceRange}}" wx:key="{{item}}" wx:if="{{index != 0 && index!=6}}" class="scroll-bg-text-li">{{item}}{{priceUnit}}</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <!-- 购房预算筛选end -->
+        </view>
+        <view  class="filter-bb"></view>
+        </view>
+        </block>
+        <!-- 您想买什么样的房子end -->
+
+    <!-- 选择什么样的服务 -->
+
+
+    <block wx:if="{{publishFlow == 7}}">
+        <view class='block-box'>
+        <!--选择标题-->
+            <view  class="filter-tt filter-ttb">
+            <view class="sex-top-tt" wx:if="{{isVip==1}}"></view>
+            <view class="filter-tt-text new-ti" wx:if="{{isVip==0}}">选择什么样的服务</view>
+            </view>
+        <view class='net-wrap'>
+          <view wx:if="{{isVip==1}}" class="broker-sex-cont-box vip-broker-box">
+                <view class="sex-choose sex-new-choose">
+                    <dlv data-id="{{vipUserInfo.archiveId}}" class="sex-li select">
+                        <view class="sex-img sex-new-img"><image mode="aspectFill" src="{{vipUserInfo.userPhoto}}"></image></view>
+                        <view class="sex-text">{{vipUserInfo.userName}}</view>
+                    </dlv>
+                </view>
+                <!-- <view class="sex-top"></view> -->
+                
+                <view class="broker-bottom">
+                    <view class="broker-bottom-l broker-bottom-line"></view>
+                    <view class="broker-bottom-m">您的信赖是对TA最大的肯定</view>
+                    <view class="broker-bottom-r broker-bottom-line"></view>
+                </view>
+          </view>
+
+        <!-- 购房佣金筛选 -->
+         <view  class="filter-box fee-box">
+            <!--选择标题-->
+            <view  class="filter-tt filter-mb-a"><view class="filter-tt-text new-txt">选择您愿意付的中介费</view></view>
+            <view class="fee-content">
+                <view wx:if="{{wfFee =='0.01|0.015'|| wfFee=='0|0.5'}}" class="fee-tt">精打细算过日子</view>
+                <view wx:else="" class="fee-tt">重金之下必有勇夫</view>
+                <view class="fee-ul">
+                    <view wx:for="{{feeMap[caseType]}}" wx:key="{{item}}" bindtap="feeTap" data-name="{{item.name+item.unit}}" data-fee="{{item.fee}}" class="fee-li {{wfFee==item.fee?'select':''}}"><text>{{item.name}}</text><text>{{item.unit}}</text></view>
+                </view>
+            </view> 
+        </view> 
+        <!-- 购房佣金end筛选 -->
+        <!-- 挑选经纪人性别 -->
+        <view  class="filter-box broker-sex-box">
+            <view wx:if="{{isVip == 0}}" class="broker-sex-cont-box">
+                <view  class="filter-tt filter-mb-a"><view class="filter-tt-text new-txt">挑选您的经纪人</view></view>
+                <view class="sex-choose">
+                    <dlv wx:for="{{sexMap}}" wx:key="{{item}}" bindtap="sexTap" data-id="{{item.id}}" class="sex-li {{wfSex==item.id?'select':''}}">
+                        <view class="sex-img"><image src="{{item.image}}"></image></view>
+                        <view class="sex-text">{{item.name}}</view>
+                    </dlv>
+                </view>
+                <view class="sex-bottom">
+                      <view class='ms-left'></view>
+                      <view>我们只挑选最优质的经纪人为您服务！</view>  
+                      <view class='ms-right'></view>
+                </view>
+            </view>
+        </view>
+        <!-- 挑选经纪人性别end -->
+        <!--留言框-->
+        <!--<view class="fee-remark">
+            <view class="fee-remark-text-box">
+                <textarea name="remark" fixed="true" placeholder="请填写您中意的楼盘或商圈，就学、上班或投资等重要需求。"
+                          class="fee-remark-text" bindinput="remarkInput" maxlength="60" placeholder-class="fee-remark-text-placeholder" value="{{descp}}"></textarea>
+                <view class="remark-num">{{descp.length}}/60</view>
+            </view>
+        </view>-->
+        </view>
+        <!--留言框end-->
+        <view  class="filter-bb"></view>
+        </view>
+    </block>
+    <!-- 选择什么样的服务end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--退出发布的确认弹窗-->
+        <view class="quit-confirm-box">
+            <view class="quit-confirm-content">
+                <view class="quit-confirm-tt">您的找房需求还未发布，确定退出吗？</view>
+                <view class="quit-confirm-btn">
+                    <view class="quit-confirm-li quit-yes">退出</view>
+                    <view class="quit-confirm-li quit-no">继续</view>
+                </view>
+            </view>
+        </view>
+        <!--退出发布的确认弹窗end-->
+
+        <!--提交数据进行中-->
+        <view class="load" wx:if="{{loadingShow}}">
+            <view class="load-content">
+                <view class="loading-pic"></view>
+                <view class="loading-text">数据提交中</view>
+            </view>
+        </view>
+        <!--提交数据进行中end-->
+        <!--请选择商圈的提示框-->
+        <view wx:if="{{regionToastShow}}" class="toast-tip">
+            <view class="toast-tip-tt">请选择区域</view>
+        </view>
+        <!--请选择商圈的提示框end-->
+
+  <!--底部固底背景-->
+   <view wx:if="{{publishFlow != 8}}"  class="footer-bg" bindtap="footerBgTap">
+        <view class="footer-btn btn-next" catchtap="nextTap">下一步</view>
+  </view> 
+  <!--最后一页提交需求的情况-->
+  <view wx:else="" class="">
+        <view class="reChoose" catchtap="reChooseCondition">重新选择</view>
+        <view wx:if="{{caseType==3}}" class="publish-tips">发布悬赏意向金100元（随时可退）找房可获得更多经纪人重点服务，在签定正式合同后，通过平台支付{{yongjin}}元中介费给经纪人（余额在线下自行支付），则可参加每100笔成交抽送4999元现金超高中奖率活动，客户、经纪人各获50%奖励。</view>
+        <view wx:else="" class="publish-tips">发布悬赏意向金100元（随时可退）找房可获得更多经纪人重点服务，在签定正式合同后，通过平台支付500元中介费给经纪人（余额在线下自行支付），则可抵扣200元中介费。同时还可向经纪人申请办理房租月付。</view>
+        <view class="publish-box">
+            <view class='publish-btn reward-btn' bindtap='rewardEntrustBtn'><text>发布悬赏委托</text></view>
+            <view class='publish-btn common-btn' bindtap="commonEntrustBtn"><text>发布普通委托</text></view>
+        </view>
+  </view>
+
+  <!--底部固底背景end-->
+  <!-- 底部确认按钮 -->
+        <!-- <view class="footer">
+            
+        </view> -->
+  <!-- 底部确认按钮end -->
+</view>
+
+<!--发布过委托 结果提示 弹窗-->
+    <view wx:if="{{publishErrBox}}" class="confirm-box">
+      <view class="confirm-content">
+        <view class="confirm-tt">您只能发布3个委托，请等待经纪人为您服务或取消多余的委托。</view>
+        <view class="confirm-btn-box">
+          <view bindtap="publishErrBoxTapL" class="confirm-btn">取消</view>
+          <view bindtap="publishErrBoxTapR" class="confirm-btn">立即查看</view>
+        </view>
+      </view>
+    </view>
+ <!--发布过委托 结果提示 弹窗end-->
+
+ <!--已发布过委托弹窗-->
+    <view wx:if="{{entrustRepeatBox}}" class="confirm-box">
+      <view class="confirm-content">
+        <view class="confirm-tt">该委托信息已经发布过了，请勿重复委托</view>
+        <view class="confirm-btn-box">
+          <view bindtap="publishErrBoxTapL" class="confirm-btn">取消</view>
+          <view bindtap="publishErrBoxTapR" class="confirm-btn">立即查看</view>
+        </view>
+      </view>
+    </view>
+ <!--已发布过委托弹窗end-->

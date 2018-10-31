@@ -1,0 +1,245 @@
+<!-- 现金红包的头 -->
+<view class="top-title {{currentTab==0?'top-title-show':''}}">
+    <text class='top-title-a'>￥</text>
+    <text class='top-title-b'>152</text>
+    <text class='top-title-c'>提现</text>
+    <view class='top-title-d'>
+        <text>分享好友，和您的好友各获等额现金，</text>
+        <text>立即分享 ></text>
+    </view>
+</view>
+<!-- 购房补贴的头 -->
+<view class="top-title {{currentTab==1?'top-title-show':''}}">
+    <text class='top-title-a'>￥</text>
+    <text class='top-title-b'>152</text>
+    <text class='top-title-c'>发布委托</text>
+    <view class='top-title-d'>
+        <text>发布委托，线上成交即可抵扣中介费</text>
+        <text></text>
+    </view>
+</view>
+<!-- 租房补贴的头 -->
+<view class="top-title {{currentTab==2?'top-title-show':''}}">
+    <text class='top-title-a'>￥</text>
+    <text class='top-title-b'>152</text>
+    <text class='top-title-c'>发布委托</text>
+    <view class='top-title-d'>
+        <text>发布委托，线上成交即可抵扣中介费</text>
+        <text></text>
+    </view>
+</view>
+<!-- 实物奖品的头 -->
+<view class="top-title {{currentTab==3?'top-title-show':''}}">
+    <text style='font-size:120rpx;line-height: 190rpx;'>4</text>
+    <text style='font-size:40rpx;'> 件</text>
+    <view class='top-title-d'>
+        <text>实物奖品将以快递的方式为您寄出，</text>
+        <text>请填写收件信息 ></text>
+    </view>
+</view>
+ <!--nav切换-->
+<view class='nav-wrap'>
+    <view class="nav-li {{currentTab==0?'active':''}}" data-current='0' bindtap='swichNav'>现金红包</view>
+    <view class="nav-li {{currentTab==1?'active':''}}" data-current='1' bindtap='swichNav'>购房补贴</view>
+    <view class="nav-li {{currentTab==2?'active':''}}" data-current='2' bindtap='swichNav'>租房补贴</view>
+    <view class="nav-li {{currentTab==3?'active':''}}" data-current='3' bindtap='swichNav'>实物奖品</view>
+</view>
+<view class='tab-cont'>
+<swiper class="tab-content" current="{{currentTab}}"  duration="300" bindchange="switchTab" style="min-height:800rpx;">
+    <!--现金红包-->
+    <swiper-item>
+        <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+            <view class='swiper-content'>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+            </view>
+        </scroll-view>
+    </swiper-item>
+    <!-- 购房补贴 -->
+    <swiper-item>
+        <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+            <view class='swiper-content'>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+            </view>
+        </scroll-view>
+    </swiper-item>
+    <!-- 租房补贴 -->
+    <swiper-item>
+        <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+            <view class='swiper-content'>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+                <view class='swiper-content-list'>
+                    <view>
+                        <text>好友***助力活动，获得现金红包</text>
+                    </view>
+                    <view>
+                        <text>2018-06-26</text>
+                    </view>
+                    <text>2</text>
+                </view>
+            </view>
+        </scroll-view>
+    </swiper-item>
+    <!-- 实物奖品 -->
+    <swiper-item>
+        <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+            <view class='swiper-content'>
+                <view class='material-list'>
+                  <view class='malist-img'>
+                    <image src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png'></image>
+                  </view> 
+                  <view class='malist-content'>
+                    <view class='malist-content-left'>
+                      <view>Iphone X</view>
+                      <view>2018.06.06 过期</view>
+                    </view>
+                    <view class='malist-content-right'>
+                      <view class='malist-btn'>立即领取</view>
+                      <view>2018.06.06 过期</view>
+                    </view>
+                  </view>
+                </view>
+                <view class='material-list'>
+                  <view class='malist-img'>
+                    <image src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png'></image>
+                  </view> 
+                  <view class='malist-content'>
+                    <view class='malist-content-left'>
+                      <view>Iphone X</view>
+                      <view>2018.06.06 过期</view>
+                    </view>
+                    <view class='malist-content-right'>
+                      <view class='malist-btntext' style='color:#999'>已寄出</view>
+                      <view>2018.06.06 过期</view>
+                    </view>
+                  </view>
+                </view>
+                <view class='material-list'>
+                  <view class='malist-img'>
+                    <image src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png'></image>
+                  </view> 
+                  <view class='malist-content'>
+                    <view class='malist-content-left'>
+                      <view>Iphone X</view>
+                      <view>2018.06.06 过期</view>
+                    </view>
+                    <view class='malist-content-right'>
+                      <view class='malist-btntext' style='color:#ff830a'>待发奖</view>
+                      <view>2018.06.06 过期</view>
+                    </view>
+                  </view>
+                </view>
+                <view class='material-list'>
+                  <view class='malist-img'>
+                    <image src='http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png'></image>
+                  </view> 
+                  <view class='malist-content'>
+                    <view class='malist-content-left'>
+                      <view>Iphone X</view>
+                      <view>2018.06.06 过期</view>
+                    </view>
+                    <view class='malist-content-right'>
+                      <view class='malist-daoqitext'>已到期</view>
+                    </view>
+                  </view>
+                </view>
+            </view>
+        </scroll-view>
+    </swiper-item>
+</swiper>
+</view>

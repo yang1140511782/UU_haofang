@@ -1,0 +1,439 @@
+@import "../../utils/toast/toast.wxss";
+page{
+  height: 100%;
+  font-family: "微软雅黑","Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+}
+.common-list{
+  display: -webkit-box;
+  -webkit-box-align: center;
+  font-size: 34rpx;
+  box-sizing: border-box;
+  padding: 20rpx;
+  position: relative;
+
+}
+.input-font{
+  font-size: 30rpx;
+  color: #d1d1d1;
+}
+.common-txt{
+ margin-right:20px;
+  color: #000;
+}
+.conten-box{
+ padding:20rpx 40rpx 0 40rpx;
+}
+.input-con,.input-box{
+  -webkit-box-flex: 1;
+}
+.input-con{
+  display: -webkit-box;
+  -webkit-box-align: center;
+}
+.input-con input{
+  font-size: 26rpx;
+}
+.use-choose{
+  -webkit-box-flex: 1
+}
+.common-list::before{
+    position: absolute;
+    left: 130rpx;
+    right: 0;
+    bottom: 0;
+    content: '';
+    display: block;
+    height: 1px;
+    background:  #d1d1d1;
+}
+.input-box{
+  display: -webkit-box;
+  -webkit-box-align: center;
+}
+.input-com{
+  width: 30%;
+  position: relative;
+}
+.input-com::before{
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 26rpx;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top:-13rpx;
+  background:#d1d1d1;
+}
+.common-list .input-com:last-child{
+   border-right:none;
+   padding-left: 40rpx;
+}
+.common-list .input-com:last-child::before{
+  background:none;
+}
+.common-list .input-com:nth-of-type(2){
+   padding-left: 40rpx;
+}
+.unit{
+  color: #333;
+  font-size: 28rpx;
+}
+.img-txt{
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: start;
+  padding: 20rpx;
+}
+.img-note{
+  font-size: 24rpx;
+  color: #bbb;
+}
+.textarea-box{
+  -webkit-box-align: start;
+}
+.img-list-box{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}
+.img-list-con,.choose-img{
+  width: 130rpx;
+  height: 130rpx;
+  position: relative
+}
+.img-list-con{
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+}
+.img-list-box image{
+  width: 100%;
+  height: 100%;
+}
+.delete-img{
+  width: 34rpx;
+  height: 34rpx;
+  background: url(https://uuweb.haofang.net/PublicC/images/fang_delete_new.png) center center no-repeat;
+  background-size: cover;
+  position: absolute;
+  right: 6rpx;
+  top: 6rpx;
+}
+.choose-img{
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/new_images/icon01.png) center center no-repeat;
+  background-size: 100% auto;
+}
+.register-btn{
+    width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    font-size: 36rpx;
+    color: #fff;
+    background-color: #ffcd16;
+    border: 0;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-appearance: none;
+    text-align: center;
+    margin-top: 20rpx;
+}
+.text-add-explain{
+    color: #bfbdbd;
+    font-size: 26rpx;
+    margin: 40rpx 0;
+}
+.text-color{
+  color: #ccc;
+}
+.use-picker{
+font-size: 26rpx;
+}
+.search-loupan-box{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #fff;
+  z-index:999;
+
+}
+.search-box-head{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #ebeced;
+  height:100rpx;
+   display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: justify;
+  z-index:99;
+}
+.search-head-con{
+  background: #fff;
+  border-radius: 6rpx;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  margin-left: 40rpx;
+  width: 80%;
+  overflow: hidden;
+  position: relative;
+}
+.search-cancle-btn{
+  color: #1bc964;
+  font-size: 28rpx;
+   margin-right: 20rpx;
+}
+.search-input-box{
+  padding-left: 70rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  position: relative;
+  font-size: 28rpx;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.search-input-box::before{
+  content:'';
+  display: inline-block;
+  width:36rpx;
+  height: 36rpx;
+  background: url(https://static.haofang.net/Public/images/wap/hostory_search.png) center center no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  left:20rpx;
+  top: 50%;
+  margin-top: -18rpx;
+}
+.kwd-delte{
+  width: 60rpx;
+  height: 60rpx;
+  background: url(https://uuweb.haofang.net/PublicC/images/fitment/fitment-close.png) #fff  center center no-repeat;
+  background-size: 24rpx 24rpx;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -30rpx;
+  z-index: 100;
+}
+.search-list-con{
+  padding-top:100rpx;
+  height: 100%;
+  overflow: auto;
+  box-sizing:border-box;
+
+}
+.search-list-li{
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: justify;
+  height: 80rpx;
+  line-height:  80rpx;
+  font-size: 28rpx;
+  border-bottom: 1px solid #d1d1d1;
+  box-sizing: border-box;
+  margin-left: 40rpx;
+}
+.search-build-name{
+  color: #000;
+  position: relative;
+  padding-left: 60rpx;
+}
+.search-build-name::before{
+  content: '';
+  display: inline-block;
+  width:36rpx;
+  height: 36rpx;
+  background: url(https://static.haofang.net/Public/images/wap/hostory_search.png) center center no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  left: 0;
+  top:50%;
+  margin-top: -18rpx;
+}
+.search-build{
+  color: #666
+}
+.search-build{
+  margin-right: 30rpx;
+}
+::-webkit-scrollbar{width:0px;height: 0}
+.reward-wrap{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.banner-box{
+  width: 100%;
+  height: 420rpx;
+  background: url(https://uuweb.haofang.net/PublicC/source/images/publish/prize-trust-banner.png) center center no-repeat;
+  background-size: auto 100%;
+  margin-bottom: 20rpx;
+}
+.cont-box{
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  padding: 0 110rpx;
+  padding-bottom: 51rpx;
+  position: relative;
+}
+.cont-box::before{
+    content: '';
+    display: inline-block;
+    width: 17rpx;
+    height: 17rpx;
+    background: url(https://uuweb.haofang.net/PublicC/source/images/publish/prize-trust-shang-icon.png) center center no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 10rpx;
+    left: 80rpx;
+}
+.txt-b{
+  width: 100%;
+  color: #333;
+}
+.txt-b-a{
+  width: 100%;
+  color: #999;
+  font-size: 20rpx;
+}
+.foot-btn{
+  position: relative;
+  width: 100%;
+}
+.btn-box{
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 34rpx;
+  color: #fff;
+  padding: 20rpx 0;
+  border: none;
+  line-height: 1
+}
+.reward-btn {
+    background: #ff9c16;
+    margin-bottom: 30rpx;
+}
+.common-btn {
+    color: #777;
+    background: #ececec;
+    margin-bottom: 30rpx;
+}
+.common-btn::after{
+  border: none;
+}
+.reward-btn text {
+    position: relative;
+}
+.foot-btn text {
+    letter-spacing: 1px;
+}
+.reward-btn text::before {
+    content: '';
+    display: inline-block;
+    width: 44rpx;
+    height: 37rpx;
+    background: url(https://uuweb.haofang.net/PublicC/images/publish/rewardInstruction-shang-icon.png) center center no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 2rpx;
+    left: -50rpx;
+}
+.foot-bomp{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(127,127,127,0.2);
+}
+.bomp-mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+.bomp-con{
+  position:absolute;
+  bottom: 0;
+  width: 100%;
+}
+.bomp-title{
+    text-align: center;
+    padding: 30rpx 0;
+    font-size:32rpx;
+    background: #fff;
+    border-bottom: 1px solid #efefef;
+}
+.prize-money-ul{
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: justify;
+  padding: 80rpx 0;
+  background: #fff;
+}
+.prize-money-ul-li {
+  -webkit-box-flex: 1;
+  width: 33.33%;
+  text-align: center;
+  color: #999999;
+  font-size: 32rpx;
+}
+.prize-money-ul-li text {
+    display: inline-block;
+    padding:10rpx 30rpx;
+    border: 1px solid #bebebe;
+    border-radius: 50px;
+}
+.bomp-con-btn {
+    text-align: center;
+    font-size: 36rpx;
+    color: #19b45b;
+    width: 100%;
+    height: 125rpx;
+    line-height:125rpx;
+    margin-top:10rpx;
+    background: #fff;
+}
+.bomp-con-cancle{
+  font-size: 56rpx;
+  color: #333;
+  position: absolute;
+  right:20rpx;
+  top: 0;
+  font-weight: normal;
+}
+.prize-chooseing text{
+    color: #fff;
+    background: #ff9c16;
+    border: 1px solid #ff9c16!important;
+}
+
+.clooect-toast{
+  position: fixed;
+  top: 300rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.5);
+  padding: 20rpx 15rpx;
+  color: #fff;
+  font-size: 26rpx;
+  z-index: 1000;
+  border-radius: 5rpx;
+}
+.toast_content_box {
+  top:inherit;
+  bottom:0;
+  padding-bottom:50px;
+}
+.input-com-color{
+  font-size: 26rpx;
+}

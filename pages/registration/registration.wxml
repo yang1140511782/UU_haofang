@@ -1,0 +1,452 @@
+<view id="app">
+    <!-- 顶部banner -->
+    <view wx:if="{{step ==1}}" class="top-banner">
+        <image src="http://uuweb.haofang.net/Public/wxApp/images/registration/banner_1.png" alt=""></image>
+    </view>
+    <view wx:if="{{step ==2 && isEdit == 0}}" class="top-banner">
+        <image src="http://uuweb.haofang.net/Public/wxApp/images/registration/banner_2.png" alt=""></image>
+    </view>
+    <view wx:if="{{step ==3}}" class="top-banner">
+        <image src="http://uuweb.haofang.net/Public/wxApp/images/registration/banner_3.png" alt=""></image>
+    </view>
+    <!-- 顶部banner -->
+    <!-- Step1 -->
+    <block wx:if="{{step == 1}}">
+        <view class='block-box'>
+            <!-- 选择标题 -->
+            <view  class="filter-tt filter-ttb">
+                <view wx:if="{{caseType==1}}" class="filter-tt-text new-ti">您想卖哪的房子？</view>
+                <view wx:else="" class="filter-tt-text new-ti">您想出租哪的房子？</view>
+            </view>
+            <view class='net-wrap'>
+
+                <!--出租时选择 整租/合租-->
+                <view wx:if="{{caseType==2}}" class="rent-type-ul">
+                    <view bindtap="rentTypeTap" data-id="0" class="rent-type-li {{ishezu == 0?'select':''}}">整租</view>
+                    <view bindtap="rentTypeTap" data-id="1" class="rent-type-li {{ishezu == 1?'select':''}}">合租</view>
+                </view>
+                <!-- 房屋类型筛选 -->
+                <view class="filter-box useage-box">
+                    <view wx:if="{{caseType==1}}" class="filter-tt filter-ttaa">
+                        <view class="filter-tt-text new-txt">您出售的房屋类型？</view>
+                    </view>
+                    <view wx:else="" class="filter-tt filter-ttaa">
+                        <view class="filter-tt-text new-txt">您出租的房屋类型？</view>
+                    </view>
+                    <view class="type-list">
+                        <view class="type-ul type-ul-center {{(caseType == 2 && ishezu ==1)?'hezu-useage-ul':''}}">
+                            <view wx:for="{{useageMap}}" wx:key="{{item}}" bindtap="useageTap" class="type-li {{item.id==houseUseage?'select':''}}"
+                                  data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                        </view>
+                    </view>
+                </view>
+
+
+                <!-- 小区名称检索 -->
+                <view class="filter-box build-box">
+                    <!-- 选择标题 -->
+                    <view class="filter-tt filter-mb">
+                        <view class="filter-tt-text new-txt">房屋所在小区？</view>
+                    </view>
+                    <view class="serch-result-box">
+                        <view class=" serch-result-text {{!!buildName?'build-name-text':''}}" bindtap="buildSearchBompEvent">
+                            <block wx:if="{{!!buildName}}">
+                                {{buildName}}
+                            </block>
+                            <block wx:else="">
+                                <text class="serch-result-icon"></text>请输入小区名称
+                            </block>
+                            </view>
+                        </view>
+                        <view class="push-build-box" wx:if="{{buildListLoc.length>0}}">
+                            <view wx:if="{{caseType==1}}" class="push-build-tt">您可能要出售</view>
+                            <view wx:else="" class="push-build-tt">您可能要出租</view>
+                            <view class="push-build-list">
+                                <view wx:for="{{buildListLoc}}" wx:key="{{item}}" data-id="{{item.buildId}}" data-text="{{item.buildName}}" bindtap="listTap" class="push-build-li">{{item.buildName}}</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="filter-bb"></view>
+            </view>
+        </block>
+        <!-- Step1/ -->
+        <!-- Step2 -->
+        <block wx:if="{{step == 2}}">
+            <view class='block-box {{isEdit == 1?"edit-block-box":""}}'>
+                <!-- 悬浮按钮 -->
+                <view class="arrow-up"></view>
+                <!-- 选择标题 -->
+                <view class="filter-tt filter-ttb">
+                    <view class="filter-tt-text new-ti">您的房屋基本情况？</view>
+                </view>
+                <view class='net-wrap'>
+                    <!-- 房屋户型 -->
+                    <view class="filter-box room-box">
+                        <view class="filter-tt filter-ttaa">
+                            <view wx:if="{{caseType==1}}" class="filter-tt-text new-txt">您出售的房屋户型？</view>
+                            <view wx:else="" class="filter-tt-text new-txt">您出租的房屋户型？</view>
+                        </view>
+                        <view class="type-list">
+                            <view class="type-ul">
+                                <view wx:for="{{roomMap}}" wx:key="{{item}}" bindtap="setVal" class="type-li {{item.room==houseRoom?'select':''}}"
+                                      data-value="{{item.room}}" data-type="houseRoom" >
+                                {{item.name}}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 房屋户型/ -->
+
+                    <!-- 房屋楼层 -->
+                    <view class="filter-box floor-box">
+                        <!-- 选择标题 -->
+                        <view class="filter-tt filter-mb">
+                            <view wx:if="{{caseType==1}}" class="filter-tt-text new-txt">您出售的房屋所在楼层？</view>
+                            <view wx:else="" class="filter-tt-text new-txt">您出租的房屋所在楼层？</view>
+                        </view>
+                        <view class="scroll-section">
+                            <movable-area class="move-box">
+                                <movable-view class="scroll-move-pic" x="{{floorMoveViewX}}" y="0" direction="horizontal"
+                                              bind:touchmove="dragFloorMoveBtn">
+                                    <view class='scroll-move-tt' style='margin-left:-{{fmarginLeft}}px;'>{{houseFloor}}层</view>
+                                </movable-view>
+                            </movable-area>
+                            <view class="scroll-bg">
+                                <view class="scroll-bg-pic"></view>
+                                <view class="scroll-bg-line">
+                                    <text></text>
+                                    <text></text>
+                                    <text></text>
+                                    <text></text>
+                                </view>
+                                <view class="scroll-bg-text">
+                                    <view class="scroll-bg-text-ul">
+                                        <view wx:for="{{floorRange}}" wx:key="{{item}}" class="scroll-bg-text-li">{{item}}层</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 房屋楼层end -->
+
+                    <!-- 房屋面积 -->
+                    <view class="filter-box area-box">
+                        <!-- 选择标题 -->
+                        <view class="filter-tt filter-mb">
+                            <view wx:if="{{caseType==1}}" class="filter-tt-text new-txt">您出售的房屋面积？</view>
+                            <view wx:else="" class="filter-tt-text new-txt">您出租的房屋面积？</view>
+                        </view>
+                        <view class="scroll-section">
+                            <movable-area class="move-box">
+                                <movable-view class="scroll-move-pic" x="{{areaMoveViewX}}" y="0" direction="horizontal"
+                                              bind:touchmove="dragAreaMoveBtn">
+                                    <view class='scroll-move-tt' style='margin-left:-{{marginLeft}}px;'>{{houseArea}}㎡</view>
+                                </movable-view>
+                            </movable-area>
+                            <view class="scroll-bg">
+                                <view class="scroll-bg-pic"></view>
+                                <view class="scroll-bg-line">
+                                    <text></text>
+                                    <text></text>
+                                    <text></text>
+                                    <text></text>
+                                </view>
+                                <view class="scroll-bg-text">
+                                    <view class="scroll-bg-text-ul">
+                                        <block wx:if="{{ishezu == 0}}">
+                                            <view wx:for="{{areaRange}}" wx:key="{{item}}" class="scroll-bg-text-li">{{item}}㎡</view>
+                                        </block>
+                                        <block wx:else=''>
+                                            <view wx:for="{{hezuAreaRange}}" wx:key="{{item}}" class="scroll-bg-text-li">{{item}}㎡</view>
+                                        </block>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 房屋面积end -->
+                    <!-- 房屋价格 -->
+                    <view class="filter-box price-box">
+                        <!-- 选择标题 -->
+                        <view class="filter-tt filter-mb">
+                            <view wx:if="{{caseType==1}}" class="filter-tt-text new-txt">您出售的房屋价格？</view>
+                            <view wx:else="" class="filter-tt-text new-txt">您出租的房屋价格？</view>
+                        </view>
+                        <view class="scroll-section">
+                            <movable-area class="move-box">
+                                <movable-view class="scroll-move-pic" x="{{priceMoveViewX}}" y="0"
+                                              direction="horizontal" bind:touchmove="dragPrinceMoveBtn">
+                                    <view class='scroll-move-tt' style='margin-left:-{{pMarginLeft}}px;'>{{price}}{{priceUnit}}</view>
+                                </movable-view>
+                            </movable-area>
+                            <view class="scroll-bg">
+                                <view class="scroll-bg-pic"></view>
+                                <view class="scroll-bg-line">
+                                    <text></text>
+                                    <text></text>
+                                    <text></text>
+                                    <text></text>
+                                </view>
+                                <view class="scroll-bg-text">
+                                    <view class="scroll-bg-text-ul">
+                                        <view wx:for="{{priceRange}}" wx:key="{{item}}" class="scroll-bg-text-li">
+                                        {{item}}{{priceUnit}}
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 房屋价格end -->
+
+                    <!-- 租金收款方式 -->
+                    <view wx:if="{{caseType == 2}}" class="filter-box caseAccount-box">
+                        <view class="filter-tt filter-ttaa">
+                            <view class="filter-tt-text new-txt">您的租金收款方式？</view>
+                        </view>
+                        <view class="type-list">
+                            <view class="type-ul">
+                                <view wx:for="{{caseAccountMap}}" wx:key="{{item}}" bindtap="setVal" class="type-li {{item.id==caseAccount?'select':''}}"
+                                       data-id="{{item.id}}" data-value="{{item.id}}" data-type="caseAccount">
+                                {{item.name}}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 租金收款方式end/ -->
+
+                    <!-- 出租的房间类型 -->
+                    <view wx:if="{{caseType == 2 && ishezu == 1}}" class="filter-box masterRoom-box">
+                        <view class="filter-tt filter-ttaa">
+                            <view class="filter-tt-text new-txt">您出租的房间类型？</view>
+                        </view>
+                        <view class="type-list">
+                            <view class="type-ul">
+                                <view wx:for="{{masterRoomMap}}" wx:key="{{item}}" bindtap="setVal" class="type-li {{item.id==masterRoom?'select':''}}"
+                                       data-id="{{item.id}}" data-type="masterRoom"  data-value="{{item.id}}">{{item.name}}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 出租的房间类型end/ -->
+
+                    <!-- 房屋装修情况 -->
+                    <view wx:if="{{caseType == 2 && ishezu == 1}}" class="filter-box houseFitment-box">
+                        <view class="filter-tt filter-ttaa">
+                            <view class="filter-tt-text new-txt">您的房屋装修情况？</view>
+                        </view>
+                        <view class="type-list">
+                            <view class="type-ul">
+                                <view wx:for="{{houseFitmentMap}}" wx:key="{{item}}" bindtap="setVal" class="type-li {{item.id==houseFitment?'select':''}}"
+                                       data-id="{{item.id}}" data-type="houseFitment"  data-value="{{item.id}}">{{item.name}}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 房屋装修情况end/ -->
+
+                    <!-- 期望的租客性别 -->
+                    <view wx:if="{{caseType == 2 && ishezu == 1 && isEdit == 1}}" class="filter-box houseFitment-box">
+                        <view class="filter-tt filter-ttaa">
+                            <view class="filter-tt-text new-txt">您期望的租客性别？</view>
+                        </view>
+                        <view class="type-list">
+                            <view class="type-ul">
+                                <view wx:for="{{sexLimitMap}}" wx:key="{{item}}" bindtap="setVal" class="type-li {{item.id==sexLimit?'select':''}}"
+                                       data-id="{{item.id}}" data-type="sexLimit"  data-value="{{item.id}}">{{item.name}}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 期望的租客性别end/ -->
+
+                    <!-- 房屋配套情况 -->
+                    <view wx:if="{{caseType == 2 && ishezu == 1 }}" class="filter-box houseSet-box">
+                        <view class="filter-tt filter-ttaa">
+                            <view class="filter-tt-text new-txt">您的房屋配套情况？</view>
+                        </view>
+                        <view class="type-list">
+                            <view class="type-ul">
+                                <view wx:for="{{houseSetMap}}" wx:key="{{item}}" bindtap="houseSetTap"
+                                 class="type-li {{(item.id==houseSetArr[0]||item.id==houseSetArr[1]||item.id==houseSetArr[2]||item.id==houseSetArr[3]||item.id==houseSetArr[4]||item.id==houseSetArr[5]||item.id==houseSetArr[6]||item.id==houseSetArr[7])?'select':''}}"
+                                       data-id="{{item.id}}">{{item.name}}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 房屋配套情况end/ -->
+
+
+                    <!-- 房屋描述:小程序暂时隐藏 -->
+                    <view wx:if="{{0}}" class="descp-box">
+                        <textarea name="remark" fixed="true" placeholder="请输入装修配套等体现房屋亮点的简单描述(选填)" class="fee-remark-text"
+                                  bindinput="remarkInput" maxlength="60" placeholder-class="fee-remark-text-placeholder"
+                                  value="{{descp}}"></textarea>
+                    </view>
+                    <!-- 房屋描述end -->
+                    <!-- 图片上传 -->
+                    <view class="pic-upload-box">
+                        <view class="pic-upload-tt">多图房源更容易接到客户来电哦（最多9张图）</view>
+                        <view class="pic-upload-ul">
+                            <view class="pic-li" wx:for='{{imgArr}}' wx:key="index">
+                                <image src="{{item.picUrl}}" mode="aspectFill"></image>
+                                <view class="delete-img" data-id='{{index}}' data-photoid="{{item.photoId}}" data-src="{{item.saveUrl}}" bindtap='deleteImg'></view>
+                            </view>
+                            <view class="pic-li choose-img"  wx:if="{{imgArr.length < 9}}" bindtap="chooseImg"></view>
+                        </view>
+                    </view>
+                    <!-- 图片上传end -->
+                </view>
+                <view class="filter-bb"></view>
+            </view>
+        </block>
+        <!-- Step2/ -->
+        <!-- Step3 -->
+        <block wx:if="{{step == 3}}">
+            <view class='block-box'>
+                <view class="filter-tt filter-ttb">
+                    <view class="filter-tt-text new-ti" wx:if="{{caseType==1}}">选择您的出售方式?</view>
+                    <view class="filter-tt-text new-ti" wx:else="">选择您的出租方式?</view>
+                </view>
+                <view class="net-wrap">
+                    <!-- 选择标题 -->
+                    <view wx:if="{{toSend == 0 && caseType==1}}" class="registration-type-tt">委托全城优质经纪人，还可得100元现金奖励</view>
+                    <view wx:elif="{{toSend == 0 && caseType==2}}" class="registration-type-tt">委托全城优质经纪人为您服务</view>
+                    <view wx:else="" class="registration-type-tt">发布到优优好房，客户直接联系您</view>
+                    <view class="fee-content type-choose-content">
+                        <view class="fee-ul">
+                            <view bindtap="setVal" data-value="0" data-type='toSend' class="fee-li {{toSend==0?'select':''}}">
+                                <text>委托经纪人</text>
+                            </view>
+                            <view bindtap="setVal" data-value="1" data-type='toSend' class="fee-li {{toSend==1?'select':''}}">
+                                <text wx:if="{{caseType==1}}">自助卖房</text>
+                                <text wx:else="">自助出租</text>
+                            </view>
+                        </view>
+                    </view>
+                    <block wx:if="{{toSend == 0}}">
+                        <!-- 委托经纪人 -->
+                        <view class="filter-box broker-sex-box">
+                            <view wx:if="{{isVip == 0}}" class="broker-sex-cont-box">
+                                <view class="filter-tt filter-mb-a">
+                                    <view class="filter-tt-text new-txt">挑选您的经纪人</view>
+                                </view>
+                                <view class="sex-bottom">
+                                    <view class='ms-left'></view>
+                                    <text>我们只挑选最优质的经纪人为您服务!</text>
+                                    <view class='ms-right'></view>
+                                </view>
+                                <view class="sex-choose">
+                                    <view wx:for="{{sexMap}}" wx:key="{{item}}" bindtap="sexTap"  data-type='wfSex' data-value="{{item.id}}" data-id="{{item.id}}"
+                                         class="sex-li {{wfSex==item.id?'select':''}}">
+                                        <view class="sex-img">
+                                            <image src="{{item.image}}"></image>
+                                        </view>
+                                        <view class="sex-text">{{item.name}}</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                        <!-- 委托经纪人end -->
+                    </block>
+                    <!-- 自助卖房/租房 -->
+                    <block wx:if="{{toSend == 1}}">
+                        <view class="zizhu-box">
+                            <view class="sex-bottom">
+                                <view class='ms-left'></view>
+                                <text>客户将会通过400电话转接拨号,\n隐藏电话号码，远离骚扰</text>
+                                <view class='ms-right'></view>
+                            </view>
+                            <!--号码输入-->
+                            <view wx:if="{{!hasPhone}}" class="input-box">
+                                <view class="phone-input input-box-li">
+                                    <input placeholder="请输入手机号" maxlength="11" value="{{inputPhone}}" bindinput="phoneInput"></input>
+                                </view>
+                                <view class="code-input-box">
+                                    <view class="code-input input-box-li">
+                                        <input placeholder="请输入验证码" value="{{inputCode}}" bindinput="codeInput"></input>
+                                    </view>
+                                    <view wx:if="{{inputPhone.length == 11}}" class="code-get-btn can-get" bindtap="getCode">{{time}}</view>
+                                    <view wx:else="" class="code-get-btn">{{time}}</view>
+                                </view>
+                            </view>
+                            <!--400默认图-->
+                            <view wx:else="" class="phone-400-box">
+                                <view class="phone-400-icon"></view>
+                            </view>
+                        </view>
+                    </block>
+                    <!-- 自助卖房/租房end -->
+                </view>
+                <view class="filter-bb"></view>
+            </view>
+        </block>
+        <!-- Step3/ -->
+
+        <!-- 楼盘搜索 -->
+        <view class="search-loupan-box" wx:if="{{searchLoupanBox}}">
+            <view class="search-box-head">
+                <view class="search-head-con">
+                    <view class="search-input-box">
+                        <input type="text" class="input-padding" bindinput='searchBuildData' value="{{searchInputValue}}" style="width:100%;height:100%;" placeholder="请输入楼盘名或首字母搜索" placeholder-class="input-font"/>
+                    </view>
+                    <view class="kwd-delte" catchtap='deleteKedEvent'></view>
+                </view>
+                <view class="search-cancle-btn" catchtap='searchCancleEvent'>取消</view>
+            </view>
+            <view class="search-list-con">
+                <view class="search-list-li" wx:for="{{buildArr}}" wx:key="{{index}}" data-id="{{item.buildId}}" data-text='{{item.buildName}}' catchtap="listTap">
+                    <view class="search-build-name">{{item.buildName}}</view>
+                    <view class="search-build">{{item.regName}}</view>
+                </view>
+            </view>
+        </view>
+
+        <!-- 楼盘搜索/ -->
+
+        <!-- 提交数据进行中 -->
+        <view class="load" wx:if="{{loadingShow}}">
+            <view class="load-content">
+                <view class="loading-pic"></view>
+                <view class="loading-text">数据提交中</view>
+            </view>
+        </view>
+        <!-- 提交数据进行中end -->
+        <!-- 底部固底背景 -->
+        <view class="footer-bg">
+            <view wx:if="{{step == 3 || (step == 2 && isVip==1)}}" class="footer-btn btn-next" catchtap="checkData">发布</view>
+
+            <view wx:elif="{{step == 2 && isEdit==1}}" class="edit-confirm" catchtap="checkData">确认修改</view>
+
+            <view wx:else="" class="footer-btn btn-next" catchtap="nextTap">下一步</view>
+        </view>
+        
+        <!-- 底部确认按钮 -->
+        <!-- <view class="footer">
+    </view>
+    -->
+    <!-- 底部确认按钮end -->
+</view>
+<!-- 发布过委托 结果提示 弹窗 -->
+<view wx:if="{{publishErrBox}}" class="confirm-box">
+    <view class="confirm-content">
+        <view class="confirm-tt">您只能发布3个委托，请等待经纪人为您服务或取消多余的委托。</view>
+        <view class="confirm-btn-box">
+            <view bindtap="publishErrBoxTapL" class="confirm-btn">取消</view>
+            <view bindtap="publishErrBoxTapR" class="confirm-btn">立即查看</view>
+        </view>
+    </view>
+</view>
+<!-- 发布过委托 结果提示 弹窗end -->
+<!-- 已发布过委托弹窗 -->
+<view wx:if="{{entrustRepeatBox}}" class="confirm-box">
+    <view class="confirm-content">
+        <view class="confirm-tt">该委托信息已经发布过了，请勿重复委托</view>
+        <view class="confirm-btn-box">
+            <view bindtap="publishErrBoxTapL" class="confirm-btn">取消</view>
+            <view bindtap="publishErrBoxTapR" class="confirm-btn">立即查看</view>
+        </view>
+    </view>
+</view>
+<!-- 已发布过委托弹窗end -->

@@ -1,0 +1,2 @@
+<!--packageActive/pages/jinyin/rule/rule.wxml-->
+<web-view src="{{url}}" bindmessage=""></web-view>

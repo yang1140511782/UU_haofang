@@ -1,0 +1,34 @@
+
+<navigator url="/pages/entrust/entrust">发布委托</navigator>
+<navigator url="/pages/entrustDetail/entrustDetail">委托流程详情</navigator>
+
+<navigator url="/pages/list/list">二手房列表</navigator>
+<navigator url="/pages/leaseList/leaseList">租房列表</navigator>
+<navigator url="/pages/newHouseList/newHouseList">新盘列表</navigator>
+<navigator url="/pages/apartmentList/list">公寓列表</navigator>
+
+
+<navigator url="/pages/houseDetail/houseDetail?caseId=7343156&cityId=1&caseType=1&reSource=1">出售详情页</navigator>
+<navigator url="/pages/houseDetail/houseDetail?caseId=3470229&cityId=1&caseType=2&reSource=1">出租详情页</navigator>
+<navigator url="/pages/newHouseDetail/newHouseDetail?buildId=2038995&youyouUserId=18051">新盘详情 </navigator>
+<navigator url="/pages/posterDetail/posterDetail?cityId=296&buildId=2054467">旅居详情</navigator>
+<navigator url="/pages/apartmentDetail/apartmentDetail">公寓详情</navigator>
+<navigator url="/pages/commissionpay/commissionpay">佣金支付</navigator>
+<navigator url="/pages/entrustAgent/entrustAgent">经纪人推送</navigator>
+<navigator url="/pages/download/download">下载引导</navigator>
+
+
+<navigator url="/pages/collect/collect">收藏</navigator>
+<navigator url="/pages/history/history">足迹</navigator>
+<navigator url="/pages/im/im?from=297324&to=912533&caseId=7384988&caseType=1">IM</navigator>
+
+
+
+<button bindtap='payTest'>支付测试</button>
+
+
+<!--
+<form report-submit="true" bindsubmit="submit">
+	<button form-type="submit" type="default" size="mini">提测试</button>
+</form>
+-->

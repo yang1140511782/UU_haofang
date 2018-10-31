@@ -1,0 +1,149 @@
+<!-- 自定义Toast -->
+<import src="../../utils/toast/toast.wxml"/>
+<template is="toast" data="{{ ..._toast_ }}"  />
+<view class="main">
+    <form report-submit="true" bindsubmit="submitData">
+        <view class="conten-box" wx:if="{{first}}">
+            <view class="common-list">
+                <view class="common-txt">楼盘</view>
+                <view class="input-con" bindtap='buildSearchBompEvent'>
+                    <input placeholder="请选择楼盘" value="{{buildName}}" placeholder-class="input-font" placeholder-style="color:#d1d1d1;font-size:27rpx" bindtap="searchBuildData" disabled="true"/>
+                </view>
+            </view>
+            <!-- 用途 -->
+            <view class="common-list">
+                <view class="common-txt">用途</view>
+                <picker class="use-choose" mode="selector" range="{{useageArr}}" range-key="{{'name'}}"
+                        bindchange="useageChange">
+                    <view class="picker use-picker">
+                        <text class="{{(useageText!=''&&useageText!='请选择用途')?'':'text-color'}}">{{useageText}}</text>
+                    </view>
+                </picker>
+            </view>
+            <!-- 户型 -->
+            <view class="common-list" wx:if="{{houseUseage!=3}}">
+                <view class="common-txt">户型</view>
+                <view class="input-box">
+                    <view class="input-com input-con">
+                        <input placeholder="几室" name="room" value="{{houseRoom}}" placeholder-style="color:#d1d1d1;font-size:27rpx" bindblur="blurHuXing" data-unit="室" data-type="houseRoom" maxlength="2" placeholder-class="input-font"  />
+                    </view>
+                    <view class="input-com input-con">
+                        <input placeholder="几厅" name="hall" value="{{houseHall}}" placeholder-style="color:#d1d1d1;font-size:27rpx" maxlength="2" bindblur="blurHuXing" data-type="houseHall" data-unit="厅" placeholder-class="input-font"  />
+                    </view>
+                    <view class="input-com input-con">
+                        <input placeholder="几卫" name="wei" value="{{houseWei}}" placeholder-style="color:#d1d1d1;font-size:27rpx" maxlength="2" bindblur="blurHuXing" data-type="houseWei" data-unit="卫" placeholder-class="input-font"  />
+                    </view>
+                </view>
+            </view>
+            <!-- 楼层 -->
+            <view class="common-list">
+                <view class="common-txt">楼层</view>
+                <view class="input-box">
+                    <view class="input-com input-con">
+                        <input placeholder="几楼" name="floor" value="{{houseFloor}}" placeholder-style="color:#d1d1d1;font-size:27rpx" bindblur="blurFloor" data-type="houseFloor" maxlength="3" placeholder-class="input-font"  />
+                    </view>
+                    <view class="input-com input-con">
+                        <input placeholder="共几层" name="floors" value="{{houseFloors}}" placeholder-style="color:#d1d1d1;font-size:27rpx" bindblur="blurFloor" data-type="houseFloors" maxlength="4" placeholder-class="input-font"  />
+                    </view>
+                </view>
+            </view>
+            <!-- 面积 -->
+            <view class="common-list">
+                <view class="common-txt">面积</view>
+                <view class="input-con">
+                    <input style="width:93%;" placeholder="请输入面积" placeholder-style="color:#d1d1d1;font-size:27rpx" name="houseArea" value="{{houseArea}}" bindblur="setVal" data-type='houseArea' type="number" maxlength="5" placeholder-class="input-font"  />
+                    <view class="unit">平米</view>
+                </view>
+            </view>
+            <!-- 售价 -->
+            <view class="common-list">
+                <view class="common-txt">售价</view>
+                <view class="input-con">
+                    <input style="width:93%;" placeholder="请输入售价" name="price" placeholder-style="color:#d1d1d1;font-size:27rpx" value="{{price}}" bindblur="setVal" maxlength="5" data-type='price' type="number" placeholder-class="input-font"  />
+                    <view class="unit">万元</view>
+                </view>
+            </view>
+            <!-- 描述 -->
+            <view class="common-list textarea-box" wx:if="{{!searchLoupanBox}}">
+                <view class="common-txt">描述</view>
+                <view class="input-con textarea-con">
+                    <textarea name="{{descp}}"  class="input-com-color" value="{{descp}}" placeholder-style="color:#d1d1d1;font-size:27rpx"  bindinput="blurDesc" style="width:100%;height:100rpx" placeholder="请输入装修配套等体现房屋亮点的简单描述" maxlength="200"
+                            placeholder-class="input-font"></textarea>
+                </view>
+            </view>
+            <!-- 图片 -->
+            <view class="img-txt">
+                <view class="common-txt">图片</view>
+                <view class="img-note">( 最多可上传9张 )</view>
+            </view>
+            <view class="img-list-box">
+                <view class="img-list-con" wx:for='{{imgArr}}' wx:key="index">
+                    <image src="{{imgArr[index]}}" mode="aspectFill"></image>
+                    <view class="delete-img" data-id="{{index}}" bindtap='deleteImg'></view>
+                </view>
+                <view class="choose-img" wx:if="{{imgArr.length < 9}}" bindtap="chooseImg"></view>
+            </view>
+            <!-- 登记按钮 -->
+            <view class="register-btn" bindtap="checkData">确认登记</view>
+            <view class="text-add-explain">为保护您免受骚扰，经纪人只能通过平台的免费语音电话与您联系，请保持登录状态。</view>
+        </view>
+        <!--楼盘搜索-->
+        <view class="search-loupan-box" wx:if="{{searchLoupanBox}}">
+            <view class="search-box-head">
+                <view class="search-head-con">
+                    <view class="search-input-box">
+                        <input type="text" class="input-padding" bindinput='searchBuildData' value="{{searchInputValue}}" style="width:100%;height:100%;" placeholder="请输入楼盘名或首字母搜索" placeholder-class="input-font"/>
+                    </view>
+                    <view class="kwd-delte" catchtap='deleteKedEvent'></view>
+                </view>
+                <view class="search-cancle-btn" catchtap='searchCancleEvent'>取消</view>
+            </view>
+            <view class="search-list-con">
+                <view class="search-list-li" wx:for="{{buildArr}}" wx:key="{{index}}" data-id="{{item.buildId}}" data-text='{{item.buildName}}' catchtap="listTap">
+                    <view class="search-build-name">{{item.buildName}}</view>
+                    <view class="search-build">{{item.regName}}</view>
+                </view>
+            </view>
+        </view>
+        <!--有奖委托介绍-->
+    <view class="reward-wrap" wx:if="{{!first}}">
+        <!--banner-->
+        <view class='banner-box'></view>
+        <!--/banner-->
+        <!--内容说明-->
+        <view class='cont-wrap'>
+            <view class="cont-box">
+                <view class='txt-b'>付费联系更可靠</view>
+                <view class='txt-b-a'>经纪人需付费后才能联系您，有效防止骚扰，还能收奖金</view>
+            </view>
+            <view class="cont-box">
+                <view class='txt-b'>快速成交</view>
+                <view class='txt-b-a'>为您筛选服务意向最高的经纪人，助您快速成交</view>
+            </view>
+            <view class="cont-box">
+                <view class='txt-b'>服务有保障</view>
+                <view class='txt-b-a'>平台完善的评价、投诉机制，服务质量有保障</view>
+            </view>
+        </view>
+        <!--/内容说明-->
+        <!--底部按钮-->
+        <view class='foot-btn'>
+            <!--<view class='btn-box reward-btn' bindtap='rewardEntrustBtn'><text>发布有奖委托</text></view>-->
+            <button class='btn-box common-btn' form-type="submit"><text>发布普通委托</text></button>
+        </view>
+        <!--/底部按钮-->
+        <!--有奖委托弹框-->
+        <view class="foot-bomp" wx:if="{{chooseRewardShow}}">
+            <view class="bomp-mask"  catchtap='cancelBompEvent'></view>
+            <view class="bomp-con">
+                <view class="bomp-title">请选择收取奖励金额</view>
+                <view class="prize-money-ul">
+                    <view class="prize-money-ul-li {{rewardMoneyIndex==index?'prize-chooseing':''}}" data-index="{{index}}" catchtap='rewardChooseEvent' wx:key='{{item}}' wx:for="{{rewardMoneyArr}}"><text>{{item}}元</text></view>
+                </view>
+                <button class="bomp-con-btn" form-type="submit">确定提交</button>
+                <view class="bomp-con-cancle" catchtap='cancelBompEvent'>×</view>
+            </view>
+        </view>
+    </view>
+    </form>
+</view>

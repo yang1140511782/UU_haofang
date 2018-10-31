@@ -1,0 +1,173 @@
+image{width: 100%;}
+
+page{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  overflow:auto;
+}
+.vocal-wrap{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url(http://cdn.haofang.net/static/uuweb/activity/new20181019/bg.png)no-repeat top;
+  background-size: 100% 100%;
+  min-height: 1206rpx;
+  padding-top: 66rpx;
+  box-sizing: border-box;
+}
+.top-img{
+  position: relative;
+  margin:0 auto;
+  width: 477rpx;
+  height: 629rpx;
+  background: url(http://cdn.haofang.net/static/uuweb/activity/new20181019/top_banenr.png) no-repeat center bottom;
+  background-size: 100% 100%;
+}
+.code-num{
+  position:absolute;
+  left: 50%;
+margin-left:-200rpx;
+bottom:19rpx;
+width:408rpx;
+height:50rpx;
+background:rgba(255,255,255,0.75);
+color:#999;
+font-size:30rpx;
+text-align:center;
+line-height:50rpx;
+font-weight:bold;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+.title-box{
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 34rpx;
+  margin-top: 32rpx;
+  /*margin-bottom: 48rpx;*/
+}
+.title-box-2{
+  font-size: 26rpx;
+  margin-top:76rpx;
+  line-height:42rpx;
+
+}
+.title-box text{
+  font-size: 40rpx;
+  color: #fff;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+}
+.has-box{
+  position: relative;
+  top: 70rpx;
+  width: 100%;
+  text-align: center;
+  font-size: 36rpx;
+  color:#fff;
+}
+.tx-box-big{
+  display: flex;
+  width: 100%;
+  /* height: 120rpx; */
+  flex-direction: column;
+  justify-content: center;
+  margin-top:14rpx;
+
+}
+.tx-box{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+.tx-li{
+  width: 94rpx;
+  height: 94rpx;
+  border-radius: 50%;
+  background: url(http://static.haofang.net/Public/images/fang_default.png)no-repeat center;
+  background-size: 100%;
+  overflow: hidden;
+  margin-right: 60rpx;
+}
+.tx-li image{
+  width: 100%;
+}
+.tx-li:last-child{
+   margin-right: 0;
+}
+.has-attend-tips{
+  color: #fff;
+  text-align: center;
+  font-size: 20rpx;
+  margin: 10rpx auto 0;
+}
+.has-attend-tips::after{
+  content: '>';
+  display: inline-block;
+  width: 20rpx;
+  height: 20rpx;
+  font-size: 24rpx;
+  color: #fff;
+  margin-left: 10rpx;
+  font-family: "宋体","Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+.has-attend-tips text{
+  color: #c4b0ff;
+  font-size: 27rpx;
+  margin: 0 10rpx;
+}
+.btn-box{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin:  auto;
+  bottom: 220rpx;
+  width: 380rpx;
+  height: 72rpx;
+  background: #df0029;
+  border-radius: 60rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 72rpx;
+  font-size: 32rpx;
+  letter-spacing:4rpx;
+  white-space: nowrap;
+}
+.btn-box-down{
+  bottom: 180rpx;
+}
+.btn-box-down1{
+  bottom: 170rpx;
+}
+.v-footer{
+  position: absolute;
+  left: 0;
+  bottom: 82rpx;
+  width: 100%;
+  /* height: 100rpx; */
+  text-align: center;
+  color: #fff;
+  font-size:22rpx;
+line-height:30rpx;
+
+}
+/*回首页*/
+.go-home{
+  position: fixed;
+  top:25rpx;
+  right:20rpx;
+  width: 122rpx;
+  height: 34rpx;
+  background: url(http://cdn.haofang.net/static/uuweb/activity/new20181019/back_icon.png?t=20180427) center center no-repeat;
+  background-size: 100% 100%;
+}
+.gray-btn{
+  background: #d0d0d0;
+  color: #333;
+}

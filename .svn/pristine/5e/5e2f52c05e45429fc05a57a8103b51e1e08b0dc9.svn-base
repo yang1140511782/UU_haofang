@@ -1,0 +1,43 @@
+<view class='main'>
+  <view class='server'>
+    <image src='https://uuweb.haofang.net/Public/images/app/app-img1.png' mode='aspectFill'/>
+    <view class='section-1 section-txt'>
+      <view>服务效率</view>
+      <view>365个城市、50万经纪人</view>
+      <view>24小时顶尖顾问服务</view>
+      <view>线上线下相结合</view>
+      <view>助您闪电出手省心省力</view>
+    </view>
+  </view>
+  <view class='safe'>
+    <image src='https://uuweb.haofang.net/Public/images/app/app-img2.png' mode='aspectFill'/>
+    <view class='section-2 section-txt'>
+      <view>隐号安全</view>
+      <view class="txt-icon">
+        <text>在线聊天</text>
+        <text>免费隐号通</text>
+        <text>直拨电话</text>
+      </view>
+      <view>在线隐号通话，保证信息安全</view>
+      <view>尖端安全防护,远离骚扰</view>
+      <view>高额泄密赔付，保证交易无忧</view>
+    </view>
+  </view>
+  <view class='specialty'>
+  <image src='https://uuweb.haofang.net/Public/images/app/app-img3.png' mode='aspectFill'/>
+    <view class='section-3 section-txt'>
+      <view>专业精耕</view>
+      <view>720度全景视频全网发布，最大程度曝光</view>
+      <view>10年楼盘精耕，大数据精准匹配，专业、专注</view>
+    </view>
+  </view>
+  <view class="footer">
+    <text class="lease-btn" data-type='1' catchtap='redirect'>我要出租</text>
+    <text class='sale-btn' data-type='2' catchtap='redirect'>我要出售</text>
+  </view>
+</view>
+
+<!--  切换城市  -->
+<!-- 引入找房定位的公共模板 -->
+<import src="../../component/localCityToast/localCityToast.wxml"/>
+<template is="localCity" data="{{locateCityName}}" wx:if='{{!toastHide}}'/>

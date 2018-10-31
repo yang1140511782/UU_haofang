@@ -1,0 +1,366 @@
+@import "../../../../template/authorizeMaskTmp.wxss";
+.one-line-text{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 100%;display: block;}
+
+/* 头部 */
+
+.top-mod {
+    height: 364rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/backg1.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+}
+.top-mod>image {
+    width: 101rpx;
+    height: 101rpx;
+    position: absolute;
+    right: 18rpx;
+    bottom: -36rpx;
+    z-index: 10;
+}
+.top-text {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 28rpx;
+    height:52rpx;
+    width:144rpx;
+    text-align: center;
+    line-height: 52rpx;
+    border-radius: 15px 0px 0px 15px;
+    position: absolute;
+    right: 0px;
+    top: 10px;
+}
+/* 中部 */
+
+.middle-mod {
+    height: 720rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/backg3.png') no-repeat;
+    background-size: 100% 100%;
+    padding: 1px;
+    position: relative;
+}
+
+.loop-info {
+    padding: 0px 30rpx;
+    margin:38rpx 64rpx;
+    margin-bottom: 10rpx;
+    height:64rpx;
+    background-color: #f3861f;
+    border-radius: 32rpx;
+    color: #fff;
+    line-height: 64rpx;
+    font-size: 28rpx;
+    overflow: hidden;
+}
+
+
+.loop-info-box{
+  position: relative;
+}
+
+.prize-loop {
+    position: relative;
+    height: 347rpx;
+    width: 750rpx;
+    
+}
+.paomadeng-a{
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/loopDeng1.png') no-repeat;
+    background-size: 100% 100%;
+}
+.paomadeng-b{
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/loopDeng2.png') no-repeat;
+    background-size: 100% 100%;
+}
+.prize-loop>.yytop{
+  position: absolute;
+  top:50rpx;
+  left: 98rpx;
+  width:558rpx;
+  height:70rpx;
+  z-index: 10;
+}
+.prize-loop>.yybottom{
+  position: absolute;
+  bottom:65rpx;
+  left: 98rpx;
+  width:558rpx;
+  height:70rpx;
+  z-index: 10;
+}
+.prize-loop-conten{
+  position: relative;
+  width:558rpx;
+  height:220rpx;
+  background-color: #e44603;
+  top:55rpx;
+  left: 97rpx;
+  border-radius: 20rpx;
+  z-index: 9;
+  overflow: hidden;
+}
+.pl-conten-bord{
+  height:220rpx;
+  width:170rpx;
+  background-color: #fff;
+  margin:0rpx 6rpx;
+  float: left;
+  overflow: hidden;
+}
+.jp-list{
+  position: relative;
+  bottom: 0rpx;
+}
+.jp-list>.jp-imgbox{
+  height:220rpx;
+}
+.jp-list>.jp-imgbox>image{
+  width:170rpx;
+  height:150rpx;
+  margin:38rpx 0rpx;
+}
+/* 滚动奖品列表 */
+.jp-list{
+    position: relative;
+}
+.yaogan {
+    position: absolute;
+    right: 60rpx;
+    bottom: 110rpx;
+    height: 129rpx;
+    width: 84rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/yaogan.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.prize-btn {
+    margin: 0 auto;
+    margin-top:30rpx;
+    height: 130rpx;
+    width: 400rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/btnup.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.floar-jb {
+    position: absolute;
+    height: 133rpx;
+    width: 76rpx;
+    right: 0px;
+    top: 40%;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jinbi.png') no-repeat;
+    background-size: 100% 100%;
+}
+/* 底部 */
+
+.bottom-mod {
+    padding: 1px;
+    position: relative;
+    height: 474rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/backg2.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.bot-title{
+  position: relative;
+  width: 213rpx;
+  height: 59rpx;
+  text-align: center;
+  left:50%;
+  margin-left: -106rpx;
+  top:28rpx;
+}
+.bot-title>image{
+  position: absolute;
+  top:0rpx;
+  height: 59rpx;
+  max-height: 100%;
+  max-width: 100%;
+}
+.bot-title>.jip-text{
+  color:#fff;
+  font-size: 32rpx;
+  position: relative;
+  z-index: 11;
+}
+.bot-title>.jip-text-back{
+  background-color: #f36113;
+  position: absolute;
+  z-index: 10;
+  width: 160rpx;
+  height: 20rpx;
+  bottom: 10rpx;
+  left: 25rpx;
+}
+
+
+.bot-img {
+    background-color: #fff;
+    height: 230rpx;
+    width: 160rpx;
+    border-radius: 10rpx;
+    text-align: center;
+    float: left;
+    margin:0rpx 7rpx;
+}
+.bot-img>.btnt-a{
+  border-radius: 10rpx 10rpx 0rpx 0rpx;
+  background-color: #ccc;
+  color:#fff;
+  font-size: 20rpx;
+  height:30rpx;
+  line-height: 30rpx;
+}
+.bot-img>image{
+  height: 152rpx;
+  width:160rpx;
+}
+.bot-img>.btnt-b{
+  border-radius: 0rpx 0rpx 10rpx 10rpx;
+  background-color: #e33c00;
+  color:#fff;
+  font-size: 24rpx;
+  height:40rpx;
+  line-height: 40rpx;
+}
+/* 中奖弹出层 --现金红包*/
+.backimg{
+  position: fixed;
+}
+.page-modal{
+  background-color: rgba(0, 0, 0, 0.6);
+  background-size: 100% 100%;
+  width:100%;
+  height:100%;
+  z-index: 20;
+  top:0;
+  left:0;
+}
+.modal-bgimg{
+  background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/modalWindow.png') no-repeat;
+  background-size: 100% 100%;
+  width: 658rpx;
+  height:632rpx;
+  z-index: 21;
+  top:214rpx;
+  left:50%;
+  margin-left: -319rpx;
+}
+.close-modal{
+  background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/colse.png') no-repeat;
+  background-size: 100% 100%;
+  width:67rpx;
+  height:67rpx;
+  left:50%;
+  margin-left: -33rpx;
+  bottom:245rpx;
+}
+.prize-title{
+  background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/CongratulationsGet.png') no-repeat;
+  background-size: 100% 100%;
+  width:286rpx;
+  height:46rpx;
+  margin:0 auto;
+  margin-top:74rpx;
+}
+.money-text{
+  text-align: center;
+  font-size: 28rpx;
+  color:#999;
+  line-height: 65rpx;
+}
+.modal-toprize{
+  position: relative;
+  width: 221rpx;
+  margin:0 auto;
+  margin-bottom: 40rpx;
+}
+.modal-toprize>.mp-a{
+  color:#e62c39;
+  text-align: center;
+  font-size: 110rpx;
+}
+.modal-toprize>.mp-b{
+  position: absolute;
+  right: -30rpx;
+  bottom: 24rpx;
+  color:#e62c39;
+  font-size: 30rpx;
+}
+.modal-toprize>.mp-c{
+  background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/line.png') no-repeat;
+  background-size: 100% 100%;
+  width: 221rpx;
+  height: 5rpx;
+}
+.tell-you{
+  text-align: center;
+  font-size: 26rpx;
+  color:#818181;
+}
+.tell-you>text{
+  color:#e62c39;
+}
+.modal-btn{
+  text-align: center;
+}
+.modal-btn>button{
+  background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/button.png') no-repeat;
+  background-size: 100% 100%;
+  width:492rpx;
+  height:112rpx;
+  border-radius: 41rpx;
+  font-size: 32rpx;
+  color:#5f2328;
+  line-height: 122rpx;
+  margin-top:44rpx;
+  margin-left:73rpx;
+  border:0!important;
+  position: inherit;
+}
+.modal-footer{
+  color:#75000f;
+  font-size: 22rpx;
+  text-align: center;
+  line-height: 45rpx;
+}
+.shiwu-prize{
+  text-align: center;
+  padding:20rpx 0rpx;
+}
+.shiwu-prize>image{
+  height: 190rpx;
+  width:153rpx;
+}
+/* 那现金弹出层 */
+.get-money-conten{
+  height: 400rpx;
+  padding: 20rpx;
+}
+.get-money-img{
+    text-align: center;
+    margin: 20rpx 0rpx;
+}
+.get-money-img>image{
+    width:243rpx;
+    height:219rpx;
+}
+.get-money-img-ten{
+  text-align: center;
+  margin: 10rpx 0rpx;
+}
+.get-money-img-ten>image{
+  width:425rpx;
+  height:33rpx;
+}
+.get-money-forward{
+  text-align: center;
+  font-size: 28rpx;
+  color:#666;
+}
+.get-money-friends{
+  text-align: center;
+  font-size: 26rpx;
+  color:#999;
+  margin-top: 14rpx;
+}

@@ -1,0 +1,13 @@
+
+
+<navigator url="/pages/houseDetail/houseDetail?caseId=7123757&cityId=1&caseType=1&reSource=1">跳转详情页</navigator>
+
+
+<button bindtap='payTest'>支付测试</button>
+
+
+<form report-submit="true" bindsubmit="submit">
+<input name="aaa" value='111'></input>
+
+<button form-type="submit" type="default" size="mini">提交</button>
+</form>

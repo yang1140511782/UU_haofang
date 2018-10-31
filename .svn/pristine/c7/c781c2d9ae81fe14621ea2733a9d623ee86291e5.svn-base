@@ -1,0 +1,1 @@
+<button type="default" open-type='getUserInfo' bindgetuserinfo='getUserInfo' hover-class="other-button-hover"> 微信账号登录 </button>

@@ -1,0 +1,61 @@
+
+<view id="account-wrap">
+    <view class='h-top'>
+        <view class='p-title' wx:if="{{currentTab==0}}">委托意向金</view>
+        <view class='p-title' wx:if="{{currentTab==1}}">有效优惠券</view>
+        <view class='p-box'>
+            <text wx:if="{{currentTab==0}}">{{payPaidTotal}}</text>
+            <text wx:if="{{currentTab==1}}">{{RedPacketTotal}}</text>
+            <text class='dw'>{{currentTab==1? "张":"元"}}</text>
+        </view>
+        <view class='hint-box' wx:if="{{currentTab==0}}">{{pTitleTypeInfo}}</view>
+    </view>
+    <!--nav切换-->
+    <view class='nav-wrap'>
+      <view class="nav-li {{currentTab==0?'active':''}}" data-current='0' bindtap='swichNav'>委托意向金</view>
+      <view class="nav-li {{currentTab==1?'active':''}}" data-current='1' bindtap='swichNav'>优惠券</view>
+    </view>
+    <!--/nav切换-->
+    <!--swiper-->
+    <view class='tab-cont'>
+         <swiper class="tab-content" current="{{currentTab}}"  duration="300" bindchange="switchTab" style="height:100%;">
+              <!--委托意向金-->
+              <swiper-item>
+                      <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+                              <view class='ticket-li' wx:if="{{earnestMoney.length>0}}" wx:for="{{earnestMoney}}" wx:key="{{index}}">
+                                    <view class='tik-pic'>
+                                        <image src="{{item.bgImage}}" mode='widthFix' class='no-data-img'></image>
+                                    </view>
+                                    <view class='tik-cont'>
+                                        <view class='tik-title'>{{item.payDesc}}<text>{{item.totalFee}}</text></view>
+                                        <view class='tik-time'>{{item.createTime}}</view>
+                                    </view>
+                              </view>
+                        <view class='no-wrap' wx:if="{{noDataPrice}}">
+                            <image src="https://uuweb.haofang.net/Public/wxApp/images/myAccount/nodata_list.png" class='no-data-img'></image>
+                            <view class='no-txt'>暂无数据记录...</view> 
+                        </view>
+                        
+                      </scroll-view>
+              </swiper-item>
+              <!--/委托意向金-->
+              <!--优惠券-->
+              <swiper-item class='red-packet'>
+                       <scroll-view scroll-y="true" class="scoll-h" scroll-y="true" bindscrolltolower="loadMore">
+                         <view class='{{item.status== 1 ? "coupon-box" :"coupon-box-has"}}' wx:if="{{RedPacket.length>0}}" wx:for="{{RedPacket}}" wx:key="{{index}}">
+                            <view class='cou-title {{item.status==1 ? "no-use" :""}}'>{{item.quanTitle}} <text>￥{{item.quanMoney}}</text></view>
+                            <view class='from-box'>来自于经纪人{{item.fromSource}}<text wx:if="{{item.status== -1}}">已过期</text><text wx:if="{{item.status== 0}}">已失效</text></view>
+                            <view class='cou-msg'>仅限于对经纪人{{item.fromSource}}发起的买房专属委托的线上佣金抵扣。不能提现和转让</view>
+                         </view>
+                         <view class='no-wrap' wx:if="{{noDataCou}}">
+                            <image src="https://uuweb.haofang.net/Public/wxApp/images/myAccount/nodata_list.png" class='no-data-img'></image>
+                            <view class='no-txt'>暂无数据记录...</view> 
+                        </view>
+                      </scroll-view> 
+              </swiper-item>
+              <!--/优惠券-->
+        </swiper>
+    </view>
+   
+    <!--/swiper-->
+</view>

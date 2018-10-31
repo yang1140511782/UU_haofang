@@ -1,0 +1,684 @@
+// pages/calculator/calculator.js
+var app = new getApp();
+var paymentsArr = ['1成', '2成', '3成', '4成', '5成', '6成', '7成', '8成', '9成'];
+var loanTermArr = ['1年', '2年', '3年', '4年', '5年', '6年', '7年', '8年', '9年', '10年', '11年', '12年', '13年', '14年', '15年', '16年', '17年',
+  '18年', '19年', '20年', '21年', '22年', '23年', '24年', '25年', '26年', '27年', '28年', '29年', '30年'];
+var businessLoanArr = [
+  {
+    value: 1,
+    txt: '2015年10月24日基准利率'
+  },
+  {
+    value: 0.7,
+    txt: '2015年10月24日利率下(7折)'
+  },
+  {
+    value: 0.85,
+    txt: '2015年10月24日利率下限(85折)'
+  },
+  {
+    value: 0.88,
+    txt: '2015年10月24日利率下限(88折)'
+  },
+  {
+    value: 0.9,
+    txt: '2015年10月24日利率下限(9折)'
+  },
+  {
+    value: 1.1,
+    txt: '2015年10月24日利率上限(1.1倍)'
+  },
+];
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    paymentsArr: paymentsArr,//首付比例数组
+    loanTermArr: loanTermArr,//贷款年限数组
+    businessLoanArr: businessLoanArr,//商贷利率数组
+    loanTermText: 20,//贷款年限
+    businessText: '2015年10月24日基准利率',
+    paymentText: 3,
+    businessRate: 4.9,//商贷利率
+    zdybusinessRate: 4.9,//自定义商业利率
+    zdyRate: '',//自定义利率中间变量
+    sdllShow: false,//商贷利率显示控制
+    sfblSHow: false,//首付显示控制
+    yearSHow: false,//贷款年限显示控制
+    gjjdk: '0',
+    sydk: '1',
+    zhdk: '0',
+    toView: '',
+    gjjlilv: 3.25,//公积金利率
+    principal: '1',//本息
+    corpus: 0,//本金
+    paymentsText: '月供',
+    totalInterestShow: false,//利息总额框显示
+    detailsShow: false,//点击详情显示
+    cpfrRate: false,//公积金利率显示
+    cpfLoan: false,//公积金贷款显示
+    commercialLoan: false,//商业贷款
+    businessLoan: true,//商贷利率
+    inputShow: '0',
+    okBtnShow: false,//确定按钮显示
+    sfNum: 0,//首付
+    ygNum: 0,//月供最终变量
+    hkzeNUm: 0.0,//还款总额最终变量
+    lixiNum: 0.0,//利息总额最终变量
+    // 等额本息的变量
+    ygbxNum: 0,//月供
+    hkzebxNum: 0.0,//还款总额
+    lxzebxNum: 0.0,//利息总额
+    // 等额本金的变量
+    ygbjNum: 0,//首月月供
+    hkzebjNum: 0.0,//还款总额
+    lxzebjNum: 0.0,//利息总额
+    mydjNum: 0.00,//每月递减
+    houseTotal: 0,//房屋售价
+    loanTotal: 0.0,//贷款总额
+    shangyeLoan: 0.0,//商业贷款
+    gjjLoan: 0,//公积金贷款
+    totalM: [],
+    yearBorder: 19,//年限框边框
+    sfBorder: 2,//首付比例边框
+    zdyBorder: 0,//自定义边框
+    result: false,
+    rateFlag: true,
+    downPayment: 0,
+    winHeight: '',   //屏幕高度
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    var that = this;
+    //获取屏幕高度
+    try {
+      var res = wx.getSystemInfoSync();
+      that.setData({
+        winHeight: res.windowHeight
+      });
+    } catch (e) {
+      console.log('获取屏幕高度失败');
+    };
+    var data = this.data;
+    if (options.price) {
+      this.setData({
+        houseTotal: options.price,
+      });
+    };
+    var paymentText = data.paymentText;
+    var houseTotal = data.houseTotal;
+    var downPayment = houseTotal * 0.3;
+    var loanTotal = parseFloat(houseTotal - (paymentText / 10 * houseTotal)).toFixed(1);
+    loanTotal = isNaN(loanTotal) ? 0 : loanTotal;
+    this.setData({
+      loanTotal: loanTotal,
+      downPayment: downPayment
+    });
+    if (loanTotal && loanTotal != 0) {
+      this.calculationEvent();
+    };
+  },
+  onShareAppMessage: function () {
+    return {
+      title: app.globalData.compInfo.FCompName,
+      path: app.globalData.sharePublicUrl,
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+  /**
+   * 切换首付比例和首付金额
+   */
+  toggleRate() {
+    var that = this;
+    var flag = !that.data.rateFlag;
+    var houseTotal = that.data.houseTotal;
+    if (!houseTotal) {
+      that.setData({
+        rateFlag: flag
+      });
+      return;
+    };
+    if (flag) {
+      var lilv = parseFloat(that.data.paymentText / 10).toFixed(1);
+      var dkze = parseFloat(houseTotal - parseFloat((houseTotal * lilv).toFixed(1))).toFixed(1);
+      that.setData({
+        loanTotal: dkze,
+        shangyeLoan: 0,
+        gjjLoan: 0,
+        rateFlag: flag
+      });
+    } else {
+      var downPayment = (that.data.downPayment - 0).toFixed(1) || 0;
+      var dkze = houseTotal - downPayment;
+      that.setData({
+        loanTotal: dkze,
+        shangyeLoan: 0,
+        gjjLoan: 0,
+        rateFlag: flag
+      });
+    };
+  },
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  },
+  // 切换贷款类型
+  changeBtn: function (e) {
+    var data = e.currentTarget.dataset;
+    if (data.type == 'gjjdk') {
+      this.setData({
+        gjjdk: '1',
+        sydk: '0',
+        zhdk: '0',
+        businessLoan: false,
+        cpfrRate: true,
+        commercialLoan: false,
+        cpfLoan: false
+      })
+    } else if (data.type == 'sydk') {
+      this.setData({
+        gjjdk: '0',
+        sydk: '1',
+        zhdk: '0',
+        businessLoan: true,
+        cpfrRate: false,
+        commercialLoan: false,
+        cpfLoan: false
+      })
+
+    } else if (data.type == 'zhdk') {
+      this.setData({
+        gjjdk: '0',
+        sydk: '0',
+        zhdk: '1',
+        businessLoan: true,
+        commercialLoan: true,
+        cpfLoan: true,
+        shangyeLoan: this.data.loanTotal,
+        gjjLoan: 0,
+        cpfrRate: false
+      })
+    }
+  },
+  topChange: function (e) {
+    var that = this;
+    var data = e.currentTarget.dataset;
+    if (data.type == 'principal') {
+      this.setData({
+        principal: '1',
+        corpus: '0',
+        paymentsText: '月供',
+        totalInterestShow: false,
+        detailsShow: false
+      })
+    } else if (data.type == 'corpus') {
+      this.setData({
+        principal: '0',
+        corpus: '1',
+        paymentsText: '首月月供',
+        totalInterestShow: true,
+      })
+    }
+    that.calculationEvent();
+  },
+  // 首付比例弹框显示
+  //  sdllShow: false,//商贷利率显示控制
+  //   sfblSHow: false,//首付显示控制
+  //   yearSHow: false,//贷款年限显示控制
+  downPayments: function (e) {
+    this.setData({
+      sfblSHow: true,
+      inputShow: '1'
+    })
+  },
+  loanTermEvent: function (e) {
+    this.setData({
+      yearSHow: true,
+      inputShow: '1'
+    })
+  },
+  businessEvent: function () {
+    this.setData({
+      sdllShow: true,
+      inputShow: '1'
+    })
+  },
+  maskHideEvent: function (e) {
+    var type = e.currentTarget.dataset.type;
+    if (type == 'sdllsfblMask') {
+      this.setData({
+        sdllShow: false,
+        inputShow: '0'
+      })
+    } else if (type == 'sfblMask') {
+      this.setData({
+        sfblSHow: false,
+        inputShow: '0'
+      })
+    } else if (type == 'yearMask') {
+      this.setData({
+        yearSHow: false,
+        inputShow: '0',
+      })
+    }
+  },
+  // 贷款年限赋值
+  yearLiEvent: function (e) {
+    var that = this;
+    var value = e.currentTarget.dataset.value + 1;
+    var index = e.currentTarget.dataset.value;
+    that.setData({
+      toView_year: 'year' + index,
+      loanTermText: value,
+      yearSHow: false,
+      inputShow: 0,
+      yearBorder: index
+    })
+  },
+  //首付比例赋值
+  sfblliEvent: function (e) {
+    var that = this;
+    var data = that.data;
+    var value = e.currentTarget.dataset.value + 1;
+    var index = e.currentTarget.dataset.value;
+    var lilv = value / 10;
+    var dkze = parseFloat(data.houseTotal - (data.houseTotal * lilv)).toFixed(1);
+    dkze = isNaN(dkze) ? 0 : dkze;
+    that.setData({
+      toView_downPayment: 'downPayment' + index,
+      paymentText: value,
+      sfblSHow: false,
+      inputShow: 0,
+      loanTotal: dkze,
+      gjjLoan: 0,
+      shangyeLoan: dkze,
+      sfBorder: index
+    })
+  },
+  //商贷利率
+  sdllLiEvent: function (e) {
+    var that = this;
+    var value = e.currentTarget.dataset.value;
+    var index = e.currentTarget.dataset.index;
+    var text = e.currentTarget.dataset.txt;
+    var sdll = parseFloat(parseFloat(value * 4.9).toFixed(2));
+    this.setData({
+      businessRate: sdll,
+      inputShow: 0,
+      sdllShow: false,
+      businessText: text,
+      zdyBorder: index,
+      toView: 'loanbox' + index
+    })
+  },
+  //自定义商贷利率
+  zdyInputChange: function (e) {
+    var that = this;
+    var dataType = e.currentTarget.dataset.type;
+    var v = e.detail.value;
+    if (dataType == 'zdyInput') {
+      this.setData({
+        zdybusinessRate: v
+      })
+    }
+  },
+  //自定义利率确定
+  okBtnEvent: function (e) {
+    var that = this;
+    that.setData({
+      businessRate: that.data.zdybusinessRate,
+      sdllShow: false,
+      inputShow: 0,
+      okBtnShow: false
+    })
+  },
+  zdyInputFocus: function (e) {
+    var that = this;
+    that.setData({
+      okBtnShow: true
+    })
+  },
+  // 房屋总价获得焦点
+  houseTotalInput: function (e) {
+    var data = this.data;
+    var v = e.detail.value;
+    this.setData({
+      houseTotal: v
+    });
+    //首付比例
+    if (data.rateFlag) {
+      var lilv = parseFloat(data.paymentText / 10).toFixed(1);
+      var dkze = parseFloat(v - parseFloat((v * lilv).toFixed(1))).toFixed(1);
+      this.setData({
+        loanTotal: dkze,
+        shangyeLoan: 0,
+        gjjLoan: 0
+      });
+    } else {
+      var downPayment = (data.sfNum - 0).toFixed(1) || 0;
+      var dkze = v - downPayment;
+      this.setData({
+        loanTotal: dkze,
+        shangyeLoan: 0,
+        gjjLoan: 0
+      });
+    };
+  },
+  // 首付金额输入事件
+  downPaymentInputChange(e) {
+    var v = e.detail.value;
+    var data = this.data;
+    if (v > data.houseTotal - 0) {
+      wx.showToast({
+        title: '请输入正确的首付金额',
+        icon: 'none',
+        duration: 1000
+      })
+      this.setData({
+        downPayment: ''
+      });
+    } else {
+      var loanTotal = data.houseTotal - v;
+      this.setData({
+        loanTotal: loanTotal,
+        downPayment: v
+      });
+    };
+
+    if (!data.rateFlag) {
+      this.setData({
+        sfNum: v
+      });
+    };
+  },
+  // 公积金输入框变化
+  gjjInputChange: function (e) {
+    var v = e.detail.value;
+    var data = this.data;
+    if (v > data.loanTotal - 0) {
+      wx.showToast({title: '请输入正确的公积金贷款金额',icon: 'none',duration: 1000});
+      this.setData({
+        gjjLoan: ''
+      });
+    } else {
+      var shangyeLoan = parseFloat(data.loanTotal - v).toFixed(1);
+      this.setData({
+        shangyeLoan: shangyeLoan,
+        gjjLoan: v
+      });
+    };
+  },
+  //输入框聚焦,清空金额
+  inputboxfocus(e) {
+    var that = this;
+    var typekey = e.currentTarget.dataset.type;
+    var obj = {};
+    obj[typekey] = '';
+    that.setData(obj);
+  },
+  //输入框失焦,赋值
+  inputboxblur(e) {
+    var that = this;
+    var val = e.detail.value;
+    var typekey = e.currentTarget.dataset.type;
+    var obj = {};
+    obj[typekey] = val;
+    that.setData(obj);
+  },
+  // 商业贷款输入框变化
+  shangyeChange: function (e) {
+    var v = e.detail.value;
+    var data = this.data;
+    if (v > data.loanTotal - 0) {
+      wx.showToast({title: '请输入正确的商业贷款金额',icon: 'none',duration: 1000});
+      this.setData({
+        shangyeLoan: ''
+      });
+    } else {
+      var gjjLoan = parseFloat(data.loanTotal - v).toFixed(1);
+      this.setData({
+        gjjLoan: gjjLoan,
+        shangyeLoan: v
+      });
+    }
+  },
+  // 贷款总额输入框变化
+  loanTotalInputChange: function (e) {
+    var v = e.detail.value;
+    var data = this.data;
+    if (data.houseTotal == 0) {
+      wx.showToast({title: '请输入正确的房屋售价',icon: 'none',duration: 1000});
+      return;
+    } else if (v > data.houseTotal) {
+      wx.showToast({title: '请输入正确的贷款总额',icon: 'none',duration: 1000});
+      return;
+    }
+    this.setData({
+      shangyeLoan: v,
+      gjjLoan: 0,
+      loanTotal: v
+    })
+  },
+  // 计算最后结果
+  calculationEvent: function (e) {
+    var data = this.data;
+    if (data.houseTotal == 0 || !data.houseTotal) {
+      wx.showToast({title: '请输入正确的房屋售价',icon: 'none',duration: 1000});
+      return;
+    } else if ((!data.gjjLoan || data.gjjLoan == 0) && data.zhdk == 1) {
+      wx.showToast({title: '请输入正确的公积金贷款',icon: 'none',duration: 1000});
+      return;
+    } else if ((!data.shangyeLoan || data.shangyeLoan == 0) && data.zhdk == 1) {
+      wx.showToast({title: '请输入正确的商业贷款',icon: 'none',duration: 1000});
+      return;
+    };
+    if (!data.rateFlag && (!data.downPayment || data.downPayment == 0)) {
+      wx.showToast({title: '请输入正确的首付金额',icon: 'none',duration: 1000});
+      return;
+    };
+    var mothNum = parseFloat(data.loanTermText) * 12;//还款月数
+    var shoufuNum = data.rateFlag ? parseFloat(data.houseTotal * (data.paymentText / 10)).toFixed(1) : data.sfNum;// 首付
+    // 等额本息
+    if (data.principal == 1) {
+      if (data.gjjdk == 1) {
+        //公积金贷款
+        var lilvNum = parseFloat(data.gjjlilv / 100) / 12;// 公积金月利率
+        var dkze = parseFloat(data.loanTotal) * 10000;//贷款总额
+        // 每月月供额=〔贷款本金×月利率×(1＋月利率)＾还款月数〕÷〔(1＋月利率)＾还款月数-1〕
+        var ygNum = parseInt((dkze * lilvNum * Math.pow(1 + lilvNum, mothNum)) / (Math.pow(1 + lilvNum, mothNum) - 1));
+        // 总利息=还款月数×每月月供额-贷款本金
+        var zlxNUm = parseFloat((mothNum * ygNum - dkze) / 10000).toFixed(1)//总利息
+        var dkze1 = parseFloat(dkze / 10000);
+        var hkzeNUm = parseFloat(dkze1 + parseFloat(zlxNUm)).toFixed(1);
+        this.setData({
+          sfNum: shoufuNum,
+          ygNum: ygNum,
+          lixiNum: zlxNUm,
+          hkzeNUm: hkzeNUm
+        })
+      } else if (data.sydk == 1) {
+        //商业贷款
+        var businessRate = parseFloat(data.businessRate / 100) / 12; // 商贷利率
+        var dkze = parseFloat(data.loanTotal) * 10000;//贷款总额
+        var ygNum = parseInt((dkze * businessRate * Math.pow(1 + businessRate, mothNum)) / (Math.pow(1 + businessRate, mothNum) - 1));
+        var zlxNUm = parseFloat((mothNum * ygNum - dkze) / 10000).toFixed(1)//总利息
+        var dkze1 = parseFloat(dkze / 10000);
+        var hkzeNUm = parseFloat(dkze1 + parseFloat(zlxNUm)).toFixed(1);
+        this.setData({
+          sfNum: shoufuNum,
+          ygNum: ygNum,
+          lixiNum: zlxNUm,
+          hkzeNUm: hkzeNUm
+        })
+      } else if (data.zhdk == 1) {
+        //组合贷款
+        var lilvNum = parseFloat(data.gjjlilv / 100) / 12;// 公积金月利率
+        var sdtotalNum = parseFloat(data.shangyeLoan) * 10000;//商贷总额
+        var gjjtotalNum = parseFloat(data.gjjLoan) * 10000;//公积金总额
+        var businessRate = parseFloat(data.businessRate / 100) / 12; // 商贷利率
+
+        var gjjYgNum = parseInt((gjjtotalNum * lilvNum * Math.pow(1 + lilvNum, mothNum)) / (Math.pow(1 + lilvNum, mothNum) - 1));//公积金月供量
+        var sdYgNum = parseInt((sdtotalNum * businessRate * Math.pow(1 + businessRate, mothNum)) / (Math.pow(1 + businessRate, mothNum) - 1));//商贷月供量
+
+        var gjjZlxNUm = parseFloat((mothNum * gjjYgNum - gjjtotalNum) / 10000).toFixed(1);//公积金总利息
+
+        var sdZlxNUm = parseFloat((mothNum * sdYgNum - sdtotalNum) / 10000).toFixed(1);//公积金总利息
+        var zlxNum = parseFloat(parseFloat(gjjZlxNUm) + parseFloat(sdZlxNUm)).toFixed(1);//总利息
+        var ygNum = gjjYgNum + sdYgNum;//总月供量
+        var hkzeNum = parseFloat(parseFloat(zlxNum) + sdtotalNum / 10000 + gjjtotalNum / 10000).toFixed(1);//总的还款量
+        this.setData({
+          sfNum: shoufuNum,
+          ygNum: ygNum,
+          lixiNum: zlxNum,
+          hkzeNUm: hkzeNum
+        })
+      }
+    } else if (data.corpus == 1) {
+      // 等额本金
+
+      // 每月月供额=(贷款本金÷还款月数)+(贷款本金-已归还本金累计额)×月利率
+
+      // 每月应还本金=贷款本金÷还款月数
+
+      // 每月应还利息=剩余本金×月利率=(贷款本金-已归还本金累计额)×月利率
+
+      // 每月月供递减额=每月应还本金×月利率=贷款本金÷还款月数×月利率
+
+      // 总利息=〔(总贷款额÷还款月数+总贷款额×月利率)+总贷款额÷还款月数×(1+月利率)〕÷2×还款月数-总贷款额
+      if (data.gjjdk == 1) {
+        var lilvNum = parseFloat(data.gjjlilv / 100) / 12;// 公积金月利率
+        var monthDecline = parseFloat((data.loanTotal * 10000) / mothNum * lilvNum).toFixed(2);//每月月供递减额
+        var totalM = [];
+        for (var i = 0; i < mothNum; i++) {
+          // 每月月供额
+          totalM.push(((data.loanTotal * 10000 / mothNum) + (data.loanTotal * 10000 - i * data.loanTotal * 10000 / mothNum) * lilvNum).toFixed(2));
+        };
+        var totalLx0 = (data.loanTotal * 10000) / mothNum + (data.loanTotal * 10000) * lilvNum;
+        var totalLx1 = parseFloat(((totalLx0 + (data.loanTotal * 10000) / mothNum * (1 + lilvNum)) / 2 * mothNum - (data.loanTotal * 10000)) / 10000).toFixed(1);
+        var hkTotalNum = parseFloat(parseFloat(totalLx1) + parseFloat(data.loanTotal)).toFixed(1);
+        this.setData({
+          sfNum: shoufuNum,
+          mydjNum: monthDecline,
+          ygNum: parseInt(totalM[0]),
+          lixiNum: totalLx1,
+          hkzeNUm: hkTotalNum,
+          detailsShow: true,
+          totalM: totalM
+        })
+
+      } else if (data.sydk == 1) {
+        var businessRate = parseFloat(data.businessRate / 100) / 12; // 商贷利率
+        var monthDecline = parseFloat((data.loanTotal * 10000) / mothNum * businessRate).toFixed(2);//每月月供递减额
+        var totalM = [];
+        for (var i = 0; i < mothNum; i++) {
+          // 每月月供额
+          totalM.push(parseFloat((data.loanTotal * 10000 / mothNum) + (data.loanTotal * 10000 - i * data.loanTotal * 10000 / mothNum) * businessRate).toFixed(2));
+        }
+        var totalLx0 = (data.loanTotal * 10000) / mothNum + (data.loanTotal * 10000) * businessRate;
+        var totalLx1 = parseFloat(((totalLx0 + (data.loanTotal * 10000) / mothNum * (1 + businessRate)) / 2 * mothNum - (data.loanTotal * 10000)) / 10000).toFixed(1);
+        var hkTotalNum = parseFloat(parseFloat(totalLx1) + parseFloat(data.loanTotal)).toFixed(1);
+        this.setData({
+          sfNum: shoufuNum,
+          mydjNum: monthDecline,
+          ygNum: parseInt(totalM[0]),
+          lixiNum: totalLx1,
+          hkzeNUm: hkTotalNum,
+          detailsShow: true,
+          totalM: totalM
+        })
+      } else if (data.zhdk == 1) {
+        var lilvNum = parseFloat(data.gjjlilv / 100) / 12;// 公积金月利率
+        var sdtotalNum = parseFloat(data.shangyeLoan) * 10000;//商贷总额
+        var gjjtotalNum = parseFloat(data.gjjLoan) * 10000;//公积金总额
+        var businessRate = parseFloat(data.businessRate / 100) / 12; // 商贷利率
+        var totalM = [];
+        for (var i = 0; i < mothNum; i++) {
+          // 每月月供额
+          totalM.push(parseFloat(((gjjtotalNum / mothNum) + (gjjtotalNum - i * gjjtotalNum / mothNum) * lilvNum) + ((sdtotalNum / mothNum) + (sdtotalNum - i * gjjtotalNum / mothNum) * businessRate)).toFixed(2));
+        }
+        //公积金利息总额
+        var gjjLxTotal0 = gjjtotalNum / mothNum + gjjtotalNum * lilvNum;
+        var gjjLxTotal = ((gjjLxTotal0 + gjjtotalNum / mothNum * (1 + lilvNum)) / 2 * mothNum - gjjtotalNum) / 10000;
+        //商业贷款利息总额
+        var sdLxTotal0 = sdtotalNum / mothNum + sdtotalNum * businessRate;
+        var sdLxTotal1 = ((sdLxTotal0 + sdtotalNum / mothNum * (1 + businessRate)) / 2 * mothNum - sdtotalNum) / 10000;
+        var lixiTotal = parseFloat(gjjLxTotal + sdLxTotal1).toFixed(1);//利息总额
+        var monthDecline = parseFloat(sdtotalNum / mothNum * businessRate + gjjtotalNum / mothNum * lilvNum).toFixed(2);//每月月供递减额
+        var hkTotalNum = parseFloat(parseFloat(lixiTotal) + (gjjtotalNum / 10000) + (sdtotalNum / 10000)).toFixed(1);
+        this.setData({
+          sfNum: shoufuNum,
+          mydjNum: monthDecline,
+          ygNum: parseInt(totalM[0]),
+          lixiNum: lixiTotal,
+          hkzeNUm: hkTotalNum,
+          detailsShow: true,
+          totalM: totalM
+        })
+      }
+    }
+  },
+  clickSee: function (e) {
+    this.setData({
+      result: true
+    })
+  },
+  back: function () {
+    this.setData({
+      result: false
+    })
+  },
+
+})

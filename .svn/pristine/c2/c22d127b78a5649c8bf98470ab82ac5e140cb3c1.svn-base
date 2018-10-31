@@ -1,0 +1,43 @@
+<view class='cam-app' style='height:{{winHeight}}px;'>
+  <view class='cam-header'>
+    <image src='https://uuweb.haofang.net/PublicC/images/campaign_top_bg.png' mode="aspectFill" />
+    <view class='cam-header-btn' catchtap='redirDetail'>了解详情</view>
+  </view>
+  <view class='cam-content'>
+    <view class='cam-want-btn' data-type='1' catchtap='goToUrl'>
+      <view class='cam-li-icon cam-icon-sale'></view>
+      <view class='cam-li-content'>
+        <view class="common">我要出售</view>
+        <view>优优好房助你闪电出手，省心省力</view>
+      </view>
+    </view>
+    <view class='cam-want-btn' data-type='2' catchtap='goToUrl'>
+      <view class='cam-li-icon cam-icon-lease'></view>
+      <view class='cam-li-content'>
+        <view class="common">我要出租</view>
+        <!--<view>支付宝分期租房支持，闪电成交</view>-->
+        <view>大数据精准匹配，专业、专注</view>       
+      </view>
+    </view>
+    <!--<view class='cam-want-btn' data-type='3' catchtap='goToUrl'>
+      <view class='cam-li-icon cam-icon-index'></view>
+      <view class='cam-li-content'>
+        <view class="common">我的委托</view>
+        <view>线上全程监控，交易更透明</view>
+      </view>
+    </view>-->
+  </view>
+</view>
+<view class="toastmask" hidden='{{toastHide}}' catchtap="closeToastBox">
+  <view class='toastbox' catchtap="cancelBubble">
+    <view class="name">切换城市</view>
+    <view wx:if="{{locateCityName != ''}}">
+        <view class="note">特权找房只能在定位城市发布委托</view>
+        <view class="btn" bindtap="changeCity">立即切换到{{locateCityName}}</view>
+    </view>
+    <view wx:else>
+        <view class="note">特权找房需要打开小程序定位功能</view>
+        <view class="btn" bindtap="changeCity">立即定位</view>
+    </view>
+  </view>
+</view>

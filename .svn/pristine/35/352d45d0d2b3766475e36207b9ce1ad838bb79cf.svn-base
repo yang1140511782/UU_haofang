@@ -1,0 +1,115 @@
+<view id="m-wrap">
+    <!--头部-->
+    <view class='h-box'>
+        <view class='mine-tx'>
+              <image mode="widthFix" src="{{userInfo.avatarUrl}}" binderror="binderrorimg"></image>
+        </view>
+        <view class='mine-name'>{{userInfo.nickName}}</view>  
+        <view open-type='getUserInfo' class='up-msg' bindgetuserinfo="upBtn" wx:if="{{userInfo != ''}}">
+          <view class='upd-icon'></view>
+          更新资料
+        </view>
+        <view open-type='getUserInfo' class='login-msg' bindgetuserinfo="upBtn" wx:else>
+          <view class='click-for-login'>点击授权</view>
+          <view class='more-serve'>授权后即可体验更多服务</view>
+        </view>
+
+        <button open-type='getUserInfo' class='login-up-msg-mask' bindgetuserinfo="upBtn" wx:if="{{userInfo != ''}}">
+        </button>
+        <button open-type='getUserInfo' class='login-up-msg-mask' bindgetuserinfo="upBtn" wx:else>
+          
+        </button>
+    </view>
+    <!--/头部-->
+    <!--选项部分-->
+    <view class='cont-wraper'>
+        <view class='cont-box buy-box' data-type='/pages/trustList/trustList?caseType=3' bindtap='chooseNavBtn'>
+            买房委托
+        </view>
+        <view class='cont-box rent-box' data-type='/pages/trustList/trustList?caseType=4' bindtap='chooseNavBtn'>
+            租房委托
+        </view>
+        <view class='cont-box sale-box' data-type='/pages/trustList/trustList?caseType=1' bindtap='chooseNavBtn'>
+            卖房委托
+        </view>
+        <view class='cont-box lease-box' data-type='/pages/trustList/trustList?caseType=2' bindtap='chooseNavBtn'>
+            出租委托
+        </view>
+        <view class='cont-box operate-box' data-type='/packageWeb/pages/guide/guide' bindtap='chooseNavBtn'>
+            操作指南
+        </view>
+        <view class='cont-box collect-box' data-type='/packageTool/pages/focusCollect/focusCollect' bindtap='chooseNavBtn'>
+            关注/收藏
+        </view>
+    </view>
+
+    <!-- border-line -->
+    <view class="border-line-20"></view>
+
+    <!--个人钱包-->
+    <view class="person-wallet" bindtap="myAccount">
+        <view class="wallet-tt">个人钱包</view>
+        <view class="wallet-cont">
+            <view class="wallet-cont-li">
+                <view class="cont-li-info"><text>{{payPaidTotal}}</text><text>元</text></view>
+                <view class="cont-li-desc">悬赏委托意向金</view>
+            </view>
+            <view class="wallet-cont-li">
+                <view class="cont-li-info"><text>{{taxiPaidTotal}}</text><text>元</text></view>
+                <view class="cont-li-desc">专车看房押金</view>
+            </view>
+            <view class="wallet-cont-li">
+                <view class="cont-li-info"><text>{{redNum}}</text><text>张</text></view>
+                <view class="cont-li-desc">优惠券</view>
+            </view>
+        </view>
+    </view>
+
+    <!-- border-line -->
+    <view class="border-line-20"></view>
+
+
+    <!--我要贷款-->
+    <block wx:if="{{DAIKUAN_FLAG}}">
+        <navigator class="loan-entry"  url="/packageWeb/pages/uuLoanApply/uuLoanApply" hover-class="none">
+            <view class="icon"></view>
+            <view class="info">
+                <view class="info-text">我要贷款</view>
+                <view class="info-text info-text-des">额度高 审批快</view>
+            </view>
+            <view class="tips">最高可贷100万</view>
+        </navigator>
+        <!-- border-line -->
+        <view class="border-line-20"></view>
+    </block>
+    
+
+    <!--我的客服-->
+    <view class="custom-service">
+        <view class="service-tt">我的客服</view>    
+        <view class="section">
+            <view class="section-li" bindtap="contactCustomService" data-to='618239'>
+                <view class="icon"></view>
+                <view class="text-box">
+                    <view class="text">在线客服（推荐）</view>
+                    <view class="text">一触即达，分分钟解决您的疑问</view>
+                </view>
+            </view>
+            <view class="section-li" bindtap="makePhoneCall" data-mobile='4008908890'>
+                <view class="icon"></view>
+                <view class="text-box">
+                    <view class="text">客服电话</view>
+                    <view class="text">400-890-8890</view>
+                </view>
+            </view>
+        </view>    
+    </view>
+
+    <!-- border-line -->
+    <view class="border-line-20"></view>
+
+</view>
+
+<!-- 添加授权蒙层 -->
+<import src="../../template/authorizeMaskTmp.wxml"/>
+<template is="authorizeMask" data="{{userInfo}}"></template>

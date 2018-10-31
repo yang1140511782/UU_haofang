@@ -1,0 +1,36 @@
+<view id="gallery">
+  <view class="each" wx:for="{{datalist}}" wx:key="{{i}}" wx:for-index="i">
+    <view class='title'>{{item.photoType}}<text>({{item.typeCount}})</text></view>
+    <view class="picbox">
+      <view class="picitem" wx:for="{{item.photoList}}" wx:for-item="picarr" wx:for-index="j" wx:key="{{j}}">
+        <view class="picboxback">
+          <image mode="aspectFill" 
+                 style='width:100%;height:100%;' 
+                 src="{{picarr.photoAddr}}"
+                 data-i="{{i}}"
+                 data-j="{{j}}"
+                 catchtap="lookBigPic" />
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 大图  -->
+<view class='mask' wx:if="{{bigPicBox}}" catchtap='closeBigPicBox'>
+  <view class="swiperbox">
+    <swiper style='height:100%;width:100%;' current="{{swiperIndex}}" bindchange="getSwiperIndex">
+      <swiper-item wx:for="{{totalImgArr}}" 
+                   wx:key="{{index}}">
+        <image src="{{item}}" class="slide-image" mode='aspectFill' style='width:100%;'/>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view class='footer' catchtap='prevent'>
+    <view wx:for="{{datalist}}" 
+          wx:key="{{index}}"
+          data-i="{{index}}" 
+          class="btn{{arrIndex==index?' cur':''}}" 
+          catchtap='chooseType'>{{item.photoType}}</view>
+  </view>
+</view>

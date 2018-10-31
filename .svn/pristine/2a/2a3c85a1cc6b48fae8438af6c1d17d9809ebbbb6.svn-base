@@ -1,0 +1,163 @@
+
+let mgListPush = [];
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    mgList: [
+      { id: '123', img:'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png'},
+      { id: '124', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/2.png' },
+      { id: '125', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/3.png' },
+      { id: '126', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/4.png' }
+    ],
+    mgListCopy: [
+      { id: '123', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/1.png' },
+      { id: '124', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/2.png' },
+      { id: '125', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/3.png' },
+      { id: '126', img: 'http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jiangpin/4.png' }
+    ],
+    prizeUserList: [
+      { name: '王大锤', prizeType: '五元购房现金红包' }, 
+      { name: '王大锤', prizeType: '五元购房现金红包' },
+      { name: '王二锤', prizeType: '五元购房现金红包' }],
+    imgboxNum: 0,
+    imgboxNumTwo: 0,
+    imgboxNumThree: 0,
+    prizeState: true, //抽奖进行状态
+    lampJumpVal:true,//跑马灯闪烁
+    bottomImg:0,
+    prizeType:1, //中奖类型
+    modalShow:0 //弹出层是否显示
+  },
+  //关闭弹出层
+  closeModal(){
+    this.setData({modalShow:0})
+  },
+  // 开始抽奖
+  actionStart() {
+    if (!this.data.prizeState) {
+      return;
+    }
+    this.setData({ prizeState: false });
+    this.lampJump();
+    let allLoopNum = 3; //初始圈数
+    mgListPush = [];
+    this.setData({ imgboxNum: 0 });
+    this.setData({ imgboxNumTwo: 0 });
+    this.setData({ imgboxNumThree: 0 });
+    // 根据圈数设置奖品长度
+    for (let i = 0; i < allLoopNum; i++) {
+      this.data.mgListCopy.forEach((item) => {
+        mgListPush.push(item);
+      })
+    }
+    this.setData({ mgList: mgListPush });
+    this.rollFn(allLoopNum, '124');
+  },
+  // 滚动函数
+  rollFn(allLoopNum, id) {
+    let stopNum = 0;
+    // 获取停止滚动位置
+    this.data.mgListCopy.forEach((item, index) => {
+      if (item.id == id) {
+        stopNum = (this.data.mgList.length - this.data.mgListCopy.length) + index;
+      }
+    })
+    this.rollTimeFn(stopNum, allLoopNum, 0, this.data.imgboxNum);
+    setTimeout(() => {
+      this.rollTimeFn(stopNum, allLoopNum, 0, this.data.imgboxNumTwo);
+    }, 500)
+    setTimeout(() => {
+      this.rollTimeFn(stopNum, allLoopNum, 0, this.data.imgboxNumThree);
+    }, 1000)
+  },
+  // 时间函数
+  // stopNum（停止位置），allLoopNum（总个数），theLoopNum（当前滚动所在位置），imgboxNumVal（滚动轴）
+  rollTimeFn(stopNum, allLoopNum, theLoopNum, imgboxNumVal) {
+    let Maxseepd = 10; //滚动最大速度
+    let mgListCopyLength = this.data.mgListCopy.length;
+    let timeLoop = setInterval(() => {
+      if (imgboxNumVal == this.data.imgboxNum) {
+        this.setData({ imgboxNum: (imgboxNumVal += Maxseepd) });
+      } else if (imgboxNumVal == this.data.imgboxNumTwo) {
+        this.setData({ imgboxNumTwo: (imgboxNumVal += Maxseepd) });
+      } else if (imgboxNumVal == this.data.imgboxNumThree) {
+        this.setData({ imgboxNumThree: (imgboxNumVal += Maxseepd) });
+      }
+      if (imgboxNumVal % 220 == 0) {
+        theLoopNum += 1;
+        // 到最后一圈的时候减速
+        if (theLoopNum == allLoopNum * mgListCopyLength - mgListCopyLength) {
+          Maxseepd = 2;
+        }
+        if (theLoopNum == stopNum) {
+          clearInterval(timeLoop);
+          if (imgboxNumVal == this.data.imgboxNumThree) {
+            setTimeout(() => {
+              this.setData({ prizeState: true });
+              console.log('恭喜你抽中了iPhone X');
+            }, 1000)
+          }
+        }
+      }
+    }, 12);
+  },
+  // 跑马灯闪烁
+  lampJump(){
+    let lampTime = setInterval(()=>{
+      this.setData({ lampJumpVal: !this.data.lampJumpVal });
+      if (this.data.prizeState){
+        clearInterval(lampTime);
+      }
+    },100)
+  },
+  // 跳转到我的奖品
+  goMyPrize(){
+    wx.navigateTo({
+      url: '/packageActive/pages/jinyin/list/list'
+    })
+  },
+  
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    // this.actionStart()
+    let bottomImgWith = 174 * this.data.mgList.length;
+    this.setData({ bottomImg: bottomImgWith})
+    console.log(this.data.bottomImg)
+  },
+
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  }
+})

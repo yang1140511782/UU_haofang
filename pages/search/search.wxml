@@ -1,0 +1,56 @@
+<!--  搜索页弹框  -->
+<view class="searchmask">
+  <!--  搜索栏  -->
+  <view class="searchbox">
+    <view class="searchicon"></view>
+    <view class="houseType" wx:if="{{fromIndexPage}}" catchtap='caseBoxToggle'>{{caseText}}</view>
+    <view class="inputbox">
+      <input placeholder-class="phcolor" 
+             class="{{inputText?'whitefont':''}}{{!fromIndexPage?' nocasetext':''}}" 
+             value="{{inputText}}" 
+             bindconfirm="searchMyWord"
+             bindinput="searchInputEvent"
+             placeholder="{{caseType == 4?'请输入楼盘名称':'请输入小区或商圈名称'}}" 
+             focus="{{true}}"/>
+      <view class='clearbtn' wx:if="{{inputText}}" catchtap='clearword'></view>
+    </view>
+     <view class="searchBtn" catchtap="searchMyWord">搜索</view> 
+  </view>
+
+  
+
+  <!--  历史记录  -->
+  <view class="history">
+    <view class="wordItem" 
+          wx:for="{{searchHistory}}"
+          wx:key="{{index}}"
+          data-index="{{index}}"
+          data-item="{{item}}"
+          catchtap='clickHistoryWord'>{{item.text}}<text>{{item.type}}</text></view>
+    <view class="deleteHistory"
+          wx:if="{{searchHistory.length>0}}"
+          catchtap='deleteHistory'>删除历史记录</view>
+    <!--  暂无历史记录  -->
+    <view class="noHistoryData" wx:if="{{searchHistory.length==0}}"></view>
+  </view>
+
+  <!--  输入联想  -->
+  <view class="moreword" hidden='{{!inputText}}'>
+    <view class="wordItem" 
+          wx:for="{{searchBuildList}}"
+          wx:key="{{index}}"
+          data-item="{{item}}"
+          catchtap='clickWord'>{{item.buildName}}<text>{{item.regName}}</text></view>
+    
+  </view>
+</view>
+
+<!--  casetype弹框  -->
+<view class="caseMask" wx:if="{{caseBox}}" catchtap='closeCaseBox'>
+  <view class="casetypeBox">
+    <view class="caseItem{{caseType==1?' current':''}}" catchtap='chooseCaseType' data-text="二手房" data-type="1">二手房</view>
+    <view class="caseItem{{caseType==4?' current':''}}" catchtap='chooseCaseType' data-text="新房" data-type="4">新房</view>
+    <view class="caseItem{{caseType==2?' current':''}}" catchtap='chooseCaseType' data-text="租房" data-type="2">租房</view>
+    <view class="caseItem{{caseType==5?' current':''}}" catchtap='chooseCaseType' data-text="公寓" data-type="5">公寓</view>
+  </view>
+</view>

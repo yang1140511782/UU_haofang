@@ -1,0 +1,129 @@
+<!-- caseType委托信息的类型 1出售 2出租 3求购 4求租 -->
+<!--isVip": "是否是专属委托，1：是，0：否", -->
+<scroll-view enable-back-to-top='true' scroll-y="true" scroll-x bindscrolltolower="lower">
+<!-- 普通委托 -->
+<view class="common-trust">
+    <!-- 求购求租盒子 -->
+    <view class="request-rent-box">
+        <view class="trust-list-title">
+            <view class="house-type">求租</view>
+            <view class="house-info-con">
+                <view class="house-price-addr">青白江 1400-1600/月</view>
+                <view class="house-info">住宅 三室 精装 佣金15-20天</view>
+            </view>
+        </view>
+        <!-- 经纪人信息 -->
+        <view class="agent-list-con">
+            <view class="agent-con">
+                <view class="agent-head">
+                    <view class="agent-head-img">
+                        <image src="https://img.vfanghui.com/pic/group2/M00/F8/31/wKgAbVmS0c2AXUU-AABzz24C6b0330.jpg" mode="aspectFill"></image>
+                    </view>
+                    <!-- 红点 -->
+                    <view class="hongdain"></view>
+                </view>
+                <view class="agent-info">
+                    <view class="agent-name">王小二</view>
+                    <view class="agent-start-con">
+                        <view class="start-icon"></view>
+                        <view class="staer-num">4.5</view>
+                    </view>
+                    <view class="agent-note-txt">正在为您推荐房源,请耐心等待</view>
+                </view>
+            </view>
+        </view>
+        <!-- 取消委托按钮 -->
+        <view class="cancle-trust-btn"></view>
+        <!-- 成交或者取消委托的icon -->
+        <view class="success-fail-com success-icon fail-icon"></view>
+    </view>
+    <!-- 出租出售盒子 -->
+    <view class="rent-lease-box">
+        <view class="trust-list-title">
+            <view class="house-type">出租</view>
+            <view class="house-info-con">
+                <view class="house-price-addr">青白江</view>
+            </view>
+        </view>
+        <view class="list-box">
+            <view class="list-img-box">
+                <image src="https://img.vfanghui.com/pic/hftpic/house/group2/M00/A0/DC/wKgAb1ny206AKIlgAACTbdNp4dk404.jpg.200x150.jpg"
+                       mode='aspectFill'></image>
+                <!-- 有奖委托图标 -->
+                <view class="youjiao-icon"></view>
+            </view>
+            <view class="house-list-info">
+                <view class="house-price">111万</view>
+                <view class="house-list-type">住宅　1室1室1室1室</view>
+                <view class="house-list-area">
+                    <text>面积:111㎡</text>
+                    <text>　楼层:11/111</text>
+                </view>
+            </view>
+        </view>
+        <!-- 经纪人信息 -->
+        <view class="agent-list-con">
+            <view class="agent-con">
+                <view class="agent-head">
+                    <view class="agent-head-img">
+                        <image src="https://img.vfanghui.com/pic/group2/M00/F8/31/wKgAbVmS0c2AXUU-AABzz24C6b0330.jpg" mode="aspectFill"></image>
+                    </view>
+                    <!-- 红点 -->
+                    <view class="hongdain"></view>
+                </view>
+                <view class="agent-info">
+                    <view class="agent-name">王小二</view>
+                    <view class="agent-start-con">
+                        <view class="start-icon"></view>
+                        <view class="staer-num">4.5</view>
+                    </view>
+                    <view class="agent-note-txt">正在为您推荐房源,请耐心等待</view>
+                </view>
+                <!-- 投诉icon -->
+                <view class="tousu-icon-icon tousued tousuing"></view>
+            </view>
+        </view>
+        <!-- 取消委托按钮 -->
+        <view class="cancle-trust-btn"></view>
+    </view>
+</view>
+<!-- 专属委托 -->
+<view class="exclusively-trust"></view>
+<!-- 发布委托按钮 -->
+<view class="fabu-trust-icon" bindtap='fabuTrustEvent'></view>
+<!-- 出租出售求购求租的选项 -->
+<view class="publish-entrust" wx:if="{{publishEntrustShow}}">
+    <view class="publish-entrust-mask" bindtap='publishCancleEvent'></view>
+    <view class="publish-content">
+        <navigator class="publish-li"><text class="publish-li-icon-com trust-zufang-icon">我要租房</text></navigator >
+        <navigator class="publish-li"><text class="publish-li-icon-com trust-maifang-icon">我要买房</text></navigator >
+        <navigator class="publish-li"><text class="publish-li-icon-com trust-chuzu-icon">我要出租</text></navigator >
+        <navigator class="publish-li"><text class="publish-li-icon-com trust-chushou-icon">我要出售</text></navigator >
+        <view class="publish-li" bindtap='publishCancleEvent'>取消</view>
+    </view>
+</view>
+<!--有奖委托红包奖励显示-->
+<view class="youjiang-trust-bomp" wx:if="{{prizeTrustBompShow}}">
+    <view class="youjiang-trust-con">
+        <view class="youjiang-trust-head">
+            <view class="price-head-note">收到奖励金拉!</view>
+            <view class="price-head-agent">来自经纪人:王小二</view>
+        </view>
+        <view class="youjiang-trust-middle">
+            <view class="youjiang-money">
+                <view class="money-unit">￥</view>
+                <view class="money-num">50</view>
+            </view>
+            <view class="youjiang-money-note note-top">已转入‘我的账户’，10天后可提现</view>
+            <view class="youjiang-money-note note-bottom">10天内拒绝服务，则退还经纪人</view>
+        </view>
+        <view class="youjiang-trust-foot">我知道了</view>
+    </view>
+</view>
+<!--有奖委托红包奖励显示-->
+<!--有奖委托提示-->
+<view class="prize-trust-bomp">
+    
+</view>
+<!--有奖委托-->
+</scroll-view>

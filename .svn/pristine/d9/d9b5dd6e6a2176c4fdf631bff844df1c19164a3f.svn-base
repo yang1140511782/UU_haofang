@@ -1,0 +1,293 @@
+.one-line-text{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 100%;display: block;}
+.top-title{
+  background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/head.jpg')no-repeat;
+  background-size: 100% 100%;
+  height:289rpx;
+  text-align: center;
+  display: none;
+}
+.top-title-show{
+  display: block;
+}
+
+.top-title>text{
+  color: #fefefe;
+}
+.top-title .top-title-money-icon{
+  font-size: 62rpx;
+  position:absolute;
+  left: -60rpx;
+  top: -20rpx;
+}
+.top-title>.top-title-money-num{
+  display: inline;
+  font-size: 104rpx;
+  line-height: 190rpx;
+  margin-right:10rpx;
+  color: #fff;
+  position: relative;
+}
+.top-title .top-title-money-btn{
+  font-size: 26rpx;
+  height: 36rpx;
+  line-height: 36rpx;
+  border:solid 2rpx #fff;
+  border-radius: 20rpx;
+  padding:0rpx 20rpx;
+  position:absolute;
+  top:55rpx;
+}
+.top-title>.top-title-money-atext>text{
+  font-size: 26rpx;
+  color:#fff;
+}
+.top-title>.top-title-money-atext>text.top-title-money-numorder{
+    padding-bottom: 2rpx;
+    border-bottom: 2rpx solid #fff;
+}
+ .share-btn{
+  display:inline;
+  background: none;
+  border: none;
+  font-size:26rpx;
+  color:#fff;
+  padding: 0;
+  padding-bottom: 2rpx;
+}
+.share-btn text{
+  border-bottom: 2rpx solid #fff;
+  padding-bottom: 6rpx;
+}
+.share-btn::after{
+  display: none;
+}
+/* nav切换 */
+.nav-wrap{
+  display: -webkit-flex;
+  width: 100%;
+  height: 80rpx;
+  border-bottom: 1px solid #eee;
+  padding: 0 60rpx;
+  box-sizing: border-box;
+}
+.nav-li{
+  width: 50%;
+  text-align: center;
+  font-size: 30rpx;
+  line-height: 80rpx;
+  color:#999;
+}
+.active{
+  border-bottom:2px solid #ff5c00;
+  color: #333;
+}
+.tab-cont{
+  flex: 1;
+}
+.scoll-h{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.ticket-box{
+  padding-left: 20rpx;
+  box-sizing: border-box;
+}
+.swiper-content{
+  padding:0px 20px;
+}
+.swiper-content-list{
+  height: 130rpx;
+  border-bottom: solid 2rpx #ededed;
+  position: relative;
+  padding-right: 72rpx;
+}
+.swiper-content-list>view:nth-child(1){
+  position: relative;top:18rpx;
+}
+.swiper-content-list>view:nth-child(1)>text{
+  font-size: 30rpx;
+  color:#333;
+  line-height: 60rpx;
+}
+.swiper-content-list>view:nth-child(2)>text{
+  font-size: 24rpx;
+  color:#999;
+}
+.swiper-content-list>text{
+  font-size: 48rpx;
+  color:#333;
+  position: absolute;
+  right: 0;
+  top:33rpx;
+}
+.material-list{
+  height: 176rpx;
+  border-bottom: solid 2rpx #ededed;
+  position: relative;
+  padding-left: 140rpx;
+}
+.malist-img{
+  position: absolute;
+  width:140rpx;
+  height: 140rpx;
+  left: 0;
+  top:0;
+  padding-top:20rpx;
+}
+.malist-img>image{
+  height:100%;
+  width: 100%;
+}
+.malist-content{
+  padding:40rpx 0rpx;
+  position: relative;
+  overflow: hidden;
+}
+.malist-content-left{
+  float: left;
+  width: 50%;
+}
+.malist-content-left>view{
+  text-align: left;
+}
+.malist-content-left>view:first-child{
+  font-size: 40rpx;
+  margin-bottom: 20rpx;
+}
+.malist-content-left>view:last-child{
+  font-size: 24rpx;
+  color:#999;
+}
+.malist-content-right{
+  float: right;
+  position: relative;
+  width: 50%;
+}
+.malist-content-right>.malist-btn{
+  position: absolute;
+  right:0;
+  width: 140rpx;
+  height:46rpx;
+  font-size: 30rpx;
+  line-height: 46rpx;
+  text-align: center;
+  color:#4daaf0;
+  border-radius: 4rpx;
+  border:solid 2rpx #4daaf0;
+  margin-bottom: 20rpx;
+}
+.prizeuser-info{
+  position: absolute;
+  top:74rpx;
+  text-align: right;
+}
+.malist-content-right>.malist-btntext{
+  font-size: 30rpx;
+  text-align: right;
+  margin-bottom: 32rpx;
+}
+.malist-content-right>.malist-daoqitext{
+  font-size: 30rpx!important;
+  text-align: right;
+  color:#ff5700!important;
+  padding-top:26rpx;
+}
+
+.malist-content-right>view:last-child{
+  font-size: 24rpx;
+  text-align: right;
+  color:#999;
+  position: relative;
+}
+/*  绑定号码弹层 */
+.phone-modal{
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-size: 100% 100%;
+  width:100%;
+  height:100%;
+  z-index: 20;
+  top:0;
+  left:0;
+}
+.pm-body{
+  position: fixed;
+  width: 550rpx;
+  height:588rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+  z-index: 21;
+  top:278rpx;
+  left: 50%;
+  margin-left: -305rpx;
+  padding:10rpx 30rpx;
+}
+.pm-close{
+  text-align: right;
+  height: 30rpx;
+}
+.pm-close>image{
+  width: 20rpx;
+  height: 20rpx;
+}
+.pm-title{
+  text-align: center;
+  font-size: 38rpx;
+  color:#333;
+  margin-bottom: 24rpx;
+}
+.pm-subtitle{
+  text-align: center;
+  font-size: 24rpx;
+  line-height: 35rpx;
+  color:#999;
+}
+.pm-input{
+  margin-bottom:20rpx;
+}
+.pm-input input{
+  background-color: #f2f2f2;
+  height: 86rpx;
+  padding:0rpx 25rpx;
+  font-size: 30rpx;
+  color:#333;
+}
+.pm-getphone-code{
+  display: flex;
+  flex-direction: row
+}
+.pm-getcode-text{
+  width: 213rpx;
+  text-align: center;
+  color:#f24f00;
+  font-size: 28rpx;
+  line-height: 86rpx;
+}
+.pm-submit{
+    color: #fff;
+    background: linear-gradient(to right, #fe8e0d , #ff7f1e, #ff6f2e);
+}
+
+/* 无数据情况 */
+.nodata-tips{padding-top: 130rpx;}
+.nodata-tips .nodata-icon{width: 197rpx;height: 154rpx;margin: 0 auto;display: block;}
+.nodata-tips .desc {
+  margin-top: 36rpx;
+  color: #666666;
+  font-size: 26rpx;
+  line-height: 36rpx;
+  text-align: center;
+}
+.nodata-tips button{
+  width: 200rpx;
+  height: 64rpx;
+  line-height: 62rpx;
+  color: #333;
+  font-size: 28rpx;
+  margin: 36rpx auto 0;
+  border-radius: 32rpx;
+  border: solid 1rpx #999999;
+  background-color: #ffffff;
+}
+.nodata-tips button::after{display: none;}

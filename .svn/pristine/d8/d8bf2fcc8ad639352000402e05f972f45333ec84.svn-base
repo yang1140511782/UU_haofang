@@ -1,0 +1,616 @@
+import { Tools } from '../../utils/tools';
+//获取应用实例
+const app = getApp();
+const tool = new Tools();
+
+var useageArr = [
+    {
+        id: 1,
+        name: '住宅'
+    },
+    {
+        id: 2,
+        name: '别墅'
+    },
+    {
+        id: 3,
+        name: '商铺'
+    }
+], caseAccountArr = [
+    {
+        id: 1,
+        name: '月付'
+    },
+    {
+        id: 2,
+        name: '季付'
+    },
+    {
+        id: 3,
+        name: '半年'
+    },
+    {
+        id: 4,
+        name: '年付'
+    },
+    {
+        id: 5,
+        name: '面议'
+    }], sexArr = [
+        {
+            id: 3,
+            name: '性别不限'
+        },
+        {
+            id: 1,
+            name: '限男生'
+        },
+        {
+            id: 2,
+            name: '限女生'
+        }
+    ], fitmentArr = [
+        {
+            id: 7,
+            name: '装修不限'
+        },
+        {
+            id: 5,
+            name: '豪装'
+        },
+        {
+            id: 4,
+            name: '精装'
+        },
+        {
+            id: 2,
+            name: '简装'
+        },
+        {
+            id: 1,
+            name: '毛坯'
+        }
+    ], roomArr = [
+        {
+            id: 0,
+            name: '类型不限'
+        },
+        {
+            id: 2,
+            name: '次卧'
+        },
+        {
+            id: 1,
+            name: '主卧'
+        },
+        {
+            id: 3,
+            name: '单间'
+        }
+    ]
+Page({
+    data: {
+        caseType: 2,
+        isVip:0,    //是否为专属委托
+        archiveId:'',   //专属委托经纪人Id
+        cityId: null,
+        userId: null,
+        houseRoom: '',
+        houseHall: '',
+        houseWei: '',
+        houseFloor: '',
+        houseFloors: '',
+        houseUseage: '',
+        houseArea: '',
+        price: '',
+        buildArr: [],
+        buildId: 0,
+        buildName: '',
+        descp: '',
+        useageArr: useageArr,//用途
+        caseAccountArr: caseAccountArr,//付款
+        sexArr: sexArr,
+        fitmentArr: fitmentArr,
+        roomArr: roomArr,
+        useageText: '请选择用途',
+        caseAccountText: '请选择付款方式',//付款
+        houseFitmentText: '请选择装修（选填）',
+        sexLimitText: '请选择性别（选填）',
+        masterRoomText: '请选择房间类型（选填）',
+        searchLoupanBox: false,//楼盘搜索弹框显示
+        searchInputValue: '',//搜索框的值
+        layoutShow: true,//显不显示户型
+        caseAccount: '',//传值用的id
+        masterRoom: '',//传值用的id
+        sexLimit: '',//传值用的id
+        houseFitment: '',//传值用的id
+        houseSetArr: [
+            {text:'宽带',value:7},
+            {text:'热水器',value:8},
+            {text:'洗衣机',value:9},
+            {text:'冰箱',value:10},
+            {text:'空调',value:11},
+            {text:'衣柜',value:13},
+            {text:'厨房',value:19},
+            {text:'暖气',value:27},
+        ],
+        matchChoosed: [],     //配套选中的标签
+        ishezu: 0,//整租合租
+        imgArr: [],
+        imgUrlArr:[],
+        uploadingFlag: false,
+        houseSet:[],//配套传值
+        bindMobile:'',
+        publishUserMobile:'',
+        publishUserName:'',
+        getCodeTxt: '获取验证码',
+        getNumFlag: true,//防止获取验证码多次点击
+        rentBompShow:false,//租房分期弹框
+    },
+    onLoad: function (options) {
+
+        app.checkLogin();//登录验证
+
+        //是否为专属委托
+        var isVip = options.isVip ? options.isVip : '0';
+        var archiveId = options.archiveId ? options.archiveId : '';
+        var cityId = wx.getStorageSync('cityId');
+        this.setData({ 
+            isVip:isVip,
+            archiveId:archiveId,
+            userId: app.globalData.userId,
+            cityId: cityId
+        });
+    	var userMobile = app.globalData.userMobile;
+    	var that = this;
+    	if(!userMobile){
+        	wx.request({
+    			url: app.buildRequestUrl('getUserInfo'),
+    			data: {userId:app.globalData.userId},
+    			success: function (res) {
+    				if(res.data.STATUS==1){
+    					var userMobile = res.data.DATA.WX_MOBILE;
+    					var openId = res.data.DATA.WX_USERNAME;
+    					var nickName = res.data.DATA.WX_NICKNAME;
+    					
+    					app.globalData.userMobile = userMobile;
+    					app.globalData.openId = openId;
+    					app.globalData.nickName = nickName;
+    					that.setData({bindMobile:userMobile,publishUserMobile:userMobile,publishUserName:nickName});
+    					wx.setStorageSync('userMobile',userMobile) ;
+    					wx.setStorageSync('openId',openId) ;
+    					wx.setStorageSync('nickName',nickName) ;
+    				}
+    			}
+    		})
+    	}
+        // toast组件实例
+        new app.ToastPannel();
+    },
+    /**
+     * 配套选中
+     */
+    matchClick: function (e) {
+        var arr = this.data.matchChoosed;
+        var index = e.currentTarget.dataset.index;
+        var n = arr.indexOf(index);
+
+        var houseSetArr=this.data.houseSet;
+        var value = e.currentTarget.dataset.value;
+        var w = houseSetArr.indexOf(value);
+        if (n != -1) {
+            arr.splice(n, 1);
+        } else {
+            arr.push(index);
+        };
+         if ( w != -1) {
+            houseSetArr.splice(n, 1);
+        } else {
+            houseSetArr.push(value);
+        };
+        this.setData({
+            matchChoosed: arr,
+            houseSet:houseSetArr
+        });
+    },
+    /**
+     * 选择类型
+     */
+    chooseTypeEvent: function (e) {
+        var _this = this;
+        var ishezu = e.currentTarget.dataset.ishezu;
+        if (ishezu == 0) {
+            _this.setData({
+                ishezu: 0
+            })
+        } else {
+            _this.setData({
+                ishezu: 1
+            })
+        }
+    },
+    blurHuXing: function (e) {
+        var unit = e.currentTarget.dataset.unit;
+        var type = e.currentTarget.dataset.type;
+        var v = parseInt(e.detail.value);
+        if ((!isNaN(v)) && v >= 0 && v < 10) {
+            this.setData({ [type]: v + unit });
+        } else {
+            this.setData({ [type]: '' });
+        }
+    },
+    bulrUserName:function(e){
+    	var publishUserName = e.detail.value;
+    	this.setData({ publishUserName: publishUserName });
+    },
+    blurFloor: function (e) {
+        var type = e.currentTarget.dataset.type;
+        var v = parseInt(e.detail.value);
+        if ((!isNaN(v)) && v > 0 && v < 100) {
+            if (type == 'houseFloor') {
+                this.setData({ [type]: v + '层' });
+            } else {
+                this.setData({ [type]: '共' + v + '层' });
+            }
+        } else {
+            this.setData({ [type]: '' });
+        }
+    },
+    searchBuildData: function (e) {
+        var kwd = e.detail.value;
+        var that = this;
+        if (!!kwd) {
+            wx.request({
+                url: app.buildRequestUrl('getBuildByKeyWord'),
+                data: {
+                    cityId: this.data.cityId,
+                    caseType: this.data.caseType,
+                    keyWord: kwd
+                },
+                success: function (res) {
+                    var dataArr = res.data.DATA.list;
+                    if (res.statusCode == 200 && dataArr.length > 0) {
+                        if (dataArr.length > 0) {
+                            var buildArr = [];
+                            for (var i = 0; i < dataArr.length; i++) {
+                                var data = dataArr[i];
+                                buildArr.push({ buildName: data['buildName'], buildId: data['buildId'], regName: data['regName'] });
+                            }
+                            that.setData({ buildArr: buildArr });
+                        }
+                    }
+                }
+            })
+        }
+    },
+    listTap: function (e) {
+        var buildName = e.currentTarget.dataset.text;
+        var buildId = e.currentTarget.dataset.id;
+        this.setData({
+            buildName: buildName,
+            buildId: buildId,
+            searchLoupanBox: false,
+            searchInputValue: ''
+        })
+    },
+    chooseImg: function (e) {
+        var _that = this, imgArr = _that.data.imgArr || [], imgUrlArr = _that.data.imgUrlArr || [];
+        _that.setData({ uploadingFlag: true });
+        wx.chooseImage({
+            count: 9 - _that.data.imgArr.length, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+                var tempFilePaths = res.tempFilePaths;
+                var count = res.tempFilePaths.length;
+                for (var i = 0; i < tempFilePaths.length; i++) {
+                    imgArr.push(tempFilePaths[i]);
+                    wx.uploadFile({
+                        url: app.buildRequestUrl('uploadFile'),
+                        filePath: tempFilePaths[i],
+                        name: 'file',
+                        'content-type': 'multipart/form-data',
+                        complete: function (res) {
+                            var json = JSON.parse(res.data);
+                            var status = json.STATUS;
+                            if (status == 1) {
+                                var url = json.DATA.data[0]['saveName'];
+                                imgUrlArr.push(url);
+                                _that.setData({ imgUrlArr: imgUrlArr });
+                            }
+                            count--;
+                            if (count == 0) {
+                                _that.setData({
+                                    uploadingFlag: false
+                                });
+                            }
+                        }
+                    })
+                }
+                _that.setData({
+                    imgArr: imgArr
+                });
+            }
+        })
+    },
+    deleteImg: function (e) {
+        var id = e.target.dataset.id;
+        var arr = this.data.imgArr;
+        var urlArr = this.data.imgUrlArr;
+        for (var i = 0; i < arr.length; i++) {
+            if (i == id) {
+                tool.remove(arr, i);
+                tool.remove(urlArr, i);
+            }
+        }
+        this.setData({ imgArr: arr });
+        this.setData({ imgUrlArr: urlArr });
+    },
+    blurDesc: function (e) {
+        var v = e.detail.value;
+        if (!!v) {
+            v = v.substring(0, 200);
+        }
+        this.setData({ descp: e.detail.value });
+    },
+    setVal: function (e) {
+        var t = e.currentTarget.dataset.type;
+        var v = e.detail.value;
+        this.setData({ [t]: v });
+    },
+    //用途选项改变
+    useageChange: function (e) {
+        var _this = this;
+        _this.setData({
+            useageText: useageArr[e.detail.value].name, houseUseage: useageArr[e.detail.value].id,
+        });
+        if (e.detail.value == 2) {
+            _this.setData({
+                layoutShow: false
+            })
+        } else {
+            _this.setData({
+                layoutShow: true
+            })
+        }
+    },
+    /**
+     * 付款选择
+     */
+    caseAccountChange: function (e) {
+        var _this = this;
+        _this.setData({
+            caseAccountText: caseAccountArr[e.detail.value].name, caseAccount: caseAccountArr[e.detail.value].id,
+        });
+    },
+    /**
+     * 房间选择
+     */
+    roomChange: function (e) {
+        var _this = this;
+        _this.setData({
+            masterRoomText: roomArr[e.detail.value].name, masterRoom: roomArr[e.detail.value].id,
+        });
+    },
+    /**
+     * 装修
+     */
+    fitmentChange: function (e) {
+        var _this = this;
+        _this.setData({
+            houseFitmentText: fitmentArr[e.detail.value].name, houseFitment: fitmentArr[e.detail.value].id,
+        });
+    },
+    /**
+     * 性别选择
+     */
+    sexChange: function (e) {
+        var _this = this;
+        _this.setData({
+            sexLimitText: sexArr[e.detail.value].name, sexLimit: sexArr[e.detail.value].id,
+        });
+    },
+    /**
+     * 弹出搜索框
+     */
+    buildSearchBompEvent: function (e) {
+        var _this = this;
+        _this.setData({
+            searchLoupanBox: true,
+        })
+    },
+    /**
+     * 取消弹框
+     */
+    searchCancleEvent: function (e) {
+        var _this = this;
+        _this.setData({
+            searchLoupanBox: false,
+            searchInputValue: ''
+        })
+    },
+    /**
+     * 搜索输入框赋值
+     */
+    searchInputEvent: function (e) {
+        var _this = this;
+        var value = e.detail.value;
+        _this.setData({
+            searchInputValue: value
+        })
+    },
+    /**
+     * 输入完成搜索事件
+     */
+    searchInputConfirm: function (e) {
+        var _this = this;
+        var value = e.detail.value;
+
+    },
+    /**
+     * 删除搜索关键字
+     */
+    deleteKedEvent: function (e) {
+        var _this = this;
+        _this.setData({
+            searchInputValue: ''
+        })
+    },
+    submitData: function (e) {
+    	var formId = e.detail.formId;
+    	var that = this;
+        var sendArr = JSON.parse(JSON.stringify(this.data));
+        if (sendArr['uploadingFlag']) {
+        	wx.request({
+    			url: app.buildRequestUrl('writeFormId')+"?formId="+formId+"&userId="+app.globalData.userId
+    		});
+            wx.showToast({ title: '图片上传中...', icon: 'loading' });
+            return;
+        }
+        var deleteArr = ['buildArr','useageArr','caseAccountArr','sexArr','fitmentArr','roomArr','useageText','caseAccountText','houseFitmentText','sexLimitText','masterRoomText','searchLoupanBox','searchInputValue','layoutShow','houseSetArr','imgArr','uploadingFlag','__webviewId__','_toast_','__proto__','matchChoosed'];
+        for(var o in deleteArr){
+        	if(sendArr[deleteArr[o]]!=undefined){
+        		delete sendArr[deleteArr[o]];
+        	}
+        }
+        var numArr = ['houseRoom', 'houseHall', 'houseWei', 'houseFloor', 'houseFloors'];
+        for (var i = 0; i < numArr.length; i++) {
+            sendArr[numArr[i]] = sendArr[numArr[i]].replace(/[^0-9]/ig, "");
+        }
+        if (sendArr['imgUrlArr'].length > 0) {
+            sendArr['fileAddrs'] = sendArr['imgUrlArr'].join(',');
+            delete sendArr['imgUrlArr'];
+        } else {
+            sendArr['fileAddrs'] = '';
+        }
+        var flag = true;
+        if(sendArr['ishezu']==0){//整租
+        	var zhengZuValidArr = ['cityId', 'userId', 'houseRoom', 'houseHall', 'houseWei', 'houseFloor', 'houseFloors', 'houseUseage', 'houseArea', 'price', 'buildId', 'buildName', 'caseAccount'];
+        	for (var o in zhengZuValidArr) {
+        		if (sendArr[zhengZuValidArr[o]] == '') {
+        			flag = false;
+        			break;
+        		}
+        	}
+        }else{//合租
+        	var hezuValidArr = ['cityId', 'userId', 'houseRoom', 'houseHall', 'houseWei', 'houseFloor', 'houseFloors', 'houseArea', 'price', 'caseAccount', 'buildId', 'buildName'];
+        	for (var o in hezuValidArr) {
+        		if (sendArr[hezuValidArr[o]] == '') {
+        			flag = false;
+        			break;
+        		}
+        	}
+        	
+        }
+        if(sendArr['houseSet'].length>0){
+        	sendArr['houseSet'] = sendArr['houseSet'].join(',');
+        }
+        if (isNaN(sendArr['houseFloor']) || isNaN(sendArr['houseFloors']) || parseInt(sendArr['houseFloor']) > parseInt(sendArr['houseFloors'])){
+    		this.show('楼层信息有误');
+    		return;
+    	}
+        if (!flag) {
+            this.show('请填写完整信息');
+        } else {
+        	delete sendArr['__webviewId__'];
+        	delete sendArr['_toast_'];
+        	delete sendArr['imgUrlArr'];
+        	
+        	if(that.data.requesting){
+        		this.show('数据提交中...');
+        		return;
+        	}
+            sendArr['isVip'] = that.data.isVip;
+    	    sendArr['archiveId'] = that.data.archiveId;
+        	sendArr['formId'] = formId;
+        	wx.showLoading({title:'数据提交中...',mask:true});
+        	wx.request({
+    			url: app.buildRequestUrl('createHouseEntrust'),
+    			data: sendArr,
+    			success: function (res) {
+    				that.setData({requesting:false});
+    				if(res.data.STATUS==1){
+    					wx.redirectTo({
+    						url: '/pages/trustList/trustList?caseType=2'
+    					})
+    				}else{
+    					that.show(res.data.INFO);
+    				}
+    			},complete:function(){
+    				wx.hideToast();
+    			}
+    		})
+        }
+    },
+    changeMobile:function(e){
+    	var v = e.detail.value;
+    	if(!tool.checkMobilePhone(v)){
+    		this.setData({publishUserMobile:''});
+    	}else{
+    		this.setData({publishUserMobile:v});
+    	}
+    },
+    codeBlur:function(e){
+		this.setData({VerifyCode:e.detail.value});
+    },
+    /**
+     * 获取验证码
+     */
+    getCode:function(){
+    	var _this = this;
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
+        if (!_this.data.publishUserMobile) {
+            _this.show('请输入电话号码');
+            return;
+        } else if (!myreg.test(_this.data.publishUserMobile) || _this.data.publishUserMobile.length != 11) {
+            _this.show('请输入正确的电话号码');
+            return;
+        };
+        //再次操作的倒计时
+        if (!_this.data.getNumFlag) {
+            return;
+        };
+        // 请求数据
+        wx.request({
+            url: app.buildRequestUrl('sendMobileCaptchaUrl'),
+            data: {
+                mobile: _this.data.publishUserMobile
+            },
+            success: function (res) {
+                if (res.data.STATUS == 1) {
+                    _this.show('发送成功');
+                    var time = 60;
+                    _this.setData({
+                        getNumFlag: false
+                    });
+                    var t = setInterval(function () {
+                        time--;
+                        _this.setData({
+                            getCodeTxt: time + '秒'
+                        });
+                        if (time == 0) {
+                            clearInterval(t);
+                            _this.setData({
+                                getCodeTxt: '重新发送',
+                                getNumFlag: true
+                            })
+                        }
+                    }, 1000);
+                } else {
+                      (res)
+                    _this.show(res.data.INFO);
+                }
+            }
+        })
+    },
+    /**
+     * 租房分期弹框
+     */
+    rentCancleEvent:function(e){
+        var _this=this;
+        _this.setData({
+            rentBompShow:false
+        })
+    }
+})

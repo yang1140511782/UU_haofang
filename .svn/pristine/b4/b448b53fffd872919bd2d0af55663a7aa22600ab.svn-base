@@ -1,0 +1,121 @@
+{
+  "pages": [
+    "pages/real_index/index",
+    "pages/scanCode/scanCode",
+    "pages/houseRegisterIndex/index",
+    "pages/promoteActivity/promoteActivity",
+    "pages/chooseCity/chooseCity",
+    "pages/appointAgent/appointAgent",
+    "pages/entrustDetail/entrustDetail",
+    "pages/list/list",
+    "pages/findHouse/findHouse",
+    "pages/findHouseByMap/findHouseByMap",
+    "pages/newHouseList/newHouseList",
+    "pages/entrust/entrust",
+    "pages/houseRegisterDetail/detail",
+    "pages/search/search",
+    "pages/myAccount/myAccount",
+    "pages/mine/mine",
+    "pages/trustList/trustList",
+    "pages/commissionpay/commissionpay",
+    "pages/apartmentList/list",
+    "pages/im/imc",
+    "pages/im/im",
+    "pages/houseDetail/houseDetail",
+    "pages/registration/registration",
+    "pages/rewardInstruction/rewardInstruction",
+    "pages/apartmentDetail/apartmentDetail",
+    "pages/posterDetail/posterDetail",
+    "pages/entrustAgent/entrustAgent",
+    "pages/entrustEdit/entrustEdit",
+    "pages/common/houseVideo/houseVideo",
+    "pages/leaseList/leaseList",
+    "pages/history/history",
+    "pages/allHouseType/allHouseType",
+    "pages/houseGallery/houseGallery",
+    "pages/news/news",
+    "pages/newsRecent/newsRecent",
+    "pages/newHouseDetail/newHouseDetail",
+    "pages/prizeTrustDetail/prizeTrustDetail",
+    "pages/track/track",
+    "pages/delegateHouseDetail/delegateHouseDetail",
+    "pages/fenqi/fenqi",
+    "pages/fakeHouse/fakeHouse",
+    "pages/trendOne/trendOne",
+    "pages/personalStore/personalStore",
+    "pages/login/login",
+    "pages/entrustBrokerCoupon/entrustBrokerCoupon",
+    "pages/couponDisplay/couponDisplay"
+  ],
+  "subPackages": [
+    {
+      "root": "packageTool",
+      "pages": [
+        "pages/collect/collect",
+        "pages/map/map",
+        "pages/calc/calc",
+        "pages/evaluationEntry/evaluationEntry",
+        "pages/trendOne/trendOne",
+        "pages/buildBook/buildBook",
+        "pages/trendTwo/trendTwo"
+      ]
+    },
+    {
+      "root": "packageWeb",
+      "pages": [
+        "pages/webView/webView",
+        "pages/vr/vr",
+        "pages/download/download",
+        "pages/realHouseRule/index",
+        "pages/guide/guide",
+        "pages/takeLook/takeLook",
+        "pages/standingOrder/standingOrder",
+        "pages/uuLoanApply/uuLoanApply"
+      ]
+    },
+    {
+      "root": "packageActive",
+      "pages": [
+        "pages/jinyin/index/index",
+        "pages/jinyin/list/list",
+        "pages/jinyin/rule/rule",
+        "pages/jinyin/addr/addr",
+        "pages/acceptNotice/acceptNotice",
+        "pages/vocalHelpList/vocalHelpList",
+        "pages/vocalHtml/vocalHtml"
+      ]
+    }
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#424242",
+    "selectedColor": "#424242",
+    "backgroundColor": "#ffffff",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/real_index/index",
+        "text": "首 页",
+        "iconPath": "images/tab/home_new.png",
+        "selectedIconPath": "images/tab/home_active_new_a.png"
+      },
+      {
+        "pagePath": "pages/news/news",
+        "text": "消 息",
+        "iconPath": "images/tab/news_new.png",
+        "selectedIconPath": "images/tab/news_active_new_a.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我 的",
+        "iconPath": "images/tab/mine_new.png",
+        "selectedIconPath": "images/tab/mine_active_new_a.png"
+      }
+    ]
+  }
+}

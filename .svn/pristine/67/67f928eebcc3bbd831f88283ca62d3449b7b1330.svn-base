@@ -1,0 +1,292 @@
+ <import src="../../component/tabNav/tabNav.wxml"/>
+  <!--  排序弹框  -->
+  <view class='orderMask' wx:if="{{orderBox}}" catchtap='closeOrderBox'>
+    <view class="orderbox" catchtap='stopBubble'>
+      <view class='orderitem{{orderListIndex==index?" current":""}}'
+            wx:for="{{orderList}}"
+            wx:key="{{index}}"
+            catchtap='orderClickEvent'
+            data-item='{{item}}'
+            data-index="{{index}}">{{item.text}}</view>
+    </view>
+  </view>
+  <view class='fixedBox'>
+    <!--  搜索栏  -->
+     <view class="searchbox" hidden="{{!scrollSearch}}">
+      <view class="inputbox{{!inputText?' searchicon':' searchicon leftsearchicon'}}" catchtap='goToSearch'>
+        <view class="input">{{inputText||'请输入小区或商圈名称'}}</view>
+        <view class='clearbtn' wx:if="{{inputText}}" catchtap='clearBuildName'></view>
+      </view>
+    </view> 
+
+    <!--  筛选栏  -->
+    <view class='filter'>
+      <view class="itembtn{{item.bcg?' choosed':''}}{{conditionModel&&conditionModelIndex==index?' choosing':''}}" 
+            wx:for="{{conditionScreening}}"
+            catchtap="conditionScreeningEvent" 
+            data-index="{{index}}" 
+            data-text="{{item.text}}" 
+            wx:key="{{index}}">{{item.text}}</view>
+    </view>
+  </view> 
+
+  <!--  筛选菜单弹框  -->
+  <!--筛选条件的弹框 cd->condition-->
+  <view class="cd-model" hidden="{{!conditionModel || conditionModelIndex > 2}}">
+      <view class="cd-mask" catchtap="cdMaskEvent"></view>
+      <view class="{{!scrollSearch?'cd-con-top':'cd-con'}}">
+          <!--区域 -->
+          <view class="cd-reg" hidden="{{conditionModelIndex != 0}}">
+              <view class="l">
+                  <view wx:for="{{regionList}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="regionListEvent"
+                    class="li {{regionListIndex==index?'f-cd-reg':''}}">{{item.REG_NAME}}</view>
+              </view>
+              <view class="r">
+                  <view wx:for="{{businessList[RegionId]}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="businessListListEvent"
+                    class="li {{businessListIndex==index?'f-cg':''}}">{{item[0]}}</view>
+              </view>
+          </view>
+          <!--end-->
+          <!--价格-->
+          <view class="cd-p" hidden="{{conditionModelIndex != 1}}">
+              <view class="ul">
+                  <view wx:for="{{priceList}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="priceListEvent"
+                    class="li {{priceListIndex==index?'f-cg':''}}">{{item.text}}</view>
+              </view>
+              <view class="btm">
+                  <input type="number" bindinput="minPriceEvent" placeholder="最小价格" value="{{minPrice}}" type='number' maxlength="4" />
+                  <input type="text" class="dis" disabled="true" value="-" /> 
+                  <input type="number" bindinput="maxPriceEvent" placeholder="最大价格" value="{{maxPrice}}" type='number' maxlength="4" />
+                  <text style="margin-left:10rpx;">元</text>
+                  <view catchtap="minAndMaxPriceEvent" class="search">确定</view>
+              </view>
+          </view>
+          <!--end-->
+          <!--户型-->
+            <view class="cd-p cd-pp" hidden="{{conditionModelIndex != 2}}">
+              <view class="ul">
+                  <view wx:for="{{roomList}}"
+                        wx:key="item"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        catchtap="roomListEvent"
+                    class="li {{roomListIndex==index?'f-cg':''}}">{{item.text}}</view>
+              </view>
+          </view>
+          <!--end-->
+      </view>
+  </view>
+  <!--end-->
+
+  <!--  更多筛选弹框  -->
+  <view class="cd-model cdd {{scrollSearch?'':'moreTop'}}" hidden="{{!conditionModel || conditionModelIndex != 3}}">
+    <view class="cd-mask" catchtap="cdMaskEvent"></view>
+    <!--更多-->
+    <view class="cd-more" hidden="{{conditionModelIndex != 3}}">
+    <view class="more">
+        <view class="item" style='display:none;'>
+            <view class="ti">条件</view>
+            <view class="choosebox">
+                <view class="option{{more_caseTypeIndex === index?' curr':''}}" 
+                        wx:for="{{more_caseTypeList}}"
+                        wx:key="{{index}}"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        data-type="caseType"
+                        catchtap="moreClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="item item1" hidden="{{caseType != 2}}">
+            <view class="ti">来源</view>
+            <view class="choosebox">
+                <view class="option{{more_reSourceIndex === index?' curr':''}}"
+                      wx:for="{{more_reSourceList}}"
+                      wx:key="{{index}}"
+                      data-index="{{index}}"
+                      data-item="{{item}}"
+                      data-type="reSource"
+                      catchtap="moreClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="item">
+            <view class="ti">面积(平米)</view>
+            <view class="choosebox">
+                <view class="option{{more_areaIndex === index?' curr':''}}" 
+                        wx:for="{{more_areaList}}"
+                        wx:key="{{index}}"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        data-type="area"
+                        catchtap="moreClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="item" hidden="{{caseType != 2}}">
+            <view class="ti">类型</view>
+            <view class="choosebox">
+                <view class="option{{more_houseUseageIndex === index?' curr':''}}" 
+                        wx:for="{{more_houseUseageList}}"
+                        wx:key="{{index}}"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        data-type="houseUseage"
+                        catchtap="moreClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="item" hidden="{{caseType != 2}}">
+            <view class="ti">特色</view>
+            <view class="choosebox">
+                <view class="option{{index === more_specialIndex[0]||index === more_specialIndex[1]||index === more_specialIndex[2]?' curr':''}}" 
+                        wx:for="{{more_specialList}}"
+                        wx:key="{{index}}"
+                        data-index="{{index}}"
+                        data-item="{{item}}"
+                        data-type="special"
+                        catchtap="moreSpecialClickEvent">{{item.text}}</view>
+            </view>
+        </view>
+        <view class="morebtnbox">
+            <view catchtap="moreReset">重置</view>
+            <view class="confirm" catchtap="moreconfirm">确定</view>
+        </view>
+    </view>
+</view>
+<!--end-->
+</view>
+
+  <!--  列表  -->
+<scroll-view scroll-y
+                 style="height: {{winHeight}}px;" 
+                 lower-threshold="500"  
+                 bindscrolltolower="lower"
+                 bindscrolltoupper="upper"
+                 bindscroll="scrollToL">
+  <view class='content{{!scrollSearch?" paddingtop80":""}}' >
+    
+    <!--  小区专家  -->
+    <view class="topbox" wx:if="{{expertBox}}">
+      <view class="expertBox">
+        <view class='h3'>
+          <text>{{buildExpert.buildName}}</text>
+          <text>{{buildExpert.buildAddr}}</text>
+        </view>
+        <view class="broker">
+          <view class="avatar"><image src="{{buildExpert.buildOwnerPicUrl}}" mode='aspectFill'/></view>
+          <view class="textbox">
+            <view class="name">{{buildExpert.buildOwnerName}}<text>小区专家</text><text class='prize'></text></view>
+            <view class="slogan">本人专注服务于该小区,24h欢迎来电!</view>
+          </view>
+          <view class="btnbox">
+            <view class="item" bindtap='zjAgentChat'>
+              <image src="http://cdn.haofang.net/static/uuminiapp/detail/icon_discount.png" mode='aspectFill'/>
+              <view class="text">在线委托</view>
+            </view>
+            <view class="item"
+                  catchtap="showContactBox"
+                  data-mobile='{{buildExpert.buildOwnerMobile}}'>
+              <image src="http://cdn.haofang.net/static/uuminiapp/detail/icon_consulting.png" mode='aspectFill'/>
+              <view class="text">立即联系</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 房源列表部分 -->
+    <import src="../../template/listTmp.wxml" />
+    <block wx:for="{{listValue}}" wx:key="houseId" wx:for-item="List">
+        <!--租房-->
+        <template is="list" data="{{...List}}"></template>
+    </block>
+    <!-- 房源列表部分/ -->
+    
+    <!--  loading  -->
+    <view id="pullUp" hidden="{{!loadingdata}}" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+      <text class="pullUpIcon"></text><text class="pullUpLabel">努力加载中...</text>
+    </view>
+    <view class="no-more-data" wx:if="{{noMoreData && !loadingdata}}">没有更多数据了！</view>
+    <view class="sale_no_data" wx:if="{{listValue.length == 0  && !loadingdata}}">
+      <view class="sale_xuans"></view>
+      <view class="sale_no_data_text">抱歉没有找到合适房源</view>
+      <view class="sale_no_data_text">发布委托,召唤经纪人为您快速找房</view>
+      <view class="sale_no_data_publish" catchtap="toFindHouse">立即发布</view>
+    </view>
+  </view>
+</scroll-view>
+<!--地图按钮-->
+    <view id="mapBtn" catchtap='mapBtnClick'></view>
+<!--地图按钮end-->
+<!--  委托弹框  -->
+<view class='discount-toast' wx:if="{{discountStatus}}">
+    <view class='dis-marsk' bindtap='diCloseBtn'></view>
+    <view class='dis-box'>
+          <view class='dis-li' 
+                bindtap='goToBuyHouseBtn' 
+                data-buildownerarchiveid="{{buildExpert.buildOwnerArchiveId}}"
+                data-buildownermobile='{{buildExpert.buildOwnerMobile}}'
+                data-buildownername='{{buildExpert.buildOwnerName}}'
+                data-rentmoney='{{buildExpert.rentMoney}}'
+                data-buymoney='{{buildExpert.buyMoney}}'
+                data-serviceregs='{{buildExpert.serviceRegs}}'
+                data-buildownerpicurl='{{buildExpert.buildOwnerPicUrl}}'>我要租房</view>
+          <view class='dis-li mar-bot' data-buildownerarchiveid="{{buildExpert.buildOwnerArchiveId}}" bindtap='goToEntrustLiBtn'>我是房东，我要出租</view>
+          <view class='dis-li' bindtap='diCloseBtn'>取消</view>
+    </view>
+</view>
+
+<!--小区专家联系选择弹框-->
+<view class="ddc_contact"
+      wx:if="{{contactBox}}" 
+      style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+    <view class="ddc_contact_mc" catchtap="closeContactBox"></view>
+  <view class="refer-toast">
+    <view class='refer-txt'>
+      <view class='tos-line'></view>
+        <view class='ref-t'>选择联系方式</view>
+      <view class='tos-line'></view>
+    </view>
+    <view class='contract-box'>
+        <view class='chat-b' 
+              bindtap='goToIM' 
+              data-archiveid="{{buildExpert.buildOwnerArchiveId}}"><view class='chat-ic'></view><text>在线聊天</text></view>
+        <view class='call-b' 
+              bindtap="dial" 
+              data-mobile='{{buildExpert.buildOwnerMobile}}'><view class='call-ic'></view><text>拨打电话</text></view>
+    </view>
+    <view class='close-btn'></view>
+  </view>
+</view>
+<!--/联系选择弹框-->
+
+<!--  引导下载弹框  -->
+<view class='downMask' wx:if="{{downBox}}">
+  <view class="download" catchtap="clickToDownloadApp">
+    <image src="https://uu.haofang.net/Public/images/wap/detail-down-img.png" mode='aspectFill' />
+    <view class="closeBtn" catchtap="closeDownBox"></view>
+  </view>
+</view>
+
+<!--  切换城市  -->
+<!-- 引入找房定位的公共模板 -->
+<import src="../../component/localCityToast/localCityToast.wxml"/>
+<template is="localCity" data="{{locateCityName}}" wx:if='{{!toastHide}}'/>
+
+<!--固定导航-->
+<!--<template is="tabNav" data="{{animationData,showFlas,offFlag}}"></template>-->
+
+<!--消息提醒按钮-->
+<navigator id="msgNotify" url="/pages/news/news" wx:if="{{unreadNum>0}}" open-type="switchTab">
+  <view class="effect-tip heart"></view>
+</navigator>
+<!--消息提醒按钮end-->

@@ -1,0 +1,158 @@
+/*固定nav*/
+.toast-bg{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top:0;
+	left: 0;
+	background: rgba(0,0,0,.6);
+	display: block;
+	z-index: 15000;
+}
+.toast-wrap{
+	position: fixed;
+	right: -195px;
+	bottom: 220rpx;
+	z-index: 15001;
+	width: 482rpx;
+	height: 130rpx;
+	/* transform: translateX(1.95rem); */
+}
+.nav-b{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 195px;
+	height: 130rpx;
+	background: #fff;
+	border-radius: 10rpx 0 0 10rpx;
+
+}
+.left-nav{
+	position: absolute;
+	top:0;
+	bottom: 0;
+	margin: auto;
+	left: -100rpx;
+	width: 100rpx!important;
+	height: 100rpx!important;
+	z-index: 15001;
+	background: #000;
+	border-radius: 10rpx 0 0 10rpx;
+	text-align: center;
+	line-height: 100rpx;
+	color: #fff;
+}
+.left-nav .unfold-box image{
+	position: absolute;
+	top:0;
+	bottom:0;
+	margin: auto;
+	left:10rpx;
+	width: 21rpx;
+	height: 20rpx;
+}
+ .unfold-box{
+   width: 100%;
+   height: 100%;
+} 
+  .packup-box{
+    width: 100%;
+   height: 100%;
+}  
+.left-nav .packup-box image{
+	position: absolute;
+	top:0;
+	bottom:0;
+	margin: auto;
+	right:10rpx;
+	width: 21rpx;
+	height: 20rpx;
+}
+.left-nav .nav-txt{
+	position: absolute;
+	top:0;
+	bottom: 0;
+	margin: auto;
+	width: 60rpx;
+	height: 100%;
+	text-align: center;
+	font-size: 24rpx;
+	line-height: 98rpx;
+	text-indent: 10rpx;
+}
+.left-nav .nav-txtb{
+	position: absolute;
+	right: 10rpx;
+	width: 50rpx;
+	text-align: center;
+	font-size: 24rpx;
+	line-height: 30rpx;
+	top:20rpx;
+}
+.nav-b .ul{
+	width: 100%;
+	height: 100%;
+}
+.nav-b .ul .li{
+  display: inline-block;
+	position: relative;
+	float: left;
+	width: 25%;
+	font-size: 24rpx;
+	margin-right: 18rpx;
+	text-align: center;
+	height: 100%;
+	line-height: 180rpx;
+}
+.nav-b .ul .li:last-child{
+	margin-right: 0;
+}
+.in-icon{
+	position: absolute;
+	left:0;
+	right: 0;
+	margin: auto;
+	top:26rpx;
+	display: block;
+	width: 39rpx;
+	height: 40rpx;
+	background: url("http://youjia.haofang.net/Public/images/index_icon.png")no-repeat center;
+	background-size: 100%;
+}
+.ne-icon{
+	position: absolute;
+	left:0;
+	right: 0;
+	margin: auto;
+	top:26rpx;
+	display: block;
+	width: 35rpx;
+	height: 42rpx;
+	background: url("http://static.haofang.net/Public/images/wap/xinfang-icon.png")no-repeat center;
+	background-size: 100%;
+}
+.sa-icon{
+	position: absolute;
+	left:0;
+	right: 0;
+	margin: auto;
+	top:26rpx;
+	display: block;
+	width: 36rpx;
+	height: 42rpx;
+	background: url("http://static.haofang.net/Public/images/wap/ershoufang-icon.png")no-repeat center;
+	background-size: 100%;
+}
+.le-icon{
+	position: absolute;
+	left:0;
+	right: 0;
+	margin: auto;
+	top:26rpx;
+	display: block;
+	width: 36rpx;
+	height: 42rpx;
+	background: url("http://static.haofang.net/Public/images/wap/zufang-icon.png")no-repeat center;
+	background-size: 100%;
+}

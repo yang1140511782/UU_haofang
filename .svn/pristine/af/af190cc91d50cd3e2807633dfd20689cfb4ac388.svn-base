@@ -1,0 +1,47 @@
+<view class="wrap-box">
+    
+    <view class='ti-th'>请选择举报原因</view>
+    <view class='ul'>
+        <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true">
+          <view class='li {{chik==1 ? "checkedcss" : ""}}' catchtap='clickLi' data-num='1'><button formType="submit">房源不存在</button></view>
+        <view class='li {{chik==2 ? "checkedcss" : ""}}' catchtap='clickLi' data-num='2'><button formType="submit">{{caseType==3?'房源已售':'房源已租'}}</button></view>
+        <view class='li {{chik==3 ? "checkedcss" : ""}}' catchtap='clickLi' data-num='3'><button formType="submit">价格不真实</button></view>
+        <view class='li {{chik==4 ? "checkedcss" : ""}}' catchtap='clickLi' data-num='4'><button formType="submit">图片不真实</button></view>
+        <view class='li {{chik==5 ? "checkedcss" : ""}}' catchtap='clickLi' data-num='5'><button formType="submit">服务态度不好（不涉及赔付）</button></view>
+        </form>
+    </view>
+    <view class='rule-substrict'>
+      “假一赔百”房源均为真实存在、真实在售(在租)、真实图片、真实价格的房源。用户在发布委托看房后，发现“假一赔百”房源有不符合上述四个特点的，可进行...<view class='torule' catchtap='goToRule'>点击了解详情</view>
+      
+    </view>
+    
+      <view class='sub-btn' catchtap='subBtn'>提　 交</view>
+    <!--toast-->
+    <!-- <view class='to-wrap' wx:if="{{toastShow}}">
+        <view class='close-box' catchtap='closeToast'></view>
+        <view class='tost-box'>
+              <view class='tost-txt'>系统检测该经纪人没有给你提供过看房服务,立即给TA发委托，带看完成后再进行反馈！</view>
+              <view class='toat-btn'>
+                <view class='recall' catchtap='entrustQuit'>取消</view>
+                <view class='pull' catchtap='entrustBtn'>立即去发布</view>
+              </view>
+        </view>
+    </view> -->
+    <view class='to-wrap' wx:if="{{toastShow}}">
+        <view class='close-box' catchtap='closeToast'></view>
+        <view class='tost-box'>
+              <view class='tost-box-close' catchtap='entrustQuit'></view>
+              <view class='tost-box-ok-img'></view>
+              <view class='tost-box-ok'>提交成功</view>
+              <view class='tost-txt'>感谢您对优优好房真房源的监督与支持，我们将严格核实并及时下架。发布委托看房后，发现“假一赔百”房源有虚假情况并投诉，经优优好房平台核实确属虚假房源，您可获赔100元人民币。</view>
+              <view class='toat-btn'>
+                <!-- <view class='pull' catchtap='entrustBtn'></view> -->
+                <view class='pull' catchtap='entrustBtn'>去发布委托</view>
+              </view>
+        </view>
+    </view>
+</view>
+
+
+
+

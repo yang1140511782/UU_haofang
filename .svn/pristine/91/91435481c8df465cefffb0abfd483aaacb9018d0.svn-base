@@ -1,0 +1,132 @@
+var app = getApp();
+let imSdk = require('./NIM_Web_NIM_v5.0.0.js');
+
+
+let nim = '';
+function initIm() {
+  let _this = this;
+  //实例化im
+  nim = imSdk.getInstance({
+    debug: false,
+    db: true,
+    syncSessionUnread: true,
+    appKey: app.globalData.appKey,
+    account: app.globalData.chatTo,
+    token: app.globalData.chatToToken,
+    onconnect: onConnect,
+    // 会话
+    onsessions: onSessions,
+    onupdatesession: onUpdateSession,
+    onerror: onError,
+    ondisconnect: onDisconnect,
+    // 消息
+    onofflinemsgs: onOfflineMsgs,
+    onmsg: onMsg,
+    // 系统通知
+    onsysmsgunread: onSysMsgUnread,
+    oncustomsysmsg: onCustomSysMsg,
+
+    // // 同步完成
+    onsyncdone: onSyncDone
+  })
+}
+
+function onConnect() {
+  console.log('连接成功');
+}
+function onSessions(sessions) {
+  console.log('收到会话列表', sessions);
+  // data.sessions = nim.mergeSessions(data.sessions, sessions);
+  updateSessionsUI(sessions);
+}
+function onUpdateSession(session) {
+  console.log('会话更新了', session);
+  updateSessionsUI(session);
+}
+function onError(error) {
+  console.log(error);
+}
+function onDisconnect(error) {
+  // 此时说明 `SDK` 处于断开状态, 开发者此时应该根据错误码提示相应的错误信息, 并且跳转到登录页面
+  console.log('丢失连接');
+  console.log(error);
+  if (error) {
+    switch (error.code) {
+      // 账号或者密码错误, 请跳转到登录页面并提示错误
+      case 302:
+        break;
+      // 被踢, 请提示错误后跳转到登录页面
+      case 'kicked':
+        break;
+      default:
+        break;
+    }
+  }
+}
+function onOfflineMsgs(obj) {
+  console.log('离线消息', obj);
+  // pushMsg(obj.msgs);
+}
+function onMsg(msg) {
+  console.log('收到消息', msg.scene, msg.type, msg);
+  // pushMsg(msg);
+}
+function onSysMsgUnread(obj) {
+  console.log('收到系统通知未读数', obj);
+  // data.sysMsgUnread = obj;
+  // refreshSysMsgsUI();
+}
+function onCustomSysMsg(sysMsg) {
+  console.log('收到自定义系统通知', sysMsg);
+}
+function onSyncDone() {
+  console.log('同步完成');
+}
+//更新数据及样式
+function updateSessionsUI(session){
+  var unreadNum = app.globalData.unreadNum;
+  var unreadMsg = app.globalData.unreadMsg;
+
+  if (isArray(session)){
+    for(var i=0; i<session.length; i++){
+      unreadNum += session[i].unread;
+      unreadMsg.push(session[i]);
+    }
+  }else{
+    unreadNum += session.unread;
+    unreadMsg.push(session);
+  }
+
+
+  if(unreadNum > 0){
+    app.globalData.unreadMsg = unreadMsg;
+    setTabBarBadge(unreadNum.toString());
+  }
+}
+
+//消息气泡上面未读数显示
+function setTabBarBadge(num){
+  if(num > 99){
+    num = '99+';
+  }
+  wx.setTabBarBadge({
+    index: 1,
+    text: num
+  })
+}
+//移出红点提示
+function removeTabBarBadge(){
+  wx.removeTabBarBadge({
+    index: 1
+  })
+}
+function isArray(o) {
+  return Object.prototype.toString.call(o) == '[object Array]';
+}
+module.exports = {
+  initIm: initIm,
+  updateSessionsUI: updateSessionsUI,
+  setTabBarBadge: setTabBarBadge,
+  removeTabBarBadge: removeTabBarBadge
+}
+

@@ -1,0 +1,199 @@
+<!-- 房源列表模板 -->
+<import src="../../template/listTmp.wxml" />
+
+<!-- 添加授权蒙层 -->
+<import src="../../template/authorizeMaskTmp.wxml"/>
+<template is="authorizeMask" data="{{userInfo}}"></template>
+
+
+<!--顶部banner-->
+<view class='topbox'>
+    <view class='city' catchtap="ifDownloadApp">{{cityName}}<view class='city-icons'></view></view>
+    <view class='seachbox' catchtap='clickToPage' data-url= "/pages/search/search?fromindex=1">
+        <view class='s-icon'></view>
+    </view>
+    <view class='img-t'></view>
+</view>
+<!--/顶部banner-->
+<!--  导航菜单  -->
+<view class="menu">
+  <view class="menuItem" catchtap='clickToPage' data-url="/pages/list/list">
+    <view class="picbox"><image src="../../images/index/sale.png" mode="aspectFit"/></view>
+    <view class="textbox">二手房</view>
+  </view>
+  <view class="menuItem" catchtap='clickToPage' data-url="/pages/newHouseList/newHouseList">
+    <view class="picbox npic"><image src="../../images/index/new.png" mode="aspectFit"/></view>
+    <view class="textbox">新房</view>
+  </view>
+  <view class="menuItem" catchtap='clickToPage' data-url="/pages/leaseList/leaseList">
+    <view class="picbox lpic"><image src="../../images/index/lease.png" mode="aspectFit"/></view>
+    <view class="textbox">租房</view>
+  </view>
+  <view  wx:for="{{menuList}}" wx:for-item="menu" class="menuItem" wx:key catchtap='clickToPage' data-url="{{menu.url}}">
+    <view class="picbox apic"><image src="{{menu.icon}}" mode="aspectFit"/></view>
+    <view class="textbox">{{menu.name}}</view>
+  </view>
+</view>
+
+<!-- S 活动banner 列表 -->
+<view class="banner-list" wx:if="{{bannerList.length > 0}}">
+  <swiper indicator-dots="true" autoplay="{{0}}" interval="2000" duration="1000">
+    <block wx:for="{{bannerList}}">
+      <swiper-item  catchtap='bannerSkip' data-href='{{item.bannerActionUrl}}'>
+        <image src="{{item.bannerPicUrl}}"  mode="aspectFit" class="slide-image" />
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+<!-- E 活动banner 列表 -->
+
+<!--  悬赏找好房  -->
+<view wx:else='' class="lookHouse" catchtap='clickToPage' data-url= "/pages/findHouse/findHouse"><image src="https://uuweb.haofang.net/Public/wxApp/images/index/banner20180612.png?t=333" mode="aspectFill" /></view> 
+
+<!-- S indexDialog 弹窗 -->
+<view class="index-dialog" wx:if="{{!!indexDialogUrl && indexDialogShow}}">
+  <view class="content">
+    <image catchtap='bannerSkip' data-href='{{indexDialogActionUrl}}' src="{{indexDialogUrl}}" class="pic" mode="widthFix" />
+    <view class='close' catchtap='indexDialogHide'></view>
+  </view>
+</view>
+<!-- E indexDialog 弹窗 -->
+ 
+<!--  loading  -->
+<view id="pullUp" wx:if="{{loadingData}}" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+  <text class="pullUpIcon"></text><text class="pullUpLabel">努力加载中...</text>
+</view>
+
+
+
+<!--  精选二手房  -->
+<view class="housebox" wx:if="{{saleData.length>0}}">
+  <view class="title">
+      精选二手房
+      <view class='seemore' catchtap='clickToPage' data-url="/pages/list/list">更多</view>
+  </view>
+  <view class="saleHouse">
+
+    <block wx:for="{{saleData}}" wx:key="houseId" wx:for-item="List">
+        <!--二手房-->
+        <template is="list" data="{{...List}}"></template>
+    </block>
+    
+  </view>  
+</view>
+
+<!--  精选新房  -->
+<view class="housebox" id="newhousebox" wx:if="{{newHouseList.length>0}}">
+  <view class="title">
+      精选新房
+      <view class='seemore' catchtap='clickToPage' data-url="/pages/newHouseList/newHouseList">更多</view>
+  </view>
+  <view class="newHouse">
+    <view class='houseItem' 
+          catchtap='goToNewHouseDetail' 
+          data-id="{{List.buildId}}"
+          wx:for="{{newHouseList}}" 
+          wx:key="{{index}}" 
+          wx:for-item="List">
+      <view class='picbox'>
+        <image src='{{List.photoAddr}}'
+              mode='aspectFill' />
+        <view wx:if="{{List.hotSaleHouse == 1}}" class="newhouse-hot-icon"></view> 
+      </view>
+      <view class='infobox'>
+        <view class="housetitle">{{List.buildName}}<text wx:if="{{List.buildStatus == 1}}" class='wait'>待售</text><text wx:if="{{List.buildStatus == 2}}" class='selling'>在售</text><text wx:if="{{List.buildStatus == 3}}" class='soldOut'>售完</text></view>
+        <view class="text">{{List.buildAddr}}</view>
+        <view class="text" wx:if="{{List.roomText&&List.areaLow}}">{{List.roomText}}室 | {{List.areaLow}}-{{List.areaHigh}}㎡</view>
+        <view class='tag'>
+          <text  wx:for="{{List.buildTagArr}}" wx:key="{{i}}" wx:for-item="tagItem" wx:for-index="i">{{tagItem}}</text>
+        </view>
+        <view class='price' wx:if="{{List.priceNumText}}">{{List.priceNumText}}<text style='margin-right:20rpx;'>{{List.priceUnitText}}</text><text class='ar-text' wx:if="{{List.areaLow > 0 && List.areaHigh > 0}}">建面{{List.areaLow}}~{{List.areaHigh}}㎡</text></view>
+        <view class='price' wx:else>价格待定</view>
+      </view>
+    </view>
+    
+  </view>
+</view>
+
+<!--  精选租房  -->
+<view class="housebox" wx:if="{{leaseData.length>0}}">
+  <view class="title">
+      精选租房
+      <view class='seemore' catchtap='clickToPage' data-url="/pages/leaseList/leaseList">更多</view>
+  </view>
+
+  <block wx:for="{{leaseData}}" wx:key="houseId" wx:for-item="List">
+        <!--二手房-->
+        <template is="list" data="{{...List}}"></template>
+  </block>
+
+</view>
+<!--  精选公寓  -->
+<view class="housebox" wx:if="{{apartmentData.length>0 && apartFlag}}">
+  <view class="title">
+      精选公寓
+      <view class='seemore' catchtap='clickToPage' data-url="/pages/apartmentList/list">更多</view>
+  </view>
+  <view class="apartment-box">
+    <view class="apartment-list">
+    <view class='apartmentHouse' wx:for="{{apartmentData}}" wx:key="{{index}}" wx:for-item="List" data-apartmentuuid="{{List.uuid}}" data-roomuuid='{{List.roomUuid}}' data-renttype='{{List.rentType}}' bindtap='skipToDetail'>
+      <view class='picbox'>
+        <image src='{{List.thumbUrl}}' mode='aspectFill' lazy-load='{{lazyLoad}}' />
+      </view>
+      <view class='infobox'>
+        <view class="houseSubject" >
+          <text class='pay-method band-name'>{{List.appIdCn}}</text>
+          <text class='pay-method house-price'>{{List.monthRent + '元/月'}}</text>
+          <text wx:for="{{List.tags}}" wx:key="{{index}}" wx:for-item="item" class="pay-method apartment_tag_{{index}}">{{item}}</text>
+        </view>
+        <view class="text" >
+          <text class='title1'>{{List.hftSectionName}} {{List.hftBuildName}} {{List.bedRoomNum}}室 {{List.livingRoomNum > 0? List.livingRoomNum+ '厅': ''}} {{List.toiletNum > 0? List.toiletNum + '卫': ''}}</text>
+        </view>
+      </view>
+      </view>
+  </view>
+  </view>
+  
+     
+</view>
+<!--底线-->
+<view class='footer-msg' catchtap='clickToPage' data-url="/pages/list/list">
+    <view class='line-bg'></view>
+    <text>点击更多进入频道</text>
+</view>
+<!--引导下载-->
+<view class="down-app-box" wx:if="{{downAppBoxShow}}">
+    <view class="down-mask" catchtap='downCloseEvent'></view>
+    <view class="down-con">
+         <view class="down-txt down-txt-top">该功能小程序暂不支持</view>
+        <view class="down-txt">请打开App Atore或应用市场</view>
+        <view class="down-txt down-txt-bottom">下载优优好房App</view>
+        <view class="down-img"></view>
+        <view class="down-btn" catchtap='downCloseEvent'>
+            <view class="down-btn-txt">我知道了</view>
+        </view>
+    </view>
+</view>
+<!--  去拜年  -->
+<view wx:if="{{showNewYearCard}}" class="goToToast" catchtap="goToToast">
+</view>
+<!--活动悬浮按钮-->
+<!-- <view class='act-btn-box' catchtap='gotoAct' wx:if='{{acShow}}'></view> -->
+<!--演唱会弹框-->
+<view class='vocal-box' wx:if='{{showWindow}}'>
+  <view class='vocal-box-mask' catchtap='closeJWindow'></view>
+  <view class='v-cont-b'>
+      <view class='v-top'></view>
+       <view class='v-cont-list'>
+            <view class='li'>分享转发小程序</view>
+            <view class='li'>邀请3个好友助力</view>
+            <view class='li'>即获得抽奖资格</view>
+      </view>
+      <form bindsubmit="instant" bindreset="formReset" report-submit="true">
+        <button class='canyu' formType="submit" report-submit="true">立即参与</button>
+      </form>
+  <view class='close' catchtap='closeJWindow'></view>
+  </view>
+</view>
+<!--演唱会活动悬浮按钮-->
+<view class='act-btn-box-vocal' catchtap='gotoVocal' wx:if = '{{vocalShow}}'></view>

@@ -1,0 +1,132 @@
+
+<view id="account-wrap">
+    <view class='h-top'>
+        <view class='p-title' wx:if="{{currentTab==0}}">委托奖励金</view>
+        <view class='p-title' wx:if="{{currentTab==1}}">悬赏委托意向金</view>
+        <view class='p-title' wx:if="{{currentTab==2}}">专车看房押金</view>
+        <view class='p-title' wx:if="{{currentTab==3}}">有效优惠券</view>
+        <view class='p-box'>
+            <text wx:if="{{currentTab==0}}">{{rewardMoneyTotal}}</text>
+            <text wx:if="{{currentTab==1}}">{{payPaidTotal}}</text>
+            <text wx:if="{{currentTab==2}}">{{taxiPaidTotal}}</text>
+            <text wx:if="{{currentTab==3}}">{{RedPacketTotal}}</text>
+            <text class='dw'>{{currentTab==3? "张":"元"}}</text>
+            <view class='return-deposit' wx:if="{{currentTab==2 && taxiPaidTotal != 0}}" bindtap="returnDeposit">退押金</view>
+        </view>
+        <view class='hint-box' wx:if="{{currentTab==0}}">委托奖励金可直接提现</view>
+        <view class='hint-box' wx:if="{{currentTab==1}}">线上成交可抵扣中介费，取消委托将原路退回</view>
+        <view class='hint-box' wx:if="{{currentTab==2}}">充值押金可享受免费专车看房服务，可原路退回</view>
+        <view class='hint-box' wx:if="{{currentTab==3}}">线上成交，优惠券、红包等可直接用于抵扣中介费</view>
+    </view>
+    <!--nav切换-->
+    <view class='nav-wrap'>
+      <view class="nav-li {{currentTab==0?'active':''}}" data-current='0' bindtap='swichNav'>委托奖励金</view>
+      <view class="nav-li {{currentTab==1?'active':''}}" style="width:70%;" data-current='1' bindtap='swichNav'>悬赏委托意向金</view>
+      <view class="nav-li {{currentTab==2?'active':''}}" data-current='2' bindtap='swichNav'>专车看房押金</view>
+      <view class="nav-li {{currentTab==3?'active':''}}" style="width:30%;" data-current='3' bindtap='swichNav'>优惠券</view>
+    </view>
+    <!--/nav切换-->
+    <!--swiper-->
+    <view class='tab-cont'>
+         <swiper class="tab-content" current="{{currentTab}}"  duration="300" bindchange="switchTab" style="height:100%;">
+              <!--委托奖励金-->
+              <swiper-item>
+                      <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+                              <view class='ticket-li' wx:if="{{rewardMoney.length>0}}" wx:for="{{rewardMoney}}" wx:key="{{index}}">
+                                    <view class='tik-pic'>
+                                        <image src="{{item.bgImage}}" mode='widthFix' class='no-data-img'></image>
+                                    </view>
+                                    <view class='tik-cont'>
+                                        <view class='tik-title'>{{item.title}}<text>{{item.totalFee}}</text></view>
+                                        <view class='tik-time'>{{item.createTime}}
+                                        <text class="reward-btn reward-btn-blue reward-btn-active" wx:if="{{item.rewardType == 1 || item.rewardType == 3}}" data-id="{{item.vipqueueId}}" data-money="{{item.totalFee}}"  bindtap="rewardBtn">{{item.rewardTypeDesc}}</text>
+                                        <text class="reward-btn reward-btn-blue" wx:elif="{{item.rewardType == 2}}" data-id="{{item.vipqueueId}}">{{item.rewardTypeDesc}}</text>
+                                        <text class="reward-btn reward-btn-gray" wx:elif="{{item.rewardType == 5}}" data-id="{{item.vipqueueId}}">{{item.rewardTypeDesc}}</text>
+                                        <text class="reward-btn reward-btn-error" wx:else="" data-id="{{item.vipqueueId}}">{{item.rewardTypeDesc}}</text>
+                                        </view>
+                                    </view>
+                              </view>
+                        <view class='no-wrap' wx:if="{{noDataReward}}">
+                            <image src="http://uuweb.haofang.net/Public/wxApp/images/new_images/nodata_list_new.png" class='no-data-img'></image>
+                            <view class='no-txt'>暂无数据记录...</view>
+                        </view>
+                        
+                      </scroll-view>
+              </swiper-item>
+              <!--/委托奖励金-->
+
+              <!--委托意向金-->
+              <swiper-item>
+                      <scroll-view scroll-y="true" class="scoll-h ticket-box"  >
+                              <view class='ticket-li' wx:if="{{earnestMoney.length>0}}" wx:for="{{earnestMoney}}" wx:key="{{index}}">
+                                    <view class='tik-pic'>
+                                        <image src="{{item.bgImage}}" mode='widthFix' class='no-data-img'></image>
+                                    </view>
+                                    <view class='tik-cont'>
+                                        <view class='tik-title'>{{item.payDesc}}<text>{{item.totalFee}}</text></view>
+                                        <view class='tik-time'>{{item.createTime}}</view>
+                                    </view>
+                              </view>
+                        <view class='no-wrap' wx:if="{{noDataPrice}}">
+                            <image src="http://uuweb.haofang.net/Public/wxApp/images/new_images/nodata_list_new.png" class='no-data-img'></image>
+                            <view class='no-txt'>暂无数据记录...</view>
+                        </view>
+                        
+                      </scroll-view>
+              </swiper-item>
+              <!--/委托意向金-->
+
+              <!--打车押金-->
+              <swiper-item>
+                      <scroll-view scroll-y="true" class="scoll-h ticket-box" >
+                              <view class='ticket-li' wx:if="{{taxiMoney.length>0}}" wx:for="{{taxiMoney}}" wx:key="{{index}}">
+                                    <view class='tik-pic'>
+                                        <image src="{{item.bgImage}}" mode='widthFix' class='no-data-img'></image>
+                                    </view>
+                                    <view class='tik-cont'>
+                                        <view class='tik-title'>{{item.payDesc}}<text>{{item.totalFee}}</text></view>
+                                        <view class='tik-time'>{{item.createTime}}</view>
+                                    </view>
+                              </view>
+                        <view class='no-wrap' wx:if="{{noDataCar}}">
+                            <image src="http://uuweb.haofang.net/Public/wxApp/images/new_images/nodata_list_new.png" class='no-data-img'></image>
+                            <view class='no-txt'>暂无数据记录...</view>
+                        </view>
+                      </scroll-view>
+              </swiper-item>
+              <!--/打车押金-->
+              
+              <!--优惠券-->
+              <swiper-item class='red-packet'>
+                       <scroll-view scroll-y="true" class="scoll-h" scroll-y="true" bindscrolltolower="loadMore">
+                         
+                         <view class="coupan-li {{item.status != 1?'coupan-li-disabled':''}}" wx:for="{{RedPacket}}" wx:key="{{index}}"
+                           data-shareid='{{item.shareId}}' data-status='{{item.status}}' data-type='{{item.quanType}}' catchtap='useCoupan'>
+                            <view class="coupan-info">
+                                <view class="title">{{item.quanTitle}}</view>
+                                <view class="date" wx:if="{{item.expireTime}}">有效期至{{item.expireTime}}</view>
+                                <view class="desc" wx:if="{{item.fromSource}}">{{item.fromSource}}</view>
+                                <view class="desc" wx:if="{{item.quanDesc}}">{{item.quanDesc}}</view>
+                            </view>
+                            <view class="coupan-num">
+                                <view class="num-text">￥<text>{{item.quanMoney}}</text></view>
+                                <!--专属优惠券才有 "立即使用资阳"-->
+                                <view class="num-desc" wx:if="{{item.quanType == 5 && item.status == 1}}">立即使用</view>
+                                <view class="num-desc" wx:elif="{{item.status == 2}}">已使用</view>
+                                <view class="num-desc" wx:elif="{{item.status == -1}}">已过期</view>
+                                <view class="num-desc" wx:elif="{{item.status == 0}}">已失效</view>
+                            </view>
+                         </view>
+
+                         <view class='no-wrap' wx:if="{{noDataCou}}">
+                            <image src="http://uuweb.haofang.net/Public/wxApp/images/new_images/nodata_list_new.png" class='no-data-img'></image>
+                            <view class='no-txt'>暂无数据记录...</view>
+                        </view>
+                      </scroll-view> 
+              </swiper-item>
+              <!--/优惠券-->
+        </swiper>
+    </view>
+   
+    <!--/swiper-->
+</view>

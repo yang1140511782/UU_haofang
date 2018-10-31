@@ -1,0 +1,202 @@
+/* 头部 */
+
+.top-mod {
+    height: 364rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/backg1.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+}
+.top-mod>image {
+    width: 101rpx;
+    height: 101rpx;
+    position: absolute;
+    right: 18rpx;
+    bottom: -36rpx;
+    z-index: 10;
+}
+.top-text {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 28rpx;
+    height:52rpx;
+    width:144rpx;
+    text-align: center;
+    line-height: 52rpx;
+    border-radius: 15px 0px 0px 15px;
+    position: absolute;
+    right: 0px;
+    top: 10px;
+}
+/* 中部 */
+
+.middle-mod {
+    height: 720rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/backg3.png') no-repeat;
+    background-size: 100% 100%;
+    padding: 1px;
+    position: relative;
+}
+
+.loop-info {
+    padding: 0px 30rpx;
+    margin:38rpx 64rpx;
+    margin-bottom: 10rpx;
+    height:64rpx;
+    background-color: #f3861f;
+    border-radius: 32rpx;
+    color: #fff;
+    line-height: 64rpx;
+    font-size: 28rpx;
+}
+
+.prize-loop {
+    position: relative;
+    height: 347rpx;
+    width: 750rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/loopDeng1.png') no-repeat;
+    background-size: 100% 100%;
+}
+.prize-loop>.yytop{
+  position: absolute;
+  top:50rpx;
+  left: 98rpx;
+  width:558rpx;
+  height:70rpx;
+  z-index: 10;
+}
+.prize-loop>.yybottom{
+  position: absolute;
+  bottom:65rpx;
+  left: 98rpx;
+  width:558rpx;
+  height:70rpx;
+  z-index: 10;
+}
+.prize-loop-conten{
+  position: relative;
+  width:558rpx;
+  height:225rpx;
+  background-color: #e44603;
+  top:55rpx;
+  left: 97rpx;
+  border-radius: 20rpx;
+  z-index: 9;
+  overflow: hidden;
+}
+.pl-conten-bord{
+  height:100%;
+  width:170rpx;
+  background-color: #fff;
+  margin:0rpx 6rpx;
+  float: left;
+  overflow: hidden;
+}
+.jp-list>image{
+  width:170rpx;
+  height:150rpx;
+  margin:40rpx 0px;
+}
+/* 滚动奖品列表 */
+.jp-list{
+    position: relative;
+}
+.yaogan {
+    position: absolute;
+    right: 60rpx;
+    bottom: 110rpx;
+    height: 129rpx;
+    width: 84rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/yaogan.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.prize-btn {
+    margin: 0 auto;
+    margin-top:30rpx;
+    height: 130rpx;
+    width: 400rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/btnup.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.floar-jb {
+    position: absolute;
+    height: 133rpx;
+    width: 76rpx;
+    right: 0px;
+    top: 40%;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/jinbi.png') no-repeat;
+    background-size: 100% 100%;
+}
+/* 底部 */
+
+.bottom-mod {
+    padding: 1px;
+    position: relative;
+    height: 474rpx;
+    background: url('http://lcl_uuweb.hftsoft.com/Public/wxApp/images/active/jinyin/index/backg2.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.bot-title{
+  position: relative;
+  width: 213rpx;
+  height: 59rpx;
+  text-align: center;
+  left:50%;
+  margin-left: -106rpx;
+  top:28rpx;
+}
+.bot-title>image{
+  position: absolute;
+  top:0rpx;
+  height: 59rpx;
+  max-height: 100%;
+  max-width: 100%;
+}
+.bot-title>.jip-text{
+  color:#fff;
+  font-size: 32rpx;
+  position: relative;
+  z-index: 11;
+}
+.bot-title>.jip-text-back{
+  background-color: #f36113;
+  position: absolute;
+  z-index: 10;
+  width: 160rpx;
+  height: 20rpx;
+  bottom: 3rpx;
+  left: 25rpx;
+}
+
+
+.bot-img {
+    background-color: #fff;
+    height: 230rpx;
+    width: 160rpx;
+    border-radius: 10rpx;
+    text-align: center;
+    float: left;
+    margin:0rpx 7rpx;
+}
+.bot-img>.btnt-a{
+  border-radius: 10rpx 10rpx 0rpx 0rpx;
+  background-color: #ccc;
+  color:#fff;
+  font-size: 20rpx;
+  height:30rpx;
+  line-height: 30rpx;
+}
+.bot-img>image{
+  height: 150rpx;
+  width:160rpx;
+}
+.bot-img>.btnt-b{
+  border-radius: 0rpx 0rpx 10rpx 10rpx;
+  background-color: #e33c00;
+  color:#fff;
+  font-size: 24rpx;
+  height:40rpx;
+  line-height: 40rpx;
+}

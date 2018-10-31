@@ -1,0 +1,160 @@
+<import src="../../../component/loadDown/loadDown.wxml" />
+<view class="map-page">
+    <view class='map-top-w' style='height:{{height}}vh' wx:if="{{downAppBoxShow}}"></view>
+    <!--地图-->
+    <view class="map-container" hidden="{{downAppBoxShow||callShow}}" style='height:{{height}}vh'>
+        <map id="mapObj" style="width: 100%;height:100%;" scale="{{scale}}" show-location="{{showLocation}}"
+             latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" controls="{{controls}}"
+             bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" bindcontroltap="bindcontroltap"
+             bindregionchange="bindregionchange" bindtap="bindtap" bindupdated="bindupdated">
+          <cover-view class="toastmask" hidden='{{toastHide}}' catchtap="closeToastBox">
+            <cover-view class='toastbox' catchtap="cancelBubble">
+              <cover-view class="name">切换城市</cover-view>
+              <cover-view class="note">
+                <cover-view>特权找房需要打开小程序定位功能</cover-view>
+              </cover-view>
+              <cover-view class="btn" bindtap="changeCity">立即切换</cover-view>
+            </cover-view>
+          </cover-view>
+        </map>
+    </view>
+    <view class="btn-container" hidden="{{callShow}}" id="btn-container" style='height:{{btnBoxHeight}}vh'>
+        <view class="list-container" style="display:{{listBoxShow}}">
+            <view class="toolbar">
+                <!--弹框顶部-->
+                <view class="toolbar-inner">
+                    <view class="toolbar-left">
+                        <view class="toolbar-title">{{buildName}}</view>
+                    </view>
+                    <view class="toolbar-middle {{heightChange?'':'toolbar-middle-rotate'}}" catchtap='heightChangeEvent'></view>
+                    <view class="toolbar-right" catchtap='layoutClickEvent'>{{layoutChooseTxt}}</view>
+                </view>
+                <scroll-view scroll-y="true" class="list-con"  
+                            bindscrolltolower="lower" 
+                            lower-threshold='10' 
+                            bindscroll="scrollBottomEvent"
+                             scroll-x="false" 
+                             style="height:{{scrollViewHeight}}px">
+                    <!--小区专家-->
+                    <view class="agent-con" wx:if="{{biddBuilder.isExist>0}}" >
+                        <view class="agent-left">
+                            <view class="agent-head" 
+                                  style="background-image:url(http://cdn.haofang.net/static/uuminiapp/detail/fang_default.png);background-size:cover;">
+                                <image mode="aspectFill" style="width:100%;height:100%;overflow:hidden;border-radius:50%;background-image:url({{biddBuilder.buildOwnerPicUrl}});background-size:cover;"></image>
+                            </view>
+                            <view class="agent-note-con">
+                                <view class="agent-name-con">
+                                    <text class="agent-name">{{biddBuilder.buildOwnerName}}</text>
+                                    <text class="agent-note">小区专家</text>
+                                </view>
+                                <view class="agent-note-txt">本人专注服务于该小区,24h欢迎来电</view>
+                            </view>
+                        </view>
+                        <view class="agent-right">
+                            <view class="trust-btn" catchtap="trustEvent"  
+                            data-archiveid="{{biddBuilder.buildOwnerArchiveId}}" 
+                            data-username="{{biddBuilder.buildOwnerName}}"
+                            data-userphoto="{{biddBuilder.buildOwnerPicUrl}}!120!120"
+                            data-usermobile="{{biddBuilder.buildOwnerMobile}}"
+                            data-cityid="{{houseList[0].cityId}}"
+                            data-buymoney="{{biddBuilder.buyMoney}}"
+                            data-rentmoney="{{biddBuilder.rentMoney}}"
+                            data-serviceregs="{{biddBuilder.serviceRegs}}">在线委托</view>
+                            <view class="call-btn" catchtap='callShowEvent'>立即联系</view>
+                        </view>
+                    </view>
+                    <!--列表数据-->
+                    <view class='houseItem' catchtap='goDetailEvent' data-resource="{{List.reSource}}" data-caseid='{{List.houseId}}' data-casetype="{{List.caseType}}" wx:for="{{houseList}}" wx:key="{{index}}" wx:for-item="List" wx:if="{{houseList.length>0}}">
+                        <view class='picbox'>
+                            <image src='{{List.thumbUrl}}'
+                                mode='aspectFill' />
+                            <view class="tbb">
+                                <view class='icon-vr' wx:if="{{List.hasPanorama>0}}"></view>
+                                <view class='icon-video' wx:if="{{List.videoNum>0}}"></view>
+                            </view> 
+                        </view>
+                        <view class='infobox'>
+                            <view class="housetitle">{{List.houseSubject}}</view>
+                            <view class="text">
+                               <text wx:if="{{!!List.houseRoom && !!List.houseHall}}">{{List.houseRoom}}室{{List.houseHall}}厅</text> 
+                               {{List.houseArea}}㎡ 
+                               {{List.buildName}}
+                            </view>
+                            <view class='price' wx:if="{{caseType == 2}}">{{List.houseTotalPrice}}元/月</view>
+                            <view class='price' wx:else>{{List.houseTotalPrice}}万<text>{{List.houseUnitPrice}}元/㎡</text></view>
+                        </view>
+                    </view>
+                    <!--暂无数据-->
+                    <view class="nodata-con"  wx:if="{{nodataShow}}">
+                        <view class="nodata-img"></view>
+                        <view class="nodata-txt">暂无数据</view>
+                    </view>
+                    <!--  loading  -->
+                    <view id="pullUp" wx:if="{{loadingdata}}" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+                    <text class="pullUpIcon"></text><text class="pullUpLabel">努力加载中...</text>
+                    </view>
+                    <view class="no-more-data" wx:if="{{noMoreData}}">没有更多数据了！</view>
+                </scroll-view>
+            </view>
+            <!--户型选择-->
+            <view class="layout-choose"  catchtap='layoutChooseEvent' wx:if="{{layoutChooseShow}}">
+                <view class="layout-choose-ul">
+                    <view class="layout-choose-li" catchtap='chooseLayoutEvent' wx:for="{{roomArr}}" data-text='{{item.text}}' data-value="{{item.value}}" wx:key="item">{{item.text}}</view>
+                </view>
+            </view>
+        </view>
+        <!--底部按钮-->
+        <view class="btngrid-box">
+            <view id="leaseBtn" data-type='2' class="typebtn {{currentBtn=='leaseBtn' ? 'btnActive' : ''}}"
+                  bindtap="typebtnTap">
+                <text>整租</text>
+            </view>
+            <view id="saleBtn" data-type='1' class="typebtn {{currentBtn=='saleBtn' ? 'btnActive' : ''}}"
+                  bindtap="typebtnTap">
+                <text>二手房</text>
+            </view>
+            <view id="newhouseBtn" data-type='6' class="typebtn {{currentBtn=='newhouseBtn' ? 'btnActive' : ''}}"
+                  bindtap="typebtnTap">
+                <text>新房</text>
+            </view>
+        </view>
+        <view class="delegateBtn" catchtap="entrustBtn">
+            <text class="delegateBtn-txt {{caseType==6?'newhouse-txt':''}}">{{delegateBtnTxt}}</text>
+        </view>
+        <!-- 发布委托按钮 -->
+        <view class="trust-btn-con" wx:if="{{trustShow}}" catchtap='cancelTrustEvent'>
+            <view class="trust-btn-box">
+                <view class=" trust-common-btn sale-house-btn" catchtap='goBuyHouseEvent'>我要买房</view>
+                <view class=" trust-common-btn"  catchtap='goSaleHouseEvent'>我是房东，我要卖房</view>
+                <view class="content-after"></view>
+                <view class=" trust-common-btn trust-cancel" catchtap='cancelTrustEvent'>取消</view>
+            </view>
+        </view>
+    </view>
+    <view class="soldout-box" wx:if="{{callShow}}">
+        <view class="tost-mask"  catchtap='callShowEvent'></view>
+        <view class="refer-toast">
+            <view class="refer-txt">
+                <view class="tos-line"></view>
+                <view class="ref-t">选择联系方式</view>
+                <view class="tos-line"></view>
+            </view>
+            <view class="contract-box">
+                <view class="chat-b"  data-archiveid="{{biddBuilder.buildOwnerArchiveId}}" catchtap='goImEvent'>
+                    <view class="chat-ic"></view>
+                    <text>在线聊天</text>
+                </view>
+                <view class="call-b" catchtap='callEvent' data-tel='{{biddBuilder.buildOwnerMobile}}'>
+                    <view class="call-ic"></view>
+                    <text>拨打电话</text>
+                </view>
+            </view>
+        </view>
+    </view>
+    
+    <!--引导下载-->
+    <template is="loaddown" data="{{downAppBoxShow,imgSrc,imgWidth,imgHeight,titleTxtLoad,nextTxtLoad,newmapShow}}"/>
+</view>
+<!--假地图-->
+    
+

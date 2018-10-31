@@ -1,0 +1,58 @@
+<!-- pages/appointAgent/appointAgent.wxml -->
+<view class="dd_wrap">
+    <view id="content">
+        <view class="dd_info">
+            <view class="dd_img">
+                <image mode="aspectFill" src="{{brokerInfo.userPhotoMin}}"></image>
+            </view>
+            <view class="jjr_info_box">
+                <view class="jjr_info">
+                    <text class="jjr_name">{{brokerInfo.userName}}</text>
+                    <text wx:if="{{brokerInfo.deptName.length>0}}" class="jjr_dname">{{brokerInfo.deptName}}</text>
+                </view>
+            </view>
+            <view class="jjr_info_box">
+                <view class="jjr_info">
+                    <text class="jjr_mobile">{{brokerInfo.userMobile}}</text>
+                </view>
+            </view>
+            <view class="start_score">
+                <text class="dd_score_img star-value-{{evaAvgClass}}"></text>
+                <text class="dd_score_num">{{brokerInfo.evaAvg}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="btn">
+        <view type="button" bindtap="btnTap" class="btn_btn" id="surch">提交委托</view>
+    </view>
+    <view class="dd_prompt">
+        <view class="dd_prompt_ul">
+            <view class="dd_prompt_li ui-txt-justify">享受一对一服务，免费隐号通话</view>
+            <view class="dd_prompt_li ui-txt-justify">领取专属委托红包，用于抵扣中介费</view>
+            <view class="dd_prompt_li ui-txt-justify">买房、卖房、出租房全程可点评互动</view>
+        </view>
+    </view>
+    <!-- 系统推荐 -->
+    <view class="dd_zdagent_tuijian" style="display: none;">
+        <view class="tuijian_btn">我想让系统推荐</view>
+    </view>
+    <!-- 出租出售求购求租的选项 -->
+    <view class="publish-entrust" wx:if="{{publishEntrustShow}}">
+        <view class="publish-entrust-mask" catchtap='publishCancleEvent'></view>
+        <view class="publish-content">
+            <view data-url="/pages/entrust/entrust?caseType=4" catchtap="publishTap" class="publish-li">
+                <text class="publish-li-icon-com trust-zufang-icon">我要租房</text>
+            </view >
+            <view data-url="/pages/entrust/entrust?caseType=3" catchtap="publishTap" class="publish-li">
+                <text class="publish-li-icon-com trust-maifang-icon">我要买房</text>
+            </view >
+            <view data-url="/pages/saleRegistration/rentRegistration" catchtap="publishTap" class="publish-li">
+                <text class="publish-li-icon-com trust-chuzu-icon">我要出租</text>
+            </view >
+            <view data-url="/pages/saleRegistration/saleRegistration" catchtap="publishTap" class="publish-li">
+                <text class="publish-li-icon-com trust-chushou-icon">我要出售</text>
+            </view >
+            <view class="publish-li" catchtap='publishCancleEvent'>取消</view>
+        </view>
+    </view>
+</view>

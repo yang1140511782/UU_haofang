@@ -1,0 +1,197 @@
+image{width: 100%;display: block;}
+
+page{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+::-webkit-scrollbar{width:0px;height: 0}
+#account-wrap{
+  display: -webkit-flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.h-top{
+  width: 100%;
+  height: 250rpx;
+  background: #ff5400;
+}
+.p-title{
+  margin-left: 20rpx;
+  color: #fff;
+  font-size:28rpx; 
+  margin-bottom:20rpx;
+  margin-top:20rpx;
+
+}
+.p-box{
+  position: relative;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 60rpx;
+  margin-bottom: 40rpx;
+}
+.p-box .dw{
+  font-size: 24rpx;
+} 
+.hint-box{
+  text-align: center;
+  width: 100%;
+  font-size: 24rpx;
+  color: #fff;
+}
+.return-deposit{
+  position: absolute;
+  bottom: 10rpx;
+  right: 240rpx;
+  display:-webkit-flex;
+  width: 90rpx;
+  height: 40rpx;
+  justify-content:center;
+  align-items:center;
+  font-size: 24rpx;
+  border-radius: 5rpx;
+  background: #fff;
+  margin-left: 10rpx;
+  color: #ff5400;
+}
+.nav-wrap{
+  display: -webkit-flex;
+  width: 100%;
+  height: 80rpx;
+  border-bottom: 1px solid #eee;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
+.nav-li{
+  width: 50%;
+  text-align: center;
+  font-size: 28rpx;
+  line-height: 80rpx;
+}
+.active{
+  border-bottom:2px solid #ff5400;
+  color: #ff5400;
+}
+.tab-cont{
+  flex: 1;
+}
+.scoll-h{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.no-wrap{
+  width: 100%;
+  position: relative;
+  top: 200rpx;
+}
+.no-data-img{
+  margin:0 auto;
+    width: 283rpx;
+    height: 287rpx;
+}
+.no-txt{
+  width: 100%;
+  text-align: center;
+  font-size: 32rpx;
+  color: #999;
+}
+.ticket-box{
+  padding-left: 20rpx;
+  box-sizing: border-box;
+}
+.ticket-li{
+  display: -webkit-flex;
+  width: 100%;
+  padding: 20rpx 0;
+  border-bottom: 1px solid #eee;
+}
+.tik-pic{
+  width: 72rpx;
+  height: 72rpx;
+  margin-right: 20rpx;
+}
+.tik-pic image{
+  width: 100%;
+
+}
+.tik-cont{
+  flex: 1;
+}
+.tik-title{
+  width: 100%;
+  font-size: 32rpx;
+  margin-bottom: 10rpx;
+}
+.tik-title text{
+  float: right;
+  margin-right: 20rpx;
+}
+.tik-time{
+  font-size: 28rpx;
+  color: #999;
+}
+/*优惠券*/
+.coupon-box-has{
+  width: 681rpx;
+  height: 259rpx;
+  margin: 0 auto;
+  color: #999;
+  margin-bottom: 20rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/myAccount/yhj_gq.png) no-repeat center;
+  background-size: 100%;
+}
+.coupon-box{
+  width: 681rpx;
+  height: 259rpx;
+  margin: 0 auto;
+  color: #999;
+  margin-bottom: 20rpx;
+  background: url(https://uuweb.haofang.net/Public/wxApp/images/myAccount/yhj_lv.png) no-repeat center;
+  background-size: 100%;
+}
+.cou-title{
+  padding: 20rpx 20rpx;
+  width: 100%;
+  font-size: 32rpx;
+  box-sizing: border-box;
+}
+.no-use{
+  color: #00ca85!important;
+}
+.cou-title text{
+  float: right;
+}
+.from-box{
+  width: 100%;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  margin-bottom:40rpx; 
+}
+.from-box text{
+  
+  float: right;
+  font-size:32rpx; 
+}
+.cou-msg{
+  width: 100%;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  word-wrap: normal;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.red-packet{
+  padding-top: 40rpx;
+  box-sizing: border-box;
+}

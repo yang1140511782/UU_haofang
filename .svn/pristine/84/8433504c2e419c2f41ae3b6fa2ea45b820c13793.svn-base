@@ -1,0 +1,316 @@
+/*** 房源列表样式 ***/
+.houseItem{
+  display: flex;
+  margin-left: 26rpx;
+  padding-right: 26rpx;
+  border-bottom: 2rpx solid #ebebeb;
+  padding-bottom: 20rpx;
+  justify-content: space-between;
+}
+.houseItem:last-child {
+  border-bottom: 0;
+}
+.houseItem .picbox{
+  margin-top:37rpx;
+  width:220rpx;
+  height: 170rpx;
+  position:relative;
+  background: #f8f8f8 url(http://cdn.haofang.net/static/uuminiapp/default/list_deafault.png?t=20180606) no-repeat center center;
+  background-size: cover;
+}
+
+.houseItem .picbox .bgImg{
+  width:100%;
+  height: 100%;
+}
+.houseItem .picbox .vri{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.houseItem .infobox{
+  flex: 1;
+  padding-left: 33rpx;
+  padding-top:32rpx;
+  position: relative;
+  max-width:445rpx;
+}
+.houseItem .infobox .housetitle{
+  width:100%;
+  font-size:34rpx;
+  font-weight:400;
+  color:#333333;
+  line-height:45rpx;
+  min-height:80rpx;
+  margin-bottom:10rpx;
+  overflow:hidden;
+  word-wrap: break-word;
+  word-break: break-all;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+}
+.houseItem .infobox .text{
+  font-size: 26rpx;
+  line-height: 1;
+  color:#888888;
+  padding-top:5rpx;
+  padding-bottom: 10rpx;
+}
+.houseItem .infobox .newTag text{
+  /*color:#999999!important;*/
+  /*background: #fff!important;*/
+  /*padding:4rpx!important;*/
+  /*border-radius: 4rpx!important;*/
+  /*border:2rpx solid #999999!important;*/
+}
+.houseItem .infobox .tag text{
+  font-size: 18rpx;
+  display: inline-block;
+  line-height: 1;
+  color: #1bc964;
+  background: #e1f7e8;
+  padding: 6rpx 6rpx 4rpx;
+  border-radius: 30rpx;
+  margin-right: 8rpx;
+}
+.houseItem .infobox .tag .true_flag{
+  position: relative;
+  display: inline-block;
+  top: 5rpx;
+  width:81rpx;
+  padding-top:21rpx;
+  background:url(http://uuweb.haofang.net/Public/wxApp/images/index/true_house_flag.png) center bottom no-repeat;
+  background-size:81rpx 21rpx;
+  height:38rpx;
+  line-height:19rpx;
+  padding:0;
+  margin-right:10rpx;
+}
+.houseItem .infobox .tag .owner_flag,.houseItem .infobox .tag .month_flag{
+  font-size: 18rpx;
+  display: inline-block;
+  line-height: 1;
+  padding: 6rpx 6rpx 4rpx;
+  border-radius: 30rpx;
+  margin-right:8rpx;
+  color: #ff580a!important;
+  background: #ffeade!important;
+}
+
+.houseItem .infobox .tag text:nth-of-type(4n+1){
+  color: #18acf0;
+  background: #ddf3fd;
+}
+.houseItem .infobox .tag text:nth-of-type(4n+2){
+  color: #ff9600;
+  background: #fff1dc;
+}
+.houseItem .infobox .tag text:nth-of-type(4n+3){
+  color: #f3685f;
+  background: #fde8e7;
+}
+.houseItem .infobox .tag text:nth-of-type(4n+4){
+  color: #1bc964;
+  background: #ddf7e8;
+}
+
+.houseItem .infobox .price{
+  font-size: 30rpx;
+  color:#ff5a1f;
+  font-weight: bold;
+  line-height: 61rpx;
+}
+.houseItem .infobox .price text{
+  color:#999999;
+  font-weight: normal;
+  font-size: 22rpx;
+  margin-left: 18rpx;
+}
+.houseItem .infobox .top{
+  font-size: 16rpx;
+  letter-spacing: 1px;
+  color:#a5a5a5;
+  padding:6rpx;
+  border: 1px solid #dcdcdc;
+  border-radius: 3rpx;
+  position: absolute;
+  line-height: 1;
+  right:0;
+  bottom: 12rpx;
+}
+.houseItem .infobox .housetitle text{
+  font-family: '微软雅黑';
+  line-height: 1;
+  margin-left: 12rpx;
+  display: inline-block;
+  position: relative;
+  color:#fff;
+  font-size:20rpx;
+  padding:5rpx 7rpx;
+  font-weight:normal;
+  top:-2rpx;
+}
+.houseItem .infobox .housetitle .wait{
+  background: #14c4f9;
+}
+.houseItem .infobox .housetitle .selling{
+  background: #0ac95e;
+}
+.houseItem .infobox .housetitle .soldOut{
+  background: #cccccc;
+}
+
+.houseItem #tour{
+  width: 99rpx;
+  height: 33rpx;
+  background: url(data:image/png;base64,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) no-repeat center center;
+  background-size: contain;
+  position: absolute;
+  top:-1rpx;
+  left:-2rpx;
+}
+.houseItem #new{
+  width:100rpx;
+  height: 53rpx;
+  background: url(http://cdn.haofang.net/static/uuminiapp/search/hot_newhouse_logo.png) no-repeat center center;
+  background-size: contain;
+  position: absolute;
+  top: -5rpx;
+  left: 13rpx;
+}
+
+.houseItem.navigator-hover{
+  background-color: #fff;
+  opacity: 1;
+}
+/*** 房源列表样式/ ***/
+
+/*新房覆盖样式*/
+
+.newhouseItem{
+  display: flex;
+  margin-left: 26rpx;
+  padding-right: 26rpx;
+  border-bottom: 2rpx solid #ebebeb;
+  padding-bottom: 20rpx;
+}
+.newhouseItem .picbox{
+  margin-top: 42rpx;
+  width:220rpx;
+  height: 170rpx;
+  position: relative;
+  background: url(http://cdn.haofang.net/static/uuminiapp/default/list_deafault.png?t=20180606) no-repeat center center;
+  background-size: cover;
+}
+.newhouseItem .picbox image{
+  width:100%;
+  height: 100%;
+}
+.newhouseItem .infobox{
+  flex: 1;
+  padding-left: 33rpx;
+  padding-top:36rpx;
+  position: relative;
+  overflow: hidden;
+}
+.newhouseItem .infobox .housetitle{
+  position:relative;
+  font-size: 34rpx;
+  color:#394043;
+  font-weight: 400;
+  line-height: 38rpx;
+  margin-bottom: 8rpx;
+  
+}
+.newhouseItem .infobox .housetitle .buildNamebox{
+  max-width:82%;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  height: auto;
+}
+.newhouseItem .infobox .housetitle .text{
+  font-family: '微软雅黑';
+  line-height: 1;
+  font-size: 20rpx;
+  margin-left: 12rpx;
+  padding: 5rpx 7rpx;
+  padding-top: 8rpx;
+  display: inline-block;
+  position: relative;
+  font-weight: normal;
+  top:-3rpx;
+  color:#fff;
+}
+.newhouseItem .infobox .housetitle .wait{
+  background: #14c4f9;
+}
+.newhouseItem .infobox .housetitle .selling{
+  background: #0ac95e;
+}
+.newhouseItem .infobox .housetitle .soldOut{
+  background: #cccccc;
+}
+.newhouseItem .infobox .text{
+  font-size: 26rpx;
+  line-height: 1;
+  color:#8c8c8c;
+  padding-top: 6rpx;
+  padding-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.newhouseItem .infobox .tag{
+  margin-top: 10rpx;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  max-height: 50rpx;
+}
+.newhouseItem .infobox .tag text{
+  font-size: 18rpx;
+  display: inline-block;
+  line-height: 1;
+  color: #1bc964;
+  background: #e1f7e8;
+  padding: 6rpx 6rpx 4rpx;
+  border-radius: 30rpx;
+  margin-right: 8rpx;
+}
+.newhouseItem .infobox .tag text:nth-of-type(4n+1){
+  color: #18acf0;
+  background: #ddf3fd;
+}
+.newhouseItem .infobox .tag text:nth-of-type(4n+2){
+  color: #ff9600;
+  background: #fff1dc;
+}
+.newhouseItem .infobox .tag text:nth-of-type(4n+3){
+  color: #f3685f;
+  background: #fde8e7;
+}
+.newhouseItem .infobox .tag text:nth-of-type(4n+4){
+  color: #1bc964;
+  background: #ddf7e8;
+}
+.newhouseItem .infobox .price{
+  font-size: 30rpx;
+  color:#ff5a1f;
+  line-height: 61rpx;
+}
+.newhouseItem .infobox .price text{
+  font-weight: normal;
+  color:#ff5a1f;
+  font-size: 22rpx;
+  margin-left: 7rpx;
+}

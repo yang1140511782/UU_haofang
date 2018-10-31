@@ -1,0 +1,191 @@
+
+<view class='coupon_content'>
+    <view class='user_info'>
+        <view class='user_photo'>
+            <view style='background-image:url({{entrustBaseData.brokerInfo.userPhoto}})'></view>
+        </view>
+        <view class='user-text'>
+            <view class='user_name'>{{entrustBaseData.brokerInfo.userName}}
+                <text class='user_star s0'></text>
+            </view>
+            <text class='user_tel'>{{entrustBaseData.brokerInfo.userMobile}}</text>
+            <text class='user_address'>{{entrustBaseData.brokerInfo.serviceZoneCn}}</text>
+        </view>
+        <view class='share_money' catchtap='showRedPacket'>
+            <view class='money'>
+                <view class='money_num'>{{couponInfo.shareMoney}}</view>
+            </view>
+            <view class='money_ing'>可使用</view>
+        </view>
+    </view>
+
+    <view class="entruse_info" wx:if="{{entrustBaseData.existence == 1}}">
+        <view class="entruse_text">
+            <block wx:if="{{entrustBaseData.entrustInfoVO.caseType==3}}">[求购]</block><block wx:else="">[求租]</block>
+            {{entrustBaseData.entrustInfoVO.caseSubject}}
+        </view>
+        <view class="entruse_time">中介费：{{entrustBaseData.entrustInfoVO.broberComitionRage}} {{entrustBaseData.entrustInfoVO.pushLogTime}}接单</view>
+        <view class="entruse_progress  on_{{entrustBaseData.entrustInfoVO.pushStatusClass}}">
+            <view class="order">接单</view>
+            <view class="recommend">推荐</view>
+            <view class="see_house">带看</view>
+            <view class="over">成交</view>
+        </view>
+        <navigator url="/pages/entrustDetail/entrustDetail?pushLogId={{entrustBaseData.entrustInfoVO.pushLogId}}" hover-class="none" class="entruse_detaile" data-id="{{entrustBaseData.entrustInfoVO.pushLogId}}">委托详情></navigator>
+    </view>
+
+    <view class="entruse_input" wx:else="">
+        <view class='content_title'>请填写您的委托需求</view>
+        <view class='content_box'>
+            <view class='content_con_title'>
+                <view class="content_con_tab" data-type='3' catchtap='changeCaseType'><text class="title_text {{caseType==3?'on':''}}" >求购</text></view>
+                <view class="content_con_tab" data-type='4' catchtap='changeCaseType'><text class="title_text {{caseType!=3?'on':''}}" >求租</text></view>
+            </view>
+            <view class='content_text' wx:if="{{caseType ==3}}">
+                <view class='text-box' style="background-image:url(http://uuweb.haofang.net/Public/wxApp/images/coupon/address.png)">
+                    <button id='address' catchtap='isShowAddress'>{{sureBuyAddressInfo}}</button>
+                </view>
+                <view class='text-box' style="background-image:url(http://uuweb.haofang.net/Public/wxApp/images/coupon/hx.png)">
+                    <button id='room' catchtap='houseType'>{{sureBuyHouseType}}</button>
+                </view>
+                <view class='text-box text_box' style="background-image:url(http://uuweb.haofang.net/Public/wxApp/images/coupon/mn.png);">
+                    <button id='price' catchtap='isShowPrice'>{{surBuyPrice}}</button>
+                </view>
+            </view>
+            <view class='content_text' wx:else="">
+                <view class='text-box' style="background-image:url(http://uuweb.haofang.net/Public/wxApp/images/coupon/address.png)">
+                    <button id='address' catchtap='isShowAddress'>{{sureRentAddress}}</button>
+                </view>
+                <view class='text-box' style="background-image:url(http://uuweb.haofang.net/Public/wxApp/images/coupon/hx.png)">
+                    <button id='room' catchtap='houseType'>{{sureRentHouseType}}</button>
+                </view>
+                <view class='text-box text_box' style="background-image:url(http://uuweb.haofang.net/Public/wxApp/images/coupon/mn.png);">
+                    <button id='price' catchtap='isShowPrice'>{{surRentPrice}}</button>
+                </view>
+            </view>
+        </view>
+        <button id='submit' catchtap="formSubmit">发布委托</button>
+    </view>
+
+    <view class='resource' wx:if="{{(caseType==3 && saleList.length >0)  || (caseType!=3 && leaseList.length >0) }}">
+        <text class='resource_title'>他的房源</text>
+        <view class='resource_list'>
+            <!-- 房源信息引入 -->
+        <!-- 房源列表部分 -->
+        <import src="../../template/listTmp.wxml" />
+        <block wx:if="{{caseType==3}}">
+            <block wx:for="{{saleList}}" wx:key="houseId" wx:for-item="List">
+                <!--旅居地产-->
+                <template wx:if="{{List.caseType==9}}" is="saleLvjuList" data="{{...List}}"></template>
+                <!--热销新房-->
+                <template wx:elif="{{List.caseType==6}}" is="saleNewHouseList" data="{{...List}}"></template>
+                <!--二手房-->
+                <template wx:else="" is="list" data="{{...List}}"></template>
+            </block>
+        </block>
+
+        <block wx:else="">
+            <block wx:for="{{leaseList}}" wx:key="houseId" wx:for-item="List">
+                <!--旅居地产-->
+                <template wx:if="{{List.caseType==9}}" is="saleLvjuList" data="{{...List}}"></template>
+                <!--热销新房-->
+                <template wx:elif="{{List.caseType==6}}" is="saleNewHouseList" data="{{...List}}"></template>
+                <!--二手房-->
+                <template wx:else="" is="list" data="{{...List}}"></template>
+            </block>
+        </block>
+            
+             <!-- 房源列表部分/ -->
+            <!-- 房源信息引入 -->
+        </view>
+    </view>
+</view>
+
+<!-- 地址选择 -->
+<view class="address_box" wx:if="{{isAddress}}">
+    <view id='address_list' >
+    <view class='add_title'>
+        <view class='close' catchtap='hideAddress'>取消</view>
+        <view class='add_title_text'>选择商圈</view>
+        <view class='sure' catchtap='sureAddress'>确认</view>
+    </view>
+    <view class='add_box'>
+        <view class='dis_box'>
+            <view wx:for="{{regData}}" class="dis_list {{onStrtus==item.REG_ID?'on':''}}" data-id="{{item.REG_ID}}" data-name="{{item.REG_NAME}}"
+                catchtap="onStrtus">{{item.REG_NAME}}</view>
+        </view>
+        <view class="road_box">
+            <view wx:for="{{indexSectionList}}" class="road_list {{road_on==item[1]?'on':''}}" data-id="{{item[1]}}" data-name="{{item[0]}}"
+                catchtap="road_on">{{item[0]}}</view>
+        </view>
+    </view>
+    </view>
+</view>
+
+<!-- 地址选择 -->
+
+<!-- 户型选择 -->
+<view class="time-toast" wx:if="{{isShowHouseType}}" catchtap="">
+    <view style="position:absolute;bottom:0;left:0;width:100%;height:50%;" catchtap='cancelBubble'>
+        <view class="btnaa-box">
+            <view class="close" catchtap="hideHouseType">取消</view>
+            <view class='add_title_text'>选择户型</view>
+            <view class="sure" catchtap="sureHouseType">确定</view>
+        </view>
+        <picker-view indicator-style="height: 45px;" value="{{buyOrRentClass==1?buyIndex:rentIndex}}" class="time-box" bindchange="floorChange">
+            <picker-view-column>
+                <view wx:for="{{roomNumArr}}" wx:key style="line-height: 45px">{{item.text}}</view>
+            </picker-view-column>
+            <picker-view-column>
+                <view wx:for="{{fitmentArr}}" wx:key style="line-height: 45px">{{item.text}}</view>
+            </picker-view-column>
+        </picker-view>
+    </view>
+</view>
+<!-- 户型选择 -->
+
+<!-- 价格选择 -->
+<view class="time-toast" wx:if="{{isShowPrice}}" catchtap="">
+    <view style="position:absolute;bottom:0;left:0;width:100%;height:50%;" catchtap='cancelBubble'>
+        <view class="btnaa-box">
+            <view class="close" catchtap="hideClose">取消</view>
+            <view class='add_title_text'>价格选择</view>
+            <view class="sure" catchtap="surePrice">确定</view>
+        </view>
+        <picker-view indicator-style="height: 45px;" value="{{priceIndex}}" class="time-box" bindchange="priceChange">
+            <picker-view-column>
+                <view wx:for="{{price}}" wx:key style="line-height: 45px">{{item.priceL}}-{{item.priceH}}</view>
+            </picker-view-column>
+        </picker-view>
+    </view>
+</view>
+<!-- 价格选择 -->
+
+<!-- 红包页面 -->
+<view id='red_packet' wx:if='{{couponBoxFlag}}'>
+    <view class='red_fg'>
+        <view class='red_packet_box'>
+            <block wx:if="{{couponInfo.isGet == 0}}">
+                <text class='red_packet_text'>专属优惠券</text>
+                <view class='red_packet_money'>￥
+                    <text>{{couponInfo.shareMoney}}</text>
+                </view>
+            </block>
+            <view wx:else="" class='red_packet_get_over'>您已经领过啦！</view>
+            <view wx:if="{{couponInfo.isGet == 0}}" class='red_icon' bindtap="getCoupon"></view>
+            <block wx:else="">
+                <view class='user_tx'>
+                    <image src="{{couponInfo.userPhoto}}" mode="aspectFill"></image>
+                </view>
+                <view class='red_userName'>{{couponInfo.userName}}</view>
+            </block>
+            <view wx:if="{{couponInfo.isGet == 0}}" class='red_packet_con'>你的专属经纪人{{couponInfo.userName}}送你{{couponInfo.shareMoney}}元优惠券可用来抵用专属买房、租房佣金</view>
+            <block wx:else="">
+                <view wx:if="{{entrustBaseData.existence != 0}}" class='red_packet_con'>您已向我发布了专属委托，成交后可使用我分享的优惠券抵扣佣金哦</view>
+                <view wx:else="" class='red_packet_con'>快来对我发布专属委托吧，成交后可使用我分享的优惠券抵扣佣金哦</view>
+            </block>
+        </view>
+        <view wx:if="{{couponInfo.isGet != 0}}" class='red_packet_close' bindtap='couponBoxClose'></view>
+    </view>
+</view>
+<!-- 红包页面 -->

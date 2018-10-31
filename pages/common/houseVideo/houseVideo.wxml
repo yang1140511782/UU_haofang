@@ -1,0 +1,46 @@
+<template name="video-tem">
+<!--视频-->
+<view class="v-wraper" wx:if="{{videoShow}}">
+        <video id="myVideo" src="http://pic.myfun7.com/group2/M00/07/60/wKgAbVoDwryAR4qtAGbCnuEHcVo336.mp4" controls="true" objectFit="fill" wx:if="{{videoShowLater}}"></video>
+        <view class="close-video" bindtap="closeBtn"></view>
+</view>
+<!--/视频-->
+<!--banner-->
+      <view class="container_pic_video">
+          <block>
+              <view class="banner-box">
+              <!-- vr视频图标 -->
+              <view wx-if='{{houseData.panoramaMap > 0}}' class='vr-icon' catchtap='vrBtnTo'>
+                <image src="https://youjia.haofang.net/Public/images/720deg.png"></image>
+                <image src="https://youjia.haofang.net/Public/images/finger_x.png"></image>
+              </view>
+                  <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="changePic"  circular="{{true}}" class="banner">
+                        <!--视频-->
+                          <block class="container_video">
+                                  <swiper-item>
+                                      <view class="video-box">
+                                           <view class="ic-box" catchtap="playVideo">
+                                                <view class="bico-viedo"></view>
+                                           </view>
+                                           <image src="http://pic.myfun7.com/group1/M00/06/5B/wKgAa1oDwryAOuO2AAAx2YPr498769.jpg" mode="widthFix"></image> 
+                                      </view>
+                                      
+                                  </swiper-item>
+                          </block>
+                          <!--轮播图-->
+                      <block wx:key="{{item}}" wx:for="{{picUrl}}" wx:for-index="id">
+                                    <swiper-item data-image="{{item}}" catchtap='getImageInfo'>
+                                        <image mode="aspectFill" src="{{item}}" class="slide-image" data-id="{{id}}"  />
+                                    </swiper-item>
+                      </block>
+                          <!--/轮播图-->
+                  </swiper>
+                  <view class="numDesc">
+                    <text class="num" id="currindex">{{currentPic}}/{{totalImg}}</text>
+                  </view>
+              </view>
+          </block>
+      </view>
+      <!--/banner-->
+</template>
+      
